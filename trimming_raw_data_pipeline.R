@@ -19,6 +19,7 @@ set.seed(seed)
 # Make a main function(s) (the ones the users would actually get to interact with)
 # Markdown file for documentation
 # Create some error catching in the functions 
+# Martha did a version that could deal with multiplexed sequences...incoorporate?
 
 
 
@@ -445,10 +446,10 @@ cutadapt_run <- function(cutadapt_path, cutadapt_data){
 #****************************************************************FUNCTION CALLS************************************************************************
 
 #this is all for testing - TODO eventually create/edit a main function
-primer_path <- "C:/Users/sam/Desktop/Work/ChangLab/DataPipeline/RawtoMatrix/primer_info.csv"
-metadata_path <- "C:/Users/sam/Desktop/Work/ChangLab/DataPipeline/RawtoMatrix/mymetadata.csv"
+primer_path <- "raw_data/primer_info_example.csv"
+metadata_path <- "raw_data/metadata_example.csv"
 fastq_path <- "C:/Users/sam/Desktop/Work/ChangLab/DataPipeline/RawtoMatrix/Mock Community"
-intermediate_path <- "C:/Users/sam/Desktop/Work/ChangLab/DataPipeline/RawtoMatrix/intermediate_data"
+intermediate_path <- "intermediate_data"
 
 
 create_intermediate()
@@ -457,8 +458,9 @@ primer_data <- prepare_primers(primer_path)
 
 metadata <- prepare_metadata(metadata_path, primer_data)
 
+#this may take while
 fastq_data <- prepare_fastq(fastq_path, intermediate_path)
-#this may take awhile
+#this also could take a hot sec
 pre_primer_hit_data <- pre_primer_hit_data(primer_data, fastq_data, intermediate_path)
 print(pre_primer_hit_data)
 
