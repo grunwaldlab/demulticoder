@@ -20,6 +20,7 @@ set.seed(seed)
 # Markdown file for documentation
 # Create some error catching in the functions 
 # Martha did a version that could deal with multiplexed sequences...incoorporate?
+# Quality Plots?
 
 
 
@@ -448,6 +449,7 @@ cutadapt_run <- function(cutadapt_path, cutadapt_data){
 #this is all for testing - TODO eventually create/edit a main function
 primer_path <- "raw_data/primer_info_example.csv"
 metadata_path <- "raw_data/metadata_example.csv"
+# to large to fit on GitHub - example fastq files on local machine
 fastq_path <- "C:/Users/sam/Desktop/Work/ChangLab/DataPipeline/RawtoMatrix/Mock Community"
 intermediate_path <- "intermediate_data"
 
