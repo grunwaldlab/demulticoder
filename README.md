@@ -17,9 +17,15 @@ This project is still in development.
 
 * R packages needed: dada2, ShortRead, BioStrings, dplyr, purrr, furrr, tidyr, readr, ggplot2, gridExtra, sessioninfor (TODO: put versions)
 
-* Cutadapt, the Python trimming program that is used. The version used here is ???. Go here to download Cutadapt. (TODO: hyperlink, more info)
+* Cutadapt, the Python trimming program that is used. The version used here is ???. Go [here](https://cutadapt.readthedocs.io/en/stable/) to see documentation and installation instructions.
 
-* Correct .csv files as inputs: In order to be successful, the user needs to provide both a primer data and metadata .csv file. These files need to make the exact formatting of the given metadata and primer info files provided on this project's GitHub. The metadata may have as many columns as needed as long as the first column is the sample names. The primer data .csv needs to have the exact 3 columns shown, with as many rows as needed. (TODO: put screenshots in)
+* Correct .csv files as inputs: In order to be successful, the user needs to provide both a primer data and metadata .csv file. These files need to make the exact formatting of the given metadata and primer info files provided on this project's GitHub. The metadata may have as many columns as needed as long as the first column is the sample names. The primer data .csv needs to have the exact 3 columns shown, with as many rows as needed. 
+
+<center>
+
+![Primer Information CSV Example - names, forward, and reverse primers - all in their own columns. Column names need to match.](screen_shots/primer_example.png)
+
+</center>
 
 ### How to Get the Development Environment Set Up and Running
 
