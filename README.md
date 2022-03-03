@@ -17,7 +17,11 @@ This project is still in development.
 
 * R packages needed: dada2, ShortRead, BioStrings, dplyr, purrr, furrr, tidyr, readr, ggplot2, gridExtra, sessioninfor (TODO: put versions)
 
+<<<<<<< HEAD
 * Cutadapt, the Python trimming program that is used. The version used here is 3.4. Go [here](https://cutadapt.readthedocs.io/en/stable/) to see documentation and installation instructions.
+=======
+* Cutadapt, the Python trimming program that is used. The version used here is 3.5. Go [here](https://cutadapt.readthedocs.io/en/stable/) to see documentation and installation instructions.
+>>>>>>> 3fdb8e114ead4c3e3c5275bf4c8ac094ef90a9de
 
 * Correct .csv files as inputs: In order to be successful, the user needs to provide both a primer data and metadata .csv file. These files need to make the exact formatting of the given metadata and primer info files provided on this project's GitHub. The metadata may have as many columns as needed as long as the first column is the sample names and the second is the primer names used in that sample. 
 
@@ -25,8 +29,8 @@ The primer data .csv needs to have the exact 3 columns shown, with as many rows 
 
 <center>
 
-![Primer Information CSV Example - names, forward, and reverse primers - all in their own columns. Column names need to match.](screen_shots/primer_example.png)
-
+![Primer Information CSV Example - names, forward, and reverse primers - all in their own columns. Column names need to match.](https://github.com/grunwaldlab/rps10_metabarcoding_tool/blob/main/screen_shots/primer_example.PNG) 
+  
 </center>
 
 
