@@ -23,8 +23,8 @@ This project is still in development.
 
 <center>
 
-![Primer Information CSV Example - names, forward, and reverse primers - all in their own columns. Column names need to match.](screen_shots/primer_example.png)
-
+![Primer Information CSV Example - names, forward, and reverse primers - all in their own columns. Column names need to match.](https://github.com/grunwaldlab/rps10_metabarcoding_tool/blob/main/screen_shots/primer_example.PNG) 
+  
 </center>
 
 ### How to Get the Development Environment Set Up and Running
