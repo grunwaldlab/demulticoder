@@ -3,7 +3,7 @@
 
 ## Project Description
 
-This project is a pipeline to get from raw fastq data to trimmed and filter sequences. The input will be three items; primer information CSV file, a metadata information CSV file, and fastq files from sequencing. The output will be filtered sequences that are ready to move on to other analysis, such as quality analysis or taxonomic identification. 
+This project is a pipeline to get from raw fastq data to trimmed and filter sequences. The input will be three items; primer information CSV file, a metadata information CSV file, and fastq files from sequencing. The output will be filtered sequences that are ready to move on to other analysis, such as quality analysis or taxonomic identification. Let's just change this an test it out. 
 
 ***
 
