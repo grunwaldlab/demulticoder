@@ -54,9 +54,6 @@ prepare_primers <- function(primer_path){
   
 }
 
-#Testing function
-#primer_data1<-prepare_primers("~/rhod_metabarcoding4/primer_info_m.csv")
-
 #################################################################################################################
 ## Name: prepare_metadata
 ## Purpose: to read in the metadata from user and combine it with the primer data
@@ -71,8 +68,6 @@ prepare_metadata <- function(metadata_path, primer_data){
   return(metadata)
 }
 
-#Testing function
-#metadata1 <-prepare_metadata("~/rhod_metabarcoding4/metadata.csv", primer_data1)
 #################################################################################################################
 ## Name: create_intermediate
 ## Purpose: to create a file in the current working directory used for program files later on
@@ -106,8 +101,6 @@ read_fastq <- function(fastq_path){
   return(fastq_data)
 }
 
-#Testing function
-#fastq_data1 <-read_fastq("~/rhod_metabarcoding4")
 #################################################################################################################
 ## Name: matching_order_primer_check
 ## Purpose: validation for the primers - making sure the forward and reverse reads are in matching order
@@ -135,8 +128,6 @@ matching_order_primer_check <- function(fastq_data){
   stopifnot(all(get_read_names(paired_file_paths[1]) == get_read_names(paired_file_paths[2])))
 }
 
-#Testing function
-#matching_order_primer_check(fastq_data1)
 #################################################################################################################
 #################################################################################################################
 ## Name: remove_ns
@@ -182,9 +173,6 @@ prepare_fastq <- function(fastq_path,intermediate_path, metadata){
 }
 
 #removed tibble merging steps, and will do this later during Cutadapt prep steps since it creates complications when I run the primer hit functions
-
-#Testing function
-#fastq_data1<-prepare_fastq("~/rhod_metabarcoding4", "~/rhod_metabarcoding4/intermediate_data", metadata1)
 #################################################################################################################
 ## Name: pre_primer_hit_data
 ## Purpose: To give a visualization (in a table) showing the different primer hits in each of the sequences for 
@@ -223,8 +211,6 @@ pre_primer_hit_data <- function(primer_data, fastq_data, intermediate_path){
   return(primer_hit_data)
 }
 
-#Testing function
-#primer_hit_data1 <- pre_primer_hit_data(primer_data1, fastq_data1, "~/rhod_metabarcoding4/intermediate_data")
 #################################################################################################################
 ## Name: primer_hit_plot
 ## Purpose: To create a plot showing the primer hits for a sanity check
@@ -271,8 +257,6 @@ primer_hit_plot <- function(primer_hits, fastq_data, metadata){
   return(plot)
 }
 
-#Testing function
-#primer_hit_plot(primer_hit_data1, fastq_data1, metadata1)
 #################################################################################################################
 ## Name: cutadapt_tibble
 ## Purpose: create a tibble that can be fed into cutadapt 
@@ -306,8 +290,6 @@ cutadapt_tibble <- function(fastq_data, metadata, intermediate_path){ #new_fastq
   return(cutadapt_data)
 }
 
-#Testing function
-#cutadapt_data1<-cutadapt_tibble(fastq_data1, metadata1, "~/rhod_metabarcoding4/intermediate_data")
 #################################################################################################################
 ## Name: cutadapt_run_make it more like Sam's function
 ## Purpose: to check for the user having cutadapt - if yes: run the cutadapt command
@@ -315,10 +297,41 @@ cutadapt_tibble <- function(fastq_data, metadata, intermediate_path){ #new_fastq
 ## Returns: none
 ##################################################################################################################
 #Not exactly like Sam's function. Needs additional simplification and generalization
+cutadapt_run <- function(cutadapt_path, cutadapt_data){
+    cutadapt <- cutadapt_path
+    tryCatch(system2(cutadapt, args = "--version"),
+             warning=function(w){
+               stop("cutadapt cannot be found on PATH. Check if it is installed?")
+             })
+  #R1_flags: -g is the 5' adaptor (the forward primer) and -a is the reverse
+  #make a flag for both forward and reverse reads 
+  #-o is the forward_output_path (where we want cutadapt to store the trimming)
+  #-n is by defalt 1 (by default only one adapter sequence is removed from each read, but we 
+  #want 2, so have to specify it)
+  #-p is the reverse_output_path (where we want cutadapt to store the trimming)
+  #--minimum length = the min length reads have to be to be kept
+  
+  #simplify like Sam
+  #we are jsut building a column in cutadapt data that has the command line arguements in it
+  cutadapt <- path.expand(cutadapt_path)
+  R1_flags = unique(paste("-g",cutadapt_data$forward, "-a", cutadapt_data$r_rc))
+  R2_flags = unique(paste("-G",cutadapt_data$reverse, "-A", cutadapt_data$f_rc))
+  fwd_trim = cutadapt_data[cutadapt_data$direction == "Forward", ][["trimmed_path"]]
+  rev_trim = cutadapt_data[cutadapt_data$direction == "Reverse", ][["trimmed_path"]]
+  fwd_untrim = cutadapt_data[cutadapt_data$direction == "Forward", ][["untrimmed_path"]]
+  rev_untrim = cutadapt_data[cutadapt_data$direction == "Reverse", ][["untrimmed_path"]]
+  fwd_prefilt = cutadapt_data[cutadapt_data$direction == "Forward", ][["prefiltered_path"]]
+  rev_prefilt = cutadapt_data[cutadapt_data$direction == "Reverse", ][["prefiltered_path"]]
+  #consider parameters
+  command_args= paste(R1_flags, R2_flags, "-n", 2, "-o",  fwd_trim, "-p", rev_trim, "--minimum-length", 50,   "--untrimmed-output", fwd_untrim, "--untrimmed-paired-output", rev_untrim,"--quiet",fwd_prefilt, rev_prefilt)
+  if (! all(file.exists(c(cutadapt_data$trimmed_path,cutadapt_data$untrimmed_path)))) {
+    cutadapt_output <- future_map(command_args, ~system2(cutadapt, args = .x))
+  }
+  
+  return(cutadapt_data)
+  
+}
 
-
-#Testing function
-#cutadapt_data1 <-cutadapt_run( ".local/bin/cutadapt",cutadapt_data1)
 #################################################################################################################
 ## Name: plot_qc
 ## Purpose: Function is from DADA2
@@ -331,7 +344,6 @@ plot_qc<-function(cutadapt_data, pick_sample){
   quality_plots<-plotQualityProfile(sample_info)
   return(quality_plots)
 }
-plot_qc(cutadapt_data1, "S1") #need to add it in quotes 
 
 #################################################################################################################
 ## Name: filter_and_trim
@@ -364,14 +376,6 @@ filter_and_trim <- function(intermediate_path, cutadapt_data){
   return(cutadapt_data)
 }
 
-
-x<-filter_and_trim(intermediate_path, cutadapt_data)
-filter_results
-
-#Testing function
-#cutadapt_data1 <-filter_and_trim("~/rhod_metabarcoding4/intermediate_data", cutadapt_data1)
-
-#have default function options about also ways to change this too
 #################################################################################################################
 ## Name: post_primer_hit_data
 ## Purpose: makes a primer hit tibble for fastq sequences AFTER cutadapt has been run
@@ -410,10 +414,6 @@ post_primer_hit_data <- function(primer_data, cutadapt_data, intermediate_path){
   return(post_primer_hit_data)
 }
 
-#Testing function
-primer_hit_data2 <- post_primer_hit_data(primer_data, cutadapt_data, "~/rhod_metabarcoding4/intermediate_data")
-#primer_hit_data2
-
 #better visualized as a plot-merge different ? 
 #################################################################################################################
 ## Name: post_trim_qc
@@ -427,10 +427,6 @@ post_trim_qc<-function(cutadapt_data, pick_sample){
   quality_plots<-plotQualityProfile(sample_info)
   return(quality_plots)
 }
-#Testing function
-#post_trim_qc(cutadapt_data1, "S2") #need to add it in quotes 
-
-
 
 #****************************************************************FUNCTION CALLS************************************************************************
 #In progress
@@ -440,6 +436,7 @@ primer_path <- "~/rhod_metabarcoding4/primer_info_m.csv"
 metadata_path <- "~/rhod_metabarcoding4/metadata.csv"
 # to large to fit on GitHub - example fastq files on local machine
 fastq_path <- "~/rhod_metabarcoding4"
+create_intermediate()
 intermediate_path <- ("~/rhod_metabarcoding4/intermediate_data")
 create_intermediate()
 
@@ -457,7 +454,7 @@ print(pre_primer_plot)
 cutadapt_data <- cutadapt_tibble(fastq_data, metadata, intermediate_path)
 
 #running the actual cutadapt program
-cutadapt_run("~/.local/bin//cutadapt", cutadapt_data)
+cutadapt_run("/Users/masudermann/.local/bin/cutadapt", cutadapt_data)
 
 #filter steps
 #cutadapt_data1 <-filter_and_trim("~/rhod_metabarcoding4/intermediate_data", cutadapt_data1)
@@ -469,6 +466,8 @@ print(post_primer_hit_data)
 post_primer_plot <- primer_hit_plot(post_primer_hit_data, new_fastq_data, metadata)
 print(post_primer_plot)
 
+post_trim_qc(cutadapt_data, "S1")
 ##To consider
-#Add additional informative plots to aid in setting filtering parameters
+#any other informative plots
+#After discussion with Ricardo-Read count distributions by length
 #Better assess read quality before filter steps
