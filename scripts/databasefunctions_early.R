@@ -85,10 +85,14 @@ format_database2 <-function(database_path, database_name){
   colnames(its_data) <- c("header", "name", "ncbi_acc", "unite_db", "db", "taxonomy")
   its_data <- as_tibble(its_data)
   its_data$taxonomy <- gsub(its_data$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
+  its_data$taxonomy <- paste0('Eukaryota;', its_data$taxonomy)
+  its_data$taxonomy <- gsub(its_data$taxonomy, pattern = 'Stramenopila;Oomycota', replacement = 'Heterokontophyta;Stramenopiles', fixed = TRUE)
+  its_data$taxonomy <- paste0(its_data$taxonomy, ';', 'unite_', seq_along(its_data$taxonomy))
+  its_data$taxonomy <- gsub(its_data$taxonomy, pattern = "[a-z]__", replacement = '')
   its_data$taxonomy <- paste0(its_data$taxonomy, ';')
   its_data$taxonomy <- trimws(its_data$taxonomy)
   #Fix after checking out later analysis
-  stopifnot(all(str_count(its_data$taxonomy, pattern = ";") == 7))
+  stopifnot(all(str_count(its_data$taxonomy, pattern = ";") == 9))
   genus_count <- table(map_chr(strsplit(its_data$name, split = '_'), `[`, 1))
   count_table <- as.data.frame(genus_count, stringsAsFactors = FALSE)
   count_table <- as_tibble(count_table)
@@ -101,5 +105,4 @@ format_database2 <-function(database_path, database_name){
   
 }
 
-#test commands
-its_data<-format_database2("~/rhod_metabarcoding4/intermediate_data/reference_databases", "unite.fasta")
+its_data<-format_database2("~/rhod_metabarcoding4/databases", "unite.fasta")
