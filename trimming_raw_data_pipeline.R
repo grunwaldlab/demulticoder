@@ -446,6 +446,13 @@ cutadapt_run <- function(cutadapt_path, cutadapt_data){
 
 #****************************************************************FUNCTION CALLS************************************************************************
 
+#let's test a main function 
+
+
+
+
+
+
 #this is all for testing - TODO eventually create/edit a main function
 primer_path <- "raw_data/primer_info_example.csv"
 metadata_path <- "raw_data/metadata_example.csv"
