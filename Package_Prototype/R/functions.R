@@ -1,3 +1,23 @@
+#' Main Cutadapt Function 
+#'
+#' Funs all of the functions associated with running cutadapt. Users should not have to touch these functions.
+#' @param primer_path a path to the csv that holds the primer info for this project.
+#' @param metadata_path a path to the csv that holds the metadata info for this project.
+#' @param fastq_path a path to the csv that holds the fastq for this project.
+#' @param intermediate_path a path to the directory in which the intermediate folder should be created.
+#' @param cutadapt_path a path to the cutadapt .exe file.
+#' @return A tibble that contains the forward and reverse primers with created complement, etc. 
+#' @export
+main_cutadapt_function <- function(primer_path, metadata_path, fastq_path,intermediate_path, cutadapt_path){
+  create_intermediate()
+  primer_data <- prepare_primers(primer_path)
+  metadata <- prepare_metadata(metadata_path, primer_data)
+  fastq_data <- prepare_fastq(fastq_path, intermediate_path)
+  new_fastq_data <- change_sample_ids(fastq_data)
+  cutadapt_data <- cutadapt_tibble(new_fastq_data, metadata)
+  cutadapt_run(cutadapt_path, cutadapt_data)
+}
+
 #' Prepare Primers 
 #'
 #' Take in user primers and creates the complement, reverse, reverse complement of primers in one tibble
