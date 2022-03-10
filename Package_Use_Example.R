@@ -25,8 +25,10 @@ pre_primer_plot <- primer_hit_plot(pre_primer_hit_data, fastq_data, metadata)
 print(pre_primer_plot)
 #editing ZACHS data with the library (names were mismatched)
 #not a robust funtion - need it for testing (hopefully user will not have this issue)
-new_fastq_data <- change_sample_ids(fastq_data)
-cutadapt_data <- cutadapt_tibble(new_fastq_data, metadata)
+
+#only use following line if using Zach's Mock Community
+#fastq_data <- change_sample_ids(fastq_data)
+cutadapt_data <- cutadapt_tibble(fastq_data, metadata)
 #running the actual cutadapt program
 cutadapt_run("your absolute path to cutadapt program", cutadapt_data)
 #checking if cutadapt works (this may take awhile)
