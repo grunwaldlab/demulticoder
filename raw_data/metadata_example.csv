@@ -23,8 +23,8 @@ H5,its,leaf,L90
 A2,cons,leaf,L95
 A4,f,leaf,L95
 A6,its,leaf,L95
-A1,cons,mock1,mock1
-A3,f,mock1,mock1
+A1,cons,mock1,S1
+A3,f,mock1,S3
 A5,its,mock1,mock1
 B1,cons,mock2,mock2
 B3,f,mock2,mock2
