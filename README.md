@@ -40,6 +40,12 @@ The primer data .csv needs to have the exact 3 columns shown, with as many rows 
 
 This will need to contain examples, screenshots, possible issues and how to fix. 
 
+## Known Issues
+* read_fastq function will not run correctly if the fastq data is not formatted correctly. This can be changed from inside of the function. The correct naming for the direction is 1 or R1.
+* For Unix and Unix-like systems (macOS, Linux, etc.), the cutadapt_run function will catch the error if the cutadapt parameter of the function is in quotation marks. This is not true for Windows-based systems. 
+* The cutadapt program will not execute correctly if the columns of the metadata CSV file is not in the correct order. The correct order should be: sample (or sample_id), primer, well, organism, etc.
+* Before running cutadapt, if the cutadapt_data tibble has any N in it, the program will not run correctly.
+
 ## Credits 
 Martha Sudermann, Samantha Dawson, Zachary Foster, Hung Phan
 
