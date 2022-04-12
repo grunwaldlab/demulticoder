@@ -18,9 +18,7 @@ This project is still in development.
 * R packages needed: dada2, ShortRead, BioStrings, dplyr, purrr, furrr, tidyr, readr, ggplot2, gridExtra, sessioninfor (TODO: put versions)
 
 
-* Cutadapt, the Python trimming program that is used. The version used here is 3.4. Go [here](https://cutadapt.readthedocs.io/en/stable/) to see documentation and installation instructions.
-
-* Cutadapt, the Python trimming program that is used. The version used here is 3.5. Go [here](https://cutadapt.readthedocs.io/en/stable/) to see documentation and installation instructions.
+* Cutadapt, the Python trimming program that is used. The version used here is 3.7. Go [here](https://cutadapt.readthedocs.io/en/stable/) to see documentation and installation instructions.
 
 
 * Correct .csv files as inputs: In order to be successful, the user needs to provide both a primer data and metadata .csv file. These files need to make the exact formatting of the given metadata and primer info files provided on this project's GitHub. The metadata may have as many columns as needed as long as the first column is the sample names and the second is the primer names used in that sample. 
