@@ -1,0 +1,388 @@
+#' Retrieve the paths of the filtered and trimmed Fastq ifiles
+#'
+#' @param my_direction
+#' @param my_primer_pair_id
+#' @param cutadapt_data
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_fastq_paths <- function(my_direction, my_primer_pair_id) {
+  cutadapt_data %>%
+    filter(direction == my_direction, primer_name == my_primer_pair_id, file.exists(filtered_path)) %>%
+    pull(filtered_path)
+}
+
+#' Core DADA2 function to learn errors and infer ASVs
+#'
+#' @param my_primer_pair_id
+#' @param my_direction
+#'
+#' @return
+#' @export
+#'
+#' @examples
+infer_asvs <-function(my_primer_pair_id, my_direction){
+  fastq_paths <- get_fastq_paths(my_direction, my_primer_pair_id)
+  error_profile <- learnErrors(fastq_paths, multithread = TRUE)
+
+  #if (error_profile) {
+  cat(paste0('Error rate plot for the ', my_direction, ' read of primer pair ', my_primer_pair_id, ' \n'))
+  plot_errors<-dada2::plotErrors(error_profile, nominalQ = TRUE)
+  ggsave(plot_errors, filename = 'error_plots.pdf', path = intermediate_path, width = 8, height = 8)
+  asv_data <- dada2::dada(fastq_paths, err = error_profile, multithread = TRUE)
+
+  return(asv_data)
+
+}
+
+#' Wrapper function to infer ASVs, for multiple loci
+#'
+#' @param intermediate_path
+#' @param cutadapt_data
+#' @param denoised_data_path
+#'
+#' @return
+#' @export
+#'
+#' @examples
+infer_asv_command <-function(intermediate_path, cutadapt_data){
+  denoised_data_path <- file.path(intermediate_path, "Denoised_data.Rdata")
+  if (file.exists(denoised_data_path)) {
+    print("File already exists")
+  } else {
+    run_dada <- function(direction) {
+      lapply(unique(cutadapt_data$primer_name), function(primer_name) infer_asvs(primer_name, direction)) %>%
+        unlist(recursive = FALSE)
+    }
+    dada_forward <- run_dada("Forward")
+    dada_reverse <- run_dada("Reverse")
+    save(dada_forward, dada_reverse, file = denoised_data_path)
+    print("File is now saved")
+  }
+}
+
+#' Merge forward and reverse reads
+#'
+#' @param intermediate_path
+#' @param merged_read_data_path
+#'
+#' @return
+#' @export
+#'
+#' @examples
+merge_reads_command <- function(intermediate_path){
+  denoised_data_path <- file.path(intermediate_path, "Denoised_data.Rdata")
+  load(denoised_data_path) #incorporate into function
+  max_read_merging_mismatch <- 2 # Default is 0
+  min_read_merging_overlap <- 15 # Default is 12
+  merged_read_data_path <- file.path(intermediate_path, "Merged_reads.Rdata")
+  formatted_ref_dir <-
+    if (file.exists(merged_read_data_path)) {
+      load(merged_read_data_path)
+      return(merged_reads)
+    } else {
+      merged_reads <- dada2::mergePairs(dadaF = dada_forward,
+                                 derepF = file.path(intermediate_path, 'filtered_sequences', names(dada_forward)),
+                                 dadaR = dada_reverse,
+                                 derepR = file.path(intermediate_path, 'filtered_sequences', names(dada_reverse)),
+                                 minOverlap = min_read_merging_overlap,
+                                 maxMismatch = max_read_merging_mismatch,
+                                 returnRejects = TRUE,
+                                 verbose = TRUE)
+      names(merged_reads) <- gsub(".fastq.gz", "", names(merged_reads), fixed = TRUE)
+      save(merged_reads, file = merged_read_data_path)
+      return(merged_reads)
+    }
+}
+
+
+#' Count overlap to see how well the reads were merged
+#'
+#' @param merged_reads
+#'
+#' @return
+#' @export
+#'
+#' @examples
+countOverlap <- function(merged_reads){
+  non_empty_merged_reads <- merged_reads[map_dbl(merged_reads, nrow) > 0]
+  non_empty_merged_reads
+  merge_data <- non_empty_merged_reads %>%
+    bind_rows() %>%
+    mutate(fullsample_id = rep(names(non_empty_merged_reads), map_int(non_empty_merged_reads, nrow))) %>%
+    as_tibble() #check best practices
+  cutadapt_data$fullsample_id <- paste0(cutadapt_data$file_id,'_', cutadapt_data$primer_name)
+  cutadapt_short <- cutadapt_data %>%
+    select(fullsample_id, sample_id, primer_name)
+  merge_data2 <- merge_data %>%
+    left_join(cutadapt_short, by = c("fullsample_id" = "fullsample_id"))
+  merge_data2 <- merge_data %>%
+    left_join(cutadapt_short, by = c("fullsample_id" = "fullsample_id"))
+  merge_data2 <- mutate(merge_data2,
+                        overlap = nmatch + nmismatch,
+                        mismatch = nmismatch + nindel,
+                        identity = (overlap - mismatch) / overlap)
+  merge_plot <- merge_data2 %>%
+    select(primer_name, mismatch, accept, overlap) %>%
+    rename('locus' = primer_name, 'Mismatches and Indels' = mismatch, 'Merged' = accept, 'Overlap Length' = overlap) %>%
+    gather(key = 'stat', value = 'value', -locus, -Merged) %>%
+    ggplot(aes(x = value, fill = Merged)) +
+    facet_grid(locus ~ stat, scales = 'free') +
+    geom_histogram(bins = 50) +
+    scale_fill_viridis_d(begin = 0.8, end = 0.2) +
+    labs(x = '', y = 'ASV count', fill = 'Merged') +
+    theme(panel.grid.major.x = element_blank(),
+          panel.grid.minor = element_blank(),
+          legend.position="bottom")
+  ggsave(merge_plot, filename = 'read_merging.jpg', path = intermediate_path, width = 8, height = 8)
+  merge_plot
+}
+
+
+#' Make ASV sequence table
+#'
+#' @param merged_reads
+#'
+#' @return
+#' @export
+#'
+#' @examples
+makeSeqtab<-function(merged_reads){
+  raw_seqtab<-makeSequenceTable(merged_reads)
+  return(raw_seqtab)
+}
+
+
+
+#Remove chimeras and short sequencs
+#' Quality filtering to remove chimeras and short sequences
+#'
+#' @param seqtab
+#'
+#' @return
+#' @export
+#'
+#' @examples
+make_abund_table<-function(raw_seqtab){
+  min_asv_length <- 50
+  seqtab.nochim <- dada2::removeBimeraDenovo(raw_seqtab, method="consensus", multithread=TRUE, verbose=TRUE)
+  asv_abund_table <- seqtab.nochim[, nchar(colnames(seqtab.nochim)) >= min_asv_length]
+  asvabund_table_path <- file.path(intermediate_path, "asvabund_tableDADA2.Rdata")
+  save(seqtab.nochim, file = asvabund_table_path)
+  return(asv_abund_table)
+}
+
+#' Plots a histogram of read length counts of all sequences within the ASV table
+#'
+#' @param abund_table
+#' @param abund_table_file
+#'
+#' @return
+#' @export
+#'
+#' @examples
+make_seqhist <- function(abund_table, abund_table_file){
+  ab_table<-nchar(getSequences(abund_table))
+  data1<-data.frame(ab_table)
+  hist_plot=qplot(ab_table, data=data1, geom="histogram", xlab = 'Length of sequence (bp)', ylab='Counts', main='Read length counts of all sequences within the ASV table')
+  return(hist_plot)
+  ggsave(hist_plot, filename = abund_table_file, path = intermediate_path, width = 8, height = 8)
+}
+
+#' Prepare final ASV abundance matrix
+#'
+#' @param cutadapt_data
+#' @param asv_abund_table
+#' @param locus
+#'
+#' @return
+#' @export
+#'
+#' @examples
+prep_abund_table <-function(cutadapt_data, asv_abund_table, locus){
+  #rownames(asv_abund_table) <- sub(rownames(asv_abund_table), pattern = ".fastq.gz", replacement = "")
+  cutadapt_data$file_id_primer <- paste0(cutadapt_data$file_id, "_", cutadapt_data$primer_name)
+  asv_abund_matrix<- asv_abund_table[rownames(asv_abund_table) %in% cutadapt_data$file_id_primer[cutadapt_data$primer_name == locus], ]
+  return(asv_abund_matrix)
+}
+
+
+#' Still needs improvement. Could solve problem by merging fungal and oomycete databases for assign taxonomy steps. In order to assign taxonomy for separate loci, need to separate abundance tables first
+#'
+#' @param abund_asv_its
+#' @param abund_asv_rps10
+#' @param intermediate_path
+#' @param separate_abund_path
+#'
+#' @return
+#' @export
+#'
+#' @examples
+separate_abund_table <- function(abund_asv_its, abund_asv_rps10, intermediate_path, separate_abund_path){
+  separate_abund_path <- file.path(intermediate_path, separate_abund_path)
+  in_both <- colSums(abund_asv_its) != 0 & colSums(abund_asv_rps10) != 0
+  assign_to_its <- in_both & colSums(abund_asv_rps10) > colSums(abund_asv_its)
+  assign_to_rps10 <- in_both & colSums(abund_asv_rps10) < colSums(abund_asv_its)
+  is_its <- (colSums(abund_asv_its) != 0 & colSums(abund_asv_rps10) == 0) | assign_to_its
+  is_rps10 <- (colSums(abund_asv_rps10) != 0 & colSums(abund_asv_its) == 0) | assign_to_rps10
+  abund_asv_its <- abund_asv_its[ , is_its]
+  abund_asv_rps10 <- abund_asv_rps10[ , is_rps10]
+  #The number of ASVs left in the two groups should sum to the total number of ASVs, since there should be no overlap.
+  stopifnot(ncol(abund_asv_its) + ncol(abund_asv_rps10) == ncol(asv_abund_table)) #make more messaging
+  save(abund_asv_its, abund_asv_rps10, file = separate_abund_path)
+}
+
+
+#' Assign taxonomy
+#'
+#' @param abund_asv_table
+#' @param ref_database
+#'
+#' @return
+#' @export
+#'
+#' @examples
+assign_taxonomyDada2<-function(abund_asv_table, ref_database){
+  tax_results<- dada2::assignTaxonomy(abund_asv_table,
+                               refFasta = file.path(intermediate_path, 'reference_databases', ref_database),
+                               taxLevels = c("Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
+                               minBoot = 0,
+                               tryRC = TRUE,
+                               outputBootstraps = TRUE,
+                               multithread = TRUE)
+  tax_table_path <- file.path(intermediate_path, "tax_tableDADA2.Rdata")
+  save(tax_results, file = tax_table_path)
+  return(tax_results)
+  #save these results
+}
+
+#' Align ASV sequences to reference sequences from database to get percent ID. STart by retrieving reference sequences.
+#'
+#' @param tax_result
+#' @param db
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_ref_seq <- function(tax_result, db) {
+  ref_i <- as.integer(str_match(tax_result$tax[, 'Reference'], '^.+_([0-9]+)$')[ ,2])
+  db[ref_i]
+}
+
+#' Align ASV sequences to reference sequences from database to get percent ID. Align sequences to reference sequences from database.
+#'
+#' @param ref
+#' @param asv
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_align_pid <- function(ref, asv) {
+  mat <- nucleotideSubstitutionMatrix(match = 1, mismatch = -3, baseOnly = TRUE)
+  align <-  pairwiseAlignment(pattern = asv, subject = ref, type = 'global-local')
+  is_match <- strsplit(as.character(align@pattern), '')[[1]] == strsplit(as.character(align@subject), '')[[1]]
+  sum(is_match) / length(is_match)
+}
+
+#' Align ASV sequences to reference sequences from database to get percent ID. Get percent identities.
+#'
+#' @param tax_result
+#' @param db
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_pids <- function(tax_result, db) {
+  db_seqs <- read_fasta(file.path(intermediate_path, "reference_databases", db))
+  ref_seq <- get_ref_seq(tax_result, db_seqs)
+  asv_seq <- rownames(tax_result$tax)
+  future_map2_dbl(ref_seq, asv_seq, get_align_pid) * 100
+}
+
+#' Add PID and bootstrap values to tax result.
+#'
+#' @param tax_result
+#' @param pid
+#'
+#' @return
+#' @export
+#'
+#' @examples
+add_pid_to_tax <- function(tax_result, pid) {
+  tax_result$tax <- cbind(tax_result$tax, ASV = rownames(tax_result$tax))
+  tax_result$boot <- cbind(tax_result$boot, ASV = pid)
+  return(tax_result)
+}
+
+#' Combine taxonomic assigns and bootstrap values for each locus into single classfication vector
+#'
+#' @param tax_result
+#'
+#' @return
+#' @export
+#'
+#' @examples
+assignTax_as_char <- function(tax_result) {
+  out <- vapply(1:nrow(tax_result$tax), FUN.VALUE = character(1), function(i) {
+    paste(tax_result$tax[i, ],
+          tax_result$boot[i, ],
+          colnames(tax_result$tax),
+          sep = '--', collapse = ';')
+  })
+  names(out) <- rownames(tax_result$tax)
+  return(out)
+  #check
+  stopifnot(all(names(out) %in% colnames(asv_abund_table)))
+  stopifnot(all(! duplicated(names(out))))
+}
+
+#' Format ASV abundance table
+#'
+#' @param asv_abund_table
+#'
+#' @return
+#' @export
+#'
+#' @examples
+format_abund_matrix <- function(asv_abund_table, seq_tax_asv) {
+  formatted_abund_asv <- t(asv_abund_table)
+  colnames(formatted_abund_asv) <- sub(colnames(formatted_abund_asv), pattern = ".fastq.gz$", replacement = "")
+  formatted_abund_asv <- cbind(sequence = rownames(formatted_abund_asv),
+                               taxonomy = seq_tax_asv[rownames(formatted_abund_asv)],
+                               formatted_abund_asv)
+  formatted_abund_asv <- as_tibble(formatted_abund_asv)
+  write_csv(formatted_abund_asv, file = file.path(intermediate_path, 'final_asv_abundance_table.csv'))
+  #make results folder
+  print(formatted_abund_asv)
+  return(formatted_abund_asv)
+}
+
+#' Final inventory of read counts after each step from input to removal of chimeras. This function deals with if you have more than one sample. TODO optimize for one sample
+#'
+#' @param formatted_abund_asv
+#' @return
+#' @export
+#'
+#' @examples
+dada2_readcounts_multi_sample <- function (asv_abund_table) {
+  filter_results_path<-file.path(intermediate_path, "filter_results.RData")
+  load(filter_results_path) #incorporate into function
+  denoised_data_path <- file.path(intermediate_path, "Denoised_data.Rdata")
+  load(denoised_data_path) #incorporate into function
+  merged_read_data_path <- file.path(intermediate_path, "Merged_reads.Rdata")
+  load(merged_read_data_path)
+  getN <- function(x) sum(dada2::getUniques(x))
+  track <- cbind(filter_results, sapply(dada_forward, getN), sapply(dada_reverse, getN), sapply(merged_reads, getN), rowSums(asv_abund_table))
+  track <- cbind(rownames(track), data.frame(track, row.names=NULL))
+  colnames(track) <- c("sample_name", "input", "filtered", "denoisedF", "denoisedR", "merged", "nonchim")
+  track_read_counts_path <- file.path(intermediate_path, "track_reads.csv")
+  write_csv(track, track_read_counts_path)
+  print(track)
+}
+
+

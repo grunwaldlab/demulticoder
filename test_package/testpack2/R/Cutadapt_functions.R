@@ -1,0 +1,71 @@
+#' Prepare for primmer trimming with Cutaapt. Make new sub-directories and specify paths for the trimmed and untrimmed reads
+#'
+#' @param fastq_data
+#' @param metadata
+#' @param intermediate_path
+#'
+#' @return
+#' @export
+#'
+#' @examples
+cutadapt_tibble <- function(fastq_data, metadata, intermediate_path){ #new_fastq_data needed, why not just fastq_data
+  cutadapt_data <- metadata %>%
+    left_join(fastq_data, by = c("sample_id" = "sample_id"))
+  #remove extra columns with NA
+  cutadapt_data <- na.omit(cutadapt_data)
+  trimmed_read_dir <- file.path(intermediate_path, "trimmed_sequences")
+  if (! dir.exists(trimmed_read_dir)){
+    dir.create(trimmed_read_dir)
+  }
+
+  cutadapt_data$trimmed_path <- file.path(trimmed_read_dir, paste0(cutadapt_data$file_id, "_", cutadapt_data$primer_name, ".fastq.gz"))
+
+  #fastq_data_filtered$trimmed_path <- file.path(trimmed_read_dir, paste0(fastq_data_filtered$file_id, ".fastq.gz"))
+  untrimmed_read_dir <- file.path(intermediate_path, "untrimmed_sequences")
+  if (! dir.exists(untrimmed_read_dir)) {
+    dir.create(untrimmed_read_dir)
+  }
+  cutadapt_data$untrimmed_path <- file.path(untrimmed_read_dir,  paste0(cutadapt_data$file_id, "_", cutadapt_data$primer_name, ".fastq.gz"))
+
+  filtered_read_dir <- file.path(intermediate_path, "filtered_sequences")
+  if (! dir.exists(filtered_read_dir)) {
+    dir.create(filtered_read_dir)
+  }
+  cutadapt_data$filtered_path <- file.path(filtered_read_dir,  paste0(cutadapt_data$file_id, "_", cutadapt_data$primer_name, ".fastq.gz"))
+  return(cutadapt_data)
+}
+
+#' Core function for running cutadapt
+#'
+#' @param cutadapt_path
+#' @param cutadapt_data
+#'
+#' @return
+#' @export
+#'
+#' @examples
+cutadapt_run <- function(cutadapt_path, cutadapt_data){
+  cutadapt <- cutadapt_path
+  tryCatch(system2(cutadapt, args = "--version"),
+           warning=function(w){
+             stop("cutadapt cannot be found on PATH. Check if it is installed?")
+           })
+  #simplify
+  #may need to demultiplex first-meed to assess this
+  cutadapt <- path.expand(cutadapt_path)
+  min_length=50
+  R1_flags = unique(paste("-g",cutadapt_data$forward, "-a", cutadapt_data$r_rc))
+  R2_flags = unique(paste("-G",cutadapt_data$reverse, "-A", cutadapt_data$f_rc))
+  fwd_trim = cutadapt_data[cutadapt_data$direction == "Forward", ][["trimmed_path"]]
+  rev_trim = cutadapt_data[cutadapt_data$direction == "Reverse", ][["trimmed_path"]]
+  fwd_untrim = cutadapt_data[cutadapt_data$direction == "Forward", ][["untrimmed_path"]]
+  rev_untrim = cutadapt_data[cutadapt_data$direction == "Reverse", ][["untrimmed_path"]]
+  fwd_prefilt = cutadapt_data[cutadapt_data$direction == "Forward", ][["prefiltered_path"]]
+  rev_prefilt = cutadapt_data[cutadapt_data$direction == "Reverse", ][["prefiltered_path"]]
+  #consider parameters
+  command_args= paste(R1_flags, R2_flags, "-n", 2,  "-o",  fwd_trim, "-p", rev_trim, "--minimum-length", min_length,"--minimum-length", min_length,"--untrimmed-output", fwd_untrim, "--untrimmed-paired-output", rev_untrim,"--quiet", fwd_prefilt, rev_prefilt)
+  if (! all(file.exists(c(cutadapt_data$trimmed_path)))) {
+    cutadapt_output <- furrr::future_map(command_args, ~system2(cutadapt, args = .x))
+  }
+
+}
