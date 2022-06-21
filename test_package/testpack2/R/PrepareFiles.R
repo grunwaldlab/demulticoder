@@ -48,10 +48,6 @@ create_intermediate <- function(working_dir_path){
 #'
 #' @examples
 read_fastq <- function(raw_path){
-  if (BiocGenerics::grepl(fastq_paths, pattern = "_R2" | "_2") == FALSE) {
-    stop("Please ensure that the FASTQ files for a sample's read 2 is in the same folder as read 1.")
-  }
-  
   fastq_paths <- list.files(raw_path, pattern = "\\.fastq")
   #constructing a tibble - special data frame with improved behaviors.
   fastq_data <- tibble(file_id = sub(fastq_paths, pattern = "\\.fastq\\.gz$", replacement = ""),
