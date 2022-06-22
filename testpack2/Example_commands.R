@@ -22,26 +22,27 @@ intermediate_path <- create_intermediate(directory_path)
 #create intermediate data folder in working directory
 #Now you are ready for actual commands
 
-#To run the above commands all at once, you can also use this command. This may be more useful if you don't plan to follow ASV steps.
 cutadapt_data<-main_cutadapt_function(directory_path, primer_path, metadata_path, fastq_path,intermediate_path, cutadapt_path)
 
 #Command to prepare databases for downstream steps
 create_ref_database(intermediate_path)
 format_database(raw_path, "oomycetedb.fasta")
+#If you included the ITS barcode in your analysis
+#Should also test pipeline just on ITS dataset
 format_database2(raw_path, "unite.fasta")
 #The remaining functions will be incorporated shortly.
 
 #Command for just rps10 barcode, multiple samples
 rps10_barcode_function(intermediate_path, cutadapt_data)
-
 #TODO
 #Command for rps10 and ITS barcodes, multiple samples
+ITS_rps10_barcode_function(intermediate_path, cutadapt_data)
 
 #TODO
-#Parameters-reference DADA2 parameters-Zach suggested using Roxygen to do this
+#Parameters optimzation
+#Further clarify the inputs
 #Templates for input files
 #Naming consistency
 #Hung's updates
 #Improve function names, and documentation
 #Check filter parameters-a lot of rps10 reads are being thrown out at the filter steps
-

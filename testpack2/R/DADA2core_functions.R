@@ -364,12 +364,12 @@ format_abund_matrix <- function(asv_abund_table, seq_tax_asv) {
 
 #' Final inventory of read counts after each step from input to removal of chimeras. This function deals with if you have more than one sample. TODO optimize for one sample
 #'
-#' @param formatted_abund_asv
+#' @param asv_abund_table
 #' @return
 #' @export
 #'
 #' @examples
-dada2_readcounts_multi_sample <- function (asv_abund_table) {
+dada2_readcounts_multi_sample <- function (asv_abund_table) { #need to check
   filter_results_path<-file.path(intermediate_path, "filter_results.RData")
   load(filter_results_path) #incorporate into function
   denoised_data_path <- file.path(intermediate_path, "Denoised_data.Rdata")
@@ -384,5 +384,4 @@ dada2_readcounts_multi_sample <- function (asv_abund_table) {
   write_csv(track, track_read_counts_path)
   print(track)
 }
-
 
