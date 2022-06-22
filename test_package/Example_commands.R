@@ -1,7 +1,7 @@
 library(devtools)
 #if you need to make changes to functions in R sub-directory, and then use load_all command again, and then re-document with document()
-setwd("~/Documents/GitHub/rps10_metabarcoding_tool/test_package/testpack2")
-load_all("~/Documents/GitHub/rps10_metabarcoding_tool/test_package/testpack2")
+setwd("~/Documents/GitHub/rps10_metabarcoding_tool/test_package/test_package")
+load_all("~/Documents/GitHub/rps10_metabarcoding_tool/test_package/test_package")
 document()
 
 #Example

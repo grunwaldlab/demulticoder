@@ -1,4 +1,4 @@
-Package: testpack2
+Package: test_package
 Title: Raw Sequences to Trimmed Files
 Version: 0.0.0.9000
 Authors@R: 
