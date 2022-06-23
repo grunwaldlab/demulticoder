@@ -12,7 +12,7 @@ prepare_fastq <- function(raw_path,intermediate_path){
   fastq_data <- read_fastq(raw_path)
   matching_order_primer_check(fastq_data)
   fastq_data <- remove_ns(fastq_data, intermediate_path)
-
+  
   return(fastq_data)
 }
 #' Runs all of the functions associated with running cutadapt. Users should not have to touch these functions.
@@ -46,6 +46,15 @@ main_cutadapt_function <- function(directory_path, primer_path, metadata_path, f
 }
 
 #For more than 1 sample, rps10 barcode
+#' Main trim command to run core DADA2 functions for rps10 barcode
+#'
+#' @param intermediate_path 
+#' @param cutadapt_data 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 rps10_barcode_function<- function(intermediate_path, cutadapt_data){
   infer_asv_command(intermediate_path, cutadapt_data)
   merged_reads<-merge_reads_command(intermediate_path)
@@ -60,11 +69,20 @@ rps10_barcode_function<- function(intermediate_path, cutadapt_data){
   tax_results_rps10_asv_pid <- add_pid_to_tax(tax_results_rps10_asv, rps10_pids_asv)
   seq_tax_asv <- assignTax_as_char(tax_results_rps10_asv_pid)
   formatted_abund_asv<-format_abund_matrix(asv_abund_table, seq_tax_asv)
-  dada2_readcounts_multi_sample(asv_abund_table) #needs checking
+  dada2_readcounts_multi_sample(formatted_abund_asv) #needs checking
 }
 
 
 #For rps10 and its barcodes
+#' Main trim command to run core DADA2 functions for 2 barcodes
+#'
+#' @param intermediate_path 
+#' @param cutadapt_data 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 ITS_rps10_barcode_function<- function(intermediate_path, cutadapt_data){
   infer_asv_command(intermediate_path, cutadapt_data)
   merged_reads<-merge_reads_command(intermediate_path)
@@ -88,5 +106,5 @@ ITS_rps10_barcode_function<- function(intermediate_path, cutadapt_data){
   tax_results_its_asv_pid <- add_pid_to_tax(tax_results_its_asv, its_pids_asv)
   seq_tax_asv <- c(assignTax_as_char(tax_results_rps10_asv_pid), assignTax_as_char(tax_results_its_asv))
   formatted_abund_asv<-format_abund_matrix(asv_abund_table, seq_tax_asv)
-  dada2_readcounts_multi_sample(asv_abund_table) #check
+  dada2_readcounts_multi_sample(formatted_abund_asv) #check
 }
