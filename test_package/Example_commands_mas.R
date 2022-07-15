@@ -12,17 +12,33 @@ document()
 
 #You will need to modify directory names and file names
 directory_path<-"~/WindRiver_test_mas" ##choose a directory for all downstream steps
-raw_path <-file.path(directory_path, "raw_data") #place your raw data files, csv files, and downloaded databases to raw_data subdirectory into your main directory
+raw_path <-file.path(directory_path, "raw_data") #place your raw data files, csv files, and downloaded databases into raw_data subdirectory into your main directory
 primer_path <-file.path(raw_path, "primers_format.csv") ##modify .csv name or keep this name
-#Metadata file just needs sample_name in first column, and primer_name in second column (this function is being tweaked-see example)
-metadata_path <-file.path(raw_path, "metadata.csv") ##modify .csv name or keep this name
+#Metadata file just needs sample_name one column, and primer_name in second column (this function is being tweaked-see example)
+metadata_path <-file.path(raw_path, "metadata.csv") ##modify .csv name or keep this name. The sample_name in the metadata sheet needs to match the first part (before first underscore), of the zipped raw FASTQ files
 cutadapt_path<-"/Users/masudermann/miniconda3/bin/cutadapt"
 intermediate_path <- create_intermediate(directory_path)
 #create intermediate data folder in working directory
 #Now you are ready for actual commands
 
-cutadapt_data<-main_cutadapt_function(directory_path, primer_path, metadata_path, fastq_path,intermediate_path, cutadapt_path)
+#To run functions individually, run each of these functions below. You shouldn't have to change anything here. Note, for the DADA2 functions, we set some default parameters initially, but we are now working on generalizing this . Stay tuned. 
+intermediate_path <- create_intermediate(directory_path)
+primer_data <- prepare_primers(primer_path)
+metadata <- prepare_metadata(metadata_path, primer_data)
+fastq_data <- prepare_fastq(raw_path, intermediate_path)
+pre_primer_hit_data<- pre_primer_hit_data(primer_data, fastq_data, intermediate_path)
+pre_primer_plot <- primer_hit_plot(pre_primer_hit_data, fastq_data, intermediate_path, "pre_primer_plot.pdf")
+cutadapt_data <- cutadapt_tibble(fastq_data, metadata, intermediate_path)
+cutadapt_run(cutadapt_path, cutadapt_data)
+quality_plots<-plot_qc(cutadapt_data, intermediate_path)
+filter_results <-filter_and_trim(intermediate_path, cutadapt_data)
+post_primer_hit_data <- post_primer_hit_data(primer_data, cutadapt_data, intermediate_path)
+post_primer_plot <- primer_hit_plot(post_primer_hit_data, fastq_data, intermediate_path, "post_primer_plot.pdf")
+quality_plots2 <- post_trim_qc(cutadapt_data, intermediate_path)
+return(cutadapt_data)
 
+#To run the first functions all together use this main function, and skip the individual functions above. 
+cutadapt_data<-main_cutadapt_function(directory_path, primer_path, metadata_path, fastq_path,intermediate_path, cutadapt_path)
 
 #Command to prepare databases for downstream steps
 create_ref_database(intermediate_path)
@@ -36,8 +52,8 @@ format_database2(raw_path, "unite.fasta")
 rps10_barcode_function(intermediate_path, cutadapt_data)
 #TODO
 #Command for rps10 and ITS barcodes, multiple samples
+#This is still being revised. We are having some difficulities with running separate_abund_table function with Ricardo's dataset. It worked with another test dataset.
 ITS_rps10_barcode_function(intermediate_path, cutadapt_data)
-#still some glitches with final steps
 
 #TODO
 #Parameters optimization
