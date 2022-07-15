@@ -6,7 +6,7 @@ document()
 #Example
 #In a directory of your choosing, make a subdirectory called "raw_data". My directory was called Wen_test
 #Place your Paired-end-fastq reads, your metadata.csv and your primer_info.csv files into this folder. You can also place the raw databases you downloaded.
-#Note-sample names should be sample1_xx_xx_R1.fastq.gz. The key is all sample names are unique before first underscore, and this sample name matches metadata.csv sample name.
+#Note-sample names should be sample1_xx_xx_R1.fastq.gz. The key is all sample names are unique before first underscore, and this sample name matches metadata.csv sample name, which would just be in the spreadsheet as sample1, etc.
 #I may simplify this file structure
 #Error handling and parameter optimization in process. To tweak some of the DADA2 parameters, you will need to make changes to the original functions in the R folder.
 
