@@ -1,24 +1,25 @@
 #' Get primer counts fo reach sample before primer removal and trimming steps
+#' TODO: don't make if already
 #'
-#' @param primer_data
-#' @param fastq_data
-#' @param intermediate_path
+#' @param primer_data The primer data tibble created in prepare_primers function
+#' @param fastq_data A tibble with the fastq file paths, the direction of the sequences, and names of sequences
+#' @param intermediate_path A path to the intermediate folder and directory
 #'
-#' @return
+#' @return A number of reads in which the primer is found
 #' @export
 #'
 #' @examples
 pre_primer_hit_data <- function(primer_data, fastq_data, intermediate_path){
   primer_hit_data <- gather(primer_data, key = "orientation", value = "sequence", forward, f_compt, f_rev,
                             f_rc, reverse, r_compt, r_rev, r_rc)
-
+  
   #from DADA2
   primer_hits <- function(primer, path) {
     # Counts number of reads in which the primer is found
     nhits <- vcountPattern(primer, sread(readFastq(path)), fixed = FALSE)
     return(sum(nhits > 0))
   }
-
+  
   primer_hit_data_csv_path <- file.path(intermediate_path, "primer_hit_data_pretrim.csv")
   #if a file exists in there, then write the path to it
   if (file.exists(primer_hit_data_csv_path)){
@@ -38,14 +39,14 @@ pre_primer_hit_data <- function(primer_data, fastq_data, intermediate_path){
     write_csv(primer_hit_data, primer_hit_data_csv_path)
   }
   return(primer_hit_data)
-
+  
 }
 
 #' Get primer counts fo reach sample after primer removal and trimming steps
 #'
-#' @param primer_data
-#' @param cutadapt_data
-#' @param intermediate_path
+#' @param primer_data The primer data tibble created in prepare_primers function
+#' @param cutadapt_data Intermediate_data folder with trimmed and filtered reads for each sample
+#' @param intermediate_path A path to the intermediate folder and directory
 #'
 #' @return
 #' @export
@@ -54,15 +55,15 @@ pre_primer_hit_data <- function(primer_data, fastq_data, intermediate_path){
 post_primer_hit_data <- function(primer_data, cutadapt_data, intermediate_path){
   post_primer_hit_data <- gather(primer_data, key = "orientation", value = "sequence", forward, f_compt, f_rev,
                                  f_rc, reverse, r_compt, r_rev, r_rc)
-
+  
   #from DADA2
   post_primer_hits <- function(primer, path) {
     # Counts number of reads in which the primer is found
     nhits <- vcountPattern(primer, sread(readFastq(path)), fixed = FALSE)
     return(sum(nhits > 0))
   }
-
-
+  
+  
   post_primer_hit_data_csv_path <- file.path(intermediate_path, "primer_hit_data_post_trim.csv")
   #if a file exists in there, then write the path to it
   if (file.exists(post_primer_hit_data_csv_path)){
@@ -85,9 +86,9 @@ post_primer_hit_data <- function(primer_data, cutadapt_data, intermediate_path){
 
 #' Make a barplot of primers identified on reads
 #'
-#' @param primer_hits
-#' @param fastq_data
-#' @param plot_name
+#' @param primer_hits A number of reads in which the primer is found
+#' @param fastq_data A tibble with the fastq file paths, the direction of the sequences, and names of sequences
+#' @param plot_name A filename under which a PDF file of the plot will be saved as
 #'
 #' @return
 #' @export
@@ -104,24 +105,24 @@ primer_hit_plot <- function(primer_hits, fastq_data, intermediate_path, plot_nam
   #move name to the first column
   new_primer_hits <- new_primer_hits %>%
     select(primer_type, everything())
-
+  
   #easier to work without the character names
   only_counts <- new_primer_hits[-(1)]
   #add a prefix to the columns so they are easier to mutate
   colnames(only_counts) <- paste("Col", colnames(only_counts), sep="-")
-
+  
   #add them all up
   total_nums <- only_counts %>%
     rowwise() %>%
     mutate(Total= sum(across(starts_with("Col")), na.rm = TRUE))
-
+  
   #add back to new_primer_hits
   new_primer_hits$Total <- paste(total_nums$Total)
-
+  
   #subset just the names and the totals
   needed_cols <- c("primer_type", "Total")
   total_primers <- new_primer_hits[needed_cols]
-
+  
   #convert the total column to numeric
   total_primers <- transform(total_primers, Total = as.numeric(Total))
   #a bar chart
@@ -132,14 +133,14 @@ primer_hit_plot <- function(primer_hits, fastq_data, intermediate_path, plot_nam
   print(plot)
   ggsave(plot, filename = plot_name, path = intermediate_path, width = 8, height = 8)
   return(plot)
-
+  
 }
 
 #' Make a barplot of primers identified on reads after trim steps
 #'
-#' @param primer_hits
-#' @param fastq_data
-#' @param metadata
+#' @param primer_hits A number of reads in which the primer is found
+#' @param fastq_data A tibble with the fastq file paths, the direction of the sequences, and names of sequences
+#' @param metadata A metadata containing the concatenated metadata and primer data
 #'
 #' @return
 #' @export
@@ -156,24 +157,24 @@ post_primer_hit_plot <- function(primer_hits, fastq_data, intermediate_path, plo
   #move name to the first column
   new_primer_hits <- new_primer_hits %>%
     select(primer_type, everything())
-
+  
   #easier to work without the character names
   only_counts <- new_primer_hits[-(1)]
   #add a prefix to the columns so they are easier to mutate
   colnames(only_counts) <- paste("Col", colnames(only_counts), sep="-")
-
+  
   #add them all up
   total_nums <- only_counts %>%
     rowwise() %>%
     mutate(Total= sum(across(starts_with("Col")), na.rm = TRUE))
-
+  
   #add back to new_primer_hits
   new_primer_hits$Total <- paste(total_nums$Total)
-
+  
   #subset just the names and the totals
   needed_cols <- c("primer_type", "Total")
   total_primers <- new_primer_hits[needed_cols]
-
+  
   #convert the total column to numeric
   total_primers <- transform(total_primers, Total = as.numeric(Total))
   #a bar chart
@@ -184,6 +185,5 @@ post_primer_hit_plot <- function(primer_hits, fastq_data, intermediate_path, plo
   print(plot)
   ggsave(plot, filename = plot_name, path = intermediate_path, width = 8, height = 8)
   return(plot)
-
+  
 }
-
