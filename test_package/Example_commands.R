@@ -1,7 +1,7 @@
 library(devtools)
 #if you need to make changes to functions in R sub-directory, and then use load_all command again, and then re-document with document()
-setwd("~/Documents/GitHub/rps10_metabarcoding_tool/test_package/test_package")
-load_all("~/Documents/GitHub/rps10_metabarcoding_tool/test_package/test_package")
+setwd("~/rps10_metabarcoding_tool/test_package")
+load_all("~/rps10_metabarcoding_tool/test_package")
 document()
 
 #Example
@@ -24,6 +24,22 @@ intermediate_path <- create_intermediate(directory_path)
 
 cutadapt_data<-main_cutadapt_function(directory_path, primer_path, metadata_path, fastq_path,intermediate_path, cutadapt_path)
 
+
+#Command to run things separately
+intermediate_path <- create_intermediate(directory_path)
+primer_data <- prepare_primers(primer_path)
+metadata <- prepare_metadata(metadata_path, primer_data)
+fastq_data <- prepare_fastq(raw_path, intermediate_path)
+pre_primer_hit_data<- pre_primer_hit_data(primer_data, fastq_data, intermediate_path)
+pre_primer_plot <- primer_hit_plot(pre_primer_hit_data, fastq_data, intermediate_path, "pre_primer_plot.pdf")
+cutadapt_data <- cutadapt_tibble(fastq_data, metadata, intermediate_path)
+cutadapt_run(cutadapt_path, cutadapt_data)
+quality_plots<-plot_qc(cutadapt_data, intermediate_path)
+filter_results <-filter_and_trim(intermediate_path, cutadapt_data)
+post_primer_hit_data <- post_primer_hit_data(primer_data, cutadapt_data, intermediate_path)
+post_primer_plot <- primer_hit_plot(post_primer_hit_data, fastq_data, intermediate_path, "post_primer_plot.pdf")
+quality_plots2 <- post_trim_qc(cutadapt_data, intermediate_path)
+
 #Command to prepare databases for downstream steps
 create_ref_database(intermediate_path)
 format_database(raw_path, "oomycetedb.fasta")
@@ -37,6 +53,10 @@ rps10_barcode_function(intermediate_path, cutadapt_data)
 #TODO
 #Command for rps10 and ITS barcodes, multiple samples
 ITS_rps10_barcode_function(intermediate_path, cutadapt_data)
+
+
+#Separate commands
+#params
 
 #TODO
 #Parameters optimzation

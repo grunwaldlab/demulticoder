@@ -1,8 +1,8 @@
 #' Prepare for primmer trimming with Cutaapt. Make new sub-directories and specify paths for the trimmed and untrimmed reads
 #'
-#' @param fastq_data
-#' @param metadata
-#' @param intermediate_path
+#' @param fastq_data A path to FASTQ files for analysis
+#' @param metadata A metadata containing the concatenated metadata and primer data
+#' @param intermediate_path A path to the intermediate folder and directory
 #'
 #' @return
 #' @export
@@ -11,8 +11,6 @@
 cutadapt_tibble <- function(fastq_data, metadata, intermediate_path){ #new_fastq_data needed, why not just fastq_data
   cutadapt_data <- metadata %>%
     left_join(fastq_data, by = c("sample_id" = "sample_id"))
-  #remove extra columns with NA
-  cutadapt_data <- na.omit(cutadapt_data)
   trimmed_read_dir <- file.path(intermediate_path, "trimmed_sequences")
   if (! dir.exists(trimmed_read_dir)){
     dir.create(trimmed_read_dir)
@@ -37,14 +35,15 @@ cutadapt_tibble <- function(fastq_data, metadata, intermediate_path){ #new_fastq
 
 #' Core function for running cutadapt
 #'
-#' @param cutadapt_path
-#' @param cutadapt_data
+#' @param cutadapt_path A path to the cutadapt program
+#' @param cutadapt_data Intermediate_data folder with trimmed and filtered reads for each sample
+#' @param min_length Read lengths that are lower than this threshold will be discarded. Default is 50.
 #'
 #' @return
 #' @export
 #'
 #' @examples
-cutadapt_run <- function(cutadapt_path, cutadapt_data){
+cutadapt_run <- function(cutadapt_path, cutadapt_data, min_length=50){
   cutadapt <- cutadapt_path
   tryCatch(system2(cutadapt, args = "--version"),
            warning=function(w){
@@ -53,7 +52,7 @@ cutadapt_run <- function(cutadapt_path, cutadapt_data){
   #simplify
   #may need to demultiplex first-meed to assess this
   cutadapt <- path.expand(cutadapt_path)
-  min_length=50
+  min_length=min_length
   R1_flags = unique(paste("-g",cutadapt_data$forward, "-a", cutadapt_data$r_rc))
   R2_flags = unique(paste("-G",cutadapt_data$reverse, "-A", cutadapt_data$f_rc))
   fwd_trim = cutadapt_data[cutadapt_data$direction == "Forward", ][["trimmed_path"]]
