@@ -117,11 +117,8 @@ ITS_rps10_barcode_function<- function(intermediate_path, cutadapt_data){
 #' @param directory_path A path to a directory containing reads and metadata/primer files
 #' @param primer_path The primer data tibble created in prepare_primers function
 #' @param metadata_path A path to a metadata containing the concatenated metadata and primer data
-<<<<<<< HEAD
 #' @param fastq_path path to a directory containing FASTQ reads
-=======
 #' @param fastq_pathA path to a directory containing FASTQ reads
->>>>>>> 410044f56338b890da4408b96eda77fa89655ae6
 #' @param intermediate_path A path to the intermediate folder and directory
 #' @inheritParams prepare_fastq
 #'
@@ -143,7 +140,7 @@ prepare <- function(directory_path, primer_path, metadata_path, fastq_path,inter
   cutadapt_data <- cutadapt_tibble(fastq_data, metadata, intermediate_path)
   returnList <- list(cutadapt_data=cutadapt_data, primer_data=primer_data, fastq_data=fastq_data, metadata=metadata)
   return(returnList)
-<<<<<<< HEAD
+
 }
 
 #Hung's additions
@@ -260,10 +257,6 @@ process_rps10_ITS_barcode <- function(returnList, intermediate_path, asv_abund_m
   formatted_abund_asv<-format_abund_matrix(asv_abund_matrix, seq_tax_asv)
   dada2_readcounts_multi_sample(formatted_abund_asv)
 }
-
-=======
-}
-
 #Hung's additions
 #Trim primers
 #' Main command to trim primers based on DADA2 functions
@@ -381,8 +374,6 @@ process_rps10_ITS_barcode <- function(returnList, intermediate_path, asv_abund_m
   formatted_abund_asv<-format_abund_matrix(asv_abund_matrix, seq_tax_asv)
   dada2_readcounts_multi_sample(formatted_abund_asv)
 }
-
->>>>>>> 410044f56338b890da4408b96eda77fa89655ae6
 
 #cutadapt_run(cutadapt_path, cutadapt_data)
 #quality_plots<-plot_qc(cutadapt_data, intermediate_path)

@@ -7,18 +7,6 @@ document()
 #Example
 #Note-sample names should be sample1_xx_xx_R1.fastq.gz. The key is all sample names are unique before first underscore, and this sample name matches metadata.csv sample name.
 
-#make interactive
-directory_path<-"~/WindRiver_test_mas" ##choose a directory for all downstream steps
-raw_path <-file.path(directory_path, "raw_data") #place your raw data files, csv files, and downloaded databases to raw_data subdirectory into your main directory
-primer_path <-file.path(raw_path, "primers.csv") ##modify .csv name or keep this name
-#Metadata file just needs sample_name in first column, and primer_name in second column (this function is being tweaked-see example)
-metadata_path <-file.path(raw_path, "metadata.csv") ##modify .csv name or keep this name
-#In a directory of your choosing, make a subdirectory called "raw_data". My directory was called Wen_test
-#Place your Paired-end-fastq reads, your metadata.csv and your primer_info.csv files into this folder. You can also place the raw databases you downloaded.
-#Note-sample names should be sample1_xx_xx_R1.fastq.gz. The key is all sample names are unique before first underscore, and this sample name matches metadata.csv sample name, which would just be in the spreadsheet as sample1, etc.
-#I may simplify this file structure
-#Error handling and parameter optimization in process. To tweak some of the DADA2 parameters, you will need to make changes to the original functions in the R folder.
-
 #You will need to modify directory names and file names
 directory_path<-"~/WindRiver_test_mas" ##choose a directory for all downstream steps
 raw_path <-file.path(directory_path, "raw_data") #place your raw data files, csv files, and downloaded databases into raw_data subdirectory into your main directory
