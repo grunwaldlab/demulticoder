@@ -186,6 +186,7 @@ make_seqhist <- function(abund_table, abund_table_file){
   ab_table<-nchar(getSequences(abund_table))
   data1<-data.frame(ab_table)
   hist_plot=ggplot2::qplot(ab_table, data=data1, geom="histogram", xlab = 'Length of sequence (bp)', ylab='Counts', main='Read length counts of all sequences within the ASV table')
+  return(hist_plot)
   ggsave(hist_plot, filename = abund_table_file, path = intermediate_path, width = 8, height = 8)
 }
 
@@ -370,6 +371,7 @@ format_abund_matrix <- function(asv_abund_table, seq_tax_asv) {
 #'
 #' @param asv_abund_table An abundance matrix containing amplified sequence variants
 #'
+#' 
 #' @return
 #' @export
 #'
