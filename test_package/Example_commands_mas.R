@@ -1,14 +1,10 @@
 library(devtools)
 #if you need to make changes to functions in R sub-directory, and then use load_all command again, and then re-document with document()
-<<<<<<< HEAD
 setwd("~/rps10_metabarcoding_tool/test_package") #be careful about this
-=======
->>>>>>> 410044f56338b890da4408b96eda77fa89655ae6
 load_all("~/rps10_metabarcoding_tool/test_package")
 document()
 
 #Example
-<<<<<<< HEAD
 #Note-sample names should be sample1_xx_xx_R1.fastq.gz. The key is all sample names are unique before first underscore, and this sample name matches metadata.csv sample name.
 
 #make interactive
@@ -17,7 +13,6 @@ raw_path <-file.path(directory_path, "raw_data") #place your raw data files, csv
 primer_path <-file.path(raw_path, "primers.csv") ##modify .csv name or keep this name
 #Metadata file just needs sample_name in first column, and primer_name in second column (this function is being tweaked-see example)
 metadata_path <-file.path(raw_path, "metadata.csv") ##modify .csv name or keep this name
-=======
 #In a directory of your choosing, make a subdirectory called "raw_data". My directory was called Wen_test
 #Place your Paired-end-fastq reads, your metadata.csv and your primer_info.csv files into this folder. You can also place the raw databases you downloaded.
 #Note-sample names should be sample1_xx_xx_R1.fastq.gz. The key is all sample names are unique before first underscore, and this sample name matches metadata.csv sample name, which would just be in the spreadsheet as sample1, etc.
@@ -30,13 +25,11 @@ raw_path <-file.path(directory_path, "raw_data") #place your raw data files, csv
 primer_path <-file.path(raw_path, "primers_format.csv") ##modify .csv name or keep this name
 #Metadata file just needs sample_name one column, and primer_name in second column (this function is being tweaked-see example)
 metadata_path <-file.path(raw_path, "metadata.csv") ##modify .csv name or keep this name. The sample_name in the metadata sheet needs to match the first part (before first underscore), of the zipped raw FASTQ files
->>>>>>> 410044f56338b890da4408b96eda77fa89655ae6
 cutadapt_path<-"/Users/masudermann/miniconda3/bin/cutadapt"
 intermediate_path <- create_intermediate(directory_path)
 #create intermediate data folder in working directory
 #Now you are ready for actual commands
 
-<<<<<<< HEAD
 #Further simplify
 returnList<-prepare(directory_path, primer_path, metadata_path, fastq_path, intermediate_path, maxN=0, multithread=TRUE)
 cut_trim(returnList,intermediate_path, cutadapt_path, verbose=TRUE, maxEE=2) 
@@ -54,7 +47,6 @@ format_database2(raw_path, "unite.fasta")
 asv_abund_matrix<-make_asvAbund_matrix(returnList, intermediate_path)
 
 process_rps10_ITS_barcode <- function(returnList, intermediate_path, asv_abund_matrix)
-=======
 #To run functions individually, run each of these functions below. You shouldn't have to change anything here. Note, for the DADA2 functions, we set some default parameters initially, but we are now working on generalizing this . Stay tuned. 
 intermediate_path <- create_intermediate(directory_path)
 primer_data <- prepare_primers(primer_path)
@@ -96,4 +88,3 @@ ITS_rps10_barcode_function(intermediate_path, cutadapt_data)
 #Consistency in naming
 #Improve function names, and continue with documentation
 #Check filter parameters-a lot of rps10 reads are being thrown out at the filter steps if you use default parameters
->>>>>>> 410044f56338b890da4408b96eda77fa89655ae6
