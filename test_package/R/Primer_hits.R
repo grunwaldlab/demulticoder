@@ -1,11 +1,11 @@
 #' Get primer counts fo reach sample before primer removal and trimming steps
 #' TODO: don't make if already
 #'
-#' @param primer_data
-#' @param fastq_data
-#' @param intermediate_path
+#' @param primer_data The primer data tibble created in prepare_primers function
+#' @param fastq_data A tibble with the fastq file paths, the direction of the sequences, and names of sequences
+#' @param intermediate_path A path to the intermediate folder and directory
 #'
-#' @return
+#' @return A number of reads in which the primer is found
 #' @export
 #'
 #' @examples
@@ -44,9 +44,9 @@ pre_primer_hit_data <- function(primer_data, fastq_data, intermediate_path){
 
 #' Get primer counts fo reach sample after primer removal and trimming steps
 #'
-#' @param primer_data
-#' @param cutadapt_data
-#' @param intermediate_path
+#' @param primer_data The primer data tibble created in prepare_primers function
+#' @param cutadapt_data Intermediate_data folder with trimmed and filtered reads for each sample
+#' @param intermediate_path A path to the intermediate folder and directory
 #'
 #' @return
 #' @export
@@ -86,9 +86,9 @@ post_primer_hit_data <- function(primer_data, cutadapt_data, intermediate_path){
 
 #' Make a barplot of primers identified on reads
 #'
-#' @param primer_hits
-#' @param fastq_data
-#' @param plot_name
+#' @param primer_hits A number of reads in which the primer is found
+#' @param fastq_data A tibble with the fastq file paths, the direction of the sequences, and names of sequences
+#' @param plot_name A filename under which a PDF file of the plot will be saved as
 #'
 #' @return
 #' @export
@@ -138,9 +138,9 @@ primer_hit_plot <- function(primer_hits, fastq_data, intermediate_path, plot_nam
 
 #' Make a barplot of primers identified on reads after trim steps
 #'
-#' @param primer_hits
-#' @param fastq_data
-#' @param metadata
+#' @param primer_hits A number of reads in which the primer is found
+#' @param fastq_data A tibble with the fastq file paths, the direction of the sequences, and names of sequences
+#' @param metadata A metadata containing the concatenated metadata and primer data
 #'
 #' @return
 #' @export

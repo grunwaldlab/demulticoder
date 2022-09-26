@@ -256,7 +256,7 @@ assign_taxonomyDada2<-function(abund_asv_table, ref_database, taxresults_file, m
   return(tax_results)
   #save these results
 }
-
+#Put these functions in separate directory. 
 #' Align ASV sequences to reference sequences from database to get percent ID. STart by retrieving reference sequences.
 #'
 #' @param tax_result

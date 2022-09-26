@@ -1,6 +1,6 @@
 #' Prepare reference databases folder if it doesn't exist.
 #'
-#' @param intermediate_path
+#' @param intermediate_path A path to the intermediate folder
 #'
 #' @return A new directory called reference_databases
 #' @export
@@ -14,8 +14,8 @@ create_ref_database <- function(intermediate_path){
 }
 #' Create modified reference rps10 database for downstream analysis
 #'
-#' @param raw_data_path
-#' @param database_name
+#' @param raw_data_path A path to a directory that contains raw data
+#' @param database_name The name of the database
 #'
 #' @return A rps10 database that has modified headers and is output in the reference_databases folder.
 #' @export
@@ -62,8 +62,8 @@ format_database <-function(raw_data_path, database_name){
 
 #' An ITS database that has modified headers and is output in the reference_databases folder.
 #'
-#' @param raw_data_path
-#' @param database_name
+#' @param raw_data_path A path to a directory that contains raw data
+#' @param database_name The name of the database
 #'
 #' @return A rps10 database that has modified headers and is output in the reference_databases folder.
 #' @export

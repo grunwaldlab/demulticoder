@@ -1,6 +1,6 @@
 #' Read in the metadata from user and combine it with the primer data
 #'
-#' @param metadata_path Path to the metadata csv
+#' @param metadata_path  A path to the metadata .csv file
 #' @param primer_data The primer data tibble created in prepare_primers function
 #'
 #' @return A metadata containing the concatenated metadata and primer data
@@ -24,9 +24,9 @@ prepare_metadata <- function(metadata_path, primer_data){
 
 #' Create intermediate path and directory
 #'
-#' @param working_dir_path
+#' @param working_dir_path A path to a directory containing reads and metadata/primer files
 #'
-#' @return intermediate_path
+#' @return A path to the intermediate folder and directory
 #' @export
 #'
 #' @examples
@@ -63,7 +63,7 @@ read_fastq <- function(raw_path){
 
 #' Matching Order Primer Check
 #'
-#' @param fastq_data
+#' @param fastq_data A tibble with the fastq file paths, the direction of the sequences, and names of sequences
 #'
 #' @return None
 #' @export
