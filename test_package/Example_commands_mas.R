@@ -10,7 +10,7 @@ document()
 #You will need to modify directory names and file names
 directory_path<-"~/WindRiver_test_mas" ##choose a directory for all downstream steps
 raw_path <-file.path(directory_path, "raw_data") #place your raw data files, csv files, and downloaded databases into raw_data subdirectory into your main directory
-primer_path <-file.path(raw_path, "primers_format.csv") ##modify .csv name or keep this name
+primer_path <-file.path(raw_path, "primers.csv") ##modify .csv name or keep this name
 #Metadata file just needs sample_name one column, and primer_name in second column (this function is being tweaked-see example)
 metadata_path <-file.path(raw_path, "metadata.csv") ##modify .csv name or keep this name. The sample_name in the metadata sheet needs to match the first part (before first underscore), of the zipped raw FASTQ files
 cutadapt_path<-"/Users/masudermann/miniconda3/bin/cutadapt"
@@ -35,6 +35,7 @@ format_database2(raw_path, "unite.fasta")
 asv_abund_matrix<-make_asvAbund_matrix(returnList, intermediate_path)
 
 process_rps10_ITS_barcode <- function(returnList, intermediate_path, asv_abund_matrix)
+  
 #To run functions individually, run each of these functions below. You shouldn't have to change anything here. Note, for the DADA2 functions, we set some default parameters initially, but we are now working on generalizing this . Stay tuned. 
 intermediate_path <- create_intermediate(directory_path)
 primer_data <- prepare_primers(primer_path)
@@ -58,7 +59,7 @@ cutadapt_data<-main_cutadapt_function(directory_path, primer_path, metadata_path
 create_ref_database(intermediate_path)
 format_database(raw_path, "oomycetedb.fasta")
 #If you included the ITS barcode in your analysis
-#Should also test pipeline just on ITS dataset
+#Should also test pipeline just on ITS data set
 format_database2(raw_path, "unite.fasta")
 #The remaining functions will be incorporated shortly.
 
