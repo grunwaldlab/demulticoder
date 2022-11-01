@@ -6,8 +6,8 @@
 \usage{
 merge_reads_command(
   intermediate_path,
-  minOverlap = 12,
-  maxMismatch = 0,
+  minOverlap = 10,
+  maxMismatch = 2,
   returnRejects = FALSE,
   justConcatenate = FALSE,
   trimOverhang = FALSE,

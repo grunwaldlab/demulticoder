@@ -8,9 +8,9 @@ assign_taxonomyDada2(
   abund_asv_table,
   ref_database,
   taxresults_file,
-  minBoot = 50,
+  minBoot = 0,
   tryRC = FALSE,
-  outputBootstraps = FALSE,
+  outputBootstraps = TRUE,
   verbose = FALSE,
   multithread = FALSE
 )

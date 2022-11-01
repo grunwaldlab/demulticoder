@@ -4,10 +4,10 @@
 \alias{make_seqhist}
 \title{Plots a histogram of read length counts of all sequences within the ASV table}
 \usage{
-make_seqhist(abund_table, abund_table_file)
+make_seqhist(asv_abund_table)
 }
 \arguments{
-\item{abund_table_file}{}
+\item{asv_abund_table}{}
 }
 \description{
 Plots a histogram of read length counts of all sequences within the ASV table

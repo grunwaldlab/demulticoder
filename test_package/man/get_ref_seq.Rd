@@ -4,7 +4,7 @@
 \alias{get_ref_seq}
 \title{Align ASV sequences to reference sequences from database to get percent ID. STart by retrieving reference sequences.}
 \usage{
-get_ref_seq(tax_result, db)
+get_ref_seq(tax_results, db)
 }
 \arguments{
 \item{db}{}

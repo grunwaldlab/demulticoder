@@ -4,7 +4,7 @@
 \alias{add_pid_to_tax}
 \title{Add PID and bootstrap values to tax result.}
 \usage{
-add_pid_to_tax(tax_result, pid)
+add_pid_to_tax(tax_results, pid)
 }
 \arguments{
 \item{pid}{}

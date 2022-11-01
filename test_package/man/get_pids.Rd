@@ -4,10 +4,10 @@
 \alias{get_pids}
 \title{Align ASV sequences to reference sequences from database to get percent ID. Get percent identities.}
 \usage{
-get_pids(tax_result, db)
+get_pids(tax_results, db)
 }
 \arguments{
-\item{db}{}
+\item{tax_results}{}
 }
 \description{
 Align ASV sequences to reference sequences from database to get percent ID. Get percent identities.

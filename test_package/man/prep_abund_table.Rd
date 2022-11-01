@@ -7,9 +7,9 @@
 prep_abund_table(cutadapt_data, asv_abund_table, locus)
 }
 \arguments{
-\item{cutadapt_data}{Intermediate_data folder with trimmed and filtered reads for each sample}
-
 \item{locus}{}
+
+\item{Intermediate_data}{folder with trimmed and filtered reads for each sample}
 }
 \description{
 Prepare final ASV abundance matrix

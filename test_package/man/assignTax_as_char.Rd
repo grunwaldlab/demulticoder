@@ -4,10 +4,10 @@
 \alias{assignTax_as_char}
 \title{Combine taxonomic assigns and bootstrap values for each locus into single classfication vector}
 \usage{
-assignTax_as_char(tax_result)
+assignTax_as_char(tax_results)
 }
 \arguments{
-\item{tax_result}{}
+\item{tax_results}{}
 }
 \description{
 Combine taxonomic assigns and bootstrap values for each locus into single classfication vector

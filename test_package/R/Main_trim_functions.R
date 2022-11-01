@@ -196,12 +196,8 @@ make_asvAbund_matrix <- function(returnList, intermediate_path){
   merged_reads<-merge_reads_command(intermediate_path)
   countOverlap(merged_reads)
   raw_seqtab<-makeSeqtab(merged_reads)
-  rawSeqTab_fileName = 'Seqcounts_raw_abund_matrix.pdf'
-  abundMatrix_fileName = 'Seqcounts_postfiltered_abund_matrix.pdf'
   asv_abund_matrix<-make_abund_table(raw_seqtab)
-  make_seqhist(raw_seqtab, rawSeqTab_fileName)
-  make_seqhist(asv_abund_matrix, abundMatrix_fileName)
-
+  make_seqhist(asv_abund_matrix)
   return(asv_abund_matrix)
 }
 
@@ -305,8 +301,8 @@ cut_trim <- function(returnList,intermediate_path,cutadapt_path,
 #' @return asv_df
 #' @export
 #'
-#' @examples asv_abund_matrix <- make_asvAbund_matrix(returnList)
-make_asvAbund_matrix <- function(returnList, intermediate_path,
+#' @examples asv_abund_matrix <- make_asvAbund_matrix(returnList,intermediate_path, returnList$cutadapt_data)
+make_asvAbund_matrix <- function(returnList, intermediate_path, cutadapt_data,
                                 rawSeqTab_fileName = 'Seqcounts_raw_abund_matrix.pdf',
                                 abundMatrix_fileName = 'Seqcounts_postfiltered_abund_matrix.pdf')
 {
@@ -315,9 +311,7 @@ make_asvAbund_matrix <- function(returnList, intermediate_path,
   countOverlap(merged_reads)
   raw_seqtab<-makeSeqtab(merged_reads)
   asv_abund_matrix<-make_abund_table(raw_seqtab)
-  make_seqhist(raw_seqtab, rawSeqTab_fileName)
-  make_seqhist(asv_abund_table, abundMatrix_fileName)
-
+  make_seqhist(asv_abund_matrix)
   return(asv_abund_matrix)
 }
 
@@ -335,12 +329,12 @@ make_asvAbund_matrix <- function(returnList, intermediate_path,
 #' @examples
 process_rps10_barcode <- function(returnList, asv_abund_matrix)
 {
-  abund_asv_rps10 <- prep_abund_table(returnList$cutadapt_data, asv_abund_matrix, "rps10")
+  abund_asv_rps10 <- prep_abund_table(ReturnList$cutadapt_data, asv_abund_matrix, "rps10")
   tax_results_rps10_asv <- assign_taxonomyDada2(abund_asv_rps10, "rps10_reference_db.fa", "rps10_taxtable.Rdata")
   rps10_pids_asv <- get_pids(tax_results_rps10_asv, "rps10_reference_db.fa")
   tax_results_rps10_asv_pid <- add_pid_to_tax(tax_results_rps10_asv, rps10_pids_asv)
   seq_tax_asv <- assignTax_as_char(tax_results_rps10_asv_pid)
-  formatted_abund_asv<-format_abund_matrix(asv_abund_table, seq_tax_asv)
+  formatted_abund_asv<-format_abund_matrix(asv_abund_matrix, seq_tax_asv)
   dada2_readcounts_multi_sample(formatted_abund_asv)
 }
 
