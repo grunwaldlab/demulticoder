@@ -100,3 +100,5 @@ format_database2 <-function(raw_data_path, database_name){
     return(its_data)
   }
 }
+
+#TODO function to combine rps10 and unite database

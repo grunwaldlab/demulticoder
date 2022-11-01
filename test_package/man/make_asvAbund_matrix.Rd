@@ -11,14 +11,6 @@ make_asvAbund_matrix(
   rawSeqTab_fileName = "Seqcounts_raw_abund_matrix.pdf",
   abundMatrix_fileName = "Seqcounts_postfiltered_abund_matrix.pdf"
 )
-
-make_asvAbund_matrix(
-  returnList,
-  intermediate_path,
-  cutadapt_data,
-  rawSeqTab_fileName = "Seqcounts_raw_abund_matrix.pdf",
-  abundMatrix_fileName = "Seqcounts_postfiltered_abund_matrix.pdf"
-)
 }
 \arguments{
 \item{returnList}{A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data}
@@ -29,15 +21,10 @@ make_asvAbund_matrix(
 }
 \value{
 asv_df
-
-asv_df
 }
 \description{
 Make an amplified sequence variants abundance matrix with data processed through preceding steps
-
-Make an amplified sequence variants abundance matrix with data processed through preceding steps
 }
 \examples{
-asv_abund_matrix <- make_asvAbund_matrix(returnList)
 asv_abund_matrix <- make_asvAbund_matrix(returnList,intermediate_path, returnList$cutadapt_data)
 }

@@ -27,30 +27,6 @@ cut_trim(
   orient.fwd = NULL,
   id.field = NULL
 )
-
-cut_trim(
-  returnList,
-  intermediate_path,
-  cutadapt_path,
-  maxEE = Inf,
-  truncQ = 2,
-  minLength = 20,
-  maxLength = Inf,
-  truncLen = 0,
-  maxN = 0,
-  minQ = 0,
-  rm.phix = TRUE,
-  multithread = FALSE,
-  matchIDs = FALSE,
-  verbose = FALSE,
-  qualityType = "Auto",
-  OMP = TRUE,
-  n = 1e+05,
-  id.sep = "\\\\s",
-  rm.lowcomplex = 0,
-  orient.fwd = NULL,
-  id.field = NULL
-)
 }
 \arguments{
 \item{returnList}{A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data}
@@ -138,7 +114,5 @@ If NULL (the default) and matchIDs is TRUE, the function attempts to automatical
   the sequence identifier field under the assumption of Illumina formatted output.}
 }
 \description{
-Main command to trim primers based on DADA2 functions
-
 Main command to trim primers based on DADA2 functions
 }

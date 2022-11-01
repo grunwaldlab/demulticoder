@@ -10,7 +10,6 @@ assign_taxonomyDada2(
   taxresults_file,
   minBoot = 0,
   tryRC = FALSE,
-  outputBootstraps = TRUE,
   verbose = FALSE,
   multithread = FALSE
 )

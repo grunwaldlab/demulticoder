@@ -242,13 +242,13 @@ separate_abund_table <- function(abund_asv_its, abund_asv_rps10, intermediate_pa
 #' @export
 #'
 #' @examples
-assign_taxonomyDada2<-function(abund_asv_table, ref_database, taxresults_file, minBoot=0, tryRC=FALSE, outputBootstraps=TRUE, verbose=FALSE, multithread=FALSE){
+assign_taxonomyDada2<-function(abund_asv_table, ref_database, taxresults_file, minBoot=0, tryRC=FALSE, verbose=FALSE, multithread=FALSE){
   tax_results<- dada2::assignTaxonomy(abund_asv_table,
                                       refFasta = file.path(intermediate_path, 'reference_databases', ref_database),
                                       taxLevels = c("Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
                                       minBoot = minBoot,
                                       tryRC = tryRC,
-                                      outputBootstraps = outputBootstraps,
+                                      outputBootstraps = TRUE,
                                       multithread = multithread)
   tax_table_path <- file.path(intermediate_path, taxresults_file)
   save(tax_results, file = tax_table_path)
@@ -296,11 +296,24 @@ get_align_pid <- function(ref, asv) {
 #' @examples
 get_pids <- function(tax_results, db) {
   db_seqs <- read_fasta(file.path(intermediate_path, "reference_databases", db))
-  ref_seq <- get_ref_seq(tax_results, db_seqs)
-  asv_seq <- rownames(tax_results$tax)
-  future_map2_dbl(ref_seq, asv_seq, get_align_pid) * 100
+  ref_seqs <- get_ref_seq(tax_results, db_seqs)
+  asv_seqs <- rownames(tax_results$tax)
+  asv_ref_align_normal <- map2(asv_seqs, ref_seqs, pairwiseAlignment, type = 'global-local')
+  asv_pids_normal <- map_dbl(asv_ref_align_normal, pid, type = "PID1")
+  asv_ref_align_revcomp <- map2(asv_seqs, rev_comp(ref_seqs), pairwiseAlignment, type = 'global-local')
+  asv_pids_revcomp <- map_dbl(asv_ref_align_revcomp, pid, type = "PID1")
+  asv_ref_align <- ifelse(asv_pids_normal >= asv_pids_revcomp, asv_ref_align_normal, asv_ref_align_revcomp)
+  asv_pids <- ifelse(asv_pids_normal >= asv_pids_revcomp, asv_pids_normal, asv_pids_revcomp)
+  paste0(map_chr(seq_along(asv_ref_align), function(i) {
+    paste0('asv: ',  asv_seqs[[i]], '\n',
+           'ref: ', names(ref_seqs)[[i]], '\n',
+           'pid: ', asv_pids[[i]], '\n',
+           asv_ref_align[[i]]@pattern, '\n',
+           asv_ref_align[[i]]@subject, '\n')
+  }), collapse = '==================================================\n') %>%
+    write_lines(file = file.path(intermediate_path, 'dada2_asv_alignments.txt'))
+  return(asv_pids)
 }
-
 
 #' Add PID and bootstrap values to tax result.
 #'
@@ -388,3 +401,7 @@ dada2_readcounts_multi_sample <- function(asv_abund_table) {
   write_csv(track, track_read_counts_path)
   print(track)
 }
+
+
+#Convert outputs to Phyloseq and taxmap objects
+#DADA2_to_phyloseq

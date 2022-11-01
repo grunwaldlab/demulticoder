@@ -4,9 +4,7 @@
 \alias{process_rps10_ITS_barcode}
 \title{Main trim command to run core DADA2 functions for 2 barcodes}
 \usage{
-process_rps10_ITS_barcode(returnList, intermediate_path, asv_abund_matrix)
-
-process_rps10_ITS_barcode(returnList, intermediate_path, asv_abund_matrix)
+process_rps10_ITS_barcode(returnList, asv_abund_matrix)
 }
 \arguments{
 \item{asv_abund_matrix}{An abundance matrix containing amplified sequence variants}
@@ -14,7 +12,5 @@ process_rps10_ITS_barcode(returnList, intermediate_path, asv_abund_matrix)
 \item{returnListA}{list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data}
 }
 \description{
-Main trim command to run core DADA2 functions for 2 barcodes
-
 Main trim command to run core DADA2 functions for 2 barcodes
 }
