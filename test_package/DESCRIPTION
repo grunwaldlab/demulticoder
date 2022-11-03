@@ -18,9 +18,10 @@ Depends:
         tidyr,
         stringr,
         metacoder,
+        phyloseq,
         readr,
         ggplot2,
-	    metacoder,
+	      metacoder,
         gridExtra,
         sessioninfo
 Roxygen: list(markdown = TRUE)
