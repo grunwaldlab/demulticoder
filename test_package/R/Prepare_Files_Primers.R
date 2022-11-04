@@ -27,6 +27,7 @@ create_intermediate <- function(working_dir_path){
 prepare_metadata <- function(metadata_path, primer_data){
   metadata <- read_csv(metadata_path) %>%
     left_join(primer_data, by = c("primer_name"))
+  metadata <- metadata[order(metadata$sample_id),]
   if ("primer_name" %in% colnames(metadata)) { # Check if primer_name is in metadata columns, if true, moves it to the first column
     new_metadata_cols <- c("primer_name", colnames(metadata)[colnames(metadata) != "primer_name"]) 
     metadata = metadata[new_metadata_cols]
@@ -34,8 +35,6 @@ prepare_metadata <- function(metadata_path, primer_data){
   else { # Raises error if false
     stop("Please make sure that there is a 'primer_name' column in your metadata table.")
   }
-  #this could cause issues in other data sets, if the name of the sample is not the first column
-  #names(metadata)[1] <- "sample_id"
   return(metadata)
 }
 
@@ -101,6 +100,7 @@ matching_order_primer_check <- function(fastq_data){
 prepare_primers <- function(primer_path){
   primer_data_path <- file.path(primer_path)
   primer_data <- read_csv(primer_data_path)
+  
   
   #seperate forward and reverse to make various primers
   forward_primers <- primer_data[, c(1:2)]
