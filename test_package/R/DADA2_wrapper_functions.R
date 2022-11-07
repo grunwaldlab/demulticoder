@@ -195,7 +195,7 @@ infer_asv_command <-function(intermediate_path, cutadapt_data, multithread=FALSE
 #' @export
 #'
 #' @examples
-merge_reads_command <- function(intermediate_path, minOverlap=10, maxMismatch=2, returnRejects=FALSE, justConcatenate=FALSE, trimOverhang=FALSE, verbose=FALSE){
+merge_reads_command <- function(intermediate_path, minOverlap=12, maxMismatch=0, returnRejects=FALSE, justConcatenate=FALSE, trimOverhang=FALSE, verbose=FALSE){
   denoised_data_path <- file.path(intermediate_path, "Denoised_data.Rdata")
   load(denoised_data_path) #incorporate into function
   merged_read_data_path <- file.path(intermediate_path, "Merged_reads.Rdata")
@@ -353,9 +353,9 @@ separate_abund_table <- function(abund_asv_its, abund_asv_rps10, intermediate_pa
   stopifnot(ncol(abund_asv_its) + ncol(abund_asv_rps10) == ncol(asv_abund_matrix)) #make more messaging
 }
 
-
+#This function is unwieldy if not enough 
 #' Assign taxonomy
-#' @inheritParams dada::assignTaxonomy
+#' @inheritParams dada2::assignTaxonomy
 #' @param abund_asv_table
 #' @param ref_database
 #' @param taxresults_file
@@ -364,7 +364,7 @@ separate_abund_table <- function(abund_asv_its, abund_asv_rps10, intermediate_pa
 #' @export
 #'
 #' @examples
-assign_taxonomyDada2<-function(abund_asv_table, ref_database, taxresults_file, minBoot=0, tryRC=FALSE, verbose=FALSE, multithread=FALSE){
+assign_taxonomyDada2<-function(abund_asv_table, ref_database, taxresults_file, minBoot=0, tryRC=FALSE, verbose=FALSE, multithread=TRUE){
   tax_results<- dada2::assignTaxonomy(abund_asv_table,
                                       refFasta = file.path(intermediate_path, 'reference_databases', ref_database),
                                       taxLevels = c("Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),

@@ -4,12 +4,30 @@
 \alias{process_rps10_ITS_barcode}
 \title{Main trim command to run core DADA2 functions for 2 barcodes}
 \usage{
-process_rps10_ITS_barcode(returnList, asv_abund_matrix)
+process_rps10_ITS_barcode(
+  returnList,
+  asv_abund_matrix,
+  tryRC = FALSE,
+  verbose = FALSE,
+  multithread = FALSE
+)
 }
 \arguments{
+\item{returnList}{list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data}
+
 \item{asv_abund_matrix}{An abundance matrix containing amplified sequence variants}
 
-\item{returnListA}{list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data}
+\item{tryRC}{(Optional). Default FALSE. 
+If TRUE, the reverse-complement of each sequences will be used for classification if it is a better match to the reference
+sequences than the forward sequence.}
+
+\item{verbose}{(Optional). Default FALSE.
+If TRUE, print status to standard output.}
+
+\item{multithread}{(Optional). Default is FALSE.
+If TRUE, multithreading is enabled and the number of available threads is automatically determined.   
+If an integer is provided, the number of threads to use is set by passing the argument on to
+\code{\link{setThreadOptions}}.}
 }
 \description{
 Main trim command to run core DADA2 functions for 2 barcodes

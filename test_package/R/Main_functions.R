@@ -42,20 +42,46 @@ cut_trim <- function(returnList,intermediate_path,cutadapt_path,
 #' @param returnList A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
 #' @param rawSeqTab_fileName A filename as which the raw sequence table will be saved
 #' @param abundMatrix_fileName A filenmae as which the abundance matrix will be saved
+#' @inheritParams infer_asv_command 
+#' @inheritParams merge_reads_command 
+#' 
 #'
 #' @return asv_df
 #' @export
 #'
 #' @examples asv_abund_matrix <- make_asvAbund_matrix(returnList,intermediate_path, returnList$cutadapt_data)
 make_asvAbund_matrix <- function(returnList, intermediate_path, cutadapt_data,
-                                rawSeqTab_fileName = 'Seqcounts_raw_abund_matrix.pdf',
-                                abundMatrix_fileName = 'Seqcounts_postfiltered_abund_matrix.pdf')
+                                 multithread=FALSE,nbases = 1e+08,
+                                 errorEstimationFunction = loessErrfun, randomize=FALSE,
+                                 MAX_CONSIST=10, OMEGA_C=0, qualityType="Auto", nominalQ = FALSE, 
+                                 obs=TRUE, err_out=TRUE, err_in=FALSE, pool=FALSE, selfConsist=FALSE, 
+                                 verbose=FALSE,  minOverlap=12, maxMismatch=0, returnRejects=FALSE, 
+                                 justConcatenate=FALSE, trimOverhang=FALSE, orderBy="abundance",
+                                 method="consensus", min_asv_length=50)
 {
-  infer_asv_command(intermediate_path, returnList$cutadapt_data)
-  merged_reads<-merge_reads_command(intermediate_path)
+  infer_asv_command(intermediate_path, returnList$cutadapt_data, 
+                    multithread = multithread, 
+                    nbases=nbases,
+                    errorEstimationFunction= errorEstimationFunction, 
+                    randomize=randomize, 
+                    MAX_CONSIST=MAX_CONSIST, 
+                    OMEGA_C= OMEGA_C, 
+                    qualityType=qualityType, 
+                    nominalQ = nominalQ, 
+                    obs=obs, 
+                    err_out=err_out, 
+                    err_in=err_in,
+                    pool=pool, 
+                    selfConsist=selfConsist, 
+                    verbose=verbose)
+  merged_reads<-merge_reads_command(intermediate_path, minOverlap = minOverlap,
+                                    maxMismatch = maxMismatch,
+                                    returnRejects = returnRejects,
+                                    justConcatenate = justConcatenate,
+                                    verbose = verbose)
   countOverlap(merged_reads)
-  raw_seqtab<-makeSeqtab(merged_reads)
-  asv_abund_matrix<-make_abund_table(raw_seqtab)
+  raw_seqtab<-makeSeqtab(merged_reads, orderBy=orderBy)
+  asv_abund_matrix<-make_abund_table(raw_seqtab, min_asv_length=min_asv_length)
   make_seqhist(asv_abund_matrix)
   return(asv_abund_matrix)
 }
@@ -67,16 +93,17 @@ make_asvAbund_matrix <- function(returnList, intermediate_path, cutadapt_data,
 #'
 #' @param returnList A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
 #' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
-#'
-#' @return
+#' @inheritParams assign_taxonomyDada2 
+#' @return 
 #' @export
 #'
 #' @examples
 #add params
-process_rps10_barcode <- function(returnList, asv_abund_matrix)
+process_rps10_barcode <- function(returnList, asv_abund_matrix, tryRC=FALSE, verbose=FALSE, multithread=FALSE)
 {
   abund_asv_rps10 <- prep_abund_table(returnList$cutadapt_data, asv_abund_matrix, "rps10")
-  tax_results_rps10_asv <- assign_taxonomyDada2(abund_asv_rps10, "rps10_reference_db.fa", "rps10_taxtable.Rdata")
+  tax_results_rps10_asv <- assign_taxonomyDada2(abund_asv_rps10, "rps10_reference_db.fa", "rps10_taxtable.Rdata",
+                                                tryRC=tryRC, verbose=verbose, multithread=multithread)
   rps10_pids_asv <- get_pids(tax_results_rps10_asv, "rps10_reference_db.fa")
   tax_results_rps10_asv_pid <- add_pid_to_tax(tax_results_rps10_asv, rps10_pids_asv)
   seq_tax_asv <- assignTax_as_char(tax_results_rps10_asv_pid)
@@ -88,27 +115,30 @@ process_rps10_barcode <- function(returnList, asv_abund_matrix)
 #For rps10 and its barcodes
 #' Main trim command to run core DADA2 functions for 2 barcodes
 #'
-#' @param returnListA list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
+#' @param returnList list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
 #' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
-#'
+#' @inheritParams assign_taxonomyDada2 
+#' 
 #' @return
 #' @export
 #'
 #' @examples
-process_rps10_ITS_barcode <- function(returnList, asv_abund_matrix)
+process_rps10_ITS_barcode <- function(returnList, asv_abund_matrix, tryRC=FALSE, verbose=FALSE, multithread=FALSE)
 {
   abund_asv_rps10 <- prep_abund_table(returnList$cutadapt_data, asv_abund_matrix, "rps10")
   abund_asv_its <- prep_abund_table(returnList$cutadapt_data, asv_abund_matrix, "ITS")
   separate_abund_table(abund_asv_its, abund_asv_rps10, intermediate_path, asv_abund_matrix)
   separate_abund_filepath <- file.path(intermediate_path, "Separate_abund.Rdata")
   load(separate_abund_filepath)
-  tax_results_rps10_asv <- assign_taxonomyDada2(abund_asv_rps10, "rps10_reference_db.fa", "rps10_taxtable.Rdata") #still neesd some work
-  tax_results_its_asv <- assign_taxonomyDada2(abund_asv_its, "its_short.fasta", "its_taxtable.Rdata")
+  tax_results_rps10_asv <- assign_taxonomyDada2(abund_asv_rps10, "rps10_reference_db.fa", "rps10_taxtable.Rdata",
+                                                tryRC=FALSE, verbose=FALSE, multithread=FALSE) #FIX
+  tax_results_its_asv <- assign_taxonomyDada2(abund_asv_its, "its_short.fasta", "its_taxtable.Rdata",
+                                              tryRC=FALSE, verbose=FALSE, multithread=FALSE)
   rps10_pids_asv <- get_pids(tax_results_rps10_asv, "rps10_reference_db.fa")
   its_pids_asv <- get_pids(tax_results_its_asv, "its_short.fasta")
   tax_results_rps10_asv_pid <- add_pid_to_tax(tax_results_rps10_asv, rps10_pids_asv)
   tax_results_its_asv_pid <- add_pid_to_tax(tax_results_its_asv, its_pids_asv)
   seq_tax_asv <- c(assignTax_as_char(tax_results_rps10_asv_pid), assignTax_as_char(tax_results_its_asv_pid))
   formatted_abund_asv<-format_abund_matrix(asv_abund_matrix, seq_tax_asv)
-  dada2_readcounts_multi_sample(formatted_abund_asv)
+  dada2_readcounts_multi_sample(asv_abund_matrix)
 }

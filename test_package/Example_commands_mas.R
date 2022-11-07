@@ -8,11 +8,11 @@ document()
 #Note-sample names should be sample1_xx_xx_R1.fastq.gz. The key is all sample names are unique before first underscore, and this sample name matches metadata.csv sample name.
 
 #You will need to modify directory names and file names
-directory_path<-"~/rhod_metabarcoding4" ##choose a directory for all downstream steps
+directory_path<-"~/WindRiver_test_mas" ##choose a directory for all downstream steps
 raw_path <-file.path(directory_path, "raw_data") #place your raw data files, csv files, and downloaded databases into raw_data subdirectory into your main directory
-primer_path <-file.path(raw_path, "primer_info_example.csv") ##modify .csv name or keep this name
+primer_path <-file.path(raw_path, "primer_info.csv") ##modify .csv name or keep this name
 #Metadata file just needs sample_name one column, and primer_name in second column (this function is being tweaked-see example)
-metadata_path <-file.path(raw_path, "metadata_mas2.csv") ##modify .csv name or keep this name. The sample_name in the metadata sheet needs to match the first part (before first underscore), of the zipped raw FASTQ files
+metadata_path <-file.path(raw_path, "metadata.csv") ##modify .csv name or keep this name. The sample_name in the metadata sheet needs to match the first part (before first underscore), of the zipped raw FASTQ files
 cutadapt_path<-"/Users/masudermann/miniconda3/bin/cutadapt"
 intermediate_path <- create_intermediate(directory_path)
 #create intermediate data folder in working directory
@@ -23,7 +23,9 @@ intermediate_path <- create_intermediate(directory_path)
 returnList<-prepare_reads(directory_path, primer_path, metadata_path, fastq_path, intermediate_path, maxN=0, multithread=TRUE)
 cut_trim(returnList,intermediate_path, cutadapt_path, verbose=TRUE, maxEE=5) 
 #add message to let user know which steps have already run if they are skipped, and also provide info on the params. Make it easier for user to re-run analysis. 
-asv_abund_matrix <- make_asvAbund_matrix(returnList, intermediate_path, returnList$cutadapt_data)
+
+asv_abund_matrix <- make_asvAbund_matrix(returnList, intermediate_path, returnList$cutadapt_data, verbose=TRUE,  maxMismatch = 2, multithread=TRUE) #check when 0 again
+#TODO adjust maxmismatch if there aren't alot of merged reads
 
 #Command to prepare databases for downstream steps
 #TODO format like SILVA? 
@@ -35,10 +37,10 @@ format_database2(raw_path, "unite.fasta")
 #The remaining functions will be incorporated shortly
 
 #For just rps10 barcode-use only if you only dealing with one barcode
-summary_table<-process_rps10_barcode(returnList, asv_abund_matrix)
+summary_table<-process_rps10_barcode(returnList, asv_abund_matrix, multithread = TRUE)
 
 #For ITS and rps10 barcodes
-summary_table2<-process_rps10_ITS_barcode(returnList, asv_abund_matrix)
+summary_table2<-process_rps10_ITS_barcode(returnList, asv_abund_matrix, multithread = TRUE)
 #check outputs and examples with both databases
 #function to make phylosoq object
 #inputs
