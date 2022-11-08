@@ -108,7 +108,7 @@ filter_and_trim <- function(intermediate_path, cutadapt_data,  maxEE = Inf, trun
 #' @export
 #'
 #' @examples
-post_trim_qc<-function(cutadapt_data, intermediate_path, n=500000){
+plot_post_trim_qc<-function(cutadapt_data, intermediate_path, n=500000){
   #just retrieve all plots for first sample
   for (i in unique(cutadapt_data$sample_id))
   {
@@ -510,7 +510,7 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv) {
 #' @export
 #'
 #' @examples
-dada2_readcounts_multi_sample <- function(asv_abund_matrix) {
+get_read_counts <- function(asv_abund_matrix) {
   filter_results_path<-file.path(intermediate_path, "filter_results.RData")
   load(filter_results_path) #incorporate into function
   denoised_data_path <- file.path(intermediate_path, "Denoised_data.Rdata")

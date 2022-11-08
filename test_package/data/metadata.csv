@@ -1,6 +1,6 @@
-sample,primer_name,well,organism
+sample_id,primer_name,well,organism
 S1,rps10,A01,Cry
 S1,ITS,A01,Cry
 S2,rps10,B01,Cin
-S1,ITS,A01,Cry
+S2,ITS,A01,Cry
 

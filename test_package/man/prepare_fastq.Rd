@@ -2,7 +2,7 @@
 % Please edit documentation in R/Prepare_Files_Primers.R
 \name{prepare_fastq}
 \alias{prepare_fastq}
-\title{A function for calling read_fastq, matching_order_primer_check, and remove_ns functions. This will process and edit the FASTQ and make them ready for the trimming of primers with Cutadapt. Part of a larger 'prepare_reads' function.}
+\title{A function for calling read_fastq, primer_check, and remove_ns functions. This will process and edit the FASTQ and make them ready for the trimming of primers with Cutadapt. Part of a larger 'prepare_reads' function.}
 \usage{
 prepare_fastq(raw_path, intermediate_path, maxN = 0, multithread = FALSE)
 }
@@ -26,7 +26,7 @@ If memory is an issue, execute in a clean environment and reduce the chunk size 
 \item{metadata}{A metadata containing the concatenated metadata and primer data}
 }
 \description{
-A function for calling read_fastq, matching_order_primer_check, and remove_ns functions. This will process and edit the FASTQ and make them ready for the trimming of primers with Cutadapt. Part of a larger 'prepare_reads' function.
+A function for calling read_fastq, primer_check, and remove_ns functions. This will process and edit the FASTQ and make them ready for the trimming of primers with Cutadapt. Part of a larger 'prepare_reads' function.
 }
 \examples{
  Part of the function prepare_reads. fastq_data <- prepare_fastq(raw_path, intermediate_path, maxN = maxN, multithread = multithread)

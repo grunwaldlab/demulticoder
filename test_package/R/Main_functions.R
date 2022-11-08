@@ -20,7 +20,7 @@ cut_trim <- function(returnList,intermediate_path,cutadapt_path,
                      multithread=FALSE, matchIDs=FALSE, verbose=FALSE,
                      qualityType="Auto", OMP=TRUE, n=1e+05,id.sep="\\s",
                      rm.lowcomplex=0, orient.fwd=NULL, id.field=NULL){
-  cutadapt_run(cutadapt_path, returnList$cutadapt_data)
+  run_cutadapt(cutadapt_path, returnList$cutadapt_data)
   quality_plots<-plot_qc(returnList$cutadapt_data, intermediate_path)
   filter_results <-filter_and_trim(intermediate_path, returnList$cutadapt_data,
                                    maxEE = maxEE, truncQ = truncQ, minLength = minLength,
@@ -28,11 +28,11 @@ cut_trim <- function(returnList,intermediate_path,cutadapt_path,
                                    matchIDs=matchIDs, verbose = verbose, qualityType = qualityType,
                                    OMP = OMP, n=n, id.sep = id.sep, rm.lowcomplex = rm.lowcomplex,
                                    orient.fwd = orient.fwd, id.field = id.field)
-  post_primer_hit_data <- post_primer_hit_data(returnList$primer_data, returnList$cutadapt_data,
+  post_primer_hit_data <- get_post_primer_hits(returnList$primer_data, returnList$cutadapt_data,
                                                intermediate_path)
-  post_primer_plot <- primer_hit_plot(post_primer_hit_data, returnList$fastq_data,
+  post_primer_plot <- make_primer_hit_plot(post_primer_hit_data, returnList$fastq_data,
                                       intermediate_path, "post_primer_plot.pdf")
-  quality_plots2 <- post_trim_qc(returnList$cutadapt_data, intermediate_path)
+  quality_plots2 <- plot_post_trim_qc(returnList$cutadapt_data, intermediate_path)
 }
 
 # Hung's Addition: make_asvAbund_table
@@ -50,7 +50,7 @@ cut_trim <- function(returnList,intermediate_path,cutadapt_path,
 #' @export
 #'
 #' @examples asv_abund_matrix <- make_asvAbund_matrix(returnList,intermediate_path, returnList$cutadapt_data)
-make_asvAbund_matrix <- function(returnList, intermediate_path, cutadapt_data,
+make_asv_abund_matrix <- function(returnList, intermediate_path, cutadapt_data,
                                  multithread=FALSE,nbases = 1e+08,
                                  errorEstimationFunction = loessErrfun, randomize=FALSE,
                                  MAX_CONSIST=10, OMEGA_C=0, qualityType="Auto", nominalQ = FALSE, 
@@ -108,7 +108,7 @@ process_rps10_barcode <- function(returnList, asv_abund_matrix, tryRC=FALSE, ver
   tax_results_rps10_asv_pid <- add_pid_to_tax(tax_results_rps10_asv, rps10_pids_asv)
   seq_tax_asv <- assignTax_as_char(tax_results_rps10_asv_pid)
   formatted_abund_asv<-format_abund_matrix(asv_abund_matrix, seq_tax_asv)
-  dada2_readcounts_multi_sample(formatted_abund_asv)
+  get_read_counts(formatted_abund_asv)
 }
 
 # Hung's addition: process_rps10_ITS_barcode
@@ -140,5 +140,5 @@ process_rps10_ITS_barcode <- function(returnList, asv_abund_matrix, tryRC=FALSE,
   tax_results_its_asv_pid <- add_pid_to_tax(tax_results_its_asv, its_pids_asv)
   seq_tax_asv <- c(assignTax_as_char(tax_results_rps10_asv_pid), assignTax_as_char(tax_results_its_asv_pid))
   formatted_abund_asv<-format_abund_matrix(asv_abund_matrix, seq_tax_asv)
-  dada2_readcounts_multi_sample(asv_abund_matrix)
+  get_read_counts(asv_abund_matrix)
 }

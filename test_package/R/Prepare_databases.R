@@ -21,7 +21,7 @@ create_ref_database <- function(intermediate_path){
 #' @export
 #'
 #' @examples
-format_database <-function(raw_data_path, database_name){
+format_database_rps10 <-function(raw_data_path, database_name){
   formatted_ref_dir <- file.path(intermediate_path, "reference_databases")
   database_path <- file.path(formatted_ref_dir, "rps10_reference_db.fa")
   if (file.exists(database_path)){
@@ -69,7 +69,7 @@ format_database <-function(raw_data_path, database_name){
 #' @export
 #'
 #' @examples
-format_database2 <-function(raw_data_path, database_name){
+format_database_unite <-function(raw_data_path, database_name){
   formatted_ref_dir <- file.path(intermediate_path, "reference_databases")
   database_path <- file.path(formatted_ref_dir, "its_reference_db.fa")
   if (file.exists(database_path)){
