@@ -3,6 +3,7 @@ library(devtools)
 setwd("~/rps10_metabarcoding_tool/test_package") #be careful about this
 load_all("~/rps10_metabarcoding_tool/test_package")
 document()
+test()
 
 #Example
 #Note-sample names should be sample1_xx_xx_R1.fastq.gz. The key is all sample names are unique before first underscore, and this sample name matches metadata.csv sample name.
