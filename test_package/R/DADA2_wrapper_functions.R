@@ -213,7 +213,8 @@ merge_reads_command <- function(intermediate_path, minOverlap=12, maxMismatch=0,
                                         returnRejects = returnRejects,
                                         justConcatenate = justConcatenate,
                                         verbose = verbose)
-      names(merged_reads) <- gsub(".fastq.gz", "", names(merged_reads), fixed = TRUE)
+      names(merged_reads) <- gsub(".fastq.gz", "", 
+                                  gsub("R_", "", names(merged_reads), fixed = TRUE))
       save(merged_reads, file = merged_read_data_path)
       return(merged_reads)
     }

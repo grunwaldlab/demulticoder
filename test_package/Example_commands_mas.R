@@ -30,18 +30,18 @@ asv_abund_matrix <- make_asv_abund_matrix(returnList, intermediate_path, returnL
 
 #Command to prepare databases for downstream steps
 #TODO format like SILVA? 
-create_ref_database(intermediate_path)
-format_database_rps10(raw_path, "oomycetedb.fasta")
+#create_ref_database(intermediate_path)
+#format_database_rps10(raw_path, "oomycetedb.fasta")
 #If you included the ITS barcode in your analysis
 #Should also test pipeline just on ITS dataset (could also make your own fungal database)
-format_database_unite(raw_path, "unite.fasta")
+#format_database_unite(raw_path, "unite.fasta")
 #The remaining functions will be incorporated shortly
 
 #For just rps10 barcode-use only if you only dealing with one barcode
-summary_table<-process_rps10_barcode(returnList, asv_abund_matrix, multithread = TRUE)
+#summary_table<-process_rps10_barcode(returnList, asv_abund_matrix, multithread = TRUE)
 
 #For ITS and rps10 barcodes
-summary_table2<-process_rps10_ITS_barcode(returnList, asv_abund_matrix, multithread = TRUE)
+#summary_table2<-process_rps10_ITS_barcode(returnList, asv_abund_matrix, multithread = TRUE)
 #check outputs and examples with both databases
 #function to make phylosoq object
 #inputs
