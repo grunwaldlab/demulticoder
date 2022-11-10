@@ -214,7 +214,7 @@ merge_reads_command <- function(intermediate_path, minOverlap=12, maxMismatch=0,
                                         justConcatenate = justConcatenate,
                                         verbose = verbose)
       names(merged_reads) <- gsub(".fastq.gz", "", 
-                                  gsub("R_", "", names(merged_reads), fixed = TRUE))
+                                  gsub("R1_", "", names(merged_reads), fixed = TRUE))
       save(merged_reads, file = merged_read_data_path)
       return(merged_reads)
     }
@@ -522,6 +522,8 @@ get_read_counts <- function(asv_abund_matrix) {
   track <- cbind(filter_results, sapply(dada_forward, getN), sapply(dada_reverse, getN), sapply(merged_reads, getN), rowSums(asv_abund_matrix))
   track <- cbind(rownames(track), data.frame(track, row.names=NULL))
   colnames(track) <- c("sample_name", "input", "filtered", "denoisedF", "denoisedR", "merged", "nonchim")
+  track$sample_name<- gsub(".fastq.gz", "", 
+                              gsub("R1_", "", track$sample_name, fixed = TRUE))
   track_read_counts_path <- file.path(intermediate_path, "track_reads.csv")
   write_csv(track, track_read_counts_path)
   print(track)
