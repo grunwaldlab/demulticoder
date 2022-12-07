@@ -33,6 +33,7 @@ make_cutadapt_tibble <- function(fastq_data, metadata, intermediate_path){ #new_
   return(cutadapt_data)
 }
 
+#rename min_length
 #' Core function for running cutadapt
 #'
 #' @param cutadapt_path A path to the cutadapt program
@@ -43,7 +44,7 @@ make_cutadapt_tibble <- function(fastq_data, metadata, intermediate_path){ #new_
 #' @export
 #'
 #' @examples
-run_cutadapt <- function(cutadapt_path, cutadapt_data, min_length=50){
+run_cutadapt <- function(cutadapt_path, cutadapt_data, min_length=20){
   cutadapt <- cutadapt_path
   tryCatch(system2(cutadapt, args = "--version"),
            warning=function(w){
@@ -62,7 +63,7 @@ run_cutadapt <- function(cutadapt_path, cutadapt_data, min_length=50){
   fwd_prefilt = cutadapt_data[cutadapt_data$direction == "Forward", ][["prefiltered_path"]]
   rev_prefilt = cutadapt_data[cutadapt_data$direction == "Reverse", ][["prefiltered_path"]]
   #consider parameters
-  command_args= paste(R1_flags, R2_flags, "-n", 2,  "-o",  fwd_trim, "-p", rev_trim, "--minimum-length", min_length,"--minimum-length", min_length,"--untrimmed-output", fwd_untrim, "--untrimmed-paired-output", rev_untrim,"--quiet", fwd_prefilt, rev_prefilt)
+  command_args= paste(R1_flags, R2_flags, "-n", 2,  "-o",  fwd_trim, "-p", rev_trim, "--minimum-length", min_length,"--untrimmed-output", fwd_untrim, "--untrimmed-paired-output", rev_untrim,"--quiet", fwd_prefilt, rev_prefilt)
   if (! all(file.exists(c(cutadapt_data$trimmed_path)))) {
     cutadapt_output <- furrr::future_map(command_args, ~system2(cutadapt, args = .x))
   }

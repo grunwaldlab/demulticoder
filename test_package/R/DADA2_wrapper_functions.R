@@ -323,7 +323,7 @@ make_seqhist <- function(asv_abund_table){
 #' @examples
 prep_abund_table <-function(cutadapt_data, asv_abund_table, locus){
   #rownames(asv_abund_table) <- sub(rownames(asv_abund_table), pattern = ".fastq.gz", replacement = "")
-  returnList$cutadapt_data$file_id_primer <- paste0(returnList$cutadapt_data$file_id, "_", returnList$cutadapt_data$primer_name)
+  returnList$cutadapt_data$file_id_primer <- paste0(returnList$cutadapt_data$sample_id, "_", returnList$cutadapt_data$primer_name)
   asv_abund_matrix<- asv_abund_table[rownames(asv_abund_table) %in% returnList$cutadapt_data$file_id_primer[returnList$cutadapt_data$primer_name == locus], ]
   return(asv_abund_matrix)
 }
@@ -354,7 +354,6 @@ separate_abund_table <- function(abund_asv_its, abund_asv_rps10, intermediate_pa
   stopifnot(ncol(abund_asv_its) + ncol(abund_asv_rps10) == ncol(asv_abund_matrix)) #make more messaging
 }
 
-#This function is unwieldy if not enough 
 #' Assign taxonomy
 #' @inheritParams dada2::assignTaxonomy
 #' @param abund_asv_table
@@ -441,15 +440,15 @@ get_pids <- function(tax_results, db) {
 #' Add PID and bootstrap values to tax result.
 #'
 #' @param tax_results
-#' @param pid
+#' @param asv_pid
 #'
 #' @return
 #' @export
 #'
 #' @examples
-add_pid_to_tax <- function(tax_results, pid) {
+add_pid_to_tax <- function(tax_results, asv_pid) {
   tax_results$tax <- cbind(tax_results$tax, ASV = rownames(tax_results$tax))
-  tax_results$boot <- cbind(tax_results$boot, ASV = pid)
+  tax_results$boot <- cbind(tax_results$boot, ASV = asv_pid)
   return(tax_results)
 }
 
@@ -457,42 +456,42 @@ add_pid_to_tax <- function(tax_results, pid) {
 #'
 #' @param tax_results
 #'
-#' @return
-#' @export
-#'
-#' @examples
-assignTax_as_char <- function(tax_results) {
-  tax_table_path <- file.path(intermediate_path, "Final_tax_table.Rdata")
-  tax_out <- vapply(1:nrow(tax_results$tax), FUN.VALUE = character(1), function(i) {
-    paste(tax_results$tax[i, ],
-          tax_results$boot[i, ],
-          colnames(tax_results$tax),
-          sep = '--', collapse = ';')
-  })
-  names(tax_out) <- rownames(tax_results$tax)
-  save(tax_out, file = tax_table_path)
-  return(tax_out)
-  #check
-  stopifnot(all(names(tax_out) %in% colnames(asv_abund_matrix)))
-  stopifnot(all(! duplicated(names(tax_out))))
-}
-
-#' Format ASV abundance table
-#'
-#' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
-#' @param seq_tax_asv An amplified sequence variants table with taxonomic information
-#'
-#' @return
-#' @export
-#'
+  #' @return
+  #' @export
+  #'
+  #' @examples
+  assignTax_as_char <- function(tax_results) {
+    tax_table_path <- file.path(intermediate_path, "Final_tax_table.Rdata")
+    tax_out <- vapply(1:nrow(tax_results$tax), FUN.VALUE = character(1), function(i) {
+      paste(tax_results$tax[i, ],
+            tax_results$boot[i, ],
+            colnames(tax_results$tax),
+            sep = '--', collapse = ';')
+    })
+    names(tax_out) <- rownames(tax_results$tax)
+    save(tax_out, file = tax_table_path)
+    return(tax_out)
+    #check
+    stopifnot(all(names(tax_out) %in% colnames(asv_abund_matrix)))
+    stopifnot(all(! duplicated(names(tax_out))))
+  }
+  
+  #' Format ASV abundance table
+  #'
+  #' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
+  #' @param seq_tax_asv An amplified sequence variants table with taxonomic information
+  #'
+  #' @return
+  #' @export
+  #'
 #' @examples
 #Reformat ASV table
 format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv) {
   formatted_abund_asv <- t(asv_abund_matrix)
-  colnames(formatted_abund_asv) <- sub(colnames(formatted_abund_asv), pattern = ".fastq.gz$", replacement = "")
-  formatted_abund_asv <- cbind(sequence = rownames(formatted_abund_asv),
-                               taxonomy = seq_tax_asv[rownames(formatted_abund_asv)],
-                               formatted_abund_asv)
+  formatted_abund_asv <- cbind(sequence = rownames(formatted_abund), 
+                               dada2_tax = str_match(seq_tax_asv[rownames(formatted_abund)], pattern = "^(.+)--Species")[,1],
+                               dada2_pid = as.numeric(str_match(seq_tax_asv[rownames(formatted_abund)], '--([0-9.]+)--ASV$')[, 2]),
+                               formatted_abund)
   formatted_abund_asv <- as_tibble(formatted_abund_asv)
   write_csv(formatted_abund_asv, file = file.path(intermediate_path, 'final_asv_abundance_table.csv'))
   #make results folder
@@ -500,7 +499,8 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv) {
   return(formatted_abund_asv)
 }
 
-
+#str_match(seq_tax_asv[rownames(asv_abund_matrix)], '^(.+)--Species')[,2]
+#str_match(dada2_tax, pattern = "^(.+)--Species")[,2])
 
 #' Final inventory of read counts after each step from input to removal of chimeras. This function deals with if you have more than one sample. TODO optimize for one sample
 #'

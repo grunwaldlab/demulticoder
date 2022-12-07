@@ -3,6 +3,7 @@
 #' @inheritParams plot_qc
 #' @inheritParams filter_and_trim
 #' @inheritParams post_trim_qc
+#' @inheritParams run_cutadapt
 #' @param returnList A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
 #' @param intermediate_path A path to the intermediate folder and directory
 #' @param cutadapt_path A path to the cutadapt program
@@ -19,8 +20,8 @@ cut_trim <- function(returnList,intermediate_path,cutadapt_path,
                      truncLen = 0, maxN = 0, minQ=0, rm.phix=TRUE,
                      multithread=FALSE, matchIDs=FALSE, verbose=FALSE,
                      qualityType="Auto", OMP=TRUE, n=1e+05,id.sep="\\s",
-                     rm.lowcomplex=0, orient.fwd=NULL, id.field=NULL){
-  run_cutadapt(cutadapt_path, returnList$cutadapt_data)
+                     rm.lowcomplex=0, orient.fwd=NULL, id.field=NULL, min_length=25){
+  run_cutadapt(cutadapt_path, returnList$cutadapt_data, min_length=min_length)
   quality_plots<-plot_qc(returnList$cutadapt_data, intermediate_path)
   filter_results <-filter_and_trim(intermediate_path, returnList$cutadapt_data,
                                    maxEE = maxEE, truncQ = truncQ, minLength = minLength,
@@ -86,7 +87,6 @@ make_asv_abund_matrix <- function(returnList, intermediate_path, cutadapt_data,
   return(asv_abund_matrix)
 }
 
-
 # Hung's Addition: process_rps10_barcode
 #' Process the information from an ASV abundance matrix to run DADA2 for rps10 barcode
 #'
@@ -108,7 +108,7 @@ process_rps10_barcode <- function(returnList, asv_abund_matrix, tryRC=FALSE, ver
   tax_results_rps10_asv_pid <- add_pid_to_tax(tax_results_rps10_asv, rps10_pids_asv)
   seq_tax_asv <- assignTax_as_char(tax_results_rps10_asv_pid)
   formatted_abund_asv<-format_abund_matrix(asv_abund_matrix, seq_tax_asv)
-  get_read_counts(formatted_abund_asv)
+  get_read_counts(asv_abund_matrix)
 }
 
 # Hung's addition: process_rps10_ITS_barcode
