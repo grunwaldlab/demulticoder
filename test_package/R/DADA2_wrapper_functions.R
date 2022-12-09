@@ -490,7 +490,8 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv) {
   formatted_abund_asv <- t(asv_abund_matrix)
   formatted_abund_asv <- cbind(sequence = rownames(formatted_abund_asv), 
                                dada2_tax = str_match(seq_tax_asv[rownames(formatted_abund_asv)], pattern = "^(.+)--Species")[,1],
-                               dada2_pid = as.numeric(str_match(seq_tax_asv[rownames(formatted_abund_asv)], '--([0-9.]+)--ASV$')[, 2]))
+                               dada2_pid = as.numeric(str_match(seq_tax_asv[rownames(formatted_abund_asv)], '--([0-9.]+)--ASV$')[, 2]),
+                               formatted_abund_asv)
   formatted_abund_asv <- as_tibble(formatted_abund_asv)
   write_csv(formatted_abund_asv, file = file.path(intermediate_path, 'final_asv_abundance_table.csv'))
   #make results folder
