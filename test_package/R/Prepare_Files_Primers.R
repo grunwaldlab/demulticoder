@@ -28,6 +28,7 @@ prepare_metadata <- function(metadata_path, primer_data){
   metadata <- read_csv(metadata_path) %>%
     left_join(primer_data, by = c("primer_name"))
   metadata <- metadata[order(metadata$sample_id),]
+  metadata$sample_name<-paste0(metadata$sample_id,"_",metadata$primer_name)
   if ("primer_name" %in% colnames(metadata)) { # Check if primer_name is in metadata columns, if true, moves it to the first column
     new_metadata_cols <- c("primer_name", colnames(metadata)[colnames(metadata) != "primer_name"]) 
     metadata = metadata[new_metadata_cols]
