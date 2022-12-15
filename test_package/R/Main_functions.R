@@ -16,16 +16,16 @@
 #'
 
 cut_trim <- function(returnList,intermediate_path,cutadapt_path,
-                     maxEE = Inf, truncQ = 2, minLength = 20, maxLength = Inf,
+                     maxEE = Inf, truncQ = 2, minLen = 20, maxLen = Inf,
                      truncLen = 0, maxN = 0, minQ=0, rm.phix=TRUE,
                      multithread=FALSE, matchIDs=FALSE, verbose=FALSE,
                      qualityType="Auto", OMP=TRUE, n=1e+05,id.sep="\\s",
-                     rm.lowcomplex=0, orient.fwd=NULL, id.field=NULL, min_length=25){
+                     rm.lowcomplex=0, orient.fwd=NULL, id.field=NULL, min_length=50){
   run_cutadapt(cutadapt_path, returnList$cutadapt_data, min_length=min_length)
   quality_plots<-plot_qc(returnList$cutadapt_data, intermediate_path)
   filter_results <-filter_and_trim(intermediate_path, returnList$cutadapt_data,
-                                   maxEE = maxEE, truncQ = truncQ, minLength = minLength,
-                                   maxLength = maxLength, multithread = multithread,
+                                   maxEE = maxEE, truncQ = truncQ, minLen = minLen,
+                                   maxLen = maxLen, multithread = multithread,
                                    matchIDs=matchIDs, verbose = verbose, qualityType = qualityType,
                                    OMP = OMP, n=n, id.sep = id.sep, rm.lowcomplex = rm.lowcomplex,
                                    orient.fwd = orient.fwd, id.field = id.field)

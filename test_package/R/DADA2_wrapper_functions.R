@@ -60,7 +60,7 @@ plot_qc<-function(cutadapt_data, intermediate_path, n=500000){
 #' @export
 #'x
 #' @examples
-filter_and_trim <- function(intermediate_path, cutadapt_data,  maxEE = Inf, truncQ = 2, minLength = 20, maxLength = Inf, truncLen = 0, maxN = 0, minQ=0, rm.phix=TRUE, multithread=FALSE, matchIDs=FALSE, verbose=FALSE, qualityType="Auto", OMP=TRUE, n=1e+05,id.sep="\\s", rm.lowcomplex=0, orient.fwd=NULL, id.field=NULL){
+filter_and_trim <- function(intermediate_path, cutadapt_data,  maxEE = Inf, truncQ = 2, minLen = 20, maxLen = Inf, truncLen = 0, maxN = 0, minQ=0, rm.phix=TRUE, multithread=FALSE, matchIDs=FALSE, verbose=FALSE, qualityType="Auto", OMP=TRUE, n=1e+05,id.sep="\\s", rm.lowcomplex=0, orient.fwd=NULL, id.field=NULL){
   filtered_read_dir <- file.path(intermediate_path, "filtered_sequences")
   cutadapt_data$filtered_path <- file.path(filtered_read_dir, paste0(cutadapt_data$file_id, "_", cutadapt_data$primer_name, ".fastq.gz"))
   if(! all(file.exists(cutadapt_data$filtered_path))){
@@ -72,8 +72,8 @@ filter_and_trim <- function(intermediate_path, cutadapt_data,  maxEE = Inf, trun
                                          maxEE = c(maxEE, maxEE),
                                          truncLen=truncLen,
                                          truncQ = truncQ,
-                                         minLen = minLength,
-                                         maxLen = maxLength,
+                                         minLen = minLen,
+                                         maxLen = maxLen,
                                          minQ = minQ,
                                          trimLeft=0,
                                          trimRight=0,
