@@ -9,11 +9,11 @@ document()
 #Note-sample names should be sample1_xx_xx_R1.fastq.gz. The key is all sample names are unique before first underscore, and this sample name matches metadata.csv sample name.
 
 #You will need to modify directory names and file names
-directory_path<-"~/MonterreyBay" ##choose a directory for all downstream steps
-raw_path <-file.path(directory_path) #place your raw data files, csv files, and downloaded databases into your chosen directory
+directory_path<-"~/Wen2" ##choose a directory for all downstream steps
+raw_path <-file.path(directory_path, "raw_data") #place your raw data files, csv files, and downloaded databases into your chosen directory
 primer_path <-file.path(raw_path, "primer_info.csv") ##modify .csv name or keep this name
 #Metadata file just needs sample_name one column, and primer_name in second column (this function is being tweaked-see example)
-metadata_path <-file.path(raw_path, "metadata.csv") ##modify .csv name or keep this name. The sample_name in the metadata sheet needs to match the first part (before first underscore), of the zipped raw FASTQ files
+metadata_path <-file.path(raw_path, "metadata5.csv") ##modify .csv name or keep this name. The sample_name in the metadata sheet needs to match the first part (before first underscore), of the zipped raw FASTQ files
 cutadapt_path<-"/Users/masudermann/miniconda3/bin/cutadapt"
 intermediate_path <- create_intermediate(directory_path)
 #create intermediate data folder in working directory
@@ -34,28 +34,15 @@ intermediate_path <- create_intermediate(directory_path)
 #Further simplify
 #change names
 returnList<-prepare_reads(directory_path, primer_path, metadata_path, fastq_path, intermediate_path, maxN=0, multithread=TRUE)
-cut_trim(returnList,intermediate_path, cutadapt_path, verbose=TRUE, maxEE=5, truncQ=5, min_length=50) #ix cutadapt param!!!
+cut_trim(returnList,intermediate_path, cutadapt_path, verbose=TRUE, maxEE=5, truncQ=5, minLen=200, min_length=50) #fix cutadapt param!!!
 #add message to let user know which steps have already run if they are skipped, and also provide info on the params. Make it easier for user to re-run analysis. 
-
+#minboot? 
 asv_abund_matrix <- make_asv_abund_matrix(returnList, intermediate_path, returnList$cutadapt_data, minOverlap=15, maxMismatch=2, verbose=TRUE, multithread=TRUE) #check when 0 again
 #TODO adjust maxmismatch if there aren't alot of merged reads                                                                                         
 
-#Command to prepare databases for downstream steps
-#TODO format like SILVA? 
-create_ref_database(intermediate_path)
-format_database_rps10(raw_path, "oomycetedb.fasta")
-#If you included the ITS barcode in your analysis
-#Should also test pipeline just on ITS dataset (could also make your own fungal database)
-format_database_unite(raw_path, "unite.fasta")
-#The remaining functions will be incorporated shortly
+#Wrapper function to format databases and assign taxonomy
+summary<-assignTax_function(raw_path, "oomycetedb.fasta", "unite.fasta", returnList, asv_abund_matrix, multithread = TRUE, is_ITS=TRUE)
+#output is weird
+sessioninfo::session_info()
 
-#For just rps10 barcode-use only if you only dealing with one barcode
-summary_table<-process_rps10_barcode(returnList, asv_abund_matrix, multithread = TRUE)
-
-#For ITS and rps10 barcodes
-summary_table2<-process_rps10_ITS_barcode(returnList, asv_abund_matrix, multithread = TRUE)
-#check outputs and examples with both databases
-#function to make phylosoq object
-#inputs
-#Load ASV abundance table
-#Rename anything that is ambiguous
+#outputs
