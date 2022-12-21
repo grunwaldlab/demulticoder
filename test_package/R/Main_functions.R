@@ -132,13 +132,44 @@ process_rps10_ITS_barcode <- function(returnList, asv_abund_matrix, tryRC=FALSE,
   load(separate_abund_filepath)
   tax_results_rps10_asv <- assign_taxonomyDada2(abund_asv_rps10, "rps10_reference_db.fa", "rps10_taxtable.Rdata",
                                                 tryRC=FALSE, verbose=FALSE, multithread=FALSE) #FIX
-  tax_results_its_asv <- assign_taxonomyDada2(abund_asv_its, "its_short.fasta", "its_taxtable.Rdata",
+  tax_results_its_asv <- assign_taxonomyDada2(abund_asv_its, "its_reference_db.fa", "its_taxtable.Rdata",
                                               tryRC=FALSE, verbose=FALSE, multithread=FALSE)
   rps10_pids_asv <- get_pids(tax_results_rps10_asv, "rps10_reference_db.fa")
-  its_pids_asv <- get_pids(tax_results_its_asv, "its_short.fasta")
+  its_pids_asv <- get_pids(tax_results_its_asv, "its_reference_db.fa")
   tax_results_rps10_asv_pid <- add_pid_to_tax(tax_results_rps10_asv, rps10_pids_asv)
   tax_results_its_asv_pid <- add_pid_to_tax(tax_results_its_asv, its_pids_asv)
   seq_tax_asv <- c(assignTax_as_char(tax_results_rps10_asv_pid), assignTax_as_char(tax_results_its_asv_pid))
   formatted_abund_asv<-format_abund_matrix(asv_abund_matrix, seq_tax_asv)
   get_read_counts(asv_abund_matrix)
+}
+
+
+#' Assign rps10 and ITS taxonomy
+#'
+#' @param returnList 
+#' @param is_ITS TRUE or FALSE
+#' @param asv_abund_matrix 
+#' @param tryRC 
+#' @param verbose 
+#' @param multithread
+#' @param database_rps10
+#' @param database_its
+#' @inheritParams assign_taxonomyDada2 
+#'  
+#'
+#' @return
+#' @export
+#'
+#' @examples
+assignTax_function <- function(raw_path, database_rps10, database_its, returnList, asv_abund_matrix, tryRC=FALSE, verbose=FALSE, multithread=FALSE, is_ITS=FALSE) {
+  create_ref_database(intermediate_path)
+  
+  if(is_ITS==FALSE) {
+    format_database_rps10(raw_path, database_rps10)
+    summary_table<-process_rps10_barcode(returnList, asv_abund_matrix, multithread = multithread)
+  } else {
+      format_database_rps10(raw_path, database_rps10)
+      format_database_unite(raw_path, database_its)
+      summary_table2<-process_rps10_ITS_barcode(returnList, asv_abund_matrix, multithread = multithread)
+    }
 }

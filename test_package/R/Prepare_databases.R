@@ -15,19 +15,19 @@ create_ref_database <- function(intermediate_path){
 #' Create modified reference rps10 database for downstream analysis
 #'
 #' @param raw_data_path A path to a directory that contains raw data
-#' @param database_name The name of the database
+#' @param database_rps10 The name of the database
 #'
 #' @return A rps10 database that has modified headers and is output in the reference_databases folder.
 #' @export
 #'
 #' @examples
-format_database_rps10 <-function(raw_data_path, database_name){
+format_database_rps10 <-function(raw_data_path, database_rps10){
   formatted_ref_dir <- file.path(intermediate_path, "reference_databases")
   database_path <- file.path(formatted_ref_dir, "rps10_reference_db.fa")
   if (file.exists(database_path)){
     print("The rps10 database already exists")
   } else {
-    rps10_db <- read_fasta(file.path(raw_data_path, database_name))
+    rps10_db <- read_fasta(file.path(raw_data_path, database_rps10))
     rps10_data <- str_match(names(rps10_db), pattern = "name=(.+)\\|strain=(.+)\\|ncbi_acc=(.+)\\|ncbi_taxid=(.+)\\|oodb_id=(.+)\\|taxonomy=(.+)$")
     colnames(rps10_data) <- c("header", "name", "strain", "ncbi_acc", "ncbi_taxid", "oodb_id", "taxonomy")
     rps10_data <- as_tibble(rps10_data)
@@ -63,19 +63,19 @@ format_database_rps10 <-function(raw_data_path, database_name){
 #' An ITS database that has modified headers and is output in the reference_databases folder.
 #'
 #' @param raw_data_path A path to a directory that contains raw data
-#' @param database_name The name of the database
+#' @param database_its The name of the database
 #'
 #' @return A rps10 database that has modified headers and is output in the reference_databases folder.
 #' @export
 #'
 #' @examples
-format_database_unite <-function(raw_data_path, database_name){
+format_database_unite <-function(raw_data_path, database_its){
   formatted_ref_dir <- file.path(intermediate_path, "reference_databases")
   database_path <- file.path(formatted_ref_dir, "its_reference_db.fa")
   if (file.exists(database_path)){
     print("The ITS database already exists")
   } else {
-    its_db <- read_fasta(file.path(raw_data_path, database_name))
+    its_db <- read_fasta(file.path(raw_data_path, database_its))
     its_data <- str_match(names(its_db), pattern = "(.+)\\|(.+)\\|(.+)\\|(.+)\\|(.+)$")
     colnames(its_data) <- c("header", "name", "ncbi_acc", "unite_db", "db", "taxonomy")
     its_data <- as_tibble(its_data)

@@ -40,9 +40,9 @@ remove_ns <- function(fastq_data, intermediate_path, maxN= 0, multithread = TRUE
 #' @examples
 plot_qc<-function(cutadapt_data, intermediate_path, n=500000){
   #just retrieve all plots for first sample
-  for (i in unique(cutadapt_data$sample_id))
+  for (i in unique(cutadapt_data$sample_name))
   {
-    sample_info = cutadapt_data$trimmed_path[cutadapt_data$sample_id == i]
+    sample_info = cutadapt_data$trimmed_path[cutadapt_data$sample_name == i]
     quality_plots<-dada2::plotQualityProfile(sample_info, n)
     name1=paste0('qcpre_trim_plot_', i,'.pdf')
     ggplot2::ggsave(quality_plots, filename = name1, path = intermediate_path, width = 8, height = 8)
@@ -110,9 +110,9 @@ filter_and_trim <- function(intermediate_path, cutadapt_data,  maxEE = Inf, trun
 #' @examples
 plot_post_trim_qc<-function(cutadapt_data, intermediate_path, n=500000){
   #just retrieve all plots for first sample
-  for (i in unique(cutadapt_data$sample_id))
+  for (i in unique(cutadapt_data$sample_name))
   {
-    sample_info2 = cutadapt_data$filtered_path[cutadapt_data$sample_id == i]
+    sample_info2 = cutadapt_data$filtered_path[cutadapt_data$sample_name == i]
     quality_plots2<-dada2::plotQualityProfile(sample_info2, n)
     name=paste0('qcpost_trim_plot_', i,'.pdf')
     ggplot2::ggsave(quality_plots2, filename = name, path = intermediate_path, width = 8, height = 8)
@@ -233,16 +233,16 @@ countOverlap <- function(merged_reads){
   non_empty_merged_reads
   merge_data <- non_empty_merged_reads %>%
     bind_rows() %>%
-    mutate(fullsample_id = rep(names(non_empty_merged_reads), map_int(non_empty_merged_reads, nrow))) %>%
+    mutate(fullsample_name = rep(names(non_empty_merged_reads), map_int(non_empty_merged_reads, nrow))) %>%
     as_tibble() #check best practices
   
-  returnList$cutadapt_data$fullsample_id <- paste0(returnList$cutadapt_data$file_id,'_', returnList$cutadapt_data$primer_name)
+  returnList$cutadapt_data$fullsample_name <- paste0(returnList$cutadapt_data$file_id,'_', returnList$cutadapt_data$primer_name)
   cutadapt_short <- returnList$cutadapt_data %>%
-    select(fullsample_id, sample_id, primer_name)
+    select(fullsample_name, sample_name, primer_name)
   merge_data2 <- merge_data %>%
-    left_join(cutadapt_short, by = c("fullsample_id" = "fullsample_id"))
+    left_join(cutadapt_short, by = c("fullsample_name" = "fullsample_name"))
   merge_data2 <- merge_data %>%
-    left_join(cutadapt_short, by = c("fullsample_id" = "fullsample_id"))
+    left_join(cutadapt_short, by = c("fullsample_name" = "fullsample_name"))
   merge_data2 <- mutate(merge_data2,
                         overlap = nmatch + nmismatch,
                         mismatch = nmismatch + nindel,
@@ -323,7 +323,7 @@ make_seqhist <- function(asv_abund_table){
 #' @examples
 prep_abund_table <-function(cutadapt_data, asv_abund_table, locus){
   #rownames(asv_abund_table) <- sub(rownames(asv_abund_table), pattern = ".fastq.gz", replacement = "")
-  returnList$cutadapt_data$file_id_primer <- paste0(returnList$cutadapt_data$sample_id, "_", returnList$cutadapt_data$primer_name)
+  returnList$cutadapt_data$file_id_primer <- paste0(returnList$cutadapt_data$sample_name, "_", returnList$cutadapt_data$primer_name)
   asv_abund_matrix<- asv_abund_table[rownames(asv_abund_table) %in% returnList$cutadapt_data$file_id_primer[returnList$cutadapt_data$primer_name == locus], ]
   return(asv_abund_matrix)
 }
@@ -521,9 +521,9 @@ get_read_counts <- function(asv_abund_matrix) {
   getN <- function(x) sum(dada2::getUniques(x))
   track <- cbind(filter_results, sapply(dada_forward, getN), sapply(dada_reverse, getN), sapply(merged_reads, getN), rowSums(asv_abund_matrix))
   track <- cbind(rownames(track), data.frame(track, row.names=NULL))
-  colnames(track) <- c("sample_name", "input", "filtered", "denoisedF", "denoisedR", "merged", "nonchim")
-  track$sample_name<- gsub(".fastq.gz", "", 
-                              gsub("R1_", "", track$sample_name, fixed = TRUE))
+  colnames(track) <- c("sample_nameBarcode", "input", "filtered", "denoisedF", "denoisedR", "merged", "nonchim")
+  track$sample_nameBarcode<- gsub(".fastq.gz", "", 
+                              gsub("R1_", "", track$sample_nameBarcode, fixed = TRUE))
   track_read_counts_path <- file.path(intermediate_path, "track_reads.csv")
   write_csv(track, track_read_counts_path)
   print(track)

@@ -10,7 +10,7 @@
 #' @examples
 make_cutadapt_tibble <- function(fastq_data, metadata, intermediate_path){ #new_fastq_data needed, why not just fastq_data
   cutadapt_data <- metadata %>%
-    left_join(fastq_data, by = c("sample_id" = "sample_id"))
+    left_join(fastq_data, by = c("sample_name" = "sample_name"))
   trimmed_read_dir <- file.path(intermediate_path, "trimmed_sequences")
   if (! dir.exists(trimmed_read_dir)){
     dir.create(trimmed_read_dir)

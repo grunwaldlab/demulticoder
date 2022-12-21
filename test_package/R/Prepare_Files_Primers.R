@@ -27,12 +27,12 @@ create_intermediate <- function(working_dir_path){
 prepare_metadata <- function(metadata_path, primer_data){
   metadata <- read_csv(metadata_path) %>%
     left_join(primer_data, by = c("primer_name"))
-  metadata <- metadata[order(metadata$sample_id),]
-  metadata$sample_name<-paste0(metadata$sample_id,"_",metadata$primer_name)
-  metadata %>% relocate(sample_name, .after=sample_id)
+  metadata <- metadata[order(metadata$sample_name),]
   if ("primer_name" %in% colnames(metadata)) { # Check if primer_name is in metadata columns, if true, moves it to the first column
     new_metadata_cols <- c("primer_name", colnames(metadata)[colnames(metadata) != "primer_name"]) 
     metadata = metadata[new_metadata_cols]
+    metadata$sample_nameBarcode<-paste0(metadata$sample_name,"_",metadata$primer_name)
+    metadata <- metadata %>% relocate(sample_nameBarcode, .after=sample_name)
   }
   else { # Raises error if false
     stop("Please make sure that there is a 'primer_name' column in your metadata table.")
@@ -52,7 +52,7 @@ read_fastq <- function(raw_path){
   fastq_paths <- list.files(raw_path, pattern = "\\.fastq")
   #constructing a tibble - special data frame with improved behaviors.
   fastq_data <- tibble(file_id = sub(fastq_paths, pattern = "\\.fastq\\.gz$", replacement = ""),
-                       sample_id = sub(fastq_paths, pattern = "_.+$", replacement = ""),
+                       sample_name = sub(fastq_paths, pattern = "_.+$", replacement = ""),
                        #direction: the grep1 is looking to match the pattern, relates a TRUE or FALSE with it (aka 1 or 0) and adds 1 to find the
                        #correct index to put Reverse or Forward
                        direction = c( "Reverse", "Forward")[BiocGenerics::grepl(fastq_paths, pattern = "_R1") + 1],
@@ -72,7 +72,7 @@ read_fastq <- function(raw_path){
 #' @examples Part of a larger function 'prepare_fastq' function. 
 primer_check <- function(fastq_data){
   paired_file_paths <- fastq_data %>%
-    filter(sample_id == gdata::first(sample_id)) %>%
+    filter(sample_name == gdata::first(sample_name)) %>%
     #pull is just like $ - you are accessing a variable inside the tibble
     pull(raw_data_path)
 
