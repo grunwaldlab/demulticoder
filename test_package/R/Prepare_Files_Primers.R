@@ -52,7 +52,7 @@ read_fastq <- function(raw_path){
   fastq_paths <- list.files(raw_path, pattern = "\\.fastq")
   #constructing a tibble - special data frame with improved behaviors.
   fastq_data <- tibble(file_id = sub(fastq_paths, pattern = "\\.fastq\\.gz$", replacement = ""),
-                       sample_name = sub(fastq_paths, pattern = "_.+$", replacement = ""),
+                       sample_name = gsub(fastq_paths, pattern = "_R1|_R2\\.fastq|.fastq\\.gz|.gz$", replacement = ""),
                        #direction: the grep1 is looking to match the pattern, relates a TRUE or FALSE with it (aka 1 or 0) and adds 1 to find the
                        #correct index to put Reverse or Forward
                        direction = c( "Reverse", "Forward")[BiocGenerics::grepl(fastq_paths, pattern = "_R1") + 1],
@@ -61,6 +61,7 @@ read_fastq <- function(raw_path){
   return(fastq_data)
 }
 
+#sample_name = sub(fastq_paths, pattern = "_.+$", replacement = "")
 
 #' Matching Order Primer Check
 #'
