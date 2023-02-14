@@ -1,3 +1,35 @@
+#Prepare reads. A wrapper function to prepare reads for trimming using Cutadapt. Counts of primers on reads will be output.
+#' Main command prepare reads for primer trimming
+#' @param directory_path A path to a directory containing reads and metadata/primer files
+#' @param primer_path The primer data tibble created in prepare_primers function
+#' @param metadata_path A path to a metadata containing the concatenated metadata and primer data
+#' @param fastq_path path to a directory containing FASTQ reads
+#' @param intermediate_path A path to the intermediate folder and directory
+#' @inheritParams prepare_fastq
+#'
+#' @return A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
+#' @export
+#'
+#' @examples returnList<-prepare_reads(directory_path, primer_path, metadata_path, fastq_path, intermediate_path, maxN=0, multithread=TRUE)
+
+prepare_reads <- function(directory_path, primer_path, metadata_path, fastq_path,intermediate_path, maxN=0, multithread=FALSE){
+  prep_tables <- file.path(intermediate_path, "Prep_tables.RData")
+  primer_data <- prepare_primers(primer_path)
+  metadata <- prepare_metadata(metadata_path, primer_data)
+  fastq_data <- prepare_fastq(raw_path, intermediate_path, maxN = maxN, multithread = multithread)
+  pre_primer_hit_data<- get_pre_primer_hits(primer_data, fastq_data,
+                                            intermediate_path)
+  pre_primer_plot <- make_primer_hit_plot(pre_primer_hit_data, fastq_data,
+                                          intermediate_path, "pre_primer_plot.pdf")
+  cutadapt_data <- make_cutadapt_tibble(fastq_data, metadata, intermediate_path)
+  returnList <- list(cutadapt_data=cutadapt_data, primer_data=primer_data, fastq_data=fastq_data, metadata=metadata)
+  return(returnList)
+}
+
+#load fastq 
+#read fastq
+
+
 #Trim primers
 #' Main command to trim primers based on DADA2 functions
 #' @inheritParams plot_qc
@@ -102,7 +134,7 @@ make_asv_abund_matrix <- function(returnList, intermediate_path, cutadapt_data,
 process_rps10_barcode <- function(returnList, asv_abund_matrix, tryRC=FALSE, verbose=FALSE, multithread=FALSE)
 {
   abund_asv_rps10 <- prep_abund_table(returnList$cutadapt_data, asv_abund_matrix, "rps10")
-  tax_results_rps10_asv <- assign_taxonomyDada2(abund_asv_rps10, "rps10_reference_db.fa", "rps10_taxtable.Rdata",
+  tax_results_rps10_asv <- assign_taxonomyDada2(abund_asv_rps10, "rps10_reference_db.fa", "rps10_taxtable.RData",
                                                 tryRC=tryRC, verbose=verbose, multithread=multithread)
   rps10_pids_asv <- get_pids(tax_results_rps10_asv, "rps10_reference_db.fa")
   tax_results_rps10_asv_pid <- add_pid_to_tax(tax_results_rps10_asv, rps10_pids_asv)
@@ -110,6 +142,8 @@ process_rps10_barcode <- function(returnList, asv_abund_matrix, tryRC=FALSE, ver
   formatted_abund_asv<-format_abund_matrix(asv_abund_matrix, seq_tax_asv)
   get_read_counts(asv_abund_matrix)
 }
+
+#rps10, its, 16s, coi, combines, muliplex, multibarcode
 
 # Hung's addition: process_rps10_ITS_barcode
 #For rps10 and its barcodes
@@ -128,14 +162,14 @@ process_rps10_ITS_barcode <- function(returnList, asv_abund_matrix, tryRC=FALSE,
   abund_asv_rps10 <- prep_abund_table(returnList$cutadapt_data, asv_abund_matrix, "rps10")
   abund_asv_its <- prep_abund_table(returnList$cutadapt_data, asv_abund_matrix, "ITS")
   separate_abund_table(abund_asv_its, abund_asv_rps10, intermediate_path, asv_abund_matrix)
-  separate_abund_filepath <- file.path(intermediate_path, "Separate_abund.Rdata")
+  separate_abund_filepath <- file.path(intermediate_path, "Separate_abund.RData")
   load(separate_abund_filepath)
-  tax_results_rps10_asv <- assign_taxonomyDada2(abund_asv_rps10, "rps10_reference_db.fa", "rps10_taxtable.Rdata",
+  tax_results_rps10_asv <- assign_taxonomyDada2(abund_asv_rps10, "rps10_reference_db.fa", "rps10_taxtable.RData",
                                                 tryRC=FALSE, verbose=FALSE, multithread=FALSE) #FIX
-  tax_results_its_asv <- assign_taxonomyDada2(abund_asv_its, "its_reference_db.fa", "its_taxtable.Rdata",
+  tax_results_its_asv <- assign_taxonomyDada2(abund_asv_its, "its_test_db.fa", "its_taxtable.RData",
                                               tryRC=FALSE, verbose=FALSE, multithread=FALSE)
   rps10_pids_asv <- get_pids(tax_results_rps10_asv, "rps10_reference_db.fa")
-  its_pids_asv <- get_pids(tax_results_its_asv, "its_reference_db.fa")
+  its_pids_asv <- get_pids(tax_results_its_asv, "its_test_db.fa")
   tax_results_rps10_asv_pid <- add_pid_to_tax(tax_results_rps10_asv, rps10_pids_asv)
   tax_results_its_asv_pid <- add_pid_to_tax(tax_results_its_asv, its_pids_asv)
   seq_tax_asv <- c(assignTax_as_char(tax_results_rps10_asv_pid), assignTax_as_char(tax_results_its_asv_pid))
@@ -173,3 +207,6 @@ assignTax_function <- function(raw_path, database_rps10, database_its, returnLis
       summary_table2<-process_rps10_ITS_barcode(returnList, asv_abund_matrix, multithread = multithread)
     }
 }
+
+
+

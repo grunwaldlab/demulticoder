@@ -33,6 +33,7 @@ make_cutadapt_tibble <- function(fastq_data, metadata, intermediate_path){ #new_
   return(cutadapt_data)
 }
 
+#Need to further generalize
 #rename min_length
 #' Core function for running cutadapt
 #'
@@ -67,5 +68,5 @@ run_cutadapt <- function(cutadapt_path, cutadapt_data, min_length=20){
   if (! all(file.exists(c(cutadapt_data$trimmed_path)))) {
     cutadapt_output <- furrr::future_map(command_args, ~system2(cutadapt, args = .x))
   }
-
+  
 }

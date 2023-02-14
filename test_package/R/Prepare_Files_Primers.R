@@ -105,7 +105,7 @@ prepare_primers <- function(primer_path){
   primer_data <- read_csv(primer_data_path)
   
   
-  #seperate forward and reverse to make various primers
+  #seperate forward and reverse to make various primer combination
   forward_primers <- primer_data[, c(1:2)]
   toString(forward_primers)
   reverse_primers <- primer_data[, c(1,3)]
@@ -164,8 +164,11 @@ get_pre_primer_hits<- function(primer_data, fastq_data, intermediate_path){
     nhits <- vcountPattern(primer, sread(readFastq(path)), fixed = FALSE)
     return(sum(nhits > 0))
   }
-  
-  primer_hit_data_csv_path <- file.path(intermediate_path, "primer_hit_data_pretrim.csv")
+  primer_count_path <- file.path(intermediate_path, "primer_counts")
+  if (! dir.exists(primer_count_path)){
+    dir.create(primer_count_path)
+  }
+  primer_hit_data_csv_path <- file.path(primer_count_path,"primer_hit_data_pretrim.csv")
   #if a file exists in there, then write the path to it
   if (file.exists(primer_hit_data_csv_path)){
     primer_hit_data <- read_csv(primer_hit_data_csv_path)
@@ -208,8 +211,11 @@ get_post_primer_hits <- function(primer_data, cutadapt_data, intermediate_path){
     return(sum(nhits > 0))
   }
   
-  
-  post_primer_hit_data_csv_path <- file.path(intermediate_path, "primer_hit_data_post_trim.csv")
+  primer_count_path <- file.path(intermediate_path, "primer_counts")
+  if (! dir.exists(primer_count_path)){
+    dir.create(primer_count_path)
+  }
+  post_primer_hit_data_csv_path <- file.path(primer_count_path, "primer_hit_data_post_trim.csv")
   #if a file exists in there, then write the path to it
   if (file.exists(post_primer_hit_data_csv_path)){
     post_primer_hit_data <- read_csv(post_primer_hit_data_csv_path)
@@ -276,35 +282,8 @@ make_primer_hit_plot <- function(primer_hits, fastq_data, intermediate_path, plo
     geom_text(aes(label=Total)) +
     coord_flip()
   print(plot)
-  ggsave(plot, filename = plot_name, path = intermediate_path, width = 8, height = 8)
+  primer_count_path <- file.path(intermediate_path, "Primer_counts")
+  ggsave(plot, filename = plot_name, path = primer_count_path, width = 8, height = 8)
   return(plot)
   
-}
-
-#Prepare reads. A wrapper function to prepare reads for trimming using Cutadapt. Counts of primers on reads will be output.
-#' Main command prepare reads for primer trimming
-#' @param directory_path A path to a directory containing reads and metadata/primer files
-#' @param primer_path The primer data tibble created in prepare_primers function
-#' @param metadata_path A path to a metadata containing the concatenated metadata and primer data
-#' @param fastq_path path to a directory containing FASTQ reads
-#' @param intermediate_path A path to the intermediate folder and directory
-#' @inheritParams prepare_fastq
-#'
-#' @return A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
-#' @export
-#'
-#' @examples returnList<-prepare_reads(directory_path, primer_path, metadata_path, fastq_path, intermediate_path, maxN=0, multithread=TRUE)
-
-prepare_reads <- function(directory_path, primer_path, metadata_path, fastq_path,intermediate_path, maxN=0, multithread=FALSE){
-  prep_tables <- file.path(intermediate_path, "Prep_tables.Rdata")
-  primer_data <- prepare_primers(primer_path)
-  metadata <- prepare_metadata(metadata_path, primer_data)
-  fastq_data <- prepare_fastq(raw_path, intermediate_path, maxN = maxN, multithread = multithread)
-  pre_primer_hit_data<- get_pre_primer_hits(primer_data, fastq_data,
-                                            intermediate_path)
-  pre_primer_plot <- make_primer_hit_plot(pre_primer_hit_data, fastq_data,
-                                     intermediate_path, "pre_primer_plot.pdf")
-  cutadapt_data <- make_cutadapt_tibble(fastq_data, metadata, intermediate_path)
-  returnList <- list(cutadapt_data=cutadapt_data, primer_data=primer_data, fastq_data=fastq_data, metadata=metadata)
-  return(returnList)
 }

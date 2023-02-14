@@ -45,11 +45,14 @@ plot_qc<-function(cutadapt_data, intermediate_path, n=500000){
     sample_info = cutadapt_data$trimmed_path[cutadapt_data$sample_name == i]
     quality_plots<-dada2::plotQualityProfile(sample_info, n)
     name1=paste0('qcpre_trim_plot_', i,'.pdf')
-    ggplot2::ggsave(quality_plots, filename = name1, path = intermediate_path, width = 8, height = 8)
+    qcplot_dir <- file.path("QC_plots")
+    if (! dir.exists(qcplot_dir)){
+      dir.create(qcplot_dir)
+    }
+    ggplot2::ggsave(quality_plots, filename = name1, path = qcplot_dir, width = 8, height = 8)
     #print(quality_plots)
   }
 }
-
 
 #' Wrapper function for filterAndTrim function from DADA2 after primer removal
 #' @inheritParams dada2::filterAndTrim
@@ -58,7 +61,7 @@ plot_qc<-function(cutadapt_data, intermediate_path, n=500000){
 #'
 #' @return
 #' @export
-#'x
+#'
 #' @examples
 filter_and_trim <- function(intermediate_path, cutadapt_data,  maxEE = Inf, truncQ = 2, minLen = 20, maxLen = Inf, truncLen = 0, maxN = 0, minQ=0, rm.phix=TRUE, multithread=FALSE, matchIDs=FALSE, verbose=FALSE, qualityType="Auto", OMP=TRUE, n=1e+05,id.sep="\\s", rm.lowcomplex=0, orient.fwd=NULL, id.field=NULL){
   filtered_read_dir <- file.path(intermediate_path, "filtered_sequences")
@@ -98,7 +101,6 @@ filter_and_trim <- function(intermediate_path, cutadapt_data,  maxEE = Inf, trun
   }
 }
 
-
 #' Wrapper script for plotQualityProfile after trim steps and primer removal.
 #' @inheritParams dada2::plotQualityProfile
 #' @param cutadapt_data Intermediate_data folder with trimmed and filtered reads for each sample
@@ -115,7 +117,8 @@ plot_post_trim_qc<-function(cutadapt_data, intermediate_path, n=500000){
     sample_info2 = cutadapt_data$filtered_path[cutadapt_data$sample_name == i]
     quality_plots2<-dada2::plotQualityProfile(sample_info2, n)
     name=paste0('qcpost_trim_plot_', i,'.pdf')
-    ggplot2::ggsave(quality_plots2, filename = name, path = intermediate_path, width = 8, height = 8)
+    qcplot_dir <- file.path("QC_plots")
+    ggplot2::ggsave(quality_plots2, filename = name, path = qcplot_dir, width = 8, height = 8)
     #print(quality_plots2)
   }
 }
@@ -171,7 +174,7 @@ infer_asvs <-function(my_primer_pair_id, my_direction, multithread=FALSE,nbases 
 #'
 #' @examples
 infer_asv_command <-function(intermediate_path, cutadapt_data, multithread=FALSE,nbases = 1e+08, errorEstimationFunction = loessErrfun, randomize=FALSE, MAX_CONSIST=10, OMEGA_C=0, qualityType="Auto", nominalQ = FALSE, obs=TRUE, err_out=TRUE, err_in=FALSE, pool=FALSE, selfConsist=FALSE, verbose=FALSE){
-  denoised_data_path <- file.path(intermediate_path, "Denoised_data.Rdata")
+  denoised_data_path <- file.path(intermediate_path, "Denoised_data.RData")
   if (file.exists(denoised_data_path)) {
     print("File already exists")
   } else {
@@ -196,9 +199,9 @@ infer_asv_command <-function(intermediate_path, cutadapt_data, multithread=FALSE
 #'
 #' @examples
 merge_reads_command <- function(intermediate_path, minOverlap=12, maxMismatch=0, returnRejects=FALSE, justConcatenate=FALSE, trimOverhang=FALSE, verbose=FALSE){
-  denoised_data_path <- file.path(intermediate_path, "Denoised_data.Rdata")
+  denoised_data_path <- file.path(intermediate_path, "denoised_data.RData")
   load(denoised_data_path) #incorporate into function
-  merged_read_data_path <- file.path(intermediate_path, "Merged_reads.Rdata")
+  merged_read_data_path <- file.path(intermediate_path, "merged_reads.RData")
   formatted_ref_dir <-
     if (file.exists(merged_read_data_path)) {
       load(merged_read_data_path)
@@ -259,7 +262,7 @@ countOverlap <- function(merged_reads){
     theme(panel.grid.major.x = element_blank(),
           panel.grid.minor = element_blank(),
           legend.position="bottom")
-  ggsave(merge_plot, filename = 'read_merging.jpg', path = intermediate_path, width = 8, height = 8)
+  ggsave(merge_plot, filename = 'read_merging.pdf', path = intermediate_path, width = 8, height = 8)
   merge_plot
 }
 
@@ -290,7 +293,7 @@ makeSeqtab<-function(merged_reads, orderBy="abundance"){
 make_abund_table<-function(raw_seqtab, method="consensus", verbose=FALSE, min_asv_length=50){
   seqtab.nochim <- dada2::removeBimeraDenovo(raw_seqtab, method=method, verbose=verbose)
   asv_abund_table <- seqtab.nochim[, nchar(colnames(seqtab.nochim)) >= min_asv_length]
-  asvabund_table_path <- file.path(intermediate_path, "asvabund_tableDADA2.Rdata")
+  asvabund_table_path <- file.path(intermediate_path, "asvabund_tableDADA2.RData")
   save(asv_abund_table, file = asvabund_table_path)
   return(asv_abund_table)
 }
@@ -341,7 +344,7 @@ prep_abund_table <-function(cutadapt_data, asv_abund_table, locus){
 #'
 #' @examples
 separate_abund_table <- function(abund_asv_its, abund_asv_rps10, intermediate_path, asv_abund_matrix){
-  separate_abund_path <- file.path(intermediate_path, "Separate_abund.Rdata")
+  separate_abund_path <- file.path(intermediate_path, "Separate_abund.RData")
   in_both <- colSums(abund_asv_its) != 0 & colSums(abund_asv_rps10) != 0
   assign_to_its <- in_both & colSums(abund_asv_rps10) > colSums(abund_asv_its)
   assign_to_rps10 <- in_both & colSums(abund_asv_rps10) < colSums(abund_asv_its)
@@ -461,7 +464,7 @@ add_pid_to_tax <- function(tax_results, asv_pid) {
   #'
   #' @examples
   assignTax_as_char <- function(tax_results) {
-    tax_table_path <- file.path(intermediate_path, "Final_tax_table.Rdata")
+    tax_table_path <- file.path(intermediate_path, "Final_tax_table.RData")
     tax_out <- vapply(1:nrow(tax_results$tax), FUN.VALUE = character(1), function(i) {
       paste(tax_results$tax[i, ],
             tax_results$boot[i, ],
@@ -493,7 +496,7 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv) {
                                dada2_pid = as.numeric(str_match(seq_tax_asv[rownames(formatted_abund_asv)], '--([0-9.]+)--ASV$')[, 2]),
                                formatted_abund_asv)
   formatted_abund_asv <- as_tibble(formatted_abund_asv)
-  write_csv(formatted_abund_asv, file = file.path(intermediate_path, 'final_asv_abundance_table.csv'))
+  write_csv(formatted_abund_asv, file = file.path(directory_path,"final_asv_abundance_table.csv"))
   #make results folder
   print(formatted_abund_asv)
   return(formatted_abund_asv)
@@ -514,9 +517,9 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv) {
 get_read_counts <- function(asv_abund_matrix) {
   filter_results_path<-file.path(intermediate_path, "filter_results.RData")
   load(filter_results_path) #incorporate into function
-  denoised_data_path <- file.path(intermediate_path, "Denoised_data.Rdata")
+  denoised_data_path <- file.path(intermediate_path, "denoised_data.RData")
   load(denoised_data_path) #incorporate into function
-  merged_read_data_path <- file.path(intermediate_path, "Merged_reads.Rdata")
+  merged_read_data_path <- file.path(intermediate_path, "merged_reads.RData")
   load(merged_read_data_path)
   getN <- function(x) sum(dada2::getUniques(x))
   track <- cbind(filter_results, sapply(dada_forward, getN), sapply(dada_reverse, getN), sapply(merged_reads, getN), rowSums(asv_abund_matrix))
@@ -524,7 +527,7 @@ get_read_counts <- function(asv_abund_matrix) {
   colnames(track) <- c("sample_nameBarcode", "input", "filtered", "denoisedF", "denoisedR", "merged", "nonchim")
   track$sample_nameBarcode<- gsub(".fastq.gz", "", 
                               gsub("R1_", "", track$sample_nameBarcode, fixed = TRUE))
-  track_read_counts_path <- file.path(intermediate_path, "track_reads.csv")
+  track_read_counts_path <- file.path(directory_path, "track_reads.csv")
   write_csv(track, track_read_counts_path)
   print(track)
 }
