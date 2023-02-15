@@ -10,6 +10,7 @@ setwd("~/rps10_metabarcoding_tool") #be careful about this
 load_all("~/rps10_metabarcoding_tool")
 document()
 
+#Simplify inputs
 directory_path<-"~/rps10_metabarcoding_tool/data" ##choose a directory for all downstream steps
 primer_path <-file.path(directory_path, "primer_info.csv") ##modify .csv name or keep this name
 #Metadata file just needs sample_name one column, and primer_name in second column (this function is being tweaked-see example)

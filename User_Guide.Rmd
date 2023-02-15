@@ -6,12 +6,15 @@ date: "2023-02-14"
 
 Before you start, put your read fastq reads into a directory where you would like to do your analysis.
 Please note: xx directories will be created. Please ensure that you have enough storage on your computer to proceed. 
-If you are using the Silva of Unite databases, an ordinary personal computer may not be sufficient.
+If you are using the Silva of Unite databases, an ordinary personal computer may not have enough memory. 
 
-Step 1-Prepare metadata and primer files. Using the provided templates, input, sample names, the names of corresponding raw read fastq files.
+Step 1-Prepare and input metadata and primer files. Using the provided templates, input, sample names, the names of corresponding raw read fastq files.
 Sample names will belong in the first column. Each sample must be unique. 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+metadata<-read_csv("~/rps10_metabarcoding_tool/data/metadata.csv")
+primer_info<-read_csv("~/rps10_metabarcoding_tool/data/primer_info.csv")
+cutadapt_path<-"/Users/masudermann/miniconda3/bin/cutadapt"
+directory_path<-metadata$directory_path[1]
 ```
 
 ## R Markdown
