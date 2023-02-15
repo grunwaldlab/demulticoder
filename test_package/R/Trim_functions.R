@@ -2,30 +2,30 @@
 #'
 #' @param fastq_data A path to FASTQ files for analysis
 #' @param metadata A metadata containing the concatenated metadata and primer data
-#' @param intermediate_path A path to the intermediate folder and directory
+#' @param directory_path A path to the directory folder and directory
 #'
 #' @return
 #' @export
 #'
 #' @examples
-make_cutadapt_tibble <- function(fastq_data, metadata, intermediate_path){ #new_fastq_data needed, why not just fastq_data
+make_cutadapt_tibble <- function(fastq_data, metadata, directory_path){ #new_fastq_data needed, why not just fastq_data
   cutadapt_data <- metadata %>%
     left_join(fastq_data, by = c("sample_name" = "sample_name"))
-  trimmed_read_dir <- file.path(intermediate_path, "trimmed_sequences")
+  trimmed_read_dir <- file.path(directory_path, "trimmed_sequences")
   if (! dir.exists(trimmed_read_dir)){
     dir.create(trimmed_read_dir)
   }
-
+  
   cutadapt_data$trimmed_path <- file.path(trimmed_read_dir, paste0(cutadapt_data$file_id, "_", cutadapt_data$primer_name, ".fastq.gz"))
-
+  
   #fastq_data_filtered$trimmed_path <- file.path(trimmed_read_dir, paste0(fastq_data_filtered$file_id, ".fastq.gz"))
-  untrimmed_read_dir <- file.path(intermediate_path, "untrimmed_sequences")
+  untrimmed_read_dir <- file.path(directory_path, "untrimmed_sequences")
   if (! dir.exists(untrimmed_read_dir)) {
     dir.create(untrimmed_read_dir)
   }
   cutadapt_data$untrimmed_path <- file.path(untrimmed_read_dir,  paste0(cutadapt_data$file_id, "_", cutadapt_data$primer_name, ".fastq.gz"))
-
-  filtered_read_dir <- file.path(intermediate_path, "filtered_sequences")
+  
+  filtered_read_dir <- file.path(directory_path, "filtered_sequences")
   if (! dir.exists(filtered_read_dir)) {
     dir.create(filtered_read_dir)
   }
@@ -33,12 +33,11 @@ make_cutadapt_tibble <- function(fastq_data, metadata, intermediate_path){ #new_
   return(cutadapt_data)
 }
 
-#Need to further generalize
 #rename min_length
 #' Core function for running cutadapt
 #'
 #' @param cutadapt_path A path to the cutadapt program
-#' @param cutadapt_data Intermediate_data folder with trimmed and filtered reads for each sample
+#' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
 #' @param min_length Read lengths that are lower than this threshold will be discarded. Default is 50.
 #'
 #' @return

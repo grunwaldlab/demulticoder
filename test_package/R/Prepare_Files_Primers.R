@@ -1,21 +1,4 @@
-#' Create intermediate path and directory
-#'
-#' @param working_dir_path A path to a directory containing reads and metadata/primer files
-#'
-#' @return A path to the intermediate folder and directory
-#' @export
-#'
-#' @examples intermediate_path <- create_intermediate(directory_path)
-create_intermediate <- function(working_dir_path){
-  intermediate_read_dir <- file.path(working_dir_path,  "intermediate_data")
-  if (! dir.exists(intermediate_read_dir)){
-    dir.create(intermediate_read_dir)
-  }
-  intermediate_path <- file.path(intermediate_read_dir)
-  return(intermediate_path)
-}
-
-#' Read in the metadata from user and combine it with the primer data. Included in a larger function prepare_reads. 
+#' Read in the metadata from user and combine it with the primer data. Included in a larger function prepare_reads.
 #'
 #' @param metadata_path  A path to the metadata .csv file
 #' @param primer_data The primer data tibble created in orient_primers function
@@ -29,7 +12,7 @@ prepare_metadata_table <- function(metadata_path, primer_data){
     left_join(primer_data, by = c("primer_name"))
   metadata <- metadata[order(metadata$sample_name),]
   if ("primer_name" %in% colnames(metadata)) { # Check if primer_name is in metadata columns, if true, moves it to the first column
-    new_metadata_cols <- c("primer_name", colnames(metadata)[colnames(metadata) != "primer_name"]) 
+    new_metadata_cols <- c("primer_name", colnames(metadata)[colnames(metadata) != "primer_name"])
     metadata = metadata[new_metadata_cols]
     metadata$sample_nameBarcode<-paste0(metadata$sample_name,"_",metadata$primer_name)
     metadata <- metadata %>% relocate(sample_nameBarcode, .after=sample_name)
@@ -42,26 +25,24 @@ prepare_metadata_table <- function(metadata_path, primer_data){
 
 #' Takes in the fastq files from the user and creates a tibble with the paths to files that will be created and used in the future. Included in a larger 'read_prefilt_fastq' function
 #'
-#' @param raw_path The path to the fastq files from user
+#' @param directory_path The path to the fastq files from user
 #'
 #' @return A tibble with the fastq file paths, the direction of the sequences, and names of sequences
 #' @export
 #'
-#' @examples fastq_data <- read_fastq(raw_path)
-read_fastq <- function(raw_path){
-  fastq_paths <- list.files(raw_path, pattern = "\\.fastq")
+#' @examples fastq_data <- read_fastq(directory_path)
+read_fastq <- function(directory_path){
+  fastq_paths <- list.files(directory_path, pattern = "\\.fastq")
   #constructing a tibble - special data frame with improved behaviors.
   fastq_data <- tibble(file_id = sub(fastq_paths, pattern = "\\.fastq\\.gz$", replacement = ""),
                        sample_name = gsub(fastq_paths, pattern = "_R1|_R2\\.fastq|.fastq\\.gz|.gz$", replacement = ""),
                        #direction: the grep1 is looking to match the pattern, relates a TRUE or FALSE with it (aka 1 or 0) and adds 1 to find the
                        #correct index to put Reverse or Forward
                        direction = c( "Reverse", "Forward")[BiocGenerics::grepl(fastq_paths, pattern = "_R1") + 1],
-                       raw_data_path = file.path(raw_path, fastq_paths))
-
+                       directory_data_path = file.path(directory_path, fastq_paths))
+  
   return(fastq_data)
 }
-
-#sample_name = sub(fastq_paths, pattern = "_.+$", replacement = "")
 
 #' Matching Order Primer Check
 #'
@@ -70,13 +51,13 @@ read_fastq <- function(raw_path){
 #' @return None
 #' @export
 #'
-#' @examples Part of a larger function 'read_prefilt_fastq' function. 
+#' @examples Part of a larger function 'read_prefilt_fastq' function.
 primer_check <- function(fastq_data){
   paired_file_paths <- fastq_data %>%
     filter(sample_name == gdata::first(sample_name)) %>%
     #pull is just like $ - you are accessing a variable inside the tibble
-    pull(raw_data_path)
-
+    pull(directory_data_path)
+  
   #this is the creation of a function: needs a path passed to it
   #literally just checking if the files have the same number of ids/seq
   get_read_names <- function(path){
@@ -99,13 +80,13 @@ primer_check <- function(fastq_data){
 #' @return A tibble that contains the forward and reverse primers with all complements of primers
 #' @export
 #'
-#' @examples primer_data <- orient_primers(primer_path). Part of the larger 'prepare_reads' function. 
+#' @examples primer_data <- orient_primers(primer_path). Part of the larger 'prepare_reads' function.
 orient_primers <- function(primer_path){
   primer_data_path <- file.path(primer_path)
   primer_data <- read_csv(primer_data_path)
   
   
-  #seperate forward and reverse to make various primer combination
+  #seperate forward and reverse to make various primers
   forward_primers <- primer_data[, c(1:2)]
   toString(forward_primers)
   reverse_primers <- primer_data[, c(1,3)]
@@ -125,21 +106,20 @@ orient_primers <- function(primer_path){
   return(primer_data)
 }
 
-#' A function for calling read_fastq, primer_check, and remove_ns functions. This will process and edit the FASTQ and make them ready for the trimming of primers with Cutadapt. Part of a larger 'prepare_reads' function.  
+#' A function for calling read_fastq, primer_check, and remove_ns functions. This will process and edit the FASTQ and make them ready for the trimming of primers with Cutadapt. Part of a larger 'prepare_reads' function.
 #' @inheritParams dada2::filterAndTrim
-#' @param raw_path A path to a directory that contains raw data
-#' @param intermediate_path A path to the intermediate folder and directory
+#' @param directory_path A path to a directory that contains raw data
 #' @param metadata A metadata containing the concatenated metadata and primer data
 
 #'
 #' @return
 #' @export #add params
 #'
-#' @examples  Part of the function prepare_reads. fastq_data <- read_prefilt_fastq(raw_path, intermediate_path, maxN = maxN, multithread = multithread)
-read_prefilt_fastq <- function(raw_path,intermediate_path, maxN= 0, multithread = FALSE){
-  fastq_data <- read_fastq(raw_path)
+#' @examples  Part of the function prepare_reads. fastq_data <- read_prefilt_fastq(directory_path, maxN = maxN, multithread = multithread)
+read_prefilt_fastq <- function(directory_path, maxN=0, multithread = FALSE){
+  fastq_data <- read_fastq(directory_path)
   primer_check(fastq_data)
-  fastq_data <- remove_ns(fastq_data, intermediate_path, maxN, multithread=multithread)
+  fastq_data <- remove_ns(fastq_data, directory_path, maxN, multithread=multithread)
   
   return(fastq_data)
 }
@@ -148,13 +128,12 @@ read_prefilt_fastq <- function(raw_path,intermediate_path, maxN= 0, multithread 
 #'
 #' @param primer_data The primer data tibble created in orient_primers function
 #' @param fastq_data A tibble with the fastq file paths, the direction of the sequences, and names of sequences
-#' @param intermediate_path A path to the intermediate folder and directory
 #'
 #' @return A number of reads in which the primer is found
 #' @export
 #'
-#' @examples 
-get_pre_primer_hits<- function(primer_data, fastq_data, intermediate_path){
+#' @examples
+get_pre_primer_hits<- function(primer_data, fastq_data, directory_path){
   primer_hit_data <- gather(primer_data, key = "orientation", value = "sequence", forward, f_compt, f_rev,
                             f_rc, reverse, r_compt, r_rev, r_rc)
   
@@ -164,11 +143,8 @@ get_pre_primer_hits<- function(primer_data, fastq_data, intermediate_path){
     nhits <- vcountPattern(primer, sread(readFastq(path)), fixed = FALSE)
     return(sum(nhits > 0))
   }
-  primer_count_path <- file.path(intermediate_path, "primer_counts")
-  if (! dir.exists(primer_count_path)){
-    dir.create(primer_count_path)
-  }
-  primer_hit_data_csv_path <- file.path(primer_count_path,"primer_hit_data_pretrim.csv")
+  
+  primer_hit_data_csv_path <- file.path(directory_path, "primer_hit_data_pretrim.csv")
   #if a file exists in there, then write the path to it
   if (file.exists(primer_hit_data_csv_path)){
     primer_hit_data <- read_csv(primer_hit_data_csv_path)
@@ -193,14 +169,13 @@ get_pre_primer_hits<- function(primer_data, fastq_data, intermediate_path){
 #' Get primer counts fo reach sample after primer removal and trimming steps
 #'
 #' @param primer_data The primer data tibble created in orient_primers function
-#' @param cutadapt_data Intermediate_data folder with trimmed and filtered reads for each sample
-#' @param intermediate_path A path to the intermediate folder and directory
+#' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
 #'
 #' @return
 #' @export
 #'
 #' @examples
-get_post_primer_hits <- function(primer_data, cutadapt_data, intermediate_path){
+get_post_primer_hits <- function(primer_data, cutadapt_data, directory_path){
   post_primer_hit_data <- gather(primer_data, key = "orientation", value = "sequence", forward, f_compt, f_rev,
                                  f_rc, reverse, r_compt, r_rev, r_rc)
   
@@ -211,11 +186,8 @@ get_post_primer_hits <- function(primer_data, cutadapt_data, intermediate_path){
     return(sum(nhits > 0))
   }
   
-  primer_count_path <- file.path(intermediate_path, "primer_counts")
-  if (! dir.exists(primer_count_path)){
-    dir.create(primer_count_path)
-  }
-  post_primer_hit_data_csv_path <- file.path(primer_count_path, "primer_hit_data_post_trim.csv")
+  
+  post_primer_hit_data_csv_path <- file.path(directory_path, "primer_hit_data_post_trim.csv")
   #if a file exists in there, then write the path to it
   if (file.exists(post_primer_hit_data_csv_path)){
     post_primer_hit_data <- read_csv(post_primer_hit_data_csv_path)
@@ -245,7 +217,7 @@ get_post_primer_hits <- function(primer_data, cutadapt_data, intermediate_path){
 #' @export
 #'
 #' @examples
-make_primer_hit_plot <- function(primer_hits, fastq_data, intermediate_path, plot_name){
+make_primer_hit_plot <- function(primer_hits, fastq_data, directory_path, plot_name){
   #This function takes so long to run - wonder if it will be ok with the servers - more efficient way to do this?
   #removing the sequence in the primer_hits tibble
   primer_hits <- primer_hits[-(3)]
@@ -282,8 +254,7 @@ make_primer_hit_plot <- function(primer_hits, fastq_data, intermediate_path, plo
     geom_text(aes(label=Total)) +
     coord_flip()
   print(plot)
-  primer_count_path <- file.path(intermediate_path, "Primer_counts")
-  ggsave(plot, filename = plot_name, path = primer_count_path, width = 8, height = 8)
+  ggsave(plot, filename = plot_name, path = directory_path, width = 8, height = 8)
   return(plot)
   
 }
