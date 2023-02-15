@@ -110,7 +110,7 @@ make_asv_abund_matrix <- function(data_tables, directory_path, cutadapt_data,
   return(asv_abund_matrix)
 }
 
-# Hung's Addition: process_rps10_barcode
+#generalize function for any single barcode
 #' Process the information from an ASV abundance matrix to run DADA2 for rps10 barcode
 #'
 #'
@@ -134,6 +134,7 @@ process_rps10_barcode <- function(data_tables, asv_abund_matrix, tryRC=FALSE, ve
   get_read_counts(asv_abund_matrix)
 }
 
+#generalize for any two barcodes
 # Hung's addition: process_rps10_ITS_barcode
 #For rps10 and its barcodes
 #' Main trim command to run core DADA2 functions for 2 barcodes
@@ -197,7 +198,26 @@ assignTax <- function(directory_path, database_rps10, database_its, data_tables,
   }
 }
 
-#TODO-create just ITS function
-#TODO-create 16S Function
-#Create 16S-rps10 function
-#Create 16S-ITS function
+#generalize function for any single barcode
+#' Process the information from an ASV abundance matrix to run DADA2 for rps10 barcode
+#'
+#'
+#' @param data_tables A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
+#' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
+#' @inheritParams assign_taxonomyDada2
+#' @return
+#' @export
+#'
+#' @examples
+#add params
+process_single_barcode <- function(data_tables, asv_abund_matrix, tryRC=FALSE, verbose=FALSE, multithread=FALSE, barcode="rps10")
+{
+  abund_asvs <- prep_abund_matrix(data_tables$cutadapt_data, asv_abund_matrix, barcode)
+  tax_results_asv <- assign_taxonomyDada2(abund_asv_rps10, "rps10_reference_db.fa", "rps10_taxmatrix.Rdata",
+                                                tryRC=tryRC, verbose=verbose, multithread=multithread)
+  pids_asv <- get_pids(tax_results_rps10_asv, "rps10_reference_db.fa")
+  tax_results_asv_pid <- add_pid_to_tax(tax_results_rps10_asv, rps10_pids_asv)
+  seq_tax_asv <- assignTax_as_char(tax_results_rps10_asv_pid)
+  formatted_abund_asv<-format_abund_matrix(asv_abund_matrix, seq_tax_asv)
+  get_read_counts(asv_abund_matrix)
+}
