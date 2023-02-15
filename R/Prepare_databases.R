@@ -1,17 +1,3 @@
-#' Prepare reference databases folder if it doesn't exist.
-#'
-#' @param directory_path A path to the intermediate folder
-#'
-#' @return A new directory called reference_databases
-#' @export
-#'
-#' @examples
-create_ref_database <- function(directory_path){
-  directory_path <- file.path(directory_path, "reference_databases")
-  if (! dir.exists(directory_path)) {
-    dir.create(directory_path)
-  }
-}
 #' Create modified reference rps10 database for downstream analysis
 #'
 #' @param directory_path A path to a directory that contains raw data
@@ -83,7 +69,7 @@ format_database_unite <-function(directory_path, database_its){
   count_table <- as.data.frame(genus_count, stringsAsFactors = FALSE)
   count_table <- as_tibble(count_table)
   names(count_table) <- c('Genus', 'Number of sequences')
-  directory_path <- file.path(directory_path, "reference_databases")
+  #directory_path <- file.path(directory_path, "reference_databases")
   write_csv(count_table, file = file.path(directory_path, "its_genus_count_table.csv"))
   its_ref_path <- file.path(directory_path , "its_reference_db.fa")
   paste0(">", its_data$taxonomy, "\n", its_db) %>%
@@ -124,10 +110,11 @@ format_database_silva <-function(directory_path, database_16s){
   count_table <- as.data.frame(genus_count, stringsAsFactors = FALSE)
   count_table <- as_tibble(count_table)
   names(count_table) <- c('Genus', 'Number of sequences')
-  directory_path <- file.path(directory_path, "reference_databases")
+  #directory_path <- file.path(directory_path, "reference_databases")
   write_csv(count_table, file = file.path(directory_path, "its_genus_count_table.csv"))
   its_ref_path <- file.path(directory_path , "its_reference_db.fa")
   paste0(">", its_data$taxonomy, "\n", its_db) %>%
     write_lines(file = its_ref_path)
   return(its_data)
 }
+
