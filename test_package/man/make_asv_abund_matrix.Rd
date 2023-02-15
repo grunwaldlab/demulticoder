@@ -5,7 +5,7 @@
 \title{Make an amplified sequence variants abundance matrix with data processed through preceding steps}
 \usage{
 make_asv_abund_matrix(
-  returnList,
+  data_tables,
   intermediate_path,
   cutadapt_data,
   multithread = FALSE,
@@ -33,7 +33,7 @@ make_asv_abund_matrix(
 )
 }
 \arguments{
-\item{returnList}{A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data}
+\item{data_tables}{A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data}
 
 \item{intermediate_path}{A path to the intermediate folder and directory}
 
@@ -127,5 +127,5 @@ asv_df
 Make an amplified sequence variants abundance matrix with data processed through preceding steps
 }
 \examples{
-asv_abund_matrix <- make_asvAbund_matrix(returnList,intermediate_path, returnList$cutadapt_data)
+asv_abund_matrix <- make_asvAbund_matrix(data_tables,intermediate_path, data_tables$cutadapt_data)
 }

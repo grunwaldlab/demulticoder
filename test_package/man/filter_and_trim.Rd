@@ -9,8 +9,8 @@ filter_and_trim(
   cutadapt_data,
   maxEE = Inf,
   truncQ = 2,
-  minLength = 20,
-  maxLength = Inf,
+  minLen = 20,
+  maxLen = Inf,
   truncLen = 0,
   maxN = 0,
   minQ = 0,
@@ -38,6 +38,12 @@ Expected errors are calculated from the nominal definition of the quality score:
 
 \item{truncQ}{(Optional). Default 2.
 Truncate reads at the first instance of a quality score less than or equal to \code{truncQ}.}
+
+\item{minLen}{(Optional). Default 20.
+Remove reads with length less than minLen. minLen is enforced \strong{after} trimming and truncation.}
+
+\item{maxLen}{(Optional). Default Inf (no maximum).
+Remove reads with length greater than maxLen. maxLen is enforced \strong{before} trimming and truncation.}
 
 \item{truncLen}{(Optional). Default 0 (no truncation).
 Truncate reads after \code{truncLen} bases. Reads shorter than this are discarded.}

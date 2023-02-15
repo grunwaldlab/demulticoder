@@ -4,12 +4,12 @@
 \alias{format_database_rps10}
 \title{Create modified reference rps10 database for downstream analysis}
 \usage{
-format_database_rps10(raw_data_path, database_name)
+format_database_rps10(raw_data_path, database_rps10)
 }
 \arguments{
 \item{raw_data_path}{A path to a directory that contains raw data}
 
-\item{database_name}{The name of the database}
+\item{database_rps10}{The name of the database}
 }
 \value{
 A rps10 database that has modified headers and is output in the reference_databases folder.

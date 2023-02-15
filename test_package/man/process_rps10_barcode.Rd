@@ -5,7 +5,7 @@
 \title{Process the information from an ASV abundance matrix to run DADA2 for rps10 barcode}
 \usage{
 process_rps10_barcode(
-  returnList,
+  data_tables,
   asv_abund_matrix,
   tryRC = FALSE,
   verbose = FALSE,
@@ -13,7 +13,7 @@ process_rps10_barcode(
 )
 }
 \arguments{
-\item{returnList}{A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data}
+\item{data_tables}{A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data}
 
 \item{asv_abund_matrix}{An abundance matrix containing amplified sequence variants}
 

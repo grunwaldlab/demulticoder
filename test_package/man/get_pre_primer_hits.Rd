@@ -7,7 +7,7 @@
 get_pre_primer_hits(primer_data, fastq_data, intermediate_path)
 }
 \arguments{
-\item{primer_data}{The primer data tibble created in prepare_primers function}
+\item{primer_data}{The primer data tibble created in orient_primers function}
 
 \item{fastq_data}{A tibble with the fastq file paths, the direction of the sequences, and names of sequences}
 

@@ -5,13 +5,13 @@
 \title{Main command to trim primers based on DADA2 functions}
 \usage{
 cut_trim(
-  returnList,
+  data_tables,
   intermediate_path,
   cutadapt_path,
   maxEE = Inf,
   truncQ = 2,
-  minLength = 20,
-  maxLength = Inf,
+  minLen = 20,
+  maxLen = Inf,
   truncLen = 0,
   maxN = 0,
   minQ = 0,
@@ -25,11 +25,12 @@ cut_trim(
   id.sep = "\\\\s",
   rm.lowcomplex = 0,
   orient.fwd = NULL,
-  id.field = NULL
+  id.field = NULL,
+  min_length = 50
 )
 }
 \arguments{
-\item{returnList}{A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data}
+\item{data_tables}{A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data}
 
 \item{intermediate_path}{A path to the intermediate folder and directory}
 
@@ -41,6 +42,12 @@ Expected errors are calculated from the nominal definition of the quality score:
 
 \item{truncQ}{(Optional). Default 2.
 Truncate reads at the first instance of a quality score less than or equal to \code{truncQ}.}
+
+\item{minLen}{(Optional). Default 20.
+Remove reads with length less than minLen. minLen is enforced \strong{after} trimming and truncation.}
+
+\item{maxLen}{(Optional). Default Inf (no maximum).
+Remove reads with length greater than maxLen. maxLen is enforced \strong{before} trimming and truncation.}
 
 \item{truncLen}{(Optional). Default 0 (no truncation).
 Truncate reads after \code{truncLen} bases. Reads shorter than this are discarded.}
@@ -112,6 +119,8 @@ are a mixture of forward and reverse orientations, and that include the forward 
 The field of the id-line containing the sequence identifier.
 If NULL (the default) and matchIDs is TRUE, the function attempts to automatically detect
   the sequence identifier field under the assumption of Illumina formatted output.}
+
+\item{min_length}{Read lengths that are lower than this threshold will be discarded. Default is 50.}
 }
 \description{
 Main command to trim primers based on DADA2 functions

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Prepare_Files_Primers.R
 \name{read_fastq}
 \alias{read_fastq}
-\title{Takes in the fastq files from the user and creates a tibble with the paths to files that will be created and used in the future. Included in a larger 'prepare_fastq' function}
+\title{Takes in the fastq files from the user and creates a tibble with the paths to files that will be created and used in the future. Included in a larger 'read_prefilt_fastq' function}
 \usage{
 read_fastq(raw_path)
 }
@@ -13,7 +13,7 @@ read_fastq(raw_path)
 A tibble with the fastq file paths, the direction of the sequences, and names of sequences
 }
 \description{
-Takes in the fastq files from the user and creates a tibble with the paths to files that will be created and used in the future. Included in a larger 'prepare_fastq' function
+Takes in the fastq files from the user and creates a tibble with the paths to files that will be created and used in the future. Included in a larger 'read_prefilt_fastq' function
 }
 \examples{
 fastq_data <- read_fastq(raw_path)

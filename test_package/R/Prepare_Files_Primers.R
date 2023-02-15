@@ -18,13 +18,13 @@ create_intermediate <- function(working_dir_path){
 #' Read in the metadata from user and combine it with the primer data. Included in a larger function prepare_reads. 
 #'
 #' @param metadata_path  A path to the metadata .csv file
-#' @param primer_data The primer data tibble created in prepare_primers function
+#' @param primer_data The primer data tibble created in orient_primers function
 #'
 #' @return A metadata containing the concatenated metadata and primer data
 #' @export
 #'
-#' @examples metadata <- prepare_metadata(metadata_path, primer_data)
-prepare_metadata <- function(metadata_path, primer_data){
+#' @examples metadata <- prepare_metadata_table(metadata_path, primer_data)
+prepare_metadata_table <- function(metadata_path, primer_data){
   metadata <- read_csv(metadata_path) %>%
     left_join(primer_data, by = c("primer_name"))
   metadata <- metadata[order(metadata$sample_name),]
@@ -40,7 +40,7 @@ prepare_metadata <- function(metadata_path, primer_data){
   return(metadata)
 }
 
-#' Takes in the fastq files from the user and creates a tibble with the paths to files that will be created and used in the future. Included in a larger 'prepare_fastq' function
+#' Takes in the fastq files from the user and creates a tibble with the paths to files that will be created and used in the future. Included in a larger 'read_prefilt_fastq' function
 #'
 #' @param raw_path The path to the fastq files from user
 #'
@@ -70,7 +70,7 @@ read_fastq <- function(raw_path){
 #' @return None
 #' @export
 #'
-#' @examples Part of a larger function 'prepare_fastq' function. 
+#' @examples Part of a larger function 'read_prefilt_fastq' function. 
 primer_check <- function(fastq_data){
   paired_file_paths <- fastq_data %>%
     filter(sample_name == gdata::first(sample_name)) %>%
@@ -99,8 +99,8 @@ primer_check <- function(fastq_data){
 #' @return A tibble that contains the forward and reverse primers with all complements of primers
 #' @export
 #'
-#' @examples primer_data <- prepare_primers(primer_path). Part of the larger 'prepare_reads' function. 
-prepare_primers <- function(primer_path){
+#' @examples primer_data <- orient_primers(primer_path). Part of the larger 'prepare_reads' function. 
+orient_primers <- function(primer_path){
   primer_data_path <- file.path(primer_path)
   primer_data <- read_csv(primer_data_path)
   
@@ -135,8 +135,8 @@ prepare_primers <- function(primer_path){
 #' @return
 #' @export #add params
 #'
-#' @examples  Part of the function prepare_reads. fastq_data <- prepare_fastq(raw_path, intermediate_path, maxN = maxN, multithread = multithread)
-prepare_fastq <- function(raw_path,intermediate_path, maxN= 0, multithread = FALSE){
+#' @examples  Part of the function prepare_reads. fastq_data <- read_prefilt_fastq(raw_path, intermediate_path, maxN = maxN, multithread = multithread)
+read_prefilt_fastq <- function(raw_path,intermediate_path, maxN= 0, multithread = FALSE){
   fastq_data <- read_fastq(raw_path)
   primer_check(fastq_data)
   fastq_data <- remove_ns(fastq_data, intermediate_path, maxN, multithread=multithread)
@@ -146,7 +146,7 @@ prepare_fastq <- function(raw_path,intermediate_path, maxN= 0, multithread = FAL
 
 #' Get primer counts fo reach sample before primer removal and trimming steps
 #'
-#' @param primer_data The primer data tibble created in prepare_primers function
+#' @param primer_data The primer data tibble created in orient_primers function
 #' @param fastq_data A tibble with the fastq file paths, the direction of the sequences, and names of sequences
 #' @param intermediate_path A path to the intermediate folder and directory
 #'
@@ -192,7 +192,7 @@ get_pre_primer_hits<- function(primer_data, fastq_data, intermediate_path){
 
 #' Get primer counts fo reach sample after primer removal and trimming steps
 #'
-#' @param primer_data The primer data tibble created in prepare_primers function
+#' @param primer_data The primer data tibble created in orient_primers function
 #' @param cutadapt_data Intermediate_data folder with trimmed and filtered reads for each sample
 #' @param intermediate_path A path to the intermediate folder and directory
 #'

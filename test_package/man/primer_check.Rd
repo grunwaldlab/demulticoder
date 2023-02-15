@@ -16,5 +16,5 @@ None
 Matching Order Primer Check
 }
 \examples{
-Part of a larger function 'prepare_fastq' function. 
+Part of a larger function 'read_prefilt_fastq' function. 
 }

@@ -4,7 +4,7 @@
 \alias{run_cutadapt}
 \title{Core function for running cutadapt}
 \usage{
-run_cutadapt(cutadapt_path, cutadapt_data, min_length = 50)
+run_cutadapt(cutadapt_path, cutadapt_data, min_length = 20)
 }
 \arguments{
 \item{cutadapt_path}{A path to the cutadapt program}

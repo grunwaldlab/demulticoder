@@ -1,29 +1,29 @@
 #Prepare reads. A wrapper function to prepare reads for trimming using Cutadapt. Counts of primers on reads will be output.
 #' Main command prepare reads for primer trimming
 #' @param directory_path A path to a directory containing reads and metadata/primer files
-#' @param primer_path The primer data tibble created in prepare_primers function
+#' @param primer_path The primer data tibble created in orient_primers function
 #' @param metadata_path A path to a metadata containing the concatenated metadata and primer data
 #' @param fastq_path path to a directory containing FASTQ reads
 #' @param intermediate_path A path to the intermediate folder and directory
-#' @inheritParams prepare_fastq
+#' @inheritParams read_prefilt_fastq
 #'
 #' @return A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
 #' @export
 #'
-#' @examples returnList<-prepare_reads(directory_path, primer_path, metadata_path, fastq_path, intermediate_path, maxN=0, multithread=TRUE)
+#' @examples data_tables<-prepare_reads(directory_path, primer_path, metadata_path, fastq_path, intermediate_path, maxN=0, multithread=TRUE)
 
 prepare_reads <- function(directory_path, primer_path, metadata_path, fastq_path,intermediate_path, maxN=0, multithread=FALSE){
   prep_tables <- file.path(intermediate_path, "Prep_tables.RData")
-  primer_data <- prepare_primers(primer_path)
-  metadata <- prepare_metadata(metadata_path, primer_data)
-  fastq_data <- prepare_fastq(raw_path, intermediate_path, maxN = maxN, multithread = multithread)
+  primer_data <- orient_primers(primer_path)
+  metadata <- prepare_metadata_table(metadata_path, primer_data)
+  fastq_data <- read_prefilt_fastq(raw_path, intermediate_path, maxN = maxN, multithread = multithread)
   pre_primer_hit_data<- get_pre_primer_hits(primer_data, fastq_data,
                                             intermediate_path)
   pre_primer_plot <- make_primer_hit_plot(pre_primer_hit_data, fastq_data,
                                           intermediate_path, "pre_primer_plot.pdf")
   cutadapt_data <- make_cutadapt_tibble(fastq_data, metadata, intermediate_path)
-  returnList <- list(cutadapt_data=cutadapt_data, primer_data=primer_data, fastq_data=fastq_data, metadata=metadata)
-  return(returnList)
+  data_tables <- list(cutadapt_data=cutadapt_data, primer_data=primer_data, fastq_data=fastq_data, metadata=metadata)
+  return(data_tables)
 }
 
 #load fastq 
@@ -36,7 +36,7 @@ prepare_reads <- function(directory_path, primer_path, metadata_path, fastq_path
 #' @inheritParams filter_and_trim
 #' @inheritParams post_trim_qc
 #' @inheritParams run_cutadapt
-#' @param returnList A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
+#' @param data_tables A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
 #' @param intermediate_path A path to the intermediate folder and directory
 #' @param cutadapt_path A path to the cutadapt program
 #'
@@ -47,32 +47,32 @@ prepare_reads <- function(directory_path, primer_path, metadata_path, fastq_path
 #'
 #'
 
-cut_trim <- function(returnList,intermediate_path,cutadapt_path,
+cut_trim <- function(data_tables,intermediate_path,cutadapt_path,
                      maxEE = Inf, truncQ = 2, minLen = 20, maxLen = Inf,
                      truncLen = 0, maxN = 0, minQ=0, rm.phix=TRUE,
                      multithread=FALSE, matchIDs=FALSE, verbose=FALSE,
                      qualityType="Auto", OMP=TRUE, n=1e+05,id.sep="\\s",
                      rm.lowcomplex=0, orient.fwd=NULL, id.field=NULL, min_length=50){
-  run_cutadapt(cutadapt_path, returnList$cutadapt_data, min_length=min_length)
-  quality_plots<-plot_qc(returnList$cutadapt_data, intermediate_path)
-  filter_results <-filter_and_trim(intermediate_path, returnList$cutadapt_data,
+  run_cutadapt(cutadapt_path, data_tables$cutadapt_data, min_length=min_length)
+  quality_plots<-plot_qc(data_tables$cutadapt_data, intermediate_path)
+  filter_results <-filter_and_trim(intermediate_path, data_tables$cutadapt_data,
                                    maxEE = maxEE, truncQ = truncQ, minLen = minLen,
                                    maxLen = maxLen, multithread = multithread,
                                    matchIDs=matchIDs, verbose = verbose, qualityType = qualityType,
                                    OMP = OMP, n=n, id.sep = id.sep, rm.lowcomplex = rm.lowcomplex,
                                    orient.fwd = orient.fwd, id.field = id.field)
-  post_primer_hit_data <- get_post_primer_hits(returnList$primer_data, returnList$cutadapt_data,
+  post_primer_hit_data <- get_post_primer_hits(data_tables$primer_data, data_tables$cutadapt_data,
                                                intermediate_path)
-  post_primer_plot <- make_primer_hit_plot(post_primer_hit_data, returnList$fastq_data,
+  post_primer_plot <- make_primer_hit_plot(post_primer_hit_data, data_tables$fastq_data,
                                       intermediate_path, "post_primer_plot.pdf")
-  quality_plots2 <- plot_post_trim_qc(returnList$cutadapt_data, intermediate_path)
+  quality_plots2 <- plot_post_trim_qc(data_tables$cutadapt_data, intermediate_path)
 }
 
 # Hung's Addition: make_asvAbund_table
 #' Make an amplified sequence variants abundance matrix with data processed through preceding steps
 #'
 #'
-#' @param returnList A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
+#' @param data_tables A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
 #' @param rawSeqTab_fileName A filename as which the raw sequence table will be saved
 #' @param abundMatrix_fileName A filenmae as which the abundance matrix will be saved
 #' @inheritParams infer_asv_command 
@@ -82,8 +82,8 @@ cut_trim <- function(returnList,intermediate_path,cutadapt_path,
 #' @return asv_df
 #' @export
 #'
-#' @examples asv_abund_matrix <- make_asvAbund_matrix(returnList,intermediate_path, returnList$cutadapt_data)
-make_asv_abund_matrix <- function(returnList, intermediate_path, cutadapt_data,
+#' @examples asv_abund_matrix <- make_asvAbund_matrix(data_tables,intermediate_path, data_tables$cutadapt_data)
+make_asv_abund_matrix <- function(data_tables, intermediate_path, cutadapt_data,
                                  multithread=FALSE,nbases = 1e+08,
                                  errorEstimationFunction = loessErrfun, randomize=FALSE,
                                  MAX_CONSIST=10, OMEGA_C=0, qualityType="Auto", nominalQ = FALSE, 
@@ -92,7 +92,7 @@ make_asv_abund_matrix <- function(returnList, intermediate_path, cutadapt_data,
                                  justConcatenate=FALSE, trimOverhang=FALSE, orderBy="abundance",
                                  method="consensus", min_asv_length=50)
 {
-  infer_asv_command(intermediate_path, returnList$cutadapt_data, 
+  infer_asv_command(intermediate_path, data_tables$cutadapt_data, 
                     multithread = multithread, 
                     nbases=nbases,
                     errorEstimationFunction= errorEstimationFunction, 
@@ -123,7 +123,7 @@ make_asv_abund_matrix <- function(returnList, intermediate_path, cutadapt_data,
 #' Process the information from an ASV abundance matrix to run DADA2 for rps10 barcode
 #'
 #'
-#' @param returnList A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
+#' @param data_tables A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
 #' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
 #' @inheritParams assign_taxonomyDada2 
 #' @return 
@@ -131,9 +131,9 @@ make_asv_abund_matrix <- function(returnList, intermediate_path, cutadapt_data,
 #'
 #' @examples
 #add params
-process_rps10_barcode <- function(returnList, asv_abund_matrix, tryRC=FALSE, verbose=FALSE, multithread=FALSE)
+process_rps10_barcode <- function(data_tables, asv_abund_matrix, tryRC=FALSE, verbose=FALSE, multithread=FALSE)
 {
-  abund_asv_rps10 <- prep_abund_table(returnList$cutadapt_data, asv_abund_matrix, "rps10")
+  abund_asv_rps10 <- prep_abund_table(data_tables$cutadapt_data, asv_abund_matrix, "rps10")
   tax_results_rps10_asv <- assign_taxonomyDada2(abund_asv_rps10, "rps10_reference_db.fa", "rps10_taxtable.RData",
                                                 tryRC=tryRC, verbose=verbose, multithread=multithread)
   rps10_pids_asv <- get_pids(tax_results_rps10_asv, "rps10_reference_db.fa")
@@ -149,7 +149,7 @@ process_rps10_barcode <- function(returnList, asv_abund_matrix, tryRC=FALSE, ver
 #For rps10 and its barcodes
 #' Main trim command to run core DADA2 functions for 2 barcodes
 #'
-#' @param returnList list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
+#' @param data_tables list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
 #' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
 #' @inheritParams assign_taxonomyDada2 
 #' 
@@ -157,10 +157,10 @@ process_rps10_barcode <- function(returnList, asv_abund_matrix, tryRC=FALSE, ver
 #' @export
 #'
 #' @examples
-process_rps10_ITS_barcode <- function(returnList, asv_abund_matrix, tryRC=FALSE, verbose=FALSE, multithread=FALSE)
+process_rps10_ITS_barcode <- function(data_tables, asv_abund_matrix, tryRC=FALSE, verbose=FALSE, multithread=FALSE)
 {
-  abund_asv_rps10 <- prep_abund_table(returnList$cutadapt_data, asv_abund_matrix, "rps10")
-  abund_asv_its <- prep_abund_table(returnList$cutadapt_data, asv_abund_matrix, "ITS")
+  abund_asv_rps10 <- prep_abund_table(data_tables$cutadapt_data, asv_abund_matrix, "rps10")
+  abund_asv_its <- prep_abund_table(data_tables$cutadapt_data, asv_abund_matrix, "ITS")
   separate_abund_table(abund_asv_its, abund_asv_rps10, intermediate_path, asv_abund_matrix)
   separate_abund_filepath <- file.path(intermediate_path, "Separate_abund.RData")
   load(separate_abund_filepath)
@@ -180,7 +180,7 @@ process_rps10_ITS_barcode <- function(returnList, asv_abund_matrix, tryRC=FALSE,
 
 #' Assign rps10 and ITS taxonomy
 #'
-#' @param returnList 
+#' @param data_tables 
 #' @param is_ITS TRUE or FALSE
 #' @param asv_abund_matrix 
 #' @param tryRC 
@@ -195,16 +195,16 @@ process_rps10_ITS_barcode <- function(returnList, asv_abund_matrix, tryRC=FALSE,
 #' @export
 #'
 #' @examples
-assignTax_function <- function(raw_path, database_rps10, database_its, returnList, asv_abund_matrix, tryRC=FALSE, verbose=FALSE, multithread=FALSE, is_ITS=FALSE) {
+assignTax_function <- function(raw_path, database_rps10, database_its, data_tables, asv_abund_matrix, tryRC=FALSE, verbose=FALSE, multithread=FALSE, is_ITS=FALSE) {
   create_ref_database(intermediate_path)
   
   if(is_ITS==FALSE) {
     format_database_rps10(raw_path, database_rps10)
-    summary_table<-process_rps10_barcode(returnList, asv_abund_matrix, multithread = multithread)
+    summary_table<-process_rps10_barcode(data_tables, asv_abund_matrix, multithread = multithread)
   } else {
       format_database_rps10(raw_path, database_rps10)
       format_database_unite(raw_path, database_its)
-      summary_table2<-process_rps10_ITS_barcode(returnList, asv_abund_matrix, multithread = multithread)
+      summary_table2<-process_rps10_ITS_barcode(data_tables, asv_abund_matrix, multithread = multithread)
     }
 }
 

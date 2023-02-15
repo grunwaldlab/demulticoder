@@ -134,7 +134,7 @@ plot_post_trim_qc<-function(cutadapt_data, intermediate_path, n=500000){
 #'
 #' @examples
 get_fastq_paths <- function(my_direction, my_primer_pair_id) {
-  returnList$cutadapt_data %>%
+  data_tables$cutadapt_data %>%
     filter(direction == my_direction, primer_name == my_primer_pair_id, file.exists(filtered_path)) %>%
     pull(filtered_path)
 }
@@ -179,7 +179,7 @@ infer_asv_command <-function(intermediate_path, cutadapt_data, multithread=FALSE
     print("File already exists")
   } else {
     run_dada <- function(direction) {
-      lapply(unique(returnList$cutadapt_data$primer_name), function(primer_name) infer_asvs(primer_name, direction,multithread = multithread, nbases=nbases,errorEstimationFunction= errorEstimationFunction, randomize=randomize, MAX_CONSIST=MAX_CONSIST, OMEGA_C= OMEGA_C, qualityType=qualityType, nominalQ = nominalQ, obs=obs, err_out=err_out, err_in=err_in,pool=pool, selfConsist=selfConsist, verbose=verbose)) %>%
+      lapply(unique(data_tables$cutadapt_data$primer_name), function(primer_name) infer_asvs(primer_name, direction,multithread = multithread, nbases=nbases,errorEstimationFunction= errorEstimationFunction, randomize=randomize, MAX_CONSIST=MAX_CONSIST, OMEGA_C= OMEGA_C, qualityType=qualityType, nominalQ = nominalQ, obs=obs, err_out=err_out, err_in=err_in,pool=pool, selfConsist=selfConsist, verbose=verbose)) %>%
         unlist(recursive = FALSE)
     }
     dada_forward <- run_dada("Forward")
@@ -239,8 +239,8 @@ countOverlap <- function(merged_reads){
     mutate(fullsample_name = rep(names(non_empty_merged_reads), map_int(non_empty_merged_reads, nrow))) %>%
     as_tibble() #check best practices
   
-  returnList$cutadapt_data$fullsample_name <- paste0(returnList$cutadapt_data$file_id,'_', returnList$cutadapt_data$primer_name)
-  cutadapt_short <- returnList$cutadapt_data %>%
+  data_tables$cutadapt_data$fullsample_name <- paste0(data_tables$cutadapt_data$file_id,'_', data_tables$cutadapt_data$primer_name)
+  cutadapt_short <- data_tables$cutadapt_data %>%
     select(fullsample_name, sample_name, primer_name)
   merge_data2 <- merge_data %>%
     left_join(cutadapt_short, by = c("fullsample_name" = "fullsample_name"))
@@ -326,8 +326,8 @@ make_seqhist <- function(asv_abund_table){
 #' @examples
 prep_abund_table <-function(cutadapt_data, asv_abund_table, locus){
   #rownames(asv_abund_table) <- sub(rownames(asv_abund_table), pattern = ".fastq.gz", replacement = "")
-  returnList$cutadapt_data$file_id_primer <- paste0(returnList$cutadapt_data$sample_name, "_", returnList$cutadapt_data$primer_name)
-  asv_abund_matrix<- asv_abund_table[rownames(asv_abund_table) %in% returnList$cutadapt_data$file_id_primer[returnList$cutadapt_data$primer_name == locus], ]
+  data_tables$cutadapt_data$file_id_primer <- paste0(data_tables$cutadapt_data$sample_name, "_", data_tables$cutadapt_data$primer_name)
+  asv_abund_matrix<- asv_abund_table[rownames(asv_abund_table) %in% data_tables$cutadapt_data$file_id_primer[data_tables$cutadapt_data$primer_name == locus], ]
   return(asv_abund_matrix)
 }
 
