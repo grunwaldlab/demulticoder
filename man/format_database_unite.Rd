@@ -4,15 +4,15 @@
 \alias{format_database_unite}
 \title{An ITS database that has modified headers and is output in the reference_databases folder.}
 \usage{
-format_database_unite(raw_data_path, database_its)
+format_database_unite(directory_path, database_its)
 }
 \arguments{
-\item{raw_data_path}{A path to a directory that contains raw data}
+\item{directory_path}{A path to a directory that contains raw data}
 
 \item{database_its}{The name of the database}
 }
 \value{
-A rps10 database that has modified headers and is output in the reference_databases folder.
+An ITS database that has modified headers and is output in the reference_databases folder.
 }
 \description{
 An ITS database that has modified headers and is output in the reference_databases folder.

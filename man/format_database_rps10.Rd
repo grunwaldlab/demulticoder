@@ -4,10 +4,10 @@
 \alias{format_database_rps10}
 \title{Create modified reference rps10 database for downstream analysis}
 \usage{
-format_database_rps10(raw_data_path, database_rps10)
+format_database_rps10(directory_path, database_rps10)
 }
 \arguments{
-\item{raw_data_path}{A path to a directory that contains raw data}
+\item{directory_path}{A path to a directory that contains raw data}
 
 \item{database_rps10}{The name of the database}
 }

@@ -4,10 +4,10 @@
 \alias{create_ref_database}
 \title{Prepare reference databases folder if it doesn't exist.}
 \usage{
-create_ref_database(intermediate_path)
+create_ref_database(directory_path)
 }
 \arguments{
-\item{intermediate_path}{A path to the intermediate folder}
+\item{directory_path}{A path to the intermediate folder}
 }
 \value{
 A new directory called reference_databases
