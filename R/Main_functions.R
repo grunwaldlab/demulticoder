@@ -150,7 +150,7 @@ process_rps10_barcode <- function(data_tables, asv_abund_matrix, tryRC=FALSE, ve
 process_rps10_ITS_barcode <- function(data_tables, asv_abund_matrix, tryRC=FALSE, verbose=FALSE, multithread=FALSE)
 {
   abund_asv_rps10 <- prep_abund_matrix(data_tables$cutadapt_data, asv_abund_matrix, "rps10")
-  abund_asv_its <- prep_abund_table(data_tables$cutadapt_data, asv_abund_matrix, "ITS")
+  abund_asv_its <- prep_abund_matrix(data_tables$cutadapt_data, asv_abund_matrix, "ITS")
   separate_abund_table(abund_asv_its, abund_asv_rps10, directory_path, asv_abund_matrix)
   separate_abund_filepath <- file.path(directory_path, "Separate_abund.Rdata")
   load(separate_abund_filepath)
