@@ -1,0 +1,5 @@
+sample_id,primer_name,raw_file_path_forward,raw_file_path_reverse
+SCr121, rps10,Users/masudermann/rps10_metabarcoding_tool/data/rps10/lane1-s001-indexN714-S515-GCTCATGA-TTCTAGCT-rps10-1_S1_R1_001.fastq.gz,Users/masudermann/rps10_metabarcoding_tool/data/rps10/lane1-s001-indexN714-S515-GCTCATGA-TTCTAGCT-rps10-1_S1_R2_001.fastq.gz
+SCr121, rps10,Users/masudermann/rps10_metabarcoding_tool/data/rps10/lane1-s001-indexN714-S515-GCTCATGA-TTCTAGCT-rps10-1_S1_R1_001.fastq.gz,Users/masudermann/rps10_metabarcoding_tool/data/rps10/lane1-s001-indexN714-S515-GCTCATGA-TTCTAGCT-rps10-1_S1_R2_001.fastq.gz
+SCr445, rps10,Users/masudermann/rps10_metabarcoding_tool/data/rps10/lane1-s001-indexN714-S515-GCTCATGA-TTCTAGCT-rps10-1_S1_R1_001.fastq.gz,Users/masudermann/rps10_metabarcoding_tool/data/rps10/lane1-s001-indexN714-S515-GCTCATGA-TTCTAGCT-rps10-1_S1_R2_001.fastq.gz
+SCr445, rps10,Users/masudermann/rps10_metabarcoding_tool/data/rps10/lane1-s001-indexN714-S515-GCTCATGA-TTCTAGCT-rps10-1_S1_R1_001.fastq.gz,Users/masudermann/rps10_metabarcoding_tool/data/rps10/lane1-s001-indexN714-S515-GCTCATGA-TTCTAGCT-rps10-1_S1_R2_001.fastq.gz
