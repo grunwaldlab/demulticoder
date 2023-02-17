@@ -11,7 +11,7 @@ load_all("~/rps10_metabarcoding_tool")
 document()
 
 #Simplify inputs
-directory_path<-"~/rps10_metabarcoding_tool/data" ##choose a directory for all downstream steps
+directory_path<-"~/rps10_metabarcoding_tool/data/rps10_ITS" ##choose a directory for all downstream steps
 primer_path <-file.path(directory_path, "primer_info.csv") ##modify .csv name or keep this name
 #Metadata file just needs sample_name one column, and primer_name in second column (this function is being tweaked-see example)
 metadata_path <-file.path(directory_path,"metadata.csv") ##modify .csv name or keep this name. The sample_name in the metadata sheet needs to match the first part (before first underscore), of the zipped raw FASTQ files
@@ -19,6 +19,7 @@ cutadapt_path<-"/Users/masudermann/miniconda3/bin/cutadapt"
 
 #Further simplify
 #change names
+
 
 data_tables<-prepare_reads(directory_path, primer_path, metadata_path, maxN=0, multithread=TRUE)
 cut_trim(data_tables,directory_path, cutadapt_path, verbose=TRUE, maxEE=8, truncQ=2, minLen=200, maxLen=297, min_length=50) #fix cutadapt param!!!
@@ -28,6 +29,17 @@ asv_abund_matrix <- make_asv_abund_matrix(data_tables, directory_path, data_tabl
 #TODO adjust maxmismatch if there aren't alot of merged reads
 
 #Wrapper function to format databases and assign taxonomy
-summary<-assignTax(directory_path, "oomycetedb.fasta", "unite.fasta", data_tables, asv_abund_matrix, multithread = TRUE, is_ITS=FALSE)
-#output is weird
+#Change barcode to 'rps10', 'its', or 'rps10_its'
+summary<-assignTax(directory_path, data_tables, asv_abund_matrix, multithread = TRUE, barcode = "rps10")
+
+#To do-Martha
+#Put example commands into user-friendly Rmarkdown document
+#Make actual test datasets that are not too large, and test databases that are short enough to run on local computer (first small datasets then into rda files)
+#Generalize for work with with 16S barcode-format 16S database
+#compile outputs as example
+
+#Hung
+#Check if primers are still present on ASV and remove sequences that do
+#Simplify and further generalize functions
+#Get package on cluster
 sessioninfo::session_info()
