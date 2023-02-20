@@ -11,7 +11,7 @@ load_all("~/rps10_metabarcoding_tool")
 document()
 
 #Simplify inputs
-directory_path<-"~/rps10_metabarcoding_tool/data/rps10" ##choose a directory for all downstream steps
+directory_path<-"~/rps10_metabarcoding_tool/data/rps10_ITS/" ##choose a directory for all downstream steps
 primer_path <-file.path(directory_path, "primer_info.csv") ##modify .csv name or keep this name
 #Metadata file just needs sample_name one column, and primer_name in second column (this function is being tweaked-see example)
 metadata_path <-file.path(directory_path,"metadata.csv") ##modify .csv name or keep this name. The sample_name in the metadata sheet needs to match the first part (before first underscore), of the zipped raw FASTQ files
@@ -30,12 +30,12 @@ asv_abund_matrix <- make_asv_abund_matrix(data_tables, directory_path, data_tabl
 
 #Wrapper function to format databases and assign taxonomy
 #Change barcode to 'rps10', 'its', or 'rps10_its'
-summary<-assignTax(directory_path, data_tables, asv_abund_matrix, multithread = TRUE, barcode = "rps10")
+summary<-assignTax(directory_path, data_tables, asv_abund_matrix, multithread = TRUE, barcode = "rps10_its")
 
 #To do-Martha
 #Put example commands into user-friendly Rmarkdown document
-#Make actual test datasets that are not too large, and test databases that are short enough to run on local computer (first small datasets then into rda files)
 #Generalize for work with with 16S barcode-format 16S database
+#Try out test datasets
 #compile outputs as example
 
 #Hung
