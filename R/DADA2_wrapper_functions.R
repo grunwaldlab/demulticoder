@@ -152,9 +152,9 @@ infer_asvs <-function(my_primer_pair_id, my_direction, multithread=FALSE,nbases 
   plot_errors<-dada2::plotErrors(error_profile, nominalQ = nominalQ, obs=obs, err_out=err_out, err_in=err_in)
   ggsave(plot_errors, filename = 'error_plots.pdf', path = directory_path, width = 8, height = 8)
   asv_data <- dada2::dada(fastq_paths, err = error_profile, multithread = multithread, pool=pool, selfConsist=selfConsist)
-  
+
   return(asv_data)
-  
+
 }
 
 #' Function function to infer ASVs, for multiple loci
@@ -232,7 +232,7 @@ countOverlap <- function(merged_reads){
     bind_rows() %>%
     mutate(fullsample_name = rep(names(non_empty_merged_reads), map_int(non_empty_merged_reads, nrow))) %>%
     as_tibble() #check best practices
-  
+
   data_tables$cutadapt_data$fullsample_name <- paste0(data_tables$cutadapt_data$file_id,'_', data_tables$cutadapt_data$primer_name)
   cutadapt_short <- data_tables$cutadapt_data %>%
     select(fullsample_name, sample_name, primer_name)
@@ -260,7 +260,7 @@ countOverlap <- function(merged_reads){
 
 
 #' Make ASV sequence matrix
-#' @inheritParams dada2::makeSequenceMatrix
+#' @inheritParams dada2::makeSequenceTable
 #' @param merged_reads
 #'
 #' @return
@@ -367,6 +367,7 @@ assign_taxonomyDada2<-function(abund_asv_matrix, ref_database, taxresults_file, 
                                       tryRC = tryRC,
                                       outputBootstraps = TRUE,
                                       multithread = multithread)
+  #if statement for bacteria
   tax_matrix_path <- file.path(directory_path, taxresults_file)
   save(tax_results, file = tax_matrix_path)
   return(tax_results)
@@ -447,7 +448,7 @@ add_pid_to_tax <- function(tax_results, asv_pid) {
   return(tax_results)
 }
 
-#' Combine taxonomic assignments and bootstrap values for each locus into single classfication vector
+#' Combine taxonomic assignments and bootstrap values for each locus into single falsification vector
 #'
 #' @param tax_results
 #'

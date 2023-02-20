@@ -43,8 +43,8 @@ cut_trim <- function(data_tables,directory_path,cutadapt_path,
                      truncLen = 0, maxN = 0, minQ=0, rm.phix=TRUE,
                      multithread=FALSE, matchIDs=FALSE, verbose=FALSE,
                      qualityType="Auto", OMP=TRUE, n=1e+05,id.sep="\\s",
-                     rm.lowcomplex=0, orient.fwd=NULL, id.field=NULL, min_length=50){
-  run_cutadapt(cutadapt_path, data_tables$cutadapt_data, min_length=min_length)
+                     rm.lowcomplex=0, orient.fwd=NULL, id.field=NULL, minCutadaptlength=50){
+  run_cutadapt(cutadapt_path, data_tables$cutadapt_data, minCutadaptlength=minCutadaptlength)
   quality_plots<-plot_qc(data_tables$cutadapt_data, directory_path)
   filter_results <-filter_and_trim(directory_path, data_tables$cutadapt_data,
                                    maxEE = maxEE, truncQ = truncQ, minLen = minLen,

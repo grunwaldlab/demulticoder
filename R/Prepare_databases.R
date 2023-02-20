@@ -112,3 +112,42 @@ format_database_16s <-function(directory_path, database_16s){
     write_lines(file = bact_ref_path)
   return(bact_data)
 }
+
+#database_path <- file.path(directory_path, "~/test_datasets/16s/silva_short.fasta")
+#bact_db <- read_fasta(file.path("~/test_datasets/16s/silva_short.fasta"))
+#bact_data <- str_match(names(bact_db), pattern = "(.+)\\;$")
+
+#colnames(bact_data) <- c("taxonomy")
+#str_match(names(its_db), pattern = "(;\\$")
+#colnames(bact_data) <- c("taxonomy")
+#bact_data <- as_tibble(bact_data)
+#bact_data$taxonomy <- gsub(bact_data$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
+#bact_data$taxonomy <- paste0('Eukaryota;', bact_data$taxonomy)
+#bact_data$taxonomy <- gsub(bact_data$taxonomy, pattern = 'Stramenopila;Oomycota', replacement = 'Heterokontophyta;Stramenopiles', fixed = TRUE)
+#bact_data$taxonomy <- paste0(bact_data$taxonomy, ';', 'unite_', seq_along(bact_data$taxonomy))
+#bact_data$taxonomy <- gsub(bact_data$taxonomy, pattern = "[a-z]__", replacement = '')
+#bact_data$taxonomy <- paste0(bact_data$taxonomy, ';')
+#bact_data$taxonomy <- trimws(bact_data$taxonomy)
+#Fix after checking out later analysis
+#stopifnot(all(str_count(bact_data$taxonomy, pattern = ";") == 9))
+#genus_count <- table(map_chr(strsplit(bact_data$name, split = '_'), `[`, 1))
+#count_table <- as.data.frame(genus_count, stringsAsFactors = FALSE)
+#count_table <- as_tibble(count_table)
+#names(count_table) <- c('Genus', 'Number of sequences')
+#write_csv(count_table, file = file.path(directory_path, "bact16s_genus_count_table.csv"))
+#bact_ref_path <- file.path(directory_path , "bact16s_reference_db.fa")
+#paste0(">", bact_data$taxonomy, "\n", bact_db) %>%
+  #write_lines(file = bact_ref_path)
+#return(bact_data)
+
+#database_path <- file.path(directory_path, "data/rps10_ITS/oomycetedb.fasta")
+#rps10_db <- read_fasta(file.path("data/rps10/oomycetedb.fasta"))
+#rps10_data <- str_match(names(rps10_db), pattern = "name=(.+)\\|strain=(.+)\\|ncbi_acc=(.+)\\|ncbi_taxid=(.+)\\|oodb_id=(.+)\\|taxonomy=(.+)$")
+#colnames(rps10_data) <- c("header", "name", "strain", "ncbi_acc", "ncbi_taxid", "oodb_id", "taxonomy")
+#rps10_data <- as_tibble(rps10_data)
+
+#database_path <- file.path(directory_path, "data/rps10_ITS/oomycetedb.fasta")
+#rps10_db <- read_fasta(file.path("data/rps10/oomycetedb.fasta"))
+#rps10_data <- str_match(names(rps10_db), pattern = "name=(.+)\\|strain=(.+)\\|ncbi_acc=(.+)\\|ncbi_taxid=(.+)\\|oodb_id=(.+)\\|taxonomy=(.+)$")
+#colnames(rps10_data) <- c("header", "name", "strain", "ncbi_acc", "ncbi_taxid", "oodb_id", "taxonomy")
+#rps10_data <- as_tibble(rps10_data)

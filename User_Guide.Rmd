@@ -4,35 +4,43 @@ output: html_document
 date: "2023-02-14"
 ---
 
+Load package
+```{r load packages, warning=FALSE, message=FALSE, include=FALSE}
+devtools::load_all("~/rps10_metabarcoding_tool")
+document()
+```
 Before you start, put your read fastq reads into a directory where you would like to do your analysis.
 Please note: xx directories will be created. Please ensure that you have enough storage on your computer to proceed. 
 If you are using the Silva of Unite databases, an ordinary personal computer may not have enough memory. 
 
-Step 1-Prepare and input metadata and primer files. Using the provided templates, input, sample names, the names of corresponding raw read fastq files.
+Step 1-Prepare and input metadata and primer files according to the templates provided. Using the provided templates, input, sample names, the names of corresponding raw read fastq files.
 Sample names will belong in the first column. Each sample must be unique. 
+
+#Metadata file just needs sample_name one column, and primer_name in second column (this function is being tweaked-see example)
 ```{r setup, include=FALSE}
-metadata<-read_csv("~/rps10_metabarcoding_tool/data/metadata.csv")
-primer_info<-read_csv("~/rps10_metabarcoding_tool/data/primer_info.csv")
+directory_path<-"~/rps10_metabarcoding_tool/data/rps10_ITS/" ##choose a directory for all downstream steps
+primer_path <-file.path(directory_path, "primer_info.csv") ##modify .csv name or keep this name
+metadata_path <-file.path(directory_path,"metadata.csv") ##modify .csv name or keep this name. The sample_name in the metadata sheet needs to match the first part (before first underscore), of the zipped raw FASTQ files
 cutadapt_path<-"/Users/masudermann/miniconda3/bin/cutadapt"
-directory_path<-metadata$directory_path[1]
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r data_tables, include=TRUE}
+data_tables<-prepare_reads(directory_path, primer_path, metadata_path, maxN=0, multithread=TRUE)
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r trim, include=TRUE, warning=FALSE, message=FALSE}
+#Fix output
+cut_trim(data_tables,directory_path, cutadapt_path, verbose=TRUE, maxEE=8, truncQ=2, minLen=200, maxLen=297, minCutadaptlength=50) 
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r setup, include=TRUE}
+asv_abund_matrix <- make_asv_abund_matrix(data_tables, directory_path, data_tables$cutadapt_data, minOverlap=15, maxMismatch=2, verbose=TRUE, multithread=TRUE) #check when 0 again
+```
+
+#Wrapper function to format databases and assign taxonomy
+#Change barcode to 'rps10', 'its', or 'rps10_its'
+```{r setup, include=TRUE}
+summary<-assignTax(directory_path, data_tables, asv_abund_matrix, multithread = TRUE, barcode = "rps10_its")
+```
+
+#Output

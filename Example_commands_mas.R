@@ -22,7 +22,7 @@ cutadapt_path<-"/Users/masudermann/miniconda3/bin/cutadapt"
 
 
 data_tables<-prepare_reads(directory_path, primer_path, metadata_path, maxN=0, multithread=TRUE)
-cut_trim(data_tables,directory_path, cutadapt_path, verbose=TRUE, maxEE=8, truncQ=2, minLen=200, maxLen=297, min_length=50) #fix cutadapt param!!!
+cut_trim(data_tables,directory_path, cutadapt_path, verbose=TRUE, maxEE=8, truncQ=2, minLen=200, maxLen=297, minCutadaptlength=50) #fix cutadapt param!!!
 #add message to let user know which steps have already run if they are skipped, and also provide info on the params. Make it easier for user to re-run analysis.
 #minboot?
 asv_abund_matrix <- make_asv_abund_matrix(data_tables, directory_path, data_tables$cutadapt_data, minOverlap=15, maxMismatch=2, verbose=TRUE, multithread=TRUE) #check when 0 again
