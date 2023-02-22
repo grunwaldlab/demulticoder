@@ -161,7 +161,7 @@ process_pooled_barcode <- function(data_tables, asv_abund_matrix, tryRC=FALSE, v
   refdb2=paste0(barcode2, "_reference_db.fa")
   taxmat2=paste0(barcode2,"_taxmatrix.Rdata")
   tax_results_barcode1_asv <- assign_taxonomyDada2(abund_asv_barcode1, refdb1, taxmat1,
-                                                   tryRC=FALSE, verbose=FALSE, multithread=FALSE) #FIX
+                                                   tryRC=FALSE, verbose=FALSE, multithread=FALSE)
   tax_results_barcode2_asv <- assign_taxonomyDada2(abund_asv_barcode2, refdb2, taxmat2,
                                                    tryRC=FALSE, verbose=FALSE, multithread=FALSE)
   barcode1_pids_asv <- get_pids(tax_results_barcode1_asv, refdb1)
@@ -214,7 +214,3 @@ assignTax <- function(directory_path, data_tables, asv_abund_matrix, tryRC=FALSE
     print("Barcodes note recognized")
   }
 }
-#TODO-create just ITS function
-#TODO-create 16S Function
-#Create 16S-rps10 function
-#Create 16S-ITS function
