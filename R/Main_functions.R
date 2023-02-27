@@ -202,14 +202,6 @@ assignTax <- function(directory_path, data_tables, asv_abund_matrix, tryRC=FALSE
     format_database_rps10(directory_path, "oomycetedb.fasta")
     format_database_its(directory_path, "unite_short.fasta")
     summary_table<-process_pooled_barcode(data_tables, asv_abund_matrix, multithread = multithread, barcode1="rps10", barcode2="its")
-  } else if(barcode=="rps10_16s") {
-    format_database_rps10(directory_path, "oomycetedb.fasta")
-    format_database_16s(directory_path, "silva_short.fasta")
-    summary_table<-process_pooled_barcode(data_tables, asv_abund_matrix, multithread = multithread, barcode1="rps10", barcode2="16s")
-  } else if(barcode=="its_16s") {
-    format_database_its(directory_path, "unite_short.fasta")
-    format_database_16s(directory_path, "silva_short.fasta")
-    summary_table<-process_pooled_barcode(data_tables, asv_abund_matrix, multithread = multithread, barcode1="its", barcode2="16s")
   } else {
     print("Barcodes note recognized")
   }
