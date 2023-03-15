@@ -373,6 +373,40 @@ assign_taxonomyDada2<-function(abund_asv_matrix, ref_database, taxresults_file, 
   return(tax_results)
   #save these results
 }
+
+#' Assign taxonomy test
+#' @inheritParams dada2::assignTaxonomy
+#' @param abund_asv_matrix
+#' @param ref_database
+#' @param taxresults_file
+#'
+#' @return
+#' @export
+#'
+#' @examples
+assign_taxonomyDada_test<-function(abund_asv_matrix, ref_database, taxresults_file, minBoot=0, tryRC=FALSE, verbose=FALSE, multithread=TRUE, barcode="rps10"){
+  #if barcode does not equal 16s
+  tax_results<- dada2::assignTaxonomy(abund_asv_matrix,
+                                      refFasta = file.path(directory_path, ref_database),
+                                      taxLevels = c("Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
+                                      minBoot = minBoot,
+                                      tryRC = tryRC,
+                                      outputBootstraps = TRUE,
+                                      multithread = multithread)
+  #else:
+    #tax_results<- dada2::assignTaxonomy(abund_asv_matrix,
+                                        #refFasta = file.path(directory_path, ref_database),
+                                        #taxLevels = c("Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
+                                        #minBoot = minBoot,
+                                        #tryRC = tryRC,
+                                        #outputBootstraps = TRUE,
+                                        #multithread = multithread)
+
+  tax_matrix_path <- file.path(directory_path, taxresults_file)
+  save(tax_results, file = tax_matrix_path)
+  return(tax_results)
+  #save these results
+}
 #Put these functions in separate directory.
 #' Align ASV sequences to reference sequences from database to get percent ID. STart by retrieving reference sequences.
 #'

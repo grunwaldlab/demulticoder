@@ -3,6 +3,11 @@ title: "User_Guide"
 output: html_document
 date: "2023-02-14"
 ---
+library("devtools")
+library("roxygen2")
+library("testthat")
+library("knitr")
+library("dada2")
 
 Load package
 ```{r load packages, warning=FALSE, message=FALSE, include=FALSE}
