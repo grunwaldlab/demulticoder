@@ -60,7 +60,7 @@ plot_qc<-function(cutadapt_data, directory_path, n=500000){
 #' @export
 #'x
 #' @examples
-filter_and_trim <- function(directory_path, cutadapt_data,  maxEE = Inf, truncQ = 2, minLen = 20, maxLen = Inf, truncLen = 0, maxN = 0, minQ=0, rm.phix=TRUE, multithread=FALSE, matchIDs=FALSE, verbose=FALSE, qualityType="Auto", OMP=TRUE, n=1e+05,id.sep="\\s", rm.lowcomplex=0, orient.fwd=NULL, id.field=NULL){
+filter_and_trim <- function(directory_path, cutadapt_data,  maxEE = Inf, truncQ = 2, minLen = 20, maxLen = Inf, truncLen = 0, maxN = 0, minQ=0, trimLeft=0, trimRight=0, rm.phix=TRUE, multithread=FALSE, matchIDs=FALSE, verbose=FALSE, qualityType="Auto", OMP=TRUE, n=1e+05,id.sep="\\s", rm.lowcomplex=0, orient.fwd=NULL, id.field=NULL){
   filtered_read_dir <- file.path(directory_path, "filtered_sequences")
   cutadapt_data$filtered_path <- file.path(filtered_read_dir, paste0(cutadapt_data$file_id, "_", cutadapt_data$primer_name, ".fastq.gz"))
   if(! all(file.exists(cutadapt_data$filtered_path))){
@@ -152,9 +152,9 @@ infer_asvs <-function(my_primer_pair_id, my_direction, multithread=FALSE,nbases 
   plot_errors<-dada2::plotErrors(error_profile, nominalQ = nominalQ, obs=obs, err_out=err_out, err_in=err_in)
   ggsave(plot_errors, filename = 'error_plots.pdf', path = directory_path, width = 8, height = 8)
   asv_data <- dada2::dada(fastq_paths, err = error_profile, multithread = multithread, pool=pool, selfConsist=selfConsist)
-
+  
   return(asv_data)
-
+  
 }
 
 #' Function function to infer ASVs, for multiple loci
@@ -232,7 +232,7 @@ countOverlap <- function(merged_reads){
     bind_rows() %>%
     mutate(fullsample_name = rep(names(non_empty_merged_reads), map_int(non_empty_merged_reads, nrow))) %>%
     as_tibble() #check best practices
-
+  
   data_tables$cutadapt_data$fullsample_name <- paste0(data_tables$cutadapt_data$file_id,'_', data_tables$cutadapt_data$primer_name)
   cutadapt_short <- data_tables$cutadapt_data %>%
     select(fullsample_name, sample_name, primer_name)
@@ -394,14 +394,14 @@ assign_taxonomyDada_test<-function(abund_asv_matrix, ref_database, taxresults_fi
                                       outputBootstraps = TRUE,
                                       multithread = multithread)
   #else:
-    #tax_results<- dada2::assignTaxonomy(abund_asv_matrix,
-                                        #refFasta = file.path(directory_path, ref_database),
-                                        #taxLevels = c("Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
-                                        #minBoot = minBoot,
-                                        #tryRC = tryRC,
-                                        #outputBootstraps = TRUE,
-                                        #multithread = multithread)
-
+  #tax_results<- dada2::assignTaxonomy(abund_asv_matrix,
+  #refFasta = file.path(directory_path, ref_database),
+  #taxLevels = c("Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
+  #minBoot = minBoot,
+  #tryRC = tryRC,
+  #outputBootstraps = TRUE,
+  #multithread = multithread)
+  
   tax_matrix_path <- file.path(directory_path, taxresults_file)
   save(tax_results, file = tax_matrix_path)
   return(tax_results)

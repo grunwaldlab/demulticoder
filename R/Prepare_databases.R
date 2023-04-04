@@ -75,4 +75,3 @@ format_database_its <-function(directory_path, database_its){
     write_lines(file = its_ref_path)
   return(its_data)
 }
-

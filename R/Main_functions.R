@@ -40,18 +40,18 @@ prepare_reads <- function(directory_path, primer_path, metadata_path, fastq_path
 
 cut_trim <- function(data_tables,directory_path,cutadapt_path,
                      maxEE = Inf, truncQ = 2, minLen = 20, maxLen = Inf,
-                     truncLen = 0, maxN = 0, minQ=0, rm.phix=TRUE,
+                     truncLen = 0, maxN = 0, minQ=0, trimLeft=0, trimRight=0,rm.phix=TRUE,
                      multithread=FALSE, matchIDs=FALSE, verbose=FALSE,
                      qualityType="Auto", OMP=TRUE, n=1e+05,id.sep="\\s",
                      rm.lowcomplex=0, orient.fwd=NULL, id.field=NULL, minCutadaptlength=50){
   run_cutadapt(cutadapt_path, data_tables$cutadapt_data, minCutadaptlength=minCutadaptlength)
   quality_plots<-plot_qc(data_tables$cutadapt_data, directory_path)
-  filter_results <-filter_and_trim(directory_path, data_tables$cutadapt_data,
-                                   maxEE = maxEE, truncQ = truncQ, minLen = minLen,
-                                   maxLen = maxLen, multithread = multithread,
-                                   matchIDs=matchIDs, verbose = verbose, qualityType = qualityType,
-                                   OMP = OMP, n=n, id.sep = id.sep, rm.lowcomplex = rm.lowcomplex,
-                                   orient.fwd = orient.fwd, id.field = id.field)
+  filter_results <- filter_and_trim(directory_path, data_tables$cutadapt_data,
+                                    maxEE = maxEE, truncQ = truncQ, minLen = minLen,
+                                    maxLen = maxLen, multithread = multithread,
+                                    matchIDs=matchIDs, verbose = verbose, qualityType = qualityType,
+                                    OMP = OMP, n=n, id.sep = id.sep, trimLeft=trimLeft, trimRight=trimRight, rm.lowcomplex = rm.lowcomplex,
+                                    orient.fwd = orient.fwd, id.field = id.field)
   post_primer_hit_data <- get_post_primer_hits(data_tables$primer_data, data_tables$cutadapt_data,
                                                directory_path)
   post_primer_plot <- make_primer_hit_plot(post_primer_hit_data, data_tables$fastq_data,
@@ -191,18 +191,76 @@ process_pooled_barcode <- function(data_tables, asv_abund_matrix, tryRC=FALSE, v
 #' @export
 #'
 #' @examples
-assignTax <- function(directory_path, data_tables, asv_abund_matrix, tryRC=FALSE, verbose=FALSE, multithread=FALSE, barcode="rps10") {
+
+#generalize for different db
+assignTax <- function(directory_path, data_tables, asv_abund_matrix, tryRC=FALSE, verbose=FALSE, multithread=FALSE, barcode="rps10", database_rps10="oomycetedb.fasta", database_its="sh_general_release_dynamic_22.08.2016.fasta") {
   if(barcode=="rps10") {
-    format_database_rps10(directory_path, "oomycetedb.fasta")
+    format_database_rps10(directory_path, database_rps10)
     summary_table<-process_single_barcode(data_tables, asv_abund_matrix, multithread = multithread, barcode="rps10")
   } else if(barcode=="its") {
-    format_database_its(directory_path,"unite_short.fasta")
+    format_database_its(directory_path, database_its)
     summary_table<-process_single_barcode(data_tables, asv_abund_matrix, multithread = multithread, barcode="its")
   } else if(barcode=="rps10_its") {
-    format_database_rps10(directory_path, "oomycetedb.fasta")
-    format_database_its(directory_path, "unite_short.fasta")
+    format_database_rps10(directory_path, database_rps10)
+    format_database_its(directory_path, database_its)
     summary_table<-process_pooled_barcode(data_tables, asv_abund_matrix, multithread = multithread, barcode1="rps10", barcode2="its")
   } else {
     print("Barcodes note recognized")
   }
+}
+
+#' Filter ASV abundance matrix and convert to taxmap object
+#'
+#' @param asv_abund_matrix
+#' @param min_read_depth
+#' @param minimum_bootstrap
+#' @param pid_species
+#' @param pid_genus
+#' @param pid_family
+#'
+#'
+#' @return
+#' @export
+#'
+#' @examples
+asvmatrix_to_taxmap <- function(min_read_depth=0, minimum_bootstrap=50, pid_species=0, pid_genus=0, pid_family=0){
+  abund_matrix <- read_csv(file.path(directory_path,'final_asv_abundance_matrix.csv'))
+  is_low_abund <- rowSums(abund_matrix[, data_tables$metadata$sample_nameBarcode]) < min_read_depth
+  abundance <- filter(abund_matrix, ! is_low_abund)
+  pid_cutoffs <- list(species = pid_species, genus = pid_genus, family = pid_family)
+  abundance$dada2_tax <- map_chr(strsplit(abundance$dada2_tax, ';'), function(x) {
+    map_chr(strsplit(x, '--'), function(parts) {
+      if (parts[[3]] != "ASV" && as.numeric(parts[[2]]) <= minimum_bootstrap) {
+        parts[[1]] <- "Unknown"
+      }
+      return(paste(parts, collapse = '--'))
+    }) %>% paste(collapse = ';')
+  })
+  obj_dada <- metacoder::parse_tax_data(abundance, class_cols = 'dada2_tax', class_sep = ';', include_tax_data = TRUE,
+                                        class_regex = '^(.+)--(.+)--(.+)$',
+                                        class_key = c(taxon = 'taxon_name', boot = 'info', rank = 'taxon_rank'))
+  names(obj_dada$data) <- c('abund', 'score') #do I need this?
+  return(obj_dada)
+}
+
+#' Convert taxmap object to Phyloseq object (metacoder wrapper function)
+#'
+#' @param obj_data
+#'
+#'
+#' @return
+#' @export
+#'
+#' @examples
+
+taxmap_to_phyloseq <- function(obj_dada) {
+  obj_dada$data$otu_table=obj_dada$data$abund[,-2:-4]
+  obj_dada$data$otu_table$otu_id=paste0('ASV', 1:nrow(obj_dada$data$otu_table))
+  obj_dada$data$sample_data=data_tables$metadata
+  
+  phylo_obj<-metacoder::as_phyloseq(
+    obj_dada,
+    sample_data = obj_dada$data$sample_data,
+    sample_id_col = "sample_nameBarcode",
+  )
 }
