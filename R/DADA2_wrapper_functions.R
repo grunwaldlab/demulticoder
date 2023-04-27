@@ -348,7 +348,6 @@ separate_abund_matrix <- function(abund_asv_barcode2, abund_asv_barcode1, direct
   save(abund_asv_barcode2, abund_asv_barcode1, file = separate_abund_path)
   stopifnot(ncol(abund_asv_barcode2) + ncol(abund_asv_barcode1) == ncol(asv_abund_matrix)) #make more messaging
 }
-
 #' Assign taxonomy
 #' @inheritParams dada2::assignTaxonomy
 #' @param abund_asv_matrix
