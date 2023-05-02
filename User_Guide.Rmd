@@ -4,65 +4,75 @@ output: html_document
 date: "2023-04-04"
 ---
 
-library("devtools")
-library("roxygen2")
-library("testthat")
-library("knitr")
-library("dada2")
-library(dada2); packageVersion("dada2")
-library("metacoder")
-library("phyloseq")
-
-
 ```{r load packages, warning=FALSE, message=FALSE, include=FALSE}
-setwd("~/rps10_package/")
 devtools::load_all("~/rps10_package")
 document()
 ```
 
-setwd("~/rps10_package/")
-devtools::load_all("~/rps10_package")
-document()
-
 Before you start, put your read fastq reads into a directory where you would like to do your analysis.
-Please note: xx directories will be created. Please ensure that you have enough storage on your computer to proceed. 
+Please note: xx (ADD ACTUAL NUMBER) directories will be created. Please ensure that you have enough storage on your computer to proceed. 
 If you are using the Silva of Unite databases, an ordinary personal computer may not have enough memory. 
 
 Step 1-Prepare and input metadata and primer files according to the templates provided. Using the provided templates, input, sample names, the names of corresponding raw read fastq files.
-Sample names will belong in the first column. Each sample must be unique. 
+
+Sample names will belong in the first column. If barcodes are pooled, user will include each sample name twice, and under primer_name, either its or rps10 barcode. 
+
+A few notes on formatting of sample names: 
+
+For primer_names, specify either 'rps10' or 'its'. This is case sensitive. 
+
+Include any other metadata columns you'd like to use during later steps of the analysis. Formatting of names does not matter, but ensure that there are no blanks left. 
 
 #Metadata file just needs sample_name one column, and primer_name in second column (this function is being tweaked-see example)
 ```{r setup, include=FALSE}
 directory_path<-"~/rps10_package/data/rps10_ITS" ##choose a directory for all downstream steps
 primer_path <-file.path(directory_path, "primer_info.csv") ##modify .csv name or keep this name
-metadata_path <-file.path(directory_path,"Metadata_final_Mar23_rps10.csv") ##modify .csv name or keep this name. The sample_name in the metadata sheet needs to match the first part (before first underscore), of the zipped raw FASTQ files
+metadata_path <-file.path(directory_path,"metadata.csv") ##modify .csv name or keep this name. The sample_name in the metadata sheet needs to match the first part (before first underscore), of the zipped raw FASTQ files
 cutadapt_path<-"/Users/masudermann/miniconda3/bin/cutadapt"
 ```
+
+Step 2. First, primers will be searched within reads and a table with info on the primers located within the reads of each sample will be output. 
+
+A plot will also be generated to give primer counts across all samples.  Reads will then be trimmed for demultiplexing and for primer removal. Since DADA2 cannot accept reads with Ns, as a first filtering step, any reads with Ns will be filtered out and filtered reads will be placed in the directory 'prefiltered_reads.'
 
 ```{r data_tables, include=TRUE}
 data_tables<-prepare_reads(directory_path, primer_path, metadata_path, maxN=0, multithread=TRUE)
 ```
+Step 3. Primers will now be trimmed and reads will be demultiplexed if samples contained pooled barcodes. After primers have been removed, primer sequences will once again be searched for within filtered, demultiplexed reads. If you notice not all primers are removed, feel free to play with filter parameters, including minLen or maxLen parameters. 
 
+To do-Have a message if analysis has already been run, and way to rerun if user would like to override. 
 ```{r trim, include=TRUE}
 #Fix output
-cut_trim(data_tables,directory_path, cutadapt_path, verbose=TRUE, maxEE=5, truncQ=5, minLen=200, maxLen=300, minCutadaptlength=50) 
+cut_trim(data_tables,directory_path, cutadapt_path, verbose=TRUE, maxEE=2, truncQ=5, minLen=200, maxLen=297, minCutadaptlength=50) 
 
 #Figure out why "Error in gzfile(file, "wb") : cannot open the connection" only when running in rmarkdown window
 ```
 
+The ASV abundance matrix will be made after reads are merged. Depending on chosen specifications, the minOverlap and maxMismatch can be changed. The default values are what are given in DADA2. 
+
+To do-Have a message if analysis has already been run, and way to rerun if user would like to override. 
 ```{r asv abund matrix, include=TRUE}
 asv_abund_matrix <- make_asv_abund_matrix(data_tables, directory_path, data_tables$cutadapt_data, minOverlap=15, maxMismatch=2, verbose=TRUE, multithread=TRUE) #check when 0 again
 ```
 
 #Wrapper function to format databases and assign taxonomy
 #Change barcode to 'rps10', 'its', or 'rps10_its'
+
+Finally, databases are formatted. The formatted databases will be renamed rps10_reference_db.fasta and the UNITE fungal db will be renamed its_reference_db.fa. Along with the formatted databases that are output to the location specified by the directory_path, there will also be table generated with info on the genera in each database and the counts of each. If there are particular organisms of interest within a study, it will be helpful to reference this table to ensure that your database contains representative sequences of organisms of interest. 
+
+After databases are formatted, taxonomic information will be assigned to the ASVs that were inferred previously. The output will be a csv file containing each unique ASV, the abundance of each ASV across each sample, and the taxonomic assignments, the bootstrap support values, as well as a column listing the percent identity of each sequence to the corresponding sequence in the reference database. 
+
+
+
+To do-fix function so that user doesn't need to specify db that they may not be using
+To do-Have a message if analysis has already been run, and way to rerun if user would like to override. 
 ```{r assign tax, include=TRUE}
 summary<-assignTax(directory_path, data_tables, asv_abund_matrix, multithread = TRUE, barcode = "rps10_its", database_rps10="oomycetedb.fasta", database_its="sh_general_release_dynamic_22.08.2016.fasta")
 ```
 
 ```{r}
 obj_dada<-asvmatrix_to_taxmap(asv_abund_matrix, min_read_depth=10, minimum_bootstrap=75)
-phylo_obj2<-taxmap_to_phyloseq(obj_dada)
+phylo_obj<-taxmap_to_phyloseq(obj_dada)
 ```
 #Exploratory analysis
 ```{r}
