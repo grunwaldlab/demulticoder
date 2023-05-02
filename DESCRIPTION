@@ -1,4 +1,4 @@
-Package: rps10_metabarcoding_tool
+Package: rps10_package
 Title: Raw Sequences to Trimmed Files
 Version: 0.0.0.9000
 Authors@R: 
@@ -10,6 +10,7 @@ License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
 Encoding: UTF-8
 Depends:
         dada2,
+        devtools,
         ShortRead,
         Biostrings,
         dplyr,
