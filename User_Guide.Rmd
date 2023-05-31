@@ -5,13 +5,12 @@ date: "2023-04-04"
 ---
 
 ```{r load packages, warning=FALSE, message=FALSE, include=FALSE}
-devtools::load_all("~/rps10_package")
+devtools::load_all("~/rps10package")
 document()
 ```
 
 Before you start, put your read fastq reads into a directory where you would like to do your analysis.
-Please note: xx (ADD ACTUAL NUMBER) directories will be created. Please ensure that you have enough storage on your computer to proceed. 
-If you are using the Silva of Unite databases, an ordinary personal computer may not have enough memory. 
+Please note: xx (ADD ACTUAL NUMBER) directories will be created. Please ensure that you have enough storage on your computer to proceed. If you are using the Silva of Unite databases, an ordinary personal computer may not have enough memory. 
 
 Step 1-Prepare and input metadata and primer files according to the templates provided. Using the provided templates, input, sample names, the names of corresponding raw read fastq files.
 

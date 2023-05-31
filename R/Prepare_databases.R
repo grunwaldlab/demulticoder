@@ -1,11 +1,8 @@
 #' Create modified reference rps10 database for downstream analysis
-#'
+#' 
 #' @param directory_path A path to a directory that contains raw data
 #' @param database_rps10 The name of the database
-#'
 #' @return A rps10 database that has modified headers and is output in the reference_databases folder.
-#' @export
-#'
 #' @examples
 format_database_rps10 <-function(directory_path, database_rps10){
   database_path <- file.path(directory_path, "rps10_reference_db.fa")
@@ -42,13 +39,10 @@ format_database_rps10 <-function(directory_path, database_rps10){
 
 
 #' An ITS database that has modified headers and is output in the reference_databases folder.
-#'
+#' 
 #' @param directory_path A path to a directory that contains raw data
 #' @param database_its The name of the database
-#'
 #' @return An ITS database that has modified headers and is output in the reference_databases folder.
-#' @export
-#'
 #' @examples
 format_database_its <-function(directory_path, database_its){
   database_path <- file.path(directory_path, "its_reference_db.fa")

@@ -1,13 +1,11 @@
 #' Wrapper function for core DADA2 filter and trim function for first filtering step
+#' 
 #' @inheritParams dada2::filterAndTrim
 #' @param fastq_data A tibble with the fastq file paths, the direction of the sequences, and names of sequences
 #' @param directory_path A path to the intermediate folder
 #' @param metadata A metadata containing the concatenated metadata and primer data
 #' @inheritParams filterAndTrim
-#'
 #' @return
-#' @export
-#'
 #' @examples
 remove_ns <- function(fastq_data, directory_path, maxN= 0, multithread = TRUE){
   prefiltered_read_dir <- file.path(directory_path, "prefiltered_sequences")
@@ -29,15 +27,13 @@ remove_ns <- function(fastq_data, directory_path, maxN= 0, multithread = TRUE){
 }
 
 #' Wrapper function for plotQualityProfile function
+#' 
 #' @inheritParams dada2::plotQualityProfile
 #' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
 #' @param directory_path A path to the intermediate folder
 #' @inheritParams plotQualityProfile
-#'
 #' @return
-#' @export
-#'
-#' @examples
+
 plot_qc<-function(cutadapt_data, directory_path, n=500000){
   #just retrieve all plots for first sample
   for (i in unique(cutadapt_data$sample_name))
@@ -52,14 +48,11 @@ plot_qc<-function(cutadapt_data, directory_path, n=500000){
 
 
 #' Wrapper function for filterAndTrim function from DADA2 after primer removal
+#' 
 #' @inheritParams dada2::filterAndTrim
 #' @param directory_path A path to the intermediate folder
 #' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
-#'
 #' @return
-#' @export
-#'x
-#' @examples
 filter_and_trim <- function(directory_path, cutadapt_data,  maxEE = Inf, truncQ = 2, minLen = 20, maxLen = Inf, truncLen = 0, maxN = 0, minQ=0, trimLeft=0, trimRight=0, rm.phix=TRUE, multithread=FALSE, matchIDs=FALSE, verbose=FALSE, qualityType="Auto", OMP=TRUE, n=1e+05,id.sep="\\s", rm.lowcomplex=0, orient.fwd=NULL, id.field=NULL){
   filtered_read_dir <- file.path(directory_path, "filtered_sequences")
   cutadapt_data$filtered_path <- file.path(filtered_read_dir, paste0(cutadapt_data$file_id, "_", cutadapt_data$primer_name, ".fastq.gz"))
@@ -98,14 +91,11 @@ filter_and_trim <- function(directory_path, cutadapt_data,  maxEE = Inf, truncQ 
 
 
 #' Wrapper script for plotQualityProfile after trim steps and primer removal.
+#' 
 #' @inheritParams dada2::plotQualityProfile
 #' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
 #' @param directory_path A path to the intermediate folder
-#'
 #' @return
-#' @export
-#'
-#' @examples
 plot_post_trim_qc<-function(cutadapt_data, directory_path, n=500000){
   #just retrieve all plots for first sample
   for (i in unique(cutadapt_data$sample_name))
@@ -123,11 +113,7 @@ plot_post_trim_qc<-function(cutadapt_data, directory_path, n=500000){
 #' @param my_direction
 #' @param my_primer_pair_id
 #' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
-#'
 #' @return
-#' @export
-#'
-#' @examples
 get_fastq_paths <- function(my_direction, my_primer_pair_id) {
   data_tables$cutadapt_data %>%
     filter(direction == my_direction, primer_name == my_primer_pair_id, file.exists(filtered_path)) %>%
@@ -135,16 +121,13 @@ get_fastq_paths <- function(my_direction, my_primer_pair_id) {
 }
 
 #' Core DADA2 function to learn errors and infer ASVs
+#' 
 #' @inheritParams dada2::learnErrors
 #' @inheritParams dada2::dada
 #' @inheritParams dada2::plot_errors
 #' @param my_primer_pair_id
 #' @param my_direction
-#'
 #' @return
-#' @export
-#'
-#' @examples
 infer_asvs <-function(my_primer_pair_id, my_direction, multithread=FALSE,nbases = 1e+08, errorEstimationFunction = loessErrfun, randomize=FALSE, MAX_CONSIST=10, OMEGA_C=0, qualityType="Auto", nominalQ = FALSE, obs=TRUE, err_out=TRUE, err_in=FALSE, pool=FALSE, selfConsist=FALSE, verbose=FALSE){ #may need to adjust the parameters
   fastq_paths <- get_fastq_paths(my_direction, my_primer_pair_id)
   error_profile <- dada2::learnErrors(fastq_paths, multithread = multithread,nbases=nbases,errorEstimationFunction= errorEstimationFunction, randomize=randomize, MAX_CONSIST=MAX_CONSIST, OMEGA_C= OMEGA_C, qualityType=qualityType, verbose=verbose)
@@ -158,15 +141,12 @@ infer_asvs <-function(my_primer_pair_id, my_direction, multithread=FALSE,nbases 
 }
 
 #' Function function to infer ASVs, for multiple loci
+#' 
 #' @inheritParams infer_asvs
 #' @param directory_path A path to the intermediate folder and directory
 #' @param cutadapt_data
 #' @param denoised_data_path
-#'
 #' @return
-#' @export
-#'
-#' @examples
 infer_asv_command <-function(directory_path, cutadapt_data, multithread=FALSE,nbases = 1e+08, errorEstimationFunction = loessErrfun, randomize=FALSE, MAX_CONSIST=10, OMEGA_C=0, qualityType="Auto", nominalQ = FALSE, obs=TRUE, err_out=TRUE, err_in=FALSE, pool=FALSE, selfConsist=FALSE, verbose=FALSE){
   denoised_data_path <- file.path(directory_path, "Denoised_data.Rdata")
   if (file.exists(denoised_data_path)) {
@@ -183,15 +163,12 @@ infer_asv_command <-function(directory_path, cutadapt_data, multithread=FALSE,nb
   }
 }
 
-#' Merge forward and reverse reads ###CHECK
+#' Merge forward and reverse reads
+#' 
 #' @inheritParams dada2::mergePairs
 #' @param directory_path A path to the intermediate folder and directory
 #' @param merged_read_data_path
-#'
 #' @return
-#' @export
-#'
-#' @examples
 merge_reads_command <- function(directory_path, minOverlap=12, maxMismatch=0, returnRejects=FALSE, justConcatenate=FALSE, trimOverhang=FALSE, verbose=FALSE){
   denoised_data_path <- file.path(directory_path, "Denoised_data.Rdata")
   load(denoised_data_path) #incorporate into function
@@ -218,13 +195,9 @@ merge_reads_command <- function(directory_path, minOverlap=12, maxMismatch=0, re
 }
 
 #' Count overlap to see how well the reads were merged
-#'
+#' 
 #' @param merged_reads
-#'
 #' @return
-#' @export
-#'
-#' @examples
 countOverlap <- function(merged_reads){
   non_empty_merged_reads <- merged_reads[map_dbl(merged_reads, nrow) > 0]
   non_empty_merged_reads
@@ -260,28 +233,21 @@ countOverlap <- function(merged_reads){
 
 
 #' Make ASV sequence matrix
+#' 
 #' @inheritParams dada2::makeSequenceTable
 #' @param merged_reads
-#'
 #' @return
-#' @export
-#'
-#' @examples
 makeSeqtab<-function(merged_reads, orderBy="abundance"){
   raw_seqtab<-makeSequenceTable(merged_reads, orderBy=orderBy)
   return(raw_seqtab)
 }
 
-#Remove chimeras and short sequences
 #' Quality filtering to remove chimeras and short sequences
+#' 
 #' @inheritParams dada2::removeBimeraDenovo
 #' @param seqtab
 #' @param min_asv_length
-#'
 #' @return
-#' @export
-#'
-#' @examples
 make_abund_matrix<-function(raw_seqtab, method="consensus", verbose=FALSE, min_asv_length=50){
   seqtab.nochim <- dada2::removeBimeraDenovo(raw_seqtab, method=method, verbose=verbose)
   asv_abund_matrix <- seqtab.nochim[, nchar(colnames(seqtab.nochim)) >= min_asv_length]
@@ -290,15 +256,10 @@ make_abund_matrix<-function(raw_seqtab, method="consensus", verbose=FALSE, min_a
   return(asv_abund_matrix)
 }
 
-#why  not showing up?
 #' Plots a histogram of read length counts of all sequences within the ASV matrix
 #'
 #' @param asv_abund_matrix
-#'
 #' @return
-#' @export
-#'
-#' @examples
 make_seqhist <- function(asv_abund_matrix){
   ab_matrix<-nchar(getSequences(asv_abund_matrix))
   data1<-data.frame(ab_matrix)
@@ -311,11 +272,7 @@ make_seqhist <- function(asv_abund_matrix){
 #' @param directory_data folder with trimmed and filtered reads for each sample
 #' @param asv_abund_matrix
 #' @param locus
-#'
 #' @return
-#' @export
-#'
-#' @examples
 prep_abund_matrix <-function(cutadapt_data, asv_abund_matrix, locus){
   #rownames(asv_abund_matrix) <- sub(rownames(asv_abund_matrix), pattern = ".fastq.gz", replacement = "")
   data_tables$cutadapt_data$file_id_primer <- paste0(data_tables$cutadapt_data$sample_name, "_", data_tables$cutadapt_data$primer_name)
@@ -324,17 +281,13 @@ prep_abund_matrix <-function(cutadapt_data, asv_abund_matrix, locus){
 }
 
 
-#' Still needs improvement. Could solve problem by merging fungal and oomycete databases for assign taxonomy steps. In order to assign taxonomy for separate loci, need to separate abundance tables first
+#' Separate abundance matrices
 #'
 #' @param abund_asv_its
 #' @param abund_asv_rps10
 #' @param directory_path A path to the intermediate folder and directory
 #' @param asv_abund_matrix
-#'
 #' @return
-#' @export
-#'
-#' @examples
 separate_abund_matrix <- function(abund_asv_barcode2, abund_asv_barcode1, directory_path, asv_abund_matrix){
   separate_abund_path <- file.path(directory_path, "Separate_abund.Rdata")
   in_both <- colSums(abund_asv_barcode2) != 0 & colSums(abund_asv_barcode1) != 0
@@ -349,15 +302,12 @@ separate_abund_matrix <- function(abund_asv_barcode2, abund_asv_barcode1, direct
   stopifnot(ncol(abund_asv_barcode2) + ncol(abund_asv_barcode1) == ncol(asv_abund_matrix)) #make more messaging
 }
 #' Assign taxonomy
+#' 
 #' @inheritParams dada2::assignTaxonomy
 #' @param abund_asv_matrix
 #' @param ref_database
 #' @param taxresults_file
-#'
 #' @return
-#' @export
-#'
-#' @examples
 assign_taxonomyDada2<-function(abund_asv_matrix, ref_database, taxresults_file, minBoot=0, tryRC=FALSE, verbose=FALSE, multithread=TRUE){
   tax_results<- dada2::assignTaxonomy(abund_asv_matrix,
                                       refFasta = file.path(directory_path, ref_database),
@@ -373,63 +323,21 @@ assign_taxonomyDada2<-function(abund_asv_matrix, ref_database, taxresults_file, 
   #save these results
 }
 
-#' Assign taxonomy test
-#' @inheritParams dada2::assignTaxonomy
-#' @param abund_asv_matrix
-#' @param ref_database
-#' @param taxresults_file
-#'
-#' @return
-#' @export
-#'
-#' @examples
-assign_taxonomyDada_test<-function(abund_asv_matrix, ref_database, taxresults_file, minBoot=0, tryRC=FALSE, verbose=FALSE, multithread=TRUE, barcode="rps10"){
-  #if barcode does not equal 16s
-  tax_results<- dada2::assignTaxonomy(abund_asv_matrix,
-                                      refFasta = file.path(directory_path, ref_database),
-                                      taxLevels = c("Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
-                                      minBoot = minBoot,
-                                      tryRC = tryRC,
-                                      outputBootstraps = TRUE,
-                                      multithread = multithread)
-  #else:
-  #tax_results<- dada2::assignTaxonomy(abund_asv_matrix,
-  #refFasta = file.path(directory_path, ref_database),
-  #taxLevels = c("Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
-  #minBoot = minBoot,
-  #tryRC = tryRC,
-  #outputBootstraps = TRUE,
-  #multithread = multithread)
-  
-  tax_matrix_path <- file.path(directory_path, taxresults_file)
-  save(tax_results, file = tax_matrix_path)
-  return(tax_results)
-  #save these results
-}
-#Put these functions in separate directory.
 #' Align ASV sequences to reference sequences from database to get percent ID. STart by retrieving reference sequences.
 #'
 #' @param tax_results
 #' @param db
-#'
 #' @return
-#' @export
-#'
-#' @examples
 get_ref_seq <- function(tax_results, db) {
   ref_i <- as.integer(str_match(tax_results$tax[, 'Reference'], '^.+_([0-9]+)$')[ ,2])
   db[ref_i]
 }
 
-#' Align ASV sequences to reference sequences from database to get percent ID. Align sequences to reference sequences from database.
+#' Align ASV sequences to reference sequences from database to get percent ID. 
 #'
 #' @param ref
 #' @param asv
-#'
 #' @return
-#' @export
-#'
-#' @examples
 get_align_pid <- function(ref, asv) {
   mat <- nucleotideSubstitutionMatrix(match = 1, mismatch = -3, baseOnly = TRUE)
   align <-  pairwiseAlignment(pattern = asv, subject = ref, type = 'global-local')
@@ -440,11 +348,7 @@ get_align_pid <- function(ref, asv) {
 #' Align ASV sequences to reference sequences from database to get percent ID. Get percent identities.
 #'
 #' @param tax_results
-#'
 #' @return
-#' @export
-#'
-#' @examples
 get_pids <- function(tax_results, db) {
   db_seqs <- read_fasta(file.path(directory_path, db))
   ref_seqs <- get_ref_seq(tax_results, db_seqs)
@@ -467,14 +371,10 @@ get_pids <- function(tax_results, db) {
 }
 
 #' Add PID and bootstrap values to tax result.
-#'
+#' 
 #' @param tax_results
 #' @param asv_pid
-#'
 #' @return
-#' @export
-#'
-#' @examples
 add_pid_to_tax <- function(tax_results, asv_pid) {
   tax_results$tax <- cbind(tax_results$tax, ASV = rownames(tax_results$tax))
   tax_results$boot <- cbind(tax_results$boot, ASV = asv_pid)
@@ -482,13 +382,9 @@ add_pid_to_tax <- function(tax_results, asv_pid) {
 }
 
 #' Combine taxonomic assignments and bootstrap values for each locus into single falsification vector
-#'
+#' 
 #' @param tax_results
-#'
 #' @return
-#' @export
-#'
-#' @examples
 assignTax_as_char <- function(tax_results) {
   tax_matrix_path <- file.path(directory_path, "Final_tax_matrix.Rdata")
   tax_out <- vapply(1:nrow(tax_results$tax), FUN.VALUE = character(1), function(i) {
@@ -506,14 +402,10 @@ assignTax_as_char <- function(tax_results) {
 }
 
 #' Format ASV abundance matrix
-#'
+#' 
 #' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
 #' @param seq_tax_asv An amplified sequence variants matrix with taxonomic information
-#'
 #' @return
-#' @export
-#'
-#' @examples
 #Reformat ASV matrix
 format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv) {
   formatted_abund_asv <- t(asv_abund_matrix)
@@ -528,18 +420,10 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv) {
   return(formatted_abund_asv)
 }
 
-#str_match(seq_tax_asv[rownames(asv_abund_matrix)], '^(.+)--Species')[,2]
-#str_match(dada2_tax, pattern = "^(.+)--Species")[,2])
-
 #' Final inventory of read counts after each step from input to removal of chimeras. This function deals with if you have more than one sample. TODO optimize for one sample
 #'
 #' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
-#'
-#'
 #' @return
-#' @export
-#'
-#' @examples
 get_read_counts <- function(asv_abund_matrix) {
   filter_results_path<-file.path(directory_path, "filter_results.RData")
   load(filter_results_path) #incorporate into function

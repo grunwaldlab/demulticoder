@@ -1,11 +1,8 @@
 #' Read in the metadata from user and combine it with the primer data. Included in a larger function prepare_reads.
-#'
+#' 
 #' @param metadata_path  A path to the metadata .csv file
 #' @param primer_data The primer data tibble created in orient_primers function
-#'
 #' @return A metadata containing the concatenated metadata and primer data
-#' @export
-#'
 #' @examples metadata <- prepare_metadata_table(metadata_path, primer_data)
 prepare_metadata_table <- function(metadata_path, primer_data){
   metadata <- read_csv(metadata_path) %>%
@@ -26,10 +23,7 @@ prepare_metadata_table <- function(metadata_path, primer_data){
 #' Takes in the fastq files from the user and creates a tibble with the paths to files that will be created and used in the future. Included in a larger 'read_prefilt_fastq' function
 #'
 #' @param directory_path The path to the fastq files from user
-#'
 #' @return A tibble with the fastq file paths, the direction of the sequences, and names of sequences
-#' @export
-#'
 #' @examples fastq_data <- read_fastq(directory_path)
 read_fastq <- function(directory_path){
   fastq_paths <- list.files(directory_path, pattern = "\\.fastq")
@@ -45,13 +39,9 @@ read_fastq <- function(directory_path){
 }
 
 #' Matching Order Primer Check
-#'
 #' @param fastq_data A tibble with the fastq file paths, the direction of the sequences, and names of sequences
-#'
 #' @return None
-#' @export
-#'
-#' @examples Part of a larger function 'read_prefilt_fastq' function.
+#' @examples 
 primer_check <- function(fastq_data){
   paired_file_paths <- fastq_data %>%
     filter(sample_name == gdata::first(sample_name)) %>%
@@ -74,13 +64,10 @@ primer_check <- function(fastq_data){
 }
 
 #' Take in user's primers and creates the complement, reverse, reverse complement of primers in one tibble
-#'
+#' 
 #' @param primer_path a path to the csv file that holds the primer info for this project
-#'
 #' @return A tibble that contains the forward and reverse primers with all complements of primers
-#' @export
-#'
-#' @examples primer_data <- orient_primers(primer_path). Part of the larger 'prepare_reads' function.
+#' @examples 
 orient_primers <- function(primer_path){
   primer_data_path <- file.path(primer_path)
   primer_data <- read_csv(primer_data_path)
@@ -107,15 +94,12 @@ orient_primers <- function(primer_path){
 }
 
 #' A function for calling read_fastq, primer_check, and remove_ns functions. This will process and edit the FASTQ and make them ready for the trimming of primers with Cutadapt. Part of a larger 'prepare_reads' function.
+#' 
 #' @inheritParams dada2::filterAndTrim
 #' @param directory_path A path to a directory that contains raw data
 #' @param metadata A metadata containing the concatenated metadata and primer data
-
-#'
 #' @return
-#' @export #add params
-#'
-#' @examples  Part of the function prepare_reads. fastq_data <- read_prefilt_fastq(directory_path, maxN = maxN, multithread = multithread)
+#' @examples  
 read_prefilt_fastq <- function(directory_path, maxN=0, multithread = FALSE){
   fastq_data <- read_fastq(directory_path)
   primer_check(fastq_data)
@@ -128,10 +112,7 @@ read_prefilt_fastq <- function(directory_path, maxN=0, multithread = FALSE){
 #'
 #' @param primer_data The primer data tibble created in orient_primers function
 #' @param fastq_data A tibble with the fastq file paths, the direction of the sequences, and names of sequences
-#'
 #' @return A number of reads in which the primer is found
-#' @export
-#'
 #' @examples
 get_pre_primer_hits<- function(primer_data, fastq_data, directory_path){
   primer_hit_data <- gather(primer_data, key = "orientation", value = "sequence", forward, f_compt, f_rev,
@@ -170,10 +151,7 @@ get_pre_primer_hits<- function(primer_data, fastq_data, directory_path){
 #'
 #' @param primer_data The primer data tibble created in orient_primers function
 #' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
-#'
 #' @return
-#' @export
-#'
 #' @examples
 get_post_primer_hits <- function(primer_data, cutadapt_data, directory_path){
   post_primer_hit_data <- gather(primer_data, key = "orientation", value = "sequence", forward, f_compt, f_rev,
@@ -185,7 +163,6 @@ get_post_primer_hits <- function(primer_data, cutadapt_data, directory_path){
     nhits <- vcountPattern(primer, sread(readFastq(path)), fixed = FALSE)
     return(sum(nhits > 0))
   }
-  
   
   post_primer_hit_data_csv_path <- file.path(directory_path, "primer_hit_data_post_trim.csv")
   #if a file exists in there, then write the path to it
@@ -212,10 +189,7 @@ get_post_primer_hits <- function(primer_data, cutadapt_data, directory_path){
 #' @param primer_hits A number of reads in which the primer is found
 #' @param fastq_data A tibble with the fastq file paths, the direction of the sequences, and names of sequences
 #' @param plot_name A filename under which a PDF file of the plot will be saved as
-#'
 #' @return
-#' @export
-#'
 #' @examples
 make_primer_hit_plot <- function(primer_hits, fastq_data, directory_path, plot_name){
   #This function takes so long to run - wonder if it will be ok with the servers - more efficient way to do this?
@@ -256,5 +230,4 @@ make_primer_hit_plot <- function(primer_hits, fastq_data, directory_path, plot_n
   print(plot)
   ggsave(plot, filename = plot_name, path = directory_path, width = 8, height = 8)
   return(plot)
-  
 }

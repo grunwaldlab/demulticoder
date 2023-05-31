@@ -1,13 +1,9 @@
 #' Prepare for primmer trimming with Cutaapt. Make new sub-directories and specify paths for the trimmed and untrimmed reads
-#'
+#' 
 #' @param fastq_data A path to FASTQ files for analysis
 #' @param metadata A metadata containing the concatenated metadata and primer data
 #' @param directory_path A path to the directory folder and directory
-#'
 #' @return
-#' @export
-#'
-#' @examples
 make_cutadapt_tibble <- function(fastq_data, metadata, directory_path){ #new_fastq_data needed, why not just fastq_data
   cutadapt_data <- metadata %>%
     left_join(fastq_data, by = c("sample_name" = "sample_name"))
@@ -35,15 +31,11 @@ make_cutadapt_tibble <- function(fastq_data, metadata, directory_path){ #new_fas
 
 #rename min_length
 #' Core function for running cutadapt
-#'
+#' 
 #' @param cutadapt_path A path to the cutadapt program
 #' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
 #' @param minCutadaptlength Read lengths that are lower than this threshold will be discarded. Default is 50.
-#'
 #' @return
-#' @export
-#'
-#' @examples
 run_cutadapt <- function(cutadapt_path, cutadapt_data, minCutadaptlength=20){
   cutadapt <- cutadapt_path
   tryCatch(system2(cutadapt, args = "--version"),
@@ -67,5 +59,4 @@ run_cutadapt <- function(cutadapt_path, cutadapt_data, minCutadaptlength=20){
   if (! all(file.exists(c(cutadapt_data$trimmed_path)))) {
     cutadapt_output <- furrr::future_map(command_args, ~system2(cutadapt, args = .x))
   }
-
 }

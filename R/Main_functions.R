@@ -1,13 +1,13 @@
 #Prepare reads. A wrapper function to prepare reads for trimming using Cutadapt. Counts of primers on reads will be output.
 #' Main command prepare reads for primer trimming
+#' 
 #' @param primer_path The primer data tibble created in orient_primers function
 #' @param metadata_path A path to a metadata containing the concatenated metadata and primer data
 #' @param fastq_path path to a directory containing FASTQ reads
 #' @inheritParams read_prefilt_fastq
-#'
+#' @inheritParams read_prefilt_fastq
 #' @return A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
-#' @export
-#'
+#' @export prepare_reads
 #' @examples data_tables<-prepare_reads(directory_path, primer_path, metadata_path, fastq_path, directory_path, maxN=0, multithread=TRUE)
 
 prepare_reads <- function(directory_path, primer_path, metadata_path, fastq_path, maxN=0, multithread=FALSE){
@@ -23,6 +23,7 @@ prepare_reads <- function(directory_path, primer_path, metadata_path, fastq_path
 
 #Trim primers
 #' Main command to trim primers based on DADA2 functions
+#' 
 #' @inheritParams plot_qc
 #' @inheritParams filter_and_trim
 #' @inheritParams post_trim_qc
@@ -30,14 +31,9 @@ prepare_reads <- function(directory_path, primer_path, metadata_path, fastq_path
 #' @param data_tables A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
 #' @param directory_path A path to the intermediate folder and directory
 #' @param cutadapt_path A path to the cutadapt program
-#'
 #' @return
-#' @export
-#'
+#' @export cut_trim
 #' @examples
-#'
-#'
-
 cut_trim <- function(data_tables,directory_path,cutadapt_path,
                      maxEE = Inf, truncQ = 2, minLen = 20, maxLen = Inf,
                      truncLen = 0, maxN = 0, minQ=0, trimLeft=0, trimRight=0,rm.phix=TRUE,
@@ -59,26 +55,22 @@ cut_trim <- function(data_tables,directory_path,cutadapt_path,
   quality_plots2 <- plot_post_trim_qc(data_tables$cutadapt_data, directory_path)
 }
 
-# Hung's Addition: make_asvAbund_table
 #' Make an amplified sequence variants abundance matrix with data processed through preceding steps
-#'
 #'
 #' @param data_tables A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
 #' @param rawSeqTab_fileName A filename as which the raw sequence table will be saved
 #' @param abundMatrix_fileName A filenmae as which the abundance matrix will be saved
+#' @param directory_path
 #' @inheritParams infer_asv_command
 #' @inheritParams merge_reads_command
-#'
-#'
-#' @return asv_df
-#' @export
-#'
-#' @examples asv_abund_matrix <- make_asvAbund_matrix(data_tables,directory_path, data_tables$cutadapt_data)
+#' @return asv dataframe
+#' @export make_asv_abund_matrix
+#' @examples
 make_asv_abund_matrix <- function(data_tables, directory_path, cutadapt_data,
                                   multithread=FALSE,nbases = 1e+08,
                                   errorEstimationFunction = loessErrfun, randomize=FALSE,
                                   MAX_CONSIST=10, OMEGA_C=0, qualityType="Auto", nominalQ = FALSE,
-                                  obs=TRUE, err_out=TRUE, err_in=FALSE, pool=FALSE, selfConsist=FALSE,
+                                  obs=TRUE, err_zout=TRUE, err_in=FALSE, pool=FALSE, selfConsist=FALSE,
                                   verbose=FALSE,  minOverlap=12, maxMismatch=0, returnRejects=FALSE,
                                   justConcatenate=FALSE, trimOverhang=FALSE, orderBy="abundance",
                                   method="consensus", min_asv_length=50)
@@ -113,13 +105,10 @@ make_asv_abund_matrix <- function(data_tables, directory_path, cutadapt_data,
 # Hung's Addition: process_single_barcode
 #' Process the information from an ASV abundance matrix to run DADA2 for single barcode
 #'
-#'
 #' @param data_tables A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
 #' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
 #' @inheritParams assign_taxonomyDada2
 #' @return
-#' @export
-#'
 #' @examples
 #add params
 #name the ref db by barcode name
@@ -144,10 +133,7 @@ process_single_barcode <- function(data_tables, asv_abund_matrix, tryRC=FALSE, v
 #' @param data_tables list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
 #' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
 #' @inheritParams assign_taxonomyDada2
-#'
 #' @return
-#' @export
-#'
 #' @examples
 process_pooled_barcode <- function(data_tables, asv_abund_matrix, tryRC=FALSE, verbose=FALSE, multithread=FALSE, barcode1="rps10", barcode2="its")
 {
@@ -185,11 +171,8 @@ process_pooled_barcode <- function(data_tables, asv_abund_matrix, tryRC=FALSE, v
 #' @param database_rps10
 #' @param database_its
 #' @inheritParams assign_taxonomyDada2
-#'
-#'
 #' @return
-#' @export
-#'
+#' @export assignTax
 #' @examples
 
 #generalize for different db
@@ -217,11 +200,8 @@ assignTax <- function(directory_path, data_tables, asv_abund_matrix, tryRC=FALSE
 #' @param pid_species
 #' @param pid_genus
 #' @param pid_family
-#'
-#'
 #' @return
-#' @export
-#'
+#' @export asvmatrix_to_taxmap
 #' @examples
 asvmatrix_to_taxmap <- function(min_read_depth=0, minimum_bootstrap=50, pid_species=0, pid_genus=0, pid_family=0){
   abund_matrix <- read_csv(file.path(directory_path,'final_asv_abundance_matrix.csv'))
@@ -246,11 +226,8 @@ asvmatrix_to_taxmap <- function(min_read_depth=0, minimum_bootstrap=50, pid_spec
 #' Convert taxmap object to Phyloseq object (metacoder wrapper function)
 #'
 #' @param obj_data
-#'
-#'
-#' @return
-#' @export
-#'
+#' @return A phyloseq object
+#' @export taxmap_to_phyloseq
 #' @examples
 
 taxmap_to_phyloseq <- function(obj_dada) {
