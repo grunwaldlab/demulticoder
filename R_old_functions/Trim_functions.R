@@ -29,7 +29,6 @@ make_cutadapt_tibble <- function(fastq_data, metadata, directory_path){ #new_fas
   return(cutadapt_data)
 }
 
-#rename min_length
 #' Core function for running cutadapt
 #' 
 #' @param cutadapt_path A path to the cutadapt program

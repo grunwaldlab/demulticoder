@@ -147,7 +147,7 @@ infer_asvs <-function(my_primer_pair_id, my_direction, multithread=FALSE,nbases 
 #' @param cutadapt_data
 #' @param denoised_data_path
 #' @return
-infer_asv_command <-function(directory_path, cutadapt_data, multithread=FALSE,nbases = 1e+08, errorEstimationFunction = loessErrfun, randomize=FALSE, MAX_CONSIST=10, OMEGA_C=0, qualityType="Auto", nominalQ = FALSE, obs=TRUE, err_out=TRUE, err_in=FALSE, pool=FALSE, selfConsist=FALSE, verbose=FALSE){
+infer_asv_command <-function(cutadapt_data, multithread=FALSE,nbases = 1e+08, errorEstimationFunction = loessErrfun, randomize=FALSE, MAX_CONSIST=10, OMEGA_C=0, qualityType="Auto", nominalQ = FALSE, obs=TRUE, err_out=TRUE, err_in=FALSE, pool=FALSE, selfConsist=FALSE, verbose=FALSE){
   denoised_data_path <- file.path(directory_path, "Denoised_data.Rdata")
   if (file.exists(denoised_data_path)) {
     print("File already exists")
@@ -169,7 +169,7 @@ infer_asv_command <-function(directory_path, cutadapt_data, multithread=FALSE,nb
 #' @param directory_path A path to the intermediate folder and directory
 #' @param merged_read_data_path
 #' @return
-merge_reads_command <- function(directory_path, minOverlap=12, maxMismatch=0, returnRejects=FALSE, justConcatenate=FALSE, trimOverhang=FALSE, verbose=FALSE){
+merge_reads_command <- function(minOverlap=12, maxMismatch=0, returnRejects=FALSE, justConcatenate=FALSE, trimOverhang=FALSE, verbose=FALSE){
   denoised_data_path <- file.path(directory_path, "Denoised_data.Rdata")
   load(denoised_data_path) #incorporate into function
   merged_read_data_path <- file.path(directory_path, "Merged_reads.Rdata")

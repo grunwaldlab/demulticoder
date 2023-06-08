@@ -5,7 +5,6 @@
 #' @param metadata_path A path to a metadata containing the concatenated metadata and primer data
 #' @param fastq_path path to a directory containing FASTQ reads
 #' @inheritParams read_prefilt_fastq
-#' @inheritParams read_prefilt_fastq
 #' @return A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
 #' @export prepare_reads
 #' @examples data_tables<-prepare_reads(directory_path, primer_path, metadata_path, fastq_path, directory_path, maxN=0, multithread=TRUE)
@@ -18,6 +17,7 @@ prepare_reads <- function(directory_path, primer_path, metadata_path, fastq_path
   pre_primer_plot <- make_primer_hit_plot(pre_primer_hit_data, fastq_data, directory_path,"pre_primer_plot.pdf")
   cutadapt_data <- make_cutadapt_tibble(fastq_data, metadata, directory_path)
   data_tables <- list(cutadapt_data=cutadapt_data, primer_data=primer_data, fastq_data=fastq_data, metadata=metadata)
+  save(data_tables, file="data_tables.RData")
   return(data_tables)
 }
 
@@ -70,12 +70,12 @@ make_asv_abund_matrix <- function(data_tables, directory_path, cutadapt_data,
                                   multithread=FALSE,nbases = 1e+08,
                                   errorEstimationFunction = loessErrfun, randomize=FALSE,
                                   MAX_CONSIST=10, OMEGA_C=0, qualityType="Auto", nominalQ = FALSE,
-                                  obs=TRUE, err_zout=TRUE, err_in=FALSE, pool=FALSE, selfConsist=FALSE,
+                                  obs=TRUE, err_out=TRUE, err_in=FALSE, pool=FALSE, selfConsist=FALSE,
                                   verbose=FALSE,  minOverlap=12, maxMismatch=0, returnRejects=FALSE,
                                   justConcatenate=FALSE, trimOverhang=FALSE, orderBy="abundance",
                                   method="consensus", min_asv_length=50)
 {
-  infer_asv_command(directory_path, data_tables$cutadapt_data,
+  infer_asv_command(data_tables$cutadapt_data,
                     multithread = multithread,
                     nbases=nbases,
                     errorEstimationFunction= errorEstimationFunction,
@@ -90,7 +90,7 @@ make_asv_abund_matrix <- function(data_tables, directory_path, cutadapt_data,
                     pool=pool,
                     selfConsist=selfConsist,
                     verbose=verbose)
-  merged_reads<-merge_reads_command(directory_path, minOverlap = minOverlap,
+  merged_reads<-merge_reads_command(minOverlap = minOverlap,
                                     maxMismatch = maxMismatch,
                                     returnRejects = returnRejects,
                                     justConcatenate = justConcatenate,
