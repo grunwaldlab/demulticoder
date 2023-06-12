@@ -56,7 +56,7 @@ assignTax <-
            multithread = FALSE,
            barcode = "rps10",
            database_rps10 = "oomycetedb.fasta",
-           database_its = "sh_general_release_dynamic_22.08.2016.fasta") {
+           database_its = "fungidb.fasta") {
     if (barcode == "rps10") {
       format_database_rps10(directory_path, database_rps10)
       summary_table <-
