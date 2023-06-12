@@ -20,7 +20,7 @@
 #' directory_path,
 #' primer_path,
 #' metadata_path,
-#' maxN = 0,
+#' maxN = 0
 #' )
 #' cut_trim(
 #' directory_path,
@@ -37,16 +37,14 @@
 #' directory_path,
 #' minOverlap = 15,
 #' maxMismatch = 2,
-#' verbose = TRUE,
+#' verbose = TRUE
 #' )
 #' summary <- assignTax(
 #' directory_path,
 #' data_tables,
 #' asv_abund_matrix,
 #' multithread = TRUE,
-#' barcode = "rps10",
-#' database_rps10 = "oomycetedb.fasta",
-#' database_its = "sh_general_release_dynamic_22.08.2016.fasta"
+#' barcode = "rps10"
 #' )
 #'
 assignTax <-

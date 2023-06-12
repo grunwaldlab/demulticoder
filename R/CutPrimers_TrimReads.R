@@ -37,7 +37,7 @@
 #' minCutadaptlength = 50
 #')
 cut_trim <- function(directory_path,
-                     cutadapt_path = cutadapt_path,
+                     cutadapt_path,
                      maxEE = Inf,
                      truncQ = 2,
                      minLen = 20,
@@ -59,8 +59,6 @@ cut_trim <- function(directory_path,
                      orient.fwd = NULL,
                      id.field = NULL,
                      minCutadaptlength = 50) {
-  #data_table_path <- file.path(directory_path, "data_tables.RData")
-  #load(data_table_path)
   run_cutadapt(cutadapt_path,
                data_tables$cutadapt_data,
                minCutadaptlength = minCutadaptlength)

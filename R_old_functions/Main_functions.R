@@ -168,24 +168,22 @@ process_pooled_barcode <- function(data_tables, asv_abund_matrix, tryRC=FALSE, v
 #' @param tryRC
 #' @param verbose
 #' @param multithread
-#' @param database_rps10
-#' @param database_its
 #' @inheritParams assign_taxonomyDada2
 #' @return
 #' @export assignTax
 #' @examples
 
 #generalize for different db
-assignTax <- function(directory_path, data_tables, asv_abund_matrix, tryRC=FALSE, verbose=FALSE, multithread=FALSE, barcode="rps10", database_rps10="oomycetedb.fasta", database_its="sh_general_release_dynamic_22.08.2016.fasta") {
+assignTax <- function(directory_path, data_tables, asv_abund_matrix, tryRC=FALSE, verbose=FALSE, multithread=FALSE, barcode="rps10") {
   if(barcode=="rps10") {
-    format_database_rps10(directory_path, database_rps10)
+    format_database_rps10(directory_path, "oomycetedb.fasta")
     summary_table<-process_single_barcode(data_tables, asv_abund_matrix, multithread = multithread, barcode="rps10")
   } else if(barcode=="its") {
-    format_database_its(directory_path, database_its)
+    format_database_its(directory_path, "fungidb.fasta")
     summary_table<-process_single_barcode(data_tables, asv_abund_matrix, multithread = multithread, barcode="its")
   } else if(barcode=="rps10_its") {
-    format_database_rps10(directory_path, database_rps10)
-    format_database_its(directory_path, database_its)
+    format_database_rps10(directory_path, "oomycetedb.fasta")
+    format_database_its(directory_path, "fungidb.fasta")
     summary_table<-process_pooled_barcode(data_tables, asv_abund_matrix, multithread = multithread, barcode1="rps10", barcode2="its")
   } else {
     print("Barcodes note recognized")
