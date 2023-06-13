@@ -34,7 +34,6 @@ devtools::install_github("grunwaldlab/rps10_metabarcoding_tool")
 This is a basic example which shows you how to solve a common problem:
 
 ```{r example}
-library(rps10package)
 ## basic example code
 ```
 
