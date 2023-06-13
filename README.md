@@ -6,7 +6,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of rps10package is to …
+Package readme in progress-ignore for now.
 
 ## Installation
 
