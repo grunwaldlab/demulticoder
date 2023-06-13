@@ -27,7 +27,7 @@ You can install the development version of rps10package from [GitHub](https://gi
 *TODO-still working on documentation*
 
 
-```{r echo=T, warning=FALSE}
+```{r installation, message=FALSE, warnings=FALSE}
 #temporary installation method
 devtools::load_all("~/rps10package")
 document()
@@ -62,7 +62,7 @@ If barcodes are pooled, user will include each sample name twice, and under prim
 
 Include any other metadata columns you'd like to use during later steps of the analysis. Formatting of names does not matter, but ensure that there are no blank left cells. 
 
-```{r example}
+```{r set paths, message=FALSE, warnings=FALSE}
 #Change as needed based on where test dataset is located
 directory_path<-"~/rps10package/raw_data/rps10_ITS" ##choose a directory for all downstream steps
 primer_path <-file.path(directory_path, "primer_info.csv") ##modify .csv name or keep this name
@@ -76,7 +76,7 @@ cutadapt_path<-"/opt/homebrew/bin/cutadapt"
 
 The sample names, primer sequences and other metadata are reorganized in preparation for running Cutadapt to remove primers. 
 
-```{r create data tables}
+```{r create data tables, message=FALSE, warnings=FALSE}
 data_tables <-
   prepare_reads(
     directory_path,
