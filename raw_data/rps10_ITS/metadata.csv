@@ -1,0 +1,5 @@
+sample_name,primer_name,well,organism
+S1,rps10,A01,Cry
+S1,its,A01,Cry
+S2,rps10,B01,Cin
+S2,its,A01,Cry

@@ -68,7 +68,7 @@ Step 6. After databases are formatted, taxonomic information will be assigned to
 To do-fix function so that user doesn't need to specify db that they may not be using
 To do-Have a message if analysis has already been run, and way to rerun if user would like to override. 
 ```{r assign tax, include=TRUE}
-summary<-assignTax(directory_path, data_tables, asv_abund_matrix, multithread = TRUE, barcode = "rps10_its", database_rps10="oomycetedb.fasta", database_its="sh_general_release_dynamic_22.08.2016.fasta")
+summary<-assignTax(directory_path, data_tables, asv_abund_matrix, multithread = TRUE, barcode = "rps10_its")
 ```
 
 ```{r}

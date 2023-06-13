@@ -1,7 +1,7 @@
 devtools::load_all("~/rps10package")
 document()
 
-directory_path<-"~/rps10package/data/rps10_ITS" ##choose a directory for all downstream steps
+directory_path<-"~/rps10package/data/rps10" ##choose a directory for all downstream steps
 primer_path <-file.path(directory_path, "primer_info.csv") ##modify .csv name or keep this name
 metadata_path <-file.path(directory_path,"metadata.csv") ##modify .csv name or keep this name. The sample_name in the metadata sheet needs to match the first part (before first underscore), of the zipped raw FASTQ files
 cutadapt_path<-"/opt/homebrew/bin/cutadapt"
@@ -40,7 +40,7 @@ summary <- assignTax(
   data_tables,
   asv_abund_matrix,
   multithread = TRUE,
-  barcode = "rps10",
+  barcode = "rps10_its",
 )
 
 obj_dada <-
