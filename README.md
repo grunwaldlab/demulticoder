@@ -17,7 +17,8 @@ You can install the development version of rps10package from
 
 ``` r
 #temporary installation method
-devtools::load_all("~/rps10package")
+#ADJUST PATHS FOR MOMENT
+devtools::load_all("/Users/masudermann/rps10package")
 document()
 #> Warning: [AssignTaxonomy.R:7] @param requires name and description
 #> Warning: [AssignTaxonomy.R:8] @param requires name and description
@@ -92,7 +93,7 @@ there are no blank left cells.
 
 ``` r
 #Change as needed based on where test dataset is located
-directory_path<-"~/rps10package/raw_data/rps10_ITS" ##choose a directory for all downstream steps
+directory_path<-"/Users/masudermann/rps10package/raw_data/rps10_ITS" ##choose a directory for all downstream steps
 primer_path <-file.path(directory_path, "primer_info.csv") ##modify .csv name or keep this name
 metadata_path <-file.path(directory_path,"metadata.csv") ##modify .csv name or keep this name. The sample_name in the metadata sheet needs to match the first part (before first underscore), of the zipped raw FASTQ files
 #Specify the location of where cutadapt is located
@@ -135,3 +136,146 @@ data_tables <-
 ```
 
 <img src="man/figures/README-create data tables-1.png" width="100%" />
+
+## Remove primers with Cutadapt and check that no primers still remain
+
+If primers still remain, you may want to adjust the parameters or
+manually remove any reads that still have primers (TODO-adjust this
+instruction later).
+
+***TODO-include a function to remove any ASV sequences that may still
+have primers. There likely won’t be many-but it might be worth
+incorporating a function like this***
+
+``` r
+cut_trim(
+  directory_path,
+  cutadapt_path,
+  verbose = TRUE,
+  maxEE = 2,
+  truncQ = 5,
+  minLen = 200,
+  maxLen = 297,
+  minCutadaptlength = 50
+) 
+#> Warning: The `<scale>` argument of `guides()` cannot be `FALSE`. Use "none" instead as
+#> of ggplot2 3.3.4.
+#> ℹ The deprecated feature was likely used in the dada2 package.
+#>   Please report the issue at <https://github.com/benjjneb/dada2/issues>.
+#> This warning is displayed once every 8 hours.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
+#> Rows: 16 Columns: 11
+#> ── Column specification ────────────────────────────────────────────────────────
+#> Delimiter: ","
+#> chr (3): primer_name, orientation, sequence
+#> dbl (8): S1_R1_rps10, S1_R2_rps10, S1_R1_its, S1_R2_its, S2_R1_rps10, S2_R2_...
+#> 
+#> ℹ Use `spec()` to retrieve the full column specification for this data.
+#> ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+```
+
+<img src="man/figures/README-Trim function-1.png" width="100%" />
+
+## Generate ASV abundance matrix.
+
+Depending on chosen specifications, the minOverlap and maxMismatch can
+be changed. The default values are the DADA2 default values
+
+***To do-There is a message if analysis has already been run and parts
+don’t re-run. Change so there is a way to override and rewrite files if
+the user chooses***
+
+``` r
+asv_abund_matrix <-
+  make_asv_abund_matrix(
+    directory_path,
+    minOverlap = 15,
+    maxMismatch = 2,
+    verbose = TRUE,
+    multithread = TRUE
+  )
+#> [1] "File already exists"
+#> Duplicate sequences detected and merged.
+#> Duplicate sequences detected and merged.
+#> Duplicate sequences detected and merged.
+#> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+## Taxonomic identification step.
+
+After databases are formatted, taxonomic information will be assigned to
+the ASVs that were inferred previously. The output will be a csv file
+containing each unique ASV, the abundance of each ASV across each
+sample, and the taxonomic assignments, the bootstrap support values, as
+well as a column listing the percent identity of each sequence to the
+corresponding sequence in the reference database.
+
+The user must specify which barcode they are using. Either ‘rps10’, its,
+or ‘rps10_its’
+
+**Databases** Todo-clarify instructions
+
+Within the main directory, user must also have retrieved the rps10
+oomycetedb (add link) or the Unite fungal database of choice. The names
+of the databases must be ‘oomycetedb.fasta’ and ‘fungidb.fasta’, or else
+they won’t be recognized. The headers will altered and new versions of
+the databse will be saved. This will ensure there is consistency across
+databases.
+
+***TODO-save renamed db in temporary db or else they will take up too
+much space.***
+
+``` r
+summary <- assignTax(
+  directory_path,
+  data_tables,
+  asv_abund_matrix,
+  multithread = TRUE,
+  barcode = "rps10_its",
+)
+#> # A tibble: 117 × 7
+#>    sequence                  dada2_tax dada2_pid S1_rps10 S2_rps10 S1_its S2_its
+#>    <chr>                     <chr>     <chr>     <chr>    <chr>    <chr>  <chr> 
+#>  1 GAAAATCTTTGTGTCGGTGGTTCA… Eukaryot… 72.91242… 12623    180      0      0     
+#>  2 GAAAATCTTTGTGTCGGTGGTTCA… Eukaryot… 99.77168… 7505     2356     0      0     
+#>  3 GAAAATCTTTGTGTCGGTGGTTCA… Eukaryot… 99.77064… 102      6276     0      0     
+#>  4 GAAAATCTTTGTGTCGGTGGTTCA… Eukaryot… 86.87782… 0        3979     0      0     
+#>  5 AAAAAGTCGTAACAAGGTTTCCGT… Eukaryot… 99.13793… 0        0        3965   0     
+#>  6 AAAAAGTCGTAACAAGGTTTCCGT… Eukaryot… 100       0        0        3661   0     
+#>  7 GAAAATCTTTGTGTCGGTGGTTCA… Eukaryot… 99.54441… 0        1592     0      0     
+#>  8 AAAAAGTCGTAACAAGGTTTCCGT… Eukaryot… 99.56896… 0        0        0      1297  
+#>  9 AAGTCGTAACAAGGTTTCCGTAGG… Eukaryot… 79.73568… 0        0        274    892   
+#> 10 AAAAAGTCGTAACAAGGTTTCCGT… Eukaryot… 99.56896… 0        0        0      1004  
+#> # ℹ 107 more rows
+#> Duplicate sequences detected and merged.
+#> Duplicate sequences detected and merged.
+#> Duplicate sequences detected and merged.
+#>   sample_nameBarcode input filtered denoisedF denoisedR merged nonchim
+#> 1           S1_rps10 36760    20639     20625     20620  20597   20597
+#> 2           S2_rps10 50668    12045     14415     14410  14383   14383
+#> 3             S1_its 35899    14420     11927     11902  11781   11781
+#> 4             S2_its 19953     5746      5644      5639   5600    5600
+```
+
+## Convert ASV matrix to Taxmap and Phyloseq objects
+
+While some users will appreciate having a matrix with all ASVs,
+sequences, taxonomic assignments and abundances of each ASV per sample,
+others may prefer to reformat matrices into Phyloseq or Taxmap objects.
+
+Two wrapper functions are shared. They are derived from Metacoder
+function ‘xx’.
+
+``` r
+obj_dada<-asvmatrix_to_taxmap(asv_abund_matrix, min_read_depth=10, minimum_bootstrap=75)
+#> Rows: 117 Columns: 7
+#> ── Column specification ────────────────────────────────────────────────────────
+#> Delimiter: ","
+#> chr (2): sequence, dada2_tax
+#> dbl (5): dada2_pid, S1_rps10, S2_rps10, S1_its, S2_its
+#> 
+#> ℹ Use `spec()` to retrieve the full column specification for this data.
+#> ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+phylo_obj<-taxmap_to_phyloseq(obj_dada)
+```
