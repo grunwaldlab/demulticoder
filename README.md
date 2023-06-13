@@ -1,7 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# rps10package-rename and add info on package
+# rps10package-TODO rename
+
+## Description
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -53,7 +55,9 @@ document()
 # devtools::install_github("grunwaldlab/rps10_metabarcoding_tool")
 ```
 
-## Specify directory paths
+## Documentation
+
+### Specify directory paths
 
 Before you start, put your read fastq reads into a directory where you
 would like to do your analysis. Please note: **xx** files and
@@ -100,7 +104,7 @@ metadata_path <-file.path(directory_path,"metadata.csv") ##modify .csv name or k
 cutadapt_path<-"/opt/homebrew/bin/cutadapt"
 ```
 
-## Reorganize data tables for downstream steps and obtain primer counts across all sample reads
+### Reorganize data tables for downstream steps and obtain primer counts across all sample reads
 
 The sample names, primer sequences and other metadata are reorganized in
 preparation for running Cutadapt to remove primers.
@@ -137,7 +141,7 @@ data_tables <-
 
 <img src="man/figures/README-create data tables-1.png" width="100%" />
 
-## Remove primers with Cutadapt and check that no primers still remain
+### Remove primers with Cutadapt and check that no primers still remain
 
 If primers still remain, you may want to adjust the parameters or
 manually remove any reads that still have primers (TODO-adjust this
@@ -177,7 +181,7 @@ cut_trim(
 
 <img src="man/figures/README-Trim function-1.png" width="100%" />
 
-## Generate ASV abundance matrix.
+### Generate ASV abundance matrix.
 
 Depending on chosen specifications, the minOverlap and maxMismatch can
 be changed. The default values are the DADA2 default values
@@ -202,7 +206,7 @@ asv_abund_matrix <-
 #> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-## Taxonomic identification step.
+### Taxonomic identification steps
 
 After databases are formatted, taxonomic information will be assigned to
 the ASVs that were inferred previously. The output will be a csv file
@@ -258,14 +262,14 @@ summary <- assignTax(
 #> 4             S2_its 19953     5746      5644      5639   5600    5600
 ```
 
-## Convert ASV matrix to Taxmap and Phyloseq objects
+### Convert ASV matrix to Taxmap and Phyloseq objects
 
-While some users will appreciate having a matrix with all ASVs,
-sequences, taxonomic assignments and abundances of each ASV per sample,
-others may prefer to reformat matrices into Phyloseq or Taxmap objects.
+While some users will appreciate having a matrix with all ASV sequences,
+taxonomic assignments and abundances of each ASV per sample, others may
+prefer to reformat matrices into Phyloseq or Taxmap objects.
 
 Two wrapper functions are shared. They are derived from Metacoder
-function ‘xx’.
+functions ‘parse_tax_data’ and ‘as_phyloseq’.
 
 ``` r
 obj_dada<-asvmatrix_to_taxmap(asv_abund_matrix, min_read_depth=10, minimum_bootstrap=75)
@@ -279,3 +283,11 @@ obj_dada<-asvmatrix_to_taxmap(asv_abund_matrix, min_read_depth=10, minimum_boots
 #> ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 phylo_obj<-taxmap_to_phyloseq(obj_dada)
 ```
+
+***To do-paste in other examples of outputs***
+
+## Dependencies
+
+## Citation
+
+## Future development
