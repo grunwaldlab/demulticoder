@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# rps10package-TODO rename
+# rps10package-working on name
 
 ## Description
 
@@ -121,22 +121,22 @@ data_tables <-
 #> # A tibble: 16 × 7
 #>    primer_name orientation sequence               S1_R1 S1_R2 S2_R1 S2_R2
 #>    <chr>       <chr>       <chr>                  <dbl> <dbl> <dbl> <dbl>
-#>  1 rps10       forward     GTTGGTTAGAGYARAAGACT   35634     0 34601     1
-#>  2 its         forward     CTTGGTCATTTAGAGGAAGTAA 48291     1 33485     0
+#>  1 rps10       forward     GTTGGTTAGAGYARAAGACT    4001     0  4800     0
+#>  2 its         forward     CTTGGTCATTTAGAGGAAGTAA  5439     0  4573     0
 #>  3 rps10       f_compt     CAACCAATCTCRTYTTCTGA       0     0     0     0
 #>  4 its         f_compt     GAACCAGTAAATCTCCTTCATT     0     0     0     0
 #>  5 rps10       f_rev       TCAGAARAYGAGATTGGTTG       0     0     0     0
 #>  6 its         f_rev       AATGAAGGAGATTTACTGGTTC     0     0     0     0
-#>  7 rps10       f_rc        AGTCTTYTRCTCTAACCAAC       0     8     0     9
-#>  8 its         f_rc        TTACTTCCTCTAAATGACCAAG     0  2290     0  5316
-#>  9 rps10       reverse     ATRYYTAGAAAGAYTYGAACT      0 35033     1 34233
-#> 10 its         reverse     GCTGCGTTCTTCATCGATGC       1 47471     0 33214
+#>  7 rps10       f_rc        AGTCTTYTRCTCTAACCAAC       0     0     0     1
+#>  8 its         f_rc        TTACTTCCTCTAAATGACCAAG     0   295     0   721
+#>  9 rps10       reverse     ATRYYTAGAAAGAYTYGAACT      0  3924     0  4751
+#> 10 its         reverse     GCTGCGTTCTTCATCGATGC       0  5318     0  4501
 #> 11 rps10       r_compt     TAYRRATCTTTCTRARCTTGA      0     0     0     0
 #> 12 its         r_compt     CGACGCAAGAAGTAGCTACG       0     0     0     0
 #> 13 rps10       r_rev       TCAAGYTYAGAAAGATYYRTA      0     0     0     0
 #> 14 its         r_rev       CGTAGCTACTTCTTGCGTCG       0     0     0     0
-#> 15 rps10       r_rc        AGTTCRARTCTTTCTARRYAT      4     0     4     0
-#> 16 its         r_rc        GCATCGATGAAGAACGCAGC    3225     0  6732     0
+#> 15 rps10       r_rc        AGTTCRARTCTTTCTARRYAT      0     0     0     0
+#> 16 its         r_rc        GCATCGATGAAGAACGCAGC     392     0   901     0
 ```
 
 <img src="man/figures/README-create data tables-1.png" width="100%" />
@@ -201,8 +201,6 @@ asv_abund_matrix <-
   )
 #> [1] "File already exists"
 #> Duplicate sequences detected and merged.
-#> Duplicate sequences detected and merged.
-#> Duplicate sequences detected and merged.
 #> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
@@ -238,28 +236,26 @@ summary <- assignTax(
   multithread = TRUE,
   barcode = "rps10_its",
 )
-#> # A tibble: 117 × 7
+#> # A tibble: 55 × 7
 #>    sequence                  dada2_tax dada2_pid S1_rps10 S2_rps10 S1_its S2_its
 #>    <chr>                     <chr>     <chr>     <chr>    <chr>    <chr>  <chr> 
-#>  1 GAAAATCTTTGTGTCGGTGGTTCA… Eukaryot… 72.91242… 12623    180      0      0     
-#>  2 GAAAATCTTTGTGTCGGTGGTTCA… Eukaryot… 99.77168… 7505     2356     0      0     
-#>  3 GAAAATCTTTGTGTCGGTGGTTCA… Eukaryot… 99.77064… 102      6276     0      0     
-#>  4 GAAAATCTTTGTGTCGGTGGTTCA… Eukaryot… 86.87782… 0        3979     0      0     
-#>  5 AAAAAGTCGTAACAAGGTTTCCGT… Eukaryot… 99.13793… 0        0        3965   0     
-#>  6 AAAAAGTCGTAACAAGGTTTCCGT… Eukaryot… 100       0        0        3661   0     
-#>  7 GAAAATCTTTGTGTCGGTGGTTCA… Eukaryot… 99.54441… 0        1592     0      0     
-#>  8 AAAAAGTCGTAACAAGGTTTCCGT… Eukaryot… 99.56896… 0        0        0      1297  
-#>  9 AAGTCGTAACAAGGTTTCCGTAGG… Eukaryot… 79.73568… 0        0        274    892   
-#> 10 AAAAAGTCGTAACAAGGTTTCCGT… Eukaryot… 99.56896… 0        0        0      1004  
-#> # ℹ 107 more rows
-#> Duplicate sequences detected and merged.
-#> Duplicate sequences detected and merged.
+#>  1 GAAAATCTTTGTGTCGGTGGTTCA… Eukaryot… 72.91242… 1434     30       0      0     
+#>  2 GAAAATCTTTGTGTCGGTGGTTCA… Eukaryot… 99.77168… 835      337      0      0     
+#>  3 GAAAATCTTTGTGTCGGTGGTTCA… Eukaryot… 100       0        831      0      0     
+#>  4 GAAAATCTTTGTGTCGGTGGTTCA… Eukaryot… 86.87782… 0        546      0      0     
+#>  5 AAAAAGTCGTAACAAGGTTTCCGT… Eukaryot… 90.94488… 0        0        472    0     
+#>  6 AAAAAGTCGTAACAAGGTTTCCGT… Eukaryot… 90.94488… 0        0        419    0     
+#>  7 AAAAAGTCGTAACAAGGTTTCCGT… Eukaryot… 90.55118… 0        0        0      331   
+#>  8 AAGTCGTAACAAGGTTTCCGTAGG… Eukaryot… 76.21145… 0        0        41     205   
+#>  9 GAAAATCTTTGTGTCGGTGGTTCA… Eukaryot… 99.54441… 0        240      0      0     
+#> 10 AAAAAGTCGTAACAAGGTTTCCGT… Eukaryot… 90.55118… 0        0        0      233   
+#> # ℹ 45 more rows
 #> Duplicate sequences detected and merged.
 #>   sample_nameBarcode input filtered denoisedF denoisedR merged nonchim
-#> 1           S1_rps10 36760    20639     20625     20620  20597   20597
-#> 2           S2_rps10 50668    12045     14415     14410  14383   14383
-#> 3             S1_its 35899    14420     11927     11902  11781   11781
-#> 4             S2_its 19953     5746      5644      5639   5600    5600
+#> 1           S1_rps10  4119     2284      2284      2274   2269    2269
+#> 2           S2_rps10  5678     1424      1985      1985   1984    1984
+#> 3             S1_its  4987     1987      1386      1379   1312    1312
+#> 4             S2_its  4827     1394      1346      1341   1294    1294
 ```
 
 ### Convert ASV matrix to Taxmap and Phyloseq objects
@@ -273,7 +269,7 @@ functions ‘parse_tax_data’ and ‘as_phyloseq’.
 
 ``` r
 obj_dada<-asvmatrix_to_taxmap(asv_abund_matrix, min_read_depth=10, minimum_bootstrap=75)
-#> Rows: 117 Columns: 7
+#> Rows: 55 Columns: 7
 #> ── Column specification ────────────────────────────────────────────────────────
 #> Delimiter: ","
 #> chr (2): sequence, dada2_tax
