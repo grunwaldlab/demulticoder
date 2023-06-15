@@ -1,8 +1,0 @@
-^.*\.Rproj$
-^\.Rproj\.user$
-^README\.Rmd$
-^Tests.R$
-^Meta$
-^R_old_functions$
-^.Rhistory$
-^.RData$
