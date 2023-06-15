@@ -4,5 +4,6 @@
 .Ruserdata
 Tests.R
 inst/doc
-/doc/
-/Meta/
+R_old_functions
+.Rhistory
+.RData
