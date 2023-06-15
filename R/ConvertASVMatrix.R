@@ -15,7 +15,7 @@
 #' @return ASV matrix converted to taxmap object
 #' @export asvmatrix_to_taxmap
 #' @examples
-#' directory_path<-"~/Desktop/rps10test"
+#' directory_path<-"~/rps10package/raw_data/rps10_ITS"
 #' primer_path <-file.path(directory_path, "primer_info.csv")
 #' metadata_path <-file.path(directory_path,"metadata.csv")
 #' cutadapt_path<-"/opt/homebrew/bin/cutadapt"
@@ -84,7 +84,7 @@ asvmatrix_to_taxmap <- function(min_read_depth=0, minimum_bootstrap=50, pid_spec
 #' @return Taxmap object converted to a phyloseq object
 #' @export taxmap_to_phyloseq
 #' @examples
-#' directory_path<-"~/Desktop/rps10test"
+#' directory_path<-"~/rps10package/raw_data/rps10_ITS"
 #' primer_path <-file.path(directory_path, "primer_info.csv")
 #' metadata_path <-file.path(directory_path,"metadata.csv")
 #' cutadapt_path<-"/opt/homebrew/bin/cutadapt"
