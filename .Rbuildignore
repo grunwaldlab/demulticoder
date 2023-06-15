@@ -2,5 +2,7 @@
 ^\.Rproj\.user$
 ^README\.Rmd$
 ^Tests.R$
-^doc$
 ^Meta$
+^R_old_functions$
+^.Rhistory$
+^.RData$
