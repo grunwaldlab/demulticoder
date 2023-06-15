@@ -62,3 +62,6 @@ devtools::build_readme()
 
 usethis::use_test("rps10package2")
 usethis::use_test("PrepareReads_CountPrimers")
+
+
+devtools::build_vignettes()
