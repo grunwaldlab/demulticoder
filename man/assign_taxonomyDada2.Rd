@@ -5,7 +5,7 @@
 \title{Assign taxonomy}
 \usage{
 assign_taxonomyDada2(
-  abund_asv_matrix,
+  asv_abund_matrix,
   ref_database,
   taxresults_file,
   minBoot = 0,
@@ -15,6 +15,12 @@ assign_taxonomyDada2(
 )
 }
 \arguments{
+\item{asv_abund_matrix}{The ASV abundance matrix}
+
+\item{ref_database}{The reference database used for taxonomic inference steps}
+
+\item{taxresults_file}{The name of the file for saving taxonomic assignment results}
+
 \item{minBoot}{(Optional). Default 50. 
 The minimum bootstrap confidence for assigning a taxonomic level.}
 

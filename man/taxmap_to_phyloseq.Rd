@@ -16,7 +16,7 @@ Taxmap object converted to a phyloseq object
 Convert taxmap object to Phyloseq object (metacoder wrapper function)
 }
 \examples{
-directory_path<-"~/Desktop/rps10test"
+directory_path<-"~/rps10package/raw_data/rps10_ITS"
 primer_path <-file.path(directory_path, "primer_info.csv")
 metadata_path <-file.path(directory_path,"metadata.csv")
 cutadapt_path<-"/opt/homebrew/bin/cutadapt"
@@ -49,9 +49,7 @@ directory_path,
 data_tables,
 asv_abund_matrix,
 multithread = TRUE,
-barcode = "rps10",
-database_rps10 = "oomycetedb.fasta",
-database_its = "sh_general_release_dynamic_22.08.2016.fasta"
+barcode = "rps10"
 )
 obj_dada<-asvmatrix_to_taxmap(
 asv_abund_matrix,

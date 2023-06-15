@@ -1,11 +1,9 @@
 #' Assign rps10 and ITS taxonomy
 #'
-#' @param directory_path path of read files and metadata file
+#' @param directory_path Location of read files and metadata file
 #' @param data_tables specify dataframe
 #' @param barcode specify which barcode you have used, 'rps10', 'its', or 'rps10_its'
 #' @param asv_abund_matrix specify the ASV abundance matrix for which taxonomic assignments will be given
-#' @param database_rps10
-#' @param database_its
 #' @inheritParams assign_taxonomyDada2
 #' @inheritParams dada2::assignTaxonomy
 #' @return Taxonomic assignments of each unique ASV sequence
@@ -54,26 +52,24 @@ assignTax <-
            tryRC = FALSE,
            verbose = FALSE,
            multithread = FALSE,
-           barcode = "rps10",
-           database_rps10 = "oomycetedb.fasta",
-           database_its = "fungidb.fasta") {
+           barcode = "rps10") {
     if (barcode == "rps10") {
-      format_database_rps10(directory_path, database_rps10)
+      format_database_rps10(directory_path, "oomycetedb.fasta")
       summary_table <-
         process_single_barcode(data_tables,
                                asv_abund_matrix,
                                multithread = multithread,
                                barcode = "rps10")
     } else if (barcode == "its") {
-      format_database_its(directory_path, database_its)
+      format_database_its(directory_path, "fungidb.fasta")
       summary_table <-
         process_single_barcode(data_tables,
                                asv_abund_matrix,
                                multithread = multithread,
                                barcode = "its")
     } else if (barcode == "rps10_its") {
-      format_database_rps10(directory_path, database_rps10)
-      format_database_its(directory_path, database_its)
+      format_database_rps10(directory_path, "oomycetedb.fasta")
+      format_database_its(directory_path, "fungidb.fasta")
       summary_table <-
         process_pooled_barcode(
           data_tables,
@@ -193,8 +189,8 @@ process_pooled_barcode <-
 #' Prepare final ASV abundance matrix
 #'
 #' @param directory_data folder with trimmed and filtered reads for each sample
-#' @param asv_abund_matrix
-#' @param locus
+#' @param asv_abund_matrix The returned final ASV abundance matrix
+#' @param locus The barcode selected in the analysis
 #' @keywords internal
 prep_abund_matrix <-function(cutadapt_data, asv_abund_matrix, locus){
   #rownames(asv_abund_matrix) <- sub(rownames(asv_abund_matrix), pattern = ".fastq.gz", replacement = "")
@@ -205,10 +201,10 @@ prep_abund_matrix <-function(cutadapt_data, asv_abund_matrix, locus){
 
 #' Separate abundance matrices
 #'
-#' @param abund_asv_its
-#' @param abund_asv_rps10
+#' @param abund_asv_barcode2 The separated matrix for second barcode 
+#' @param abund_asv_barcode1 The separated matrix for first barcode
 #' @param directory_path A path to the intermediate folder and directory
-#' @param asv_abund_matrix
+#' @param asv_abund_matrix The non-separated ASV matrix 
 #' @keywords internal
 separate_abund_matrix <- function(abund_asv_barcode2, abund_asv_barcode1, directory_path, asv_abund_matrix){
   separate_abund_path <- file.path(directory_path, "Separate_abund.Rdata")
@@ -226,12 +222,12 @@ separate_abund_matrix <- function(abund_asv_barcode2, abund_asv_barcode1, direct
 #' Assign taxonomy
 #'
 #' @inheritParams dada2::assignTaxonomy
-#' @param abund_asv_matrix
-#' @param ref_database
-#' @param taxresults_file
+#' @param asv_abund_matrix The ASV abundance matrix
+#' @param ref_database The reference database used for taxonomic inference steps
+#' @param taxresults_file The name of the file for saving taxonomic assignment results
 #' @keywords internal
-assign_taxonomyDada2<-function(abund_asv_matrix, ref_database, taxresults_file, minBoot=0, tryRC=FALSE, verbose=FALSE, multithread=TRUE){
-  tax_results<- dada2::assignTaxonomy(abund_asv_matrix,
+assign_taxonomyDada2<-function(asv_abund_matrix, ref_database, taxresults_file, minBoot=0, tryRC=FALSE, verbose=FALSE, multithread=TRUE){
+  tax_results<- dada2::assignTaxonomy(asv_abund_matrix,
                                       refFasta = file.path(directory_path, ref_database),
                                       taxLevels = c("Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
                                       minBoot = minBoot,
@@ -247,7 +243,7 @@ assign_taxonomyDada2<-function(abund_asv_matrix, ref_database, taxresults_file, 
 
 #' Align ASV sequences to reference sequences from database to get percent ID. Get percent identities.
 #'
-#' @param tax_results
+#' @param tax_results The dataframe containing taxonomic assignments
 #' @keywords internal
 get_pids <- function(tax_results, db) {
   db_seqs <- read_fasta(file.path(directory_path, db))
@@ -272,8 +268,8 @@ get_pids <- function(tax_results, db) {
 
 #' Align ASV sequences to reference sequences from database to get percent ID. STart by retrieving reference sequences.
 #'
-#' @param tax_results
-#' @param db
+#' @param tax_results The dataframe containing taxonomic assignments
+#' @param db The reference database
 #' @keywords internal
 get_ref_seq <- function(tax_results, db) {
   ref_i <- as.integer(str_match(tax_results$tax[, 'Reference'], '^.+_([0-9]+)$')[ ,2])
@@ -282,8 +278,8 @@ get_ref_seq <- function(tax_results, db) {
 
 #' Add PID and bootstrap values to tax result.
 #'
-#' @param tax_results
-#' @param asv_pid
+#' @param tax_results The dataframe containing taxonomic assignments
+#' @param asv_pid Percent identity information for each ASV relative to reference database sequence
 #' @keywords internal
 add_pid_to_tax <- function(tax_results, asv_pid) {
   tax_results$tax <- cbind(tax_results$tax, ASV = rownames(tax_results$tax))
@@ -293,7 +289,7 @@ add_pid_to_tax <- function(tax_results, asv_pid) {
 
 #' Combine taxonomic assignments and bootstrap values for each locus into single falsification vector
 #'
-#' @param tax_results
+#' @param tax_results The dataframe containing taxonomic assignments
 #' @keywords internal
 assignTax_as_char <- function(tax_results) {
   tax_matrix_path <- file.path(directory_path, "Final_tax_matrix.Rdata")

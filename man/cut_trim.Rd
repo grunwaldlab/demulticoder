@@ -31,7 +31,7 @@ cut_trim(
 )
 }
 \arguments{
-\item{directory_path}{A path to the intermediate folder and directory}
+\item{directory_path}{Location of read files and metadata file}
 
 \item{cutadapt_path}{A path to the cutadapt program}
 
@@ -142,7 +142,7 @@ ASV matrix
 Main command to trim primers based on DADA2 functions
 }
 \examples{
-directory_path<-"~/Desktop/rps10test"
+directory_path<-"~/rps10package/raw_data/rps10_ITS"
 primer_path <-file.path(directory_path, "primer_info.csv")
 metadata_path <-file.path(directory_path,"metadata.csv")
 cutadapt_path<-"/opt/homebrew/bin/cutadapt"

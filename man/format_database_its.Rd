@@ -5,6 +5,8 @@
 \title{An ITS database that has modified headers and is output in the reference_databases folder.}
 \usage{
 format_database_its(directory_path, database_its)
+
+format_database_its(directory_path, database_its)
 }
 \arguments{
 \item{directory_path}{A path to a directory that contains raw data}
@@ -13,8 +15,12 @@ format_database_its(directory_path, database_its)
 }
 \value{
 An ITS database that has modified headers and is output in the reference_databases folder.
+
+A 16S database that has modified headers and is output in the reference_databases folder.
 }
 \description{
 An ITS database that has modified headers and is output in the reference_databases folder.
+
+An 16S database that has modified headers and is output in the reference_databases folder-Silva db is one that has species levels taxonomic assignments and based off the format of version 138.1.
 }
 \keyword{internal}

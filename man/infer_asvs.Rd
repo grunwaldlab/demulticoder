@@ -25,6 +25,10 @@ infer_asvs(
 )
 }
 \arguments{
+\item{my_primer_pair_id}{The the specific barcode id}
+
+\item{my_direction}{Location of read files and metadata file}
+
 \item{multithread}{(Optional). Default is FALSE.
 If TRUE, multithreading is enabled and the number of available threads is automatically determined.   
 If an integer is provided, the number of threads to use is set by passing the argument on to
@@ -102,6 +106,6 @@ If TRUE, plot the input error rates (dashed line).}
 asv_data
 }
 \description{
-param directory_path
+param directory_path Location of read files and metadata file
 }
 \keyword{internal}

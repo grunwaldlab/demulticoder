@@ -7,7 +7,7 @@
 #' @inheritParams run_cutadapt
 #' @inheritParams infer_asv_command
 #' @inheritParams merge_reads_command
-#' @param directory_path A path to the intermediate folder and directory
+#' @param directory_path Location of read files and metadata file
 #' @param cutadapt_path A path to the cutadapt program
 #' @return Reads trimmed of primers and filtered, primer counts after running Cutadapt, and quality plots after poor quality reads or trimmed or removed
 #' @param rawSeqTab_fileName A filename as which the raw sequence table will be saved
@@ -15,7 +15,7 @@
 #' @return ASV matrix
 #' @export cut_trim
 #' @examples
-#' directory_path<-~/rps10package/raw_data/rps10_ITS
+#' directory_path<-"~/rps10package/raw_data/rps10_ITS"
 #' primer_path <-file.path(directory_path, "primer_info.csv")
 #' metadata_path <-file.path(directory_path,"metadata.csv")
 #' cutadapt_path<-"/opt/homebrew/bin/cutadapt"
@@ -265,7 +265,7 @@ filter_and_trim <-
 #'
 #' @param primer_data The primer data tibble created in orient_primers function
 #' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
-#' @return Table of read counts acros each sample
+#' @return Table of read counts across each sample
 #' @keywords internal
 #'
 

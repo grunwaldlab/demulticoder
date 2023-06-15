@@ -12,6 +12,8 @@ make_abund_matrix(
 )
 }
 \arguments{
+\item{raw_seqtab}{R data file with raw sequence data prior to removal of chimeras}
+
 \item{method}{(Optional). Default is "consensus". Only has an effect if a sequence table is provided.
 
   If "pooled": The samples in the sequence table are all pooled together for bimera
@@ -25,9 +27,11 @@ make_abund_matrix(
 
 \item{verbose}{(Optional). Default FALSE. 
 Print verbose text output.}
+
+\item{min_asv_length}{The minimum cutoff of ASVs to be retained}
 }
 \value{
-asv_abund_matrix
+asv_abund_matrix The returned final ASV abundance matrix
 }
 \description{
 Quality filtering to remove chimeras and short sequences

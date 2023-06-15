@@ -12,7 +12,13 @@ separate_abund_matrix(
 )
 }
 \arguments{
+\item{abund_asv_barcode2}{The separated matrix for second barcode}
+
+\item{abund_asv_barcode1}{The separated matrix for first barcode}
+
 \item{directory_path}{A path to the intermediate folder and directory}
+
+\item{asv_abund_matrix}{The non-separated ASV matrix}
 }
 \description{
 Separate abundance matrices

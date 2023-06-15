@@ -6,6 +6,9 @@
 \usage{
 make_seqhist(asv_abund_matrix)
 }
+\arguments{
+\item{asv_abund_matrix}{The returned final ASV abundance matrix}
+}
 \value{
 histogram with read length counts of all sequences within ASV matrix
 }

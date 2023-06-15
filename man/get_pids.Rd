@@ -6,6 +6,9 @@
 \usage{
 get_pids(tax_results, db)
 }
+\arguments{
+\item{tax_results}{The dataframe containing taxonomic assignments}
+}
 \description{
 Align ASV sequences to reference sequences from database to get percent ID. Get percent identities.
 }

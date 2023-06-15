@@ -6,6 +6,9 @@
 \usage{
 assignTax_as_char(tax_results)
 }
+\arguments{
+\item{tax_results}{The dataframe containing taxonomic assignments}
+}
 \description{
 Combine taxonomic assignments and bootstrap values for each locus into single falsification vector
 }

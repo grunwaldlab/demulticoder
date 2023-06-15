@@ -71,3 +71,38 @@ format_database_its <-function(directory_path, database_its){
     write_lines(file = its_ref_path)
   return(its_data)
 }
+
+#' An 16S database that has modified headers and is output in the reference_databases folder-Silva db is one that has species levels taxonomic assignments and based off the format of version 138.1.
+#'
+#' @param directory_path A path to a directory that contains raw data
+#' @param database_its The name of the database
+#' @return A 16S database that has modified headers and is output in the reference_databases folder.
+#' @keywords internal
+#'
+format_database_its <-function(directory_path, database_its){
+  database_path <- file.path(directory_path, "its_reference_db.fa")
+  its_db <- read_fasta(file.path(directory_path, database_its))
+  its_data <- str_match(names(its_db), pattern = "(.+)\\|(.+)\\|(.+)\\|(.+)\\|(.+)$")
+  colnames(its_data) <- c("header", "name", "ncbi_acc", "unite_db", "db", "taxonomy")
+  its_data <- as_tibble(its_data)
+  its_data$taxonomy <- gsub(its_data$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
+  its_data$taxonomy <- paste0('Eukaryota;', its_data$taxonomy)
+  its_data$taxonomy <- gsub(its_data$taxonomy, pattern = 'Stramenopila;Oomycota', replacement = 'Heterokontophyta;Stramenopiles', fixed = TRUE)
+  its_data$taxonomy <- paste0(its_data$taxonomy, ';', 'unite_', seq_along(its_data$taxonomy))
+  its_data$taxonomy <- gsub(its_data$taxonomy, pattern = "[a-z]__", replacement = '')
+  its_data$taxonomy <- paste0(its_data$taxonomy, ';')
+  its_data$taxonomy <- trimws(its_data$taxonomy)
+  #Fix after checking out later analysis
+  stopifnot(all(str_count(its_data$taxonomy, pattern = ";") == 9))
+  genus_count <- table(map_chr(strsplit(its_data$name, split = '_'), `[`, 1))
+  count_table <- as.data.frame(genus_count, stringsAsFactors = FALSE)
+  count_table <- as_tibble(count_table)
+  names(count_table) <- c('Genus', 'Number of sequences')
+  write_csv(count_table, file = file.path(directory_path, "its_genus_count_table.csv"))
+  its_ref_path <- file.path(directory_path , "its_reference_db.fa")
+  paste0(">", its_data$taxonomy, "\n", its_db) %>%
+    write_lines(file = its_ref_path)
+  return(its_data)
+}
+
+

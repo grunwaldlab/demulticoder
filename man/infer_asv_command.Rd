@@ -95,6 +95,8 @@ If TRUE, plot the input error rates (dashed line).}
  \item{1: Basic text output (same as TRUE). }
  \item{2: Detailed text output, mostly intended for debugging. }
 }}
+
+\item{denoised_data_path}{Path to saved intermediate denoised data}
 }
 \description{
 param directory_path

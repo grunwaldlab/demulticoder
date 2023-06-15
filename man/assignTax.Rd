@@ -11,13 +11,11 @@ assignTax(
   tryRC = FALSE,
   verbose = FALSE,
   multithread = FALSE,
-  barcode = "rps10",
-  database_rps10 = "oomycetedb.fasta",
-  database_its = "fungidb.fasta"
+  barcode = "rps10"
 )
 }
 \arguments{
-\item{directory_path}{path of read files and metadata file}
+\item{directory_path}{Location of read files and metadata file}
 
 \item{data_tables}{specify dataframe}
 
@@ -44,7 +42,7 @@ Taxonomic assignments of each unique ASV sequence
 Assign rps10 and ITS taxonomy
 }
 \examples{
-directory_path<-"~/Desktop/rps10test"
+directory_path<-"~/rps10package/raw_data/rps10_ITS"
 primer_path <-file.path(directory_path, "primer_info.csv")
 metadata_path <-file.path(directory_path,"metadata.csv")
 cutadapt_path<-"/opt/homebrew/bin/cutadapt"

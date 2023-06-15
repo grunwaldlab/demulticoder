@@ -7,6 +7,8 @@
 makeSeqtab(merged_reads, orderBy = "abundance")
 }
 \arguments{
+\item{merged_reads}{Intermediate merged read R data file}
+
 \item{orderBy}{(Optional). \code{character(1)}. Default "abundance".
 Specifies how the sequences (columns) of the returned table should be ordered (decreasing).
 Valid values: "abundance", "nsamples", NULL.}

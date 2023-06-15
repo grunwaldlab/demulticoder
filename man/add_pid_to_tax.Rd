@@ -6,6 +6,11 @@
 \usage{
 add_pid_to_tax(tax_results, asv_pid)
 }
+\arguments{
+\item{tax_results}{The dataframe containing taxonomic assignments}
+
+\item{asv_pid}{Percent identity information for each ASV relative to reference database sequence}
+}
 \description{
 Add PID and bootstrap values to tax result.
 }

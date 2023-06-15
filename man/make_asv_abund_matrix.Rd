@@ -136,7 +136,7 @@ The asv abundance matrix asv_abund_matrix
 Make an amplified sequence variants abundance matrix with data processed through preceding steps
 }
 \examples{
-directory_path<-"~/Desktop/rps10test"
+directory_path<-"~/rps10package/raw_data/rps10_ITS"
 primer_path <-file.path(directory_path, "primer_info.csv")
 metadata_path <-file.path(directory_path,"metadata.csv")
 cutadapt_path<-"/opt/homebrew/bin/cutadapt"

@@ -99,8 +99,8 @@ make_asv_abund_matrix <- function(directory_path,
 
 #' Retrieve the paths of the filtered and trimmed Fastq ifiles
 #'
-#' @param my_direction
-#' @param my_primer_pair_id
+#' @param my_direction Whether primer is in forward or reverse direction
+#' @param my_primer_pair_id The the specific barcode id 
 #' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
 #' @keywords internal
 get_fastq_paths <- function(my_direction, my_primer_pair_id) {
@@ -115,12 +115,12 @@ get_fastq_paths <- function(my_direction, my_primer_pair_id) {
 
 #' Core DADA2 function to learn errors and infer ASVs
 #'
-#' param directory_path
+#' param directory_path Location of read files and metadata file
 #' @inheritParams dada2::learnErrors
 #' @inheritParams dada2::dada
 #' @inheritParams dada2::plotErrors
-#' @param my_primer_pair_id
-#' @param my_direction
+#' @param my_primer_pair_id The the specific barcode id 
+#' @param my_direction Location of read files and metadata file
 #' @return asv_data
 #' @keywords internal
 infer_asvs <-
@@ -196,7 +196,7 @@ infer_asvs <-
 #'
 #' param directory_path
 #' @inheritParams infer_asvs
-#' @param denoised_data_path
+#' @param denoised_data_path Path to saved intermediate denoised data
 #' @keywords internal
 infer_asv_command <-
   function(directory_path,
@@ -254,8 +254,8 @@ infer_asv_command <-
 #' param directory_path
 #' @inheritParams dada2::mergePairs
 #' @param directory_path A path to the intermediate folder and directory
-#' @param merged_read_data_path
-#' @return merged_reads
+#' @param merged_read_data_path Path to R data file containing merged read data
+#' @return merged_reads Intermediate merged read R data file
 #' @keywords internal
 merge_reads_command <-
   function(directory_path,
@@ -303,8 +303,8 @@ merge_reads_command <-
 
 #' Count overlap to see how well the reads were merged
 #'
-#' @param merged_reads
-#' @return
+#' @param merged_reads Intermediate merged read R data file
+#' @return A plot describing how well reads merged and information on overlap between reads
 countOverlap <- function(merged_reads, directory_path) {
   non_empty_merged_reads <-
     merged_reads[map_dbl(merged_reads, nrow) > 0]
@@ -363,7 +363,7 @@ countOverlap <- function(merged_reads, directory_path) {
 #' Make ASV sequence matrix
 #'
 #' @inheritParams dada2::makeSequenceTable
-#' @param merged_reads
+#' @param merged_reads Intermediate merged read R data file
 #' @return raw_seqtab
 #' @keywords internal
 makeSeqtab <- function(merged_reads, orderBy = "abundance") {
@@ -374,9 +374,9 @@ makeSeqtab <- function(merged_reads, orderBy = "abundance") {
 #' Quality filtering to remove chimeras and short sequences
 #'
 #' @inheritParams dada2::removeBimeraDenovo
-#' @param seqtab
-#' @param min_asv_length
-#' @return asv_abund_matrix
+#' @param raw_seqtab R data file with raw sequence data prior to removal of chimeras
+#' @param min_asv_length The minimum cutoff of ASVs to be retained
+#' @return asv_abund_matrix The returned final ASV abundance matrix
 #' @keywords internal
 make_abund_matrix <-
   function(raw_seqtab,
@@ -395,7 +395,7 @@ make_abund_matrix <-
 
 #' Plots a histogram of read length counts of all sequences within the ASV matrix
 #'
-#' @param asv_abund_matrix
+#' @param asv_abund_matrix The returned final ASV abundance matrix
 #' @keywords internal
 #' @return histogram with read length counts of all sequences within ASV matrix
 #' @keywords internal

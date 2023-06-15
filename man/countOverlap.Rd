@@ -6,6 +6,12 @@
 \usage{
 countOverlap(merged_reads, directory_path)
 }
+\arguments{
+\item{merged_reads}{Intermediate merged read R data file}
+}
+\value{
+A plot describing how well reads merged and information on overlap between reads
+}
 \description{
 Count overlap to see how well the reads were merged
 }

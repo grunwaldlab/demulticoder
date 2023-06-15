@@ -6,6 +6,11 @@
 \usage{
 get_ref_seq(tax_results, db)
 }
+\arguments{
+\item{tax_results}{The dataframe containing taxonomic assignments}
+
+\item{db}{The reference database}
+}
 \description{
 Align ASV sequences to reference sequences from database to get percent ID. STart by retrieving reference sequences.
 }

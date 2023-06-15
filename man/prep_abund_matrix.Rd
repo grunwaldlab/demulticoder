@@ -7,6 +7,10 @@
 prep_abund_matrix(cutadapt_data, asv_abund_matrix, locus)
 }
 \arguments{
+\item{asv_abund_matrix}{The returned final ASV abundance matrix}
+
+\item{locus}{The barcode selected in the analysis}
+
 \item{directory_data}{folder with trimmed and filtered reads for each sample}
 }
 \description{

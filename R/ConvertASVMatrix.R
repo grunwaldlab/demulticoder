@@ -41,16 +41,14 @@
 #' directory_path,
 #' minOverlap = 15,
 #' maxMismatch = 2,
-#' verbose = TRUE,
+#' verbose = TRUE
 #' )
 #' summary <- assignTax(
 #' directory_path,
 #' data_tables,
 #' asv_abund_matrix,
 #' multithread = TRUE,
-#' barcode = "rps10",
-#' database_rps10 = "oomycetedb.fasta",
-#' database_its = "sh_general_release_dynamic_22.08.2016.fasta"
+#' barcode = "rps10"
 #' )
 #' obj_dada <-
 #' asvmatrix_to_taxmap(
@@ -117,9 +115,7 @@ asvmatrix_to_taxmap <- function(min_read_depth=0, minimum_bootstrap=50, pid_spec
 #' data_tables,
 #' asv_abund_matrix,
 #' multithread = TRUE,
-#' barcode = "rps10",
-#' database_rps10 = "oomycetedb.fasta",
-#' database_its = "sh_general_release_dynamic_22.08.2016.fasta"
+#' barcode = "rps10"
 #' )
 #' obj_dada<-asvmatrix_to_taxmap(
 #' asv_abund_matrix,

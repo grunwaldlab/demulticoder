@@ -12,7 +12,7 @@ get_post_primer_hits(primer_data, cutadapt_data, directory_path)
 \item{cutadapt_data}{directory_data folder with trimmed and filtered reads for each sample}
 }
 \value{
-Table of read counts acros each sample
+Table of read counts across each sample
 }
 \description{
 Get primer counts fo reach sample after primer removal and trimming steps

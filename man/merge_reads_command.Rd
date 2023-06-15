@@ -38,9 +38,11 @@ as can happen when reads are longer than the amplicon and read into the other-di
 
 \item{verbose}{(Optional). Default FALSE. 
 If TRUE, a summary of the function results are printed to standard output.}
+
+\item{merged_read_data_path}{Path to R data file containing merged read data}
 }
 \value{
-merged_reads
+merged_reads Intermediate merged read R data file
 }
 \description{
 param directory_path
