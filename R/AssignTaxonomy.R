@@ -52,24 +52,26 @@ assignTax <-
            tryRC = FALSE,
            verbose = FALSE,
            multithread = FALSE,
-           barcode = "rps10") {
+           barcode = "rps10",
+           rps10_db = "oomycetedb.fasta",
+           its_db = "fungidb.fasta") {
     if (barcode == "rps10") {
-      format_database_rps10(directory_path, "oomycetedb.fasta")
+      format_database_rps10(directory_path, rps10_db)
       summary_table <-
         process_single_barcode(data_tables,
                                asv_abund_matrix,
                                multithread = multithread,
                                barcode = "rps10")
     } else if (barcode == "its") {
-      format_database_its(directory_path, "fungidb.fasta")
+      format_database_its(directory_path, its_db)
       summary_table <-
         process_single_barcode(data_tables,
                                asv_abund_matrix,
                                multithread = multithread,
                                barcode = "its")
     } else if (barcode == "rps10_its") {
-      format_database_rps10(directory_path, "oomycetedb.fasta")
-      format_database_its(directory_path, "fungidb.fasta")
+      format_database_rps10(directory_path, rps10_db)
+      format_database_its(directory_path, its_db)
       summary_table <-
         process_pooled_barcode(
           data_tables,
