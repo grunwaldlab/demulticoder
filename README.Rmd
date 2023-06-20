@@ -32,7 +32,7 @@ You can install the development version of rps10package from [GitHub](https://gi
 #temporary installation method
 #ADJUST PATHS FOR MOMENT
 devtools::load_all("/Users/masudermann/rps10package")
-document()
+devtools::document()
 
 # install.packages("devtools")
 # devtools::install_github("grunwaldlab/rps10_metabarcoding_tool")
