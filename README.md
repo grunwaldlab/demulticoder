@@ -13,7 +13,7 @@ Package readme in progress
 ## Installation
 
 You can install the development version of rps10package from
-[GitHub](https://github.com/) with:
+[GitHub](https://github.com/) with: XX
 
 *TODO-still working on documentation*
 

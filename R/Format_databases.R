@@ -32,9 +32,8 @@ format_database_rps10 <-function(directory_path, database_rps10){
   names(count_table) <- c('Genus', 'Number of sequences')
   #directory_path <- file.path(directory_path, "reference_databases")
   write_csv(count_table, file = file.path(directory_path, "rps10_genus_count_table.csv"))
-  rps10_ref_path <- file.path(directory_path, "rps10_reference_db.fa")
   paste0(">", rps10_data$taxonomy, "\n", rps10_db) %>%
-    write_lines(file = rps10_ref_path)
+    write_lines(file = database_path)
   return(rps10_data)
 }
 
@@ -66,43 +65,39 @@ format_database_its <-function(directory_path, database_its){
   count_table <- as_tibble(count_table)
   names(count_table) <- c('Genus', 'Number of sequences')
   write_csv(count_table, file = file.path(directory_path, "its_genus_count_table.csv"))
-  its_ref_path <- file.path(directory_path , "its_reference_db.fa")
   paste0(">", its_data$taxonomy, "\n", its_db) %>%
-    write_lines(file = its_ref_path)
+    write_lines(file = database_path)
   return(its_data)
 }
 
 #' An 16S database that has modified headers and is output in the reference_databases folder-Silva db is one that has species levels taxonomic assignments and based off the format of version 138.1.
 #'
 #' @param directory_path A path to a directory that contains raw data
-#' @param database_its The name of the database
-#' @return A 16S database that has modified headers and is output in the reference_databases folder.
+#' @param database_16S The name of the database
+#' @return A 16s database that has modified headers and is output in the reference_databases folder.
 #' @keywords internal
 #'
-format_database_its <-function(directory_path, database_its){
-  database_path <- file.path(directory_path, "its_reference_db.fa")
-  its_db <- read_fasta(file.path(directory_path, database_its))
-  its_data <- str_match(names(its_db), pattern = "(.+)\\|(.+)\\|(.+)\\|(.+)\\|(.+)$")
-  colnames(its_data) <- c("header", "name", "ncbi_acc", "unite_db", "db", "taxonomy")
-  its_data <- as_tibble(its_data)
-  its_data$taxonomy <- gsub(its_data$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
-  its_data$taxonomy <- paste0('Eukaryota;', its_data$taxonomy)
-  its_data$taxonomy <- gsub(its_data$taxonomy, pattern = 'Stramenopila;Oomycota', replacement = 'Heterokontophyta;Stramenopiles', fixed = TRUE)
-  its_data$taxonomy <- paste0(its_data$taxonomy, ';', 'unite_', seq_along(its_data$taxonomy))
-  its_data$taxonomy <- gsub(its_data$taxonomy, pattern = "[a-z]__", replacement = '')
-  its_data$taxonomy <- paste0(its_data$taxonomy, ';')
-  its_data$taxonomy <- trimws(its_data$taxonomy)
+format_database_16s <-function(directory_path, database_16s){
+  database_path <- file.path(directory_path, "16s_reference_db.fa")
+  sixteenS_db <- read_fasta(file.path(directory_path, database_16s))
+  sixteenS_data <- str_match(names(sixteenS_db), pattern = "(.*?)\\s+(.+)$")
+  colnames(sixteenS_data) <- c("taxonomy_all", "ncbi_acc", "taxonomy")
+  sixteenS_data <- as_tibble(sixteenS_data)
+  sixteenS_data$taxonomy <- gsub(sixteenS_data$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
+  sixteenS_data$taxonomy <- gsub(sixteenS_data$taxonomy, pattern = 'Bacteria', replacement = 'Prokaryota;Bacteria', fixed = TRUE)
+  #sixteenS_data2<-sixteenS_data %>% filter(str_count(sixteenS_data$taxonomy, pattern = ";") == 9)
+  sixteenS_data$taxonomy <- paste0(sixteenS_data$taxonomy, ';', 'silva_', seq_along(sixteenS_data$taxonomy))
+  sixteenS_data$taxonomy <- paste0(sixteenS_data$taxonomy, ';')
+  sixteenS_data$taxonomy <- trimws(sixteenS_data$taxonomy)
   #Fix after checking out later analysis
-  stopifnot(all(str_count(its_data$taxonomy, pattern = ";") == 9))
-  genus_count <- table(map_chr(strsplit(its_data$name, split = '_'), `[`, 1))
+  #stopifnot(all(str_count(sixteenS_data$taxonomy, pattern = ";") == 9))
+  genus_count <- table(map_chr(strsplit(sixteenS_data$taxonomy, split = ';'), `[`, 7))
   count_table <- as.data.frame(genus_count, stringsAsFactors = FALSE)
   count_table <- as_tibble(count_table)
   names(count_table) <- c('Genus', 'Number of sequences')
-  write_csv(count_table, file = file.path(directory_path, "its_genus_count_table.csv"))
-  its_ref_path <- file.path(directory_path , "its_reference_db.fa")
-  paste0(">", its_data$taxonomy, "\n", its_db) %>%
-    write_lines(file = its_ref_path)
-  return(its_data)
+  readr::write_csv(count_table, file = file.path(directory_path, "16s_genus_count_table.csv"))
+  paste0(">", sixteenS_data$taxonomy, "\n", sixteenS_db) %>%
+    readr::write_lines(file = database_path)
+  return(sixteenS_data)
 }
-
-
+#Some 16S sequences have fewer than the full taxonomic 
