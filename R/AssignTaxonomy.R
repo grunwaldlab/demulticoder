@@ -67,6 +67,13 @@ assignTax <-
                                asv_abund_matrix,
                                multithread = multithread,
                                barcode = "its")
+    } else if (barcode == "sixteenS") {
+      format_database_sixteenS(directory_path, "bacteriadb.fasta")
+      summary_table <-
+        process_single_barcode(data_tables,
+                               asv_abund_matrix,
+                               multithread = multithread,
+                               barcode = "sixteenS")
     } else if (barcode == "rps10_its") {
       format_database_rps10(directory_path, "oomycetedb.fasta")
       format_database_its(directory_path, "fungidb.fasta")

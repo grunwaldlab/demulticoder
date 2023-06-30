@@ -77,27 +77,31 @@ format_database_its <-function(directory_path, database_its){
 #' @return A 16s database that has modified headers and is output in the reference_databases folder.
 #' @keywords internal
 #'
-format_database_16s <-function(directory_path, database_16s){
-  database_path <- file.path(directory_path, "16s_reference_db.fa")
-  sixteenS_db <- read_fasta(file.path(directory_path, database_16s))
-  sixteenS_data <- str_match(names(sixteenS_db), pattern = "(.*?)\\s+(.+)$")
-  colnames(sixteenS_data) <- c("taxonomy_all", "ncbi_acc", "taxonomy")
-  sixteenS_data <- as_tibble(sixteenS_data)
-  sixteenS_data$taxonomy <- gsub(sixteenS_data$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
-  sixteenS_data$taxonomy <- gsub(sixteenS_data$taxonomy, pattern = 'Bacteria', replacement = 'Prokaryota;Bacteria', fixed = TRUE)
-  #sixteenS_data2<-sixteenS_data %>% filter(str_count(sixteenS_data$taxonomy, pattern = ";") == 9)
-  sixteenS_data$taxonomy <- paste0(sixteenS_data$taxonomy, ';', 'silva_', seq_along(sixteenS_data$taxonomy))
-  sixteenS_data$taxonomy <- paste0(sixteenS_data$taxonomy, ';')
-  sixteenS_data$taxonomy <- trimws(sixteenS_data$taxonomy)
+#format_database_sixteenS <-function(directory_path, database_sixteenS){
+#  database_path <- file.path(directory_path, "sixteenS_reference_db.fa")
+#  sixteenS_db <- read_fasta(file.path(directory_path, database_sixteenS))
+#  sixteenS_data<- as_tibble(sixteenS_data)
+#  colnames(sixteenS_data) <- c("taxonomy")
+# sixteenS_data$taxonomy <- gsub(sixteenS_data$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
+#  sixteenS_data$taxonomy <- gsub(sixteenS_data$taxonomy, pattern = 'Bacteria', replacement = 'Prokaryota;Bacteria', fixed = TRUE)
+#  #sixteenS_data2<-sixteenS_data %>% filter(str_count(sixteenS_data$taxonomy, pattern = ";") == 9)
+#  taxLevels = c("Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species")
+#  length(na.omit(sixteenS_data$taxonomy[1]))
+#  sixteenS_data$taxonomy <- paste0(sixteenS_data$taxonomy, 'silva_', seq_along(sixteenS_data$taxonomy))
+#  sixteenS_data$taxonomy <- paste0(sixteenS_data$taxonomy, ';')
+#  sixteenS_data$taxonomy <- trimws(sixteenS_data$taxonomy)
   #Fix after checking out later analysis
   #stopifnot(all(str_count(sixteenS_data$taxonomy, pattern = ";") == 9))
-  genus_count <- table(map_chr(strsplit(sixteenS_data$taxonomy, split = ';'), `[`, 7))
-  count_table <- as.data.frame(genus_count, stringsAsFactors = FALSE)
-  count_table <- as_tibble(count_table)
-  names(count_table) <- c('Genus', 'Number of sequences')
-  readr::write_csv(count_table, file = file.path(directory_path, "16s_genus_count_table.csv"))
-  paste0(">", sixteenS_data$taxonomy, "\n", sixteenS_db) %>%
-    readr::write_lines(file = database_path)
-  return(sixteenS_data)
-}
-#Some 16S sequences have fewer than the full taxonomic 
+#  genus_count <- table(map_chr(strsplit(sixteenS_data$taxonomy, split = ';'), `[`, 8))
+#  count_table <- as.data.frame(genus_count, stringsAsFactors = FALSE)
+#  count_table <- as_tibble(count_table)
+#  names(count_table) <- c('Genus', 'Number of sequences')
+  #remove any entries not with 9 entries
+#  readr::write_csv(count_table, file = file.path(directory_path, "sixteenS_genus_count_table.csv"))
+#  paste0(">", sixteenS_data$taxonomy, "\n", sixteenS_db) %>%
+#    readr::write_lines(file = database_path)
+#  return(sixteenS_data)
+#}
+#Some 16S sequences have fewer than the 9 taxonomic levels-testing to see if this will be in issue or if I need to filter these out
+
+
