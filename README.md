@@ -27,8 +27,6 @@ devtools::document()
 # devtools::install_github("grunwaldlab/rps10_metabarcoding_tool")
 ```
 
-***To do-paste in other examples of outputs***
-
 ## Dependencies
 
 ## Citation

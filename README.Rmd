@@ -37,9 +37,6 @@ devtools::document()
 # install.packages("devtools")
 # devtools::install_github("grunwaldlab/rps10_metabarcoding_tool")
 ```
-  
-
-***To do-paste in other examples of outputs***
 
 ## Dependencies
 

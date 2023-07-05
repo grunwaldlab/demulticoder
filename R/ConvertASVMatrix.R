@@ -80,9 +80,6 @@ asvmatrix_to_taxmap <- function(min_read_depth=0, minimum_bootstrap=50, pid_spec
 }
 
 
-taxmap_path <-
-  file.path("~/Desktop/", "taxmap_obj.RData")
-save(obj_dada, file = taxmap_path)
 #' Convert taxmap object to Phyloseq object (metacoder wrapper function)
 #'
 #' @param obj_data ASV matrix converted to taxmap object using asvmatrix_to_taxmap function
