@@ -274,7 +274,7 @@ get_pre_primer_hits <-
     }
 
     primer_hit_data_csv_path <-
-      file.path(directory_path, "primer_hit_data_pretrim.csv")
+      file.path(directory_path, "primer_hit_data_pre_trim.csv")
     #if a file exists in there, then write the path to it
     if (file.exists(primer_hit_data_csv_path)) {
       primer_hit_data <- read_csv(primer_hit_data_csv_path)

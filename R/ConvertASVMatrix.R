@@ -71,11 +71,18 @@ asvmatrix_to_taxmap <- function(min_read_depth=0, minimum_bootstrap=50, pid_spec
   })
   obj_dada <- metacoder::parse_tax_data(abundance, class_cols = 'dada2_tax', class_sep = ';', include_tax_data = TRUE,
                                         class_regex = '^(.+)--(.+)--(.+)$',
-                                        class_key = c(taxon = 'taxon_name', boot = 'info', rank = 'taxon_rank'))
-  names(obj_dada$data) <- c('abund', 'score') #do I need this?
+                                        class_key = c(taxon = 'taxon_name', boot = 'info', rank = 'taxon_rank')
+                                        )
+  taxmap_path <-
+    file.path(directory_path, "taxmap_obj.RData")
+  save(obj_dada, file = taxmap_path)
   return(obj_dada)
 }
 
+
+taxmap_path <-
+  file.path("~/Desktop/", "taxmap_obj.RData")
+save(obj_dada, file = taxmap_path)
 #' Convert taxmap object to Phyloseq object (metacoder wrapper function)
 #'
 #' @param obj_data ASV matrix converted to taxmap object using asvmatrix_to_taxmap function
@@ -133,4 +140,7 @@ taxmap_to_phyloseq <- function(obj_dada) {
     sample_data = obj_dada$data$sample_data,
     sample_id_col = "sample_nameBarcode",
   )
+  phylo_path <-
+    file.path(directory_path, "phylo_obj.RData")
+  save(phylo_obj, file = phylo_path)
 }

@@ -352,7 +352,7 @@ countOverlap <- function(merged_reads, directory_path) {
     )
   ggsave(
     merge_plot,
-    filename = 'read_merging.jpg',
+    filename = 'read_merging_info.pdf',
     path = directory_path,
     width = 8,
     height = 8
@@ -413,7 +413,7 @@ make_seqhist <- function(asv_abund_matrix) {
     )
   ggsave(
     hist_plot,
-    filename = "asv_hist_plot.pdf",
+    filename = "asv_seqlength_plot.pdf",
     path = directory_path,
     width = 8,
     height = 8
