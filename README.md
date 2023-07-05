@@ -8,8 +8,6 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-Package readme in progress
-
 ## Installation
 
 You can install the development version of rps10package from
