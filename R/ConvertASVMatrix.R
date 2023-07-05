@@ -15,7 +15,7 @@
 #' @return ASV matrix converted to taxmap object
 #' @export asvmatrix_to_taxmap
 #' @examples
-#' directory_path<-"~/rps10package/raw_data/rps10_ITS"
+#' directory_path<-"~/Desktop/rps10test"
 #' primer_path <-file.path(directory_path, "primer_info.csv")
 #' metadata_path <-file.path(directory_path,"metadata.csv")
 #' cutadapt_path<-"/opt/homebrew/bin/cutadapt"
@@ -41,14 +41,16 @@
 #' directory_path,
 #' minOverlap = 15,
 #' maxMismatch = 2,
-#' verbose = TRUE
+#' verbose = TRUE,
 #' )
 #' summary <- assignTax(
 #' directory_path,
 #' data_tables,
 #' asv_abund_matrix,
 #' multithread = TRUE,
-#' barcode = "rps10"
+#' barcode = "rps10",
+#' database_rps10 = "oomycetedb.fasta",
+#' database_its = "sh_general_release_dynamic_22.08.2016.fasta"
 #' )
 #' obj_dada <-
 #' asvmatrix_to_taxmap(
@@ -71,14 +73,14 @@ asvmatrix_to_taxmap <- function(min_read_depth=0, minimum_bootstrap=50, pid_spec
   })
   obj_dada <- metacoder::parse_tax_data(abundance, class_cols = 'dada2_tax', class_sep = ';', include_tax_data = TRUE,
                                         class_regex = '^(.+)--(.+)--(.+)$',
-                                        class_key = c(taxon = 'taxon_name', boot = 'info', rank = 'taxon_rank')
-                                        )
+                                        class_key = c(taxon = 'taxon_name', boot = 'info', rank = 'taxon_rank'))
+  names(obj_dada$data) <- c('abund', 'score') 
+  return(obj_dada)
+  
   taxmap_path <-
     file.path(directory_path, "taxmap_obj.RData")
   save(obj_dada, file = taxmap_path)
-  return(obj_dada)
 }
-
 
 #' Convert taxmap object to Phyloseq object (metacoder wrapper function)
 #'
@@ -86,7 +88,7 @@ asvmatrix_to_taxmap <- function(min_read_depth=0, minimum_bootstrap=50, pid_spec
 #' @return Taxmap object converted to a phyloseq object
 #' @export taxmap_to_phyloseq
 #' @examples
-#' directory_path<-"~/rps10package/raw_data/rps10_ITS"
+#' directory_path<-"~/Desktop/rps10test"
 #' primer_path <-file.path(directory_path, "primer_info.csv")
 #' metadata_path <-file.path(directory_path,"metadata.csv")
 #' cutadapt_path<-"/opt/homebrew/bin/cutadapt"
@@ -119,7 +121,9 @@ asvmatrix_to_taxmap <- function(min_read_depth=0, minimum_bootstrap=50, pid_spec
 #' data_tables,
 #' asv_abund_matrix,
 #' multithread = TRUE,
-#' barcode = "rps10"
+#' barcode = "rps10",
+#' database_rps10 = "oomycetedb.fasta",
+#' database_its = "sh_general_release_dynamic_22.08.2016.fasta"
 #' )
 #' obj_dada<-asvmatrix_to_taxmap(
 #' asv_abund_matrix,
@@ -131,7 +135,7 @@ taxmap_to_phyloseq <- function(obj_dada) {
   obj_dada$data$otu_table=obj_dada$data$abund[,-2:-4]
   obj_dada$data$otu_table$otu_id=paste0('ASV', 1:nrow(obj_dada$data$otu_table))
   obj_dada$data$sample_data=data_tables$metadata
-
+  
   phylo_obj<-metacoder::as_phyloseq(
     obj_dada,
     sample_data = obj_dada$data$sample_data,
@@ -141,3 +145,4 @@ taxmap_to_phyloseq <- function(obj_dada) {
     file.path(directory_path, "phylo_obj.RData")
   save(phylo_obj, file = phylo_path)
 }
+
