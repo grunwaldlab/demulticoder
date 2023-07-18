@@ -2,7 +2,10 @@
 #'
 #' @param rawSeqTab_fileName A filename as which the raw sequence table will be saved
 #' @param abundMatrix_fileName A filename as which the abundance matrix will be saved
-#' @param directory_path Folder path of read files and metadata file
+#' @param directory_path The path to the directory containing the fastq,
+#' metadata, and primer_info files
+#' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow
+#' metadata, and primer_info files
 #' @inheritParams infer_asv_command
 #' @inheritParams merge_reads_command
 #' @return The asv abundance matrix asv_abund_matrix
@@ -65,6 +68,7 @@ make_asv_abund_matrix <- function(directory_path,
                                   min_asv_length = 50) {
   infer_asv_command(
     directory_path,
+    directory_path_temp,
     multithread = multithread,
     nbases = nbases,
     errorEstimationFunction = errorEstimationFunction,
@@ -115,10 +119,11 @@ get_fastq_paths <- function(my_direction, my_primer_pair_id) {
 
 #' Core DADA2 function to learn errors and infer ASVs
 #'
-#' param directory_path Location of read files and metadata file
 #' @inheritParams dada2::learnErrors
 #' @inheritParams dada2::dada
 #' @inheritParams dada2::plotErrors
+#' @param directory_path The path to the directory containing the fastq,
+#' metadata, and primer_info files
 #' @param my_primer_pair_id The the specific barcode id 
 #' @param my_direction Location of read files and metadata file
 #' @return asv_data
@@ -194,12 +199,15 @@ infer_asvs <-
 
 #' Function function to infer ASVs, for multiple loci
 #'
-#' param directory_path
+#' @param directory_path The path to the directory containing the fastq,
+#' metadata, and primer_info files
+#' 
 #' @inheritParams infer_asvs
 #' @param denoised_data_path Path to saved intermediate denoised data
 #' @keywords internal
 infer_asv_command <-
   function(directory_path,
+           directory_path_temp,
            multithread = FALSE,
            nbases = 1e+08,
            errorEstimationFunction = loessErrfun,
@@ -215,7 +223,7 @@ infer_asv_command <-
            selfConsist = FALSE,
            verbose = FALSE) {
     denoised_data_path <-
-      file.path(directory_path, "Denoised_data.Rdata")
+      file.path(directory_path_temp, "Denoised_data.Rdata")
     if (file.exists(denoised_data_path)) {
       print("File already exists")
     } else {
@@ -251,7 +259,6 @@ infer_asv_command <-
 
 #' Merge forward and reverse reads
 #'
-#' param directory_path
 #' @inheritParams dada2::mergePairs
 #' @param directory_path A path to the intermediate folder and directory
 #' @param merged_read_data_path Path to R data file containing merged read data
@@ -266,10 +273,10 @@ merge_reads_command <-
            trimOverhang = FALSE,
            verbose = FALSE) {
     denoised_data_path <-
-      file.path(directory_path, "Denoised_data.Rdata")
+      file.path(directory_path_temp, "Denoised_data.Rdata")
     load(denoised_data_path) #incorporate into function
     merged_read_data_path <-
-      file.path(directory_path, "Merged_reads.Rdata")
+      file.path(directory_path_temp, "Merged_reads.Rdata")
     formatted_ref_dir <-
       if (file.exists(merged_read_data_path)) {
         load(merged_read_data_path)
@@ -278,13 +285,13 @@ merge_reads_command <-
         merged_reads <- dada2::mergePairs(
           dadaF = dada_forward,
           derepF = file.path(
-            directory_path,
+            directory_path_temp,
             'filtered_sequences',
             names(dada_forward)
           ),
           dadaR = dada_reverse,
           derepR = file.path(
-            directory_path,
+            directory_path_temp,
             'filtered_sequences',
             names(dada_reverse)
           ),
@@ -388,7 +395,7 @@ make_abund_matrix <-
     asv_abund_matrix <-
       seqtab.nochim[, nchar(colnames(seqtab.nochim)) >= min_asv_length]
     asvabund_matrix_path <-
-      file.path(directory_path, "asvabund_matrixDADA2.Rdata")
+      file.path(directory_path_temp, "asvabund_matrixDADA2.Rdata")
     save(asv_abund_matrix, file = asvabund_matrix_path)
     return(asv_abund_matrix)
   }

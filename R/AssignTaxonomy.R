@@ -1,9 +1,13 @@
 #' Assign rps10 and ITS taxonomy
 #'
 #' @param directory_path Location of read files and metadata file
+#' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow
+#' metadata, and primer_info files
 #' @param data_tables specify dataframe
 #' @param barcode specify which barcode you have used, 'rps10', 'its', or 'rps10_its'
 #' @param asv_abund_matrix specify the ASV abundance matrix for which taxonomic assignments will be given
+#' @param retrieve_files Specify TRUE/FALSE whether to copy files from the tempdirectory (which will be deleted) 
+#' to directory specified by directory path
 #' @inheritParams assign_taxonomyDada2
 #' @inheritParams dada2::assignTaxonomy
 #' @return Taxonomic assignments of each unique ASV sequence
@@ -47,36 +51,37 @@
 #'
 assignTax <-
   function(directory_path,
+           directory_path_temp,
            data_tables,
            asv_abund_matrix,
            tryRC = FALSE,
            verbose = FALSE,
            multithread = FALSE,
-           barcode = "rps10") {
+           retrieve_files = FALSE,
+           barcode = "rps10"){
     if (barcode == "rps10") {
-      format_database_rps10(directory_path, "oomycetedb.fasta")
+      format_database_rps10(directory_path, directory_path_temp, "oomycetedb.fasta")
       summary_table <-
         process_single_barcode(data_tables,
                                asv_abund_matrix,
                                multithread = multithread,
                                barcode = "rps10")
+        if (retrieve_files=="TRUE"){
+          file.copy(directory_path_temp, directory_path, recursive=TRUE)
+        }
     } else if (barcode == "its") {
-      format_database_its(directory_path, "fungidb.fasta")
+      format_database_its(directory_path, directory_path_temp, "fungidb.fasta")
       summary_table <-
         process_single_barcode(data_tables,
                                asv_abund_matrix,
                                multithread = multithread,
                                barcode = "its")
-    } else if (barcode == "sixteenS") {
-      format_database_sixteenS(directory_path, "bacteriadb.fasta")
-      summary_table <-
-        process_single_barcode(data_tables,
-                               asv_abund_matrix,
-                               multithread = multithread,
-                               barcode = "sixteenS")
+        if (retrieve_files=="TRUE"){
+          file.copy(directory_path_temp, directory_path, recursive=TRUE)
+      }
     } else if (barcode == "rps10_its") {
-      format_database_rps10(directory_path, "oomycetedb.fasta")
-      format_database_its(directory_path, "fungidb.fasta")
+      format_database_rps10(directory_path, directory_path_temp, "oomycetedb.fasta")
+      format_database_its(directory_path, directory_path_temp, "fungidb.fasta")
       summary_table <-
         process_pooled_barcode(
           data_tables,
@@ -85,6 +90,9 @@ assignTax <-
           barcode1 = "rps10",
           barcode2 = "its"
         )
+        if (retrieve_files=="TRUE"){
+          file.copy(directory_path_temp, directory_path, recursive=TRUE)
+        }
     } else {
       print("Barcodes not recognized")
     }
@@ -150,10 +158,10 @@ process_pooled_barcode <-
       prep_abund_matrix(data_tables$cutadapt_data, asv_abund_matrix, barcode2)
     separate_abund_matrix(abund_asv_barcode2,
                           abund_asv_barcode1,
-                          directory_path,
+                          directory_path_temp,
                           asv_abund_matrix)
     separate_abund_filepath <-
-      file.path(directory_path, "Separate_abund.Rdata")
+      file.path(directory_path_temp, "Separate_abund.Rdata")
     load(separate_abund_filepath)
     refdb1 = paste0(barcode1, "_reference_db.fa")
     taxmat1 = paste0(barcode1, "_taxmatrix.Rdata")
@@ -214,7 +222,7 @@ prep_abund_matrix <-function(cutadapt_data, asv_abund_matrix, locus){
 #' @param asv_abund_matrix The non-separated ASV matrix 
 #' @keywords internal
 separate_abund_matrix <- function(abund_asv_barcode2, abund_asv_barcode1, directory_path, asv_abund_matrix){
-  separate_abund_path <- file.path(directory_path, "Separate_abund.Rdata")
+  separate_abund_path <- file.path(directory_path_temp, "Separate_abund.Rdata")
   in_both <- colSums(abund_asv_barcode2) != 0 & colSums(abund_asv_barcode1) != 0
   assign_to_barcode2 <- in_both & colSums(abund_asv_barcode1) > colSums(abund_asv_barcode2)
   assign_to_barcode1 <- in_both & colSums(abund_asv_barcode1) < colSums(abund_asv_barcode2)
@@ -235,14 +243,14 @@ separate_abund_matrix <- function(abund_asv_barcode2, abund_asv_barcode1, direct
 #' @keywords internal
 assign_taxonomyDada2<-function(asv_abund_matrix, ref_database, taxresults_file, minBoot=0, tryRC=FALSE, verbose=FALSE, multithread=TRUE){
   tax_results<- dada2::assignTaxonomy(asv_abund_matrix,
-                                      refFasta = file.path(directory_path, ref_database),
+                                      refFasta = file.path(directory_path_temp, ref_database),
                                       taxLevels = c("Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
                                       minBoot = minBoot,
                                       tryRC = tryRC,
                                       outputBootstraps = TRUE,
                                       multithread = multithread)
   #if statement for bacteria
-  tax_matrix_path <- file.path(directory_path, taxresults_file)
+  tax_matrix_path <- file.path(directory_path_temp, taxresults_file)
   save(tax_results, file = tax_matrix_path)
   return(tax_results)
   #save these results
@@ -253,7 +261,7 @@ assign_taxonomyDada2<-function(asv_abund_matrix, ref_database, taxresults_file, 
 #' @param tax_results The dataframe containing taxonomic assignments
 #' @keywords internal
 get_pids <- function(tax_results, db) {
-  db_seqs <- read_fasta(file.path(directory_path, db))
+  db_seqs <- read_fasta(file.path(directory_path_temp, db))
   ref_seqs <- get_ref_seq(tax_results, db_seqs)
   asv_seqs <- rownames(tax_results$tax)
   asv_ref_align_normal <- map2(asv_seqs, ref_seqs, pairwiseAlignment, type = 'global-local')
@@ -299,7 +307,7 @@ add_pid_to_tax <- function(tax_results, asv_pid) {
 #' @param tax_results The dataframe containing taxonomic assignments
 #' @keywords internal
 assignTax_as_char <- function(tax_results) {
-  tax_matrix_path <- file.path(directory_path, "Final_tax_matrix.Rdata")
+  tax_matrix_path <- file.path(directory_path_temp, "Final_tax_matrix.Rdata")
   tax_out <- vapply(1:nrow(tax_results$tax), FUN.VALUE = character(1), function(i) {
     paste(tax_results$tax[i, ],
           tax_results$boot[i, ],
@@ -329,6 +337,7 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv) {
   formatted_abund_asv <- as_tibble(formatted_abund_asv)
   write_csv(formatted_abund_asv, file = file.path(directory_path, 'final_asv_abundance_matrix.csv'))
   #make results folder
+  
   print(formatted_abund_asv)
   return(formatted_abund_asv)
 }
@@ -338,11 +347,11 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv) {
 #' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
 #' @keywords internal
 get_read_counts <- function(asv_abund_matrix) {
-  filter_results_path<-file.path(directory_path, "filter_results.RData")
+  filter_results_path<-file.path(directory_path_temp, "filter_results.RData")
   load(filter_results_path) #incorporate into function
-  denoised_data_path <- file.path(directory_path, "Denoised_data.Rdata")
+  denoised_data_path <- file.path(directory_path_temp, "Denoised_data.Rdata")
   load(denoised_data_path) #incorporate into function
-  merged_read_data_path <- file.path(directory_path, "Merged_reads.Rdata")
+  merged_read_data_path <- file.path(directory_path_temp, "Merged_reads.Rdata")
   load(merged_read_data_path)
   getN <- function(x) sum(dada2::getUniques(x))
   track <- cbind(filter_results, sapply(dada_forward, getN), sapply(dada_reverse, getN), sapply(merged_reads, getN), rowSums(asv_abund_matrix))
@@ -354,3 +363,17 @@ get_read_counts <- function(asv_abund_matrix) {
   write_csv(track, track_read_counts_path)
   print(track)
 }
+
+#Make option available for user to copy following things to home directory:
+#filter_results.RData
+#Denoised_data.Rdata
+#Merged_reads.Rdata
+#Final_tax_matrix.Rdata
+#all Rdata files
+#fasta db .fa files
+#folders
+#untrimmed_sequences
+#prefiltered_sequences
+#filtered_sequences
+#trimmed_sequences
+

@@ -7,7 +7,10 @@
 #' @inheritParams run_cutadapt
 #' @inheritParams infer_asv_command
 #' @inheritParams merge_reads_command
-#' @param directory_path Location of read files and metadata file
+#' @param directory_path The path to the directory containing the fastq,
+#' metadata, and primer_info files
+#' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow
+#' metadata, and primer_info files
 #' @param cutadapt_path A path to the cutadapt program
 #' @return Reads trimmed of primers and filtered, primer counts after running Cutadapt, and quality plots after poor quality reads or trimmed or removed
 #' @param rawSeqTab_fileName A filename as which the raw sequence table will be saved
@@ -37,6 +40,7 @@
 #' minCutadaptlength = 50
 #')
 cut_trim <- function(directory_path,
+                     directory_path_temp,
                      cutadapt_path,
                      maxEE = Inf,
                      truncQ = 2,
@@ -66,6 +70,7 @@ cut_trim <- function(directory_path,
   filter_results <-
     filter_and_trim(
       directory_path,
+      directory_path_temp,
       data_tables$cutadapt_data,
       maxEE = maxEE,
       truncQ = truncQ,
@@ -159,7 +164,8 @@ run_cutadapt <-
 #'
 #' @inheritParams dada2::plotQualityProfile
 #' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
-#' @param directory_path A path to the intermediate folder
+#' @param directory_path The path to the directory containing the fastq,
+#' metadata, and primer_info files
 #' @inheritParams plotQualityProfile
 #' @return Dada2 wrapper function for making quality profiles for each sample
 #' @keywords internal
@@ -185,13 +191,15 @@ plot_qc <- function(cutadapt_data, directory_path, n = 500000) {
 #' Wrapper function for filterAndTrim function from DADA2 after primer removal
 #'
 #' @inheritParams dada2::filterAndTrim
-#' @param directory_path A path to the intermediate folder
+#' @param directory_path The path to the directory containing the fastq,
+#' metadata, and primer_info files
 #' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
 #' @return Filtered and trimmed reads
 #' @keywords internal
 #'
 filter_and_trim <-
   function(directory_path,
+           directory_path_temp,
            cutadapt_data,
            maxEE = Inf,
            truncQ = 2,
@@ -213,7 +221,7 @@ filter_and_trim <-
            rm.lowcomplex = 0,
            orient.fwd = NULL,
            id.field = NULL) {
-    filtered_read_dir <- file.path(directory_path, "filtered_sequences")
+    filtered_read_dir <- file.path(directory_path_temp, "filtered_sequences")
     cutadapt_data$filtered_path <-
       file.path(
         filtered_read_dir,
@@ -255,7 +263,7 @@ filter_and_trim <-
         )
       filter_results <- as_tibble(filter_results)
       filter_results_path <-
-        file.path(directory_path, "filter_results.RData")
+        file.path(directory_path_temp, "filter_results.RData")
       save(filter_results, file = filter_results_path)
       print(colMeans(filter_results))
     }
@@ -388,7 +396,8 @@ make_primer_hit_plot <-
 #'
 #' @inheritParams dada2::plotQualityProfile
 #' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
-#' @param directory_path A path to the intermediate folder
+#' @param directory_path The path to the directory containing the fastq,
+#' metadata, and primer_info files
 #' @return Quality profiles of reads after primer trimming
 #' @keywords internal
 plot_post_trim_qc <-
