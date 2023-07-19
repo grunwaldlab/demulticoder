@@ -4,7 +4,7 @@ devtools::document()
 #devtools::build_rmd("vignettes/Introduction.Rmd")
 #browseVignettes('rps10package')
 
-directory_path<-"~/rps10package3/raw_data/rps10_its" ##choose a directory for all downstream steps
+directory_path<-"~/rps10package3/raw_data/rps10" ##choose a directory for all downstream steps
 directory_path_temp <- file.path(tempdir(), paste0("run_", Sys.Date()))
 dir.create(directory_path_temp)
 primer_path <-file.path(directory_path, "primer_info.csv") ##modify .csv name or keep this name
@@ -69,10 +69,10 @@ check()
 
 #R CMD build
 
-usethis::use_readme_rmd()
-devtools::build_readme()
-usethis::use_test("rps10package2")
-usethis::use_test("PrepareReads_CountPrimers")
-usethis::use_vignette("Package_Workflow")
+#usethis::use_readme_rmd()
+#devtools::build_readme()
+#usethis::use_test("rps10package2")
+#usethis::use_test("PrepareReads_CountPrimers")
+#usethis::use_vignette("Package_Workflow")
 
 

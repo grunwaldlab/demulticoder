@@ -201,6 +201,7 @@ process_pooled_barcode <-
     get_read_counts(asv_abund_matrix)
   }
 
+###
 #' Prepare final ASV abundance matrix
 #'
 #' @param directory_data folder with trimmed and filtered reads for each sample
@@ -255,6 +256,8 @@ assign_taxonomyDada2<-function(asv_abund_matrix, ref_database, taxresults_file, 
   return(tax_results)
   #save these results
 }
+
+##
 
 #' Align ASV sequences to reference sequences from database to get percent ID. Get percent identities.
 #'
