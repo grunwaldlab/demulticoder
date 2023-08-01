@@ -75,8 +75,8 @@ prepare_metadata_table <- function(metadata_path, primer_data) {
   if ("primer_name" %in% colnames(metadata)) {
     new_metadata_cols <- c("primer_name", colnames(metadata)[colnames(metadata) != "primer_name"])
     metadata <- metadata[new_metadata_cols]
-    metadata$sample_nameBarcode <- paste0(metadata$sample_name, "_", metadata$primer_name)
-    barcode_col <- match("sample_nameBarcode", colnames(metadata))
+    metadata$samplename_barcode <- paste0(metadata$sample_name, "_", metadata$primer_name)
+    barcode_col <- match("samplename_barcode", colnames(metadata))
     metadata <- metadata[, c(barcode_col, seq_along(metadata)[-barcode_col])]
   } else {
     stop("Please make sure that there is a 'primer_name' column in your metadata table.")
@@ -90,39 +90,30 @@ prepare_metadata_table <- function(metadata_path, primer_data) {
 #' information
 #' @return A data frame with oriented primer information
 #' @keywords internal
-
 orient_primers <- function(primer_path) {
   primer_data_path <- file.path(primer_path)
   primer_data <- read_csv(primer_data_path)
   
   #separate forward and reverse to make various primers
   forward_primers <- primer_data[, c(1:2)]
-  toString(forward_primers)
   reverse_primers <- primer_data[, c(1, 3)]
   
-  forward_primers$f_compt <-
-    map_chr(forward_primers$forward, function(x)
-      toString(Biostrings::complement(DNAString(x))))
-  forward_primers$f_rev <-
-    map_chr(forward_primers$forward, function(x)
-      toString(Biostrings::reverse(DNAString(x))))
-  forward_primers$f_rc <-
-    map_chr(forward_primers$forward, function(x)
-      toString(Biostrings::reverseComplement(DNAString(x))))
+  forward_primers$f_compt <- sapply(forward_primers$forward, function(x)
+    toString(Biostrings::complement(DNAString(x))))
+  forward_primers$f_rev <- sapply(forward_primers$forward, function(x)
+    toString(Biostrings::reverse(DNAString(x))))
+  forward_primers$f_rc <- sapply(forward_primers$forward, function(x)
+    toString(Biostrings::reverseComplement(DNAString(x))))
   
-  reverse_primers$r_compt <-
-    map_chr(reverse_primers$reverse, function(x)
-      toString(Biostrings::complement(DNAString(x))))
-  reverse_primers$r_rev <-
-    map_chr(reverse_primers$reverse, function(x)
-      toString(Biostrings::reverse(DNAString(x))))
-  reverse_primers$r_rc <-
-    map_chr(reverse_primers$reverse, function(x)
-      toString(Biostrings::reverseComplement(DNAString(x))))
+  reverse_primers$r_compt <- sapply(reverse_primers$reverse, function(x)
+    toString(Biostrings::complement(DNAString(x))))
+  reverse_primers$r_rev <- sapply(reverse_primers$reverse, function(x)
+    toString(Biostrings::reverse(DNAString(x))))
+  reverse_primers$r_rc <- sapply(reverse_primers$reverse, function(x)
+    toString(Biostrings::reverseComplement(DNAString(x))))
   
   #add back together
-  primer_data <- forward_primers %>%
-    left_join(reverse_primers, by = "primer_name")
+  primer_data <- merge(forward_primers, reverse_primers, by = "primer_name")
   
   return(primer_data)
 }
@@ -350,7 +341,6 @@ make_primer_hit_plot <- function(primer_hits,
 
 #' Prepare for primmer trimming with Cutaapt. Make new sub-directories
 #' and specify paths for the trimmed and untrimmed reads
-#'
 #' @param fastq_data A path to FASTQ files for analysis
 #' metadata, and primer_info files
 #' @param metadata A metadata containing the concatenated metadata and primer data
@@ -359,14 +349,14 @@ make_primer_hit_plot <- function(primer_hits,
 #' @keywords internal
 make_cutadapt_tibble <-
   function(fastq_data, metadata, directory_path_temp) {
-    #new_fastq_data needed, why not just fastq_data
-    cutadapt_data <- metadata %>%
-      left_join(fastq_data, by = c("sample_name" = "sample_name"))
+    # merge metadata and fastq_data by 'sample_name'
+    cutadapt_data <- merge(metadata, fastq_data, by = "sample_name")
+    
     trimmed_read_dir <- file.path(directory_path_temp, "trimmed_sequences")
     if (!dir.exists(trimmed_read_dir)) {
       dir.create(trimmed_read_dir)
     }
-
+    
     cutadapt_data$trimmed_path <-
       file.path(
         trimmed_read_dir,
@@ -377,7 +367,7 @@ make_cutadapt_tibble <-
           ".fastq.gz"
         )
       )
-
+    
     untrimmed_read_dir <-
       file.path(directory_path_temp, "untrimmed_sequences")
     if (!dir.exists(untrimmed_read_dir)) {
@@ -393,7 +383,7 @@ make_cutadapt_tibble <-
           ".fastq.gz"
         )
       )
-
+    
     filtered_read_dir <-
       file.path(directory_path_temp, "filtered_sequences")
     if (!dir.exists(filtered_read_dir)) {

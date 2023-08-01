@@ -60,7 +60,7 @@
 #' )
 asvmatrix_to_taxmap <- function(min_read_depth=0, minimum_bootstrap=50, pid_species=0, pid_genus=0, pid_family=0){
   abund_matrix <- read_csv(file.path(directory_path,'final_asv_abundance_matrix.csv'))
-  is_low_abund <- rowSums(abund_matrix[, data_tables$metadata$sample_nameBarcode]) < min_read_depth
+  is_low_abund <- rowSums(abund_matrix[, data_tables$metadata$samplename_barcode]) < min_read_depth
   abundance <- filter(abund_matrix, ! is_low_abund)
   pid_cutoffs <- list(species = pid_species, genus = pid_genus, family = pid_family)
   abundance$dada2_tax <- map_chr(strsplit(abundance$dada2_tax, ';'), function(x) {
@@ -139,7 +139,7 @@ taxmap_to_phyloseq <- function(obj_dada) {
   phylo_obj<-metacoder::as_phyloseq(
     obj_dada,
     sample_data = obj_dada$data$sample_data,
-    sample_id_col = "sample_nameBarcode",
+    sample_id_col = "samplename_barcode",
   )
   phylo_path <-
     file.path(directory_path, "phylo_obj.RData")

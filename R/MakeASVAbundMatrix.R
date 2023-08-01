@@ -233,7 +233,7 @@ infer_asv_command <-
       print("File already exists")
     } else {
       run_dada <- function(direction) {
-        lapply(unique(data_tables$cutadapt_data$primer_name), function(primer_name)
+        dada_output <- lapply(unique(data_tables$cutadapt_data$primer_name), function(primer_name)
           infer_asvs(
             directory_path,
             primer_name,
@@ -252,8 +252,8 @@ infer_asv_command <-
             pool = pool,
             selfConsist = selfConsist,
             verbose = verbose
-          )) %>%
-          unlist(recursive = FALSE)
+          ))
+        unlist(dada_output, recursive = FALSE)
       }
       dada_forward <- run_dada("Forward")
       dada_reverse <- run_dada("Reverse")
@@ -323,29 +323,33 @@ merge_reads_command <-
 #' @param directory_path Directory path to save the plot
 #' @return A plot describing how well reads merged and information on overlap between reads
 countOverlap <- function(merged_reads, directory_path) {
-
+  library(ggplot2)
+  
   non_empty_merged_reads <- merged_reads[sapply(merged_reads, nrow) > 0]
   
   merge_data <- do.call(rbind, non_empty_merged_reads)
-  merge_data$sample_nameBarcode <- rep(names(non_empty_merged_reads), sapply(non_empty_merged_reads, nrow))
+  merge_data$samplename_barcode <- rep(names(non_empty_merged_reads), sapply(non_empty_merged_reads, nrow))
   
-  merge_data2 <- merge_data[merge_data$sample_nameBarcode %in% data_tables$cutadapt_data$sample_nameBarcode, ]
-  merge_data2 <- merge(merge_data2, data_tables$cutadapt_data, by = "sample_nameBarcode")
+  merge_data2 <- merge_data[merge_data$samplename_barcode %in% data_tables$cutadapt_data$samplename_barcode, ]
+  merge_data2 <- merge(merge_data2, data_tables$cutadapt_data, by = "samplename_barcode")
   
   merge_data2$overlap <- merge_data2$nmatch + merge_data2$nmismatch
   merge_data2$mismatch <- merge_data2$nmismatch + merge_data2$nindel
   merge_data2$identity <- (merge_data2$overlap - merge_data2$mismatch) / merge_data2$overlap
-
-  merge_plot <- merge_data2 %>%
-    select(primer_name, mismatch, accept, overlap) %>%
-    rename(
-      'locus' = primer_name,
-      'Mismatches and Indels' = mismatch,
-      'Merged' = accept,
-      'Overlap Length' = overlap
-    ) %>%
-    gather(key = 'stat', value = 'value',-locus,-Merged) %>%
-    ggplot(aes(x = value, fill = Merged)) +
+  
+  # Make dataframe long
+  merge_plot <- data.frame(
+    locus = merge_data2$primer_name,
+    Mismatches_and_Indels = merge_data2$mismatch,
+    Merged = merge_data2$accept,
+    Overlap_Length = merge_data2$overlap
+  )
+  
+  long_df <- stack(merge_plot[,c("Mismatches_and_Indels", "Overlap_Length")])
+  merge_plot <- cbind(merge_plot[,"locus"], merge_plot[,"Merged"], long_df)
+  names(merge_plot) <- c("locus", "Merged", "value", "stat")
+  
+  merge_plot_output <- ggplot(merge_plot, aes(x = value, fill = Merged)) +
     facet_grid(locus ~ stat, scales = 'free') +
     geom_histogram(bins = 50) +
     scale_fill_viridis_d(begin = 0.8, end = 0.2) +
@@ -355,16 +359,18 @@ countOverlap <- function(merged_reads, directory_path) {
       panel.grid.minor = element_blank(),
       legend.position = "bottom"
     )
+  
   ggsave(
-    merge_plot,
+    merge_plot_output,
     filename = 'read_merging_info.pdf',
     path = directory_path,
     width = 8,
     height = 8
   )
-  merge_plot
-}
   
+  merge_plot_output
+}
+
 
 
 #' Make ASV sequence matrix

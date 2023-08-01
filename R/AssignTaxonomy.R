@@ -263,26 +263,48 @@ assign_taxonomyDada2<-function(asv_abund_matrix, ref_database, taxresults_file, 
 #'
 #' @param tax_results The dataframe containing taxonomic assignments
 #' @keywords internal
+
 get_pids <- function(tax_results, db) {
   db_seqs <- read_fasta(file.path(directory_path_temp, db))
   ref_seqs <- get_ref_seq(tax_results, db_seqs)
   asv_seqs <- rownames(tax_results$tax)
-  asv_ref_align_normal <- map2(asv_seqs, ref_seqs, pairwiseAlignment, type = 'global-local')
-  asv_pids_normal <- map_dbl(asv_ref_align_normal, pid, type = "PID1")
-  asv_ref_align_revcomp <- map2(asv_seqs, rev_comp(ref_seqs), pairwiseAlignment, type = 'global-local')
-  asv_pids_revcomp <- map_dbl(asv_ref_align_revcomp, pid, type = "PID1")
-  asv_ref_align <- ifelse(asv_pids_normal >= asv_pids_revcomp, asv_ref_align_normal, asv_ref_align_revcomp)
-  asv_pids <- ifelse(asv_pids_normal >= asv_pids_revcomp, asv_pids_normal, asv_pids_revcomp)
-  paste0(map_chr(seq_along(asv_ref_align), function(i) {
-    paste0('asv: ',  asv_seqs[[i]], '\n',
-           'ref: ', names(ref_seqs)[[i]], '\n',
-           'pid: ', asv_pids[[i]], '\n',
-           asv_ref_align[[i]]@pattern, '\n',
-           asv_ref_align[[i]]@subject, '\n')
-  }), collapse = '==================================================\n') %>%
-    write_lines(file = file.path(directory_path, 'dada2_asv_alignments.txt'))
+  
+  # Calculate pids for normal alignment
+  asv_ref_align_normal <- mapply(pairwiseAlignment, asv_seqs, ref_seqs, MoreArgs = list(type = 'global-local'))
+  asv_pids_normal <- sapply(asv_ref_align_normal, function(align) {
+    pid(align, type = "PID1")
+  })
+  
+  # Calculate pids for reverse complement alignment
+  asv_ref_align_revcomp <- mapply(pairwiseAlignment, asv_seqs, rev_comp(ref_seqs), MoreArgs = list(type = 'global-local'))
+  asv_pids_revcomp <- sapply(asv_ref_align_revcomp, function(align) {
+    pid(align, type = "PID1")
+  })
+  
+  # Choose the alignment with higher pid
+  asv_ref_align <- Map(function(align_normal, align_revcomp, pid_normal, pid_revcomp) {
+    if (pid_normal >= pid_revcomp) align_normal else align_revcomp
+  }, asv_ref_align_normal, asv_ref_align_revcomp, asv_pids_normal, asv_pids_revcomp)
+  
+  # Choose the higher pid value
+  asv_pids <- mapply(function(pid_normal, pid_revcomp) {
+    if (pid_normal >= pid_revcomp) pid_normal else pid_revcomp
+  }, asv_pids_normal, asv_pids_revcomp)
+  
+  # Write the alignment results to a text file
+  alignment_text <- paste0(
+    'asv: ', asv_seqs, '\n',
+    'ref: ', unlist(ref_seqs), '\n',
+    'pid: ', asv_pids, '\n',
+    unlist(sapply(asv_ref_align, function(align) align@pattern)), '\n',
+    unlist(sapply(asv_ref_align, function(align) align@subject)), '\n'
+  )
+  write_lines(paste(collapse = '==================================================\n', alignment_text),
+              file = file.path(directory_path, 'dada2_asv_alignments.txt'))
+  
   return(asv_pids)
 }
+
 
 #' Align ASV sequences to reference sequences from database to get percent ID. STart by retrieving reference sequences.
 #'
@@ -339,11 +361,26 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv) {
                                formatted_abund_asv)
   formatted_abund_asv <- as_tibble(formatted_abund_asv)
   write_csv(formatted_abund_asv, file = file.path(directory_path, 'final_asv_abundance_matrix.csv'))
-  #make results folder
-  
+#  #make results folder
+
   print(formatted_abund_asv)
   return(formatted_abund_asv)
 }
+
+
+#format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv) {
+#  formatted_abund_asv <- t(asv_abund_matrix)
+#  formatted_abund_asv <- cbind(sequence = rownames(formatted_abund_asv),
+#                               dada2_tax = str_match(seq_tax_asv[rownames(formatted_abund_asv)], pattern = "^(.+)--Species")[,1],
+#                               dada2_pid = as.numeric(str_match(seq_tax_asv[rownames(formatted_abund_asv)], '--([0-9.]+)--ASV$')[, 2]),
+#                               formatted_abund_asv)
+#  formatted_abund_asv <- as_tibble(formatted_abund_asv)
+#  write_csv(formatted_abund_asv, file = file.path(directory_path, 'final_asv_abundance_matrix.csv'))
+  #  #make results folder
+  
+#  print(formatted_abund_asv)
+#  return(formatted_abund_asv)
+#}
 
 #' Final inventory of read counts after each step from input to removal of chimeras. This function deals with if you have more than one sample. TODO optimize for one sample
 #'
@@ -359,24 +396,11 @@ get_read_counts <- function(asv_abund_matrix) {
   getN <- function(x) sum(dada2::getUniques(x))
   track <- cbind(filter_results, sapply(dada_forward, getN), sapply(dada_reverse, getN), sapply(merged_reads, getN), rowSums(asv_abund_matrix))
   track <- cbind(rownames(track), data.frame(track, row.names=NULL))
-  colnames(track) <- c("sample_nameBarcode", "input", "filtered", "denoisedF", "denoisedR", "merged", "nonchim")
-  track$sample_nameBarcode<- gsub(".fastq.gz", "",
-                                  gsub("R1_", "", track$sample_nameBarcode, fixed = TRUE))
+  colnames(track) <- c("samplename_barcode", "input", "filtered", "denoisedF", "denoisedR", "merged", "nonchim")
+  track$samplename_barcode<- gsub(".fastq.gz", "",
+                                  gsub("R1_", "", track$samplename_barcode, fixed = TRUE))
   track_read_counts_path <- file.path(directory_path, "track_reads.csv")
   write_csv(track, track_read_counts_path)
   print(track)
 }
-
-#Make option available for user to copy following things to home directory:
-#filter_results.RData
-#Denoised_data.Rdata
-#Merged_reads.Rdata
-#Final_tax_matrix.Rdata
-#all Rdata files
-#fasta db .fa files
-#folders
-#untrimmed_sequences
-#prefiltered_sequences
-#filtered_sequences
-#trimmed_sequences
 
