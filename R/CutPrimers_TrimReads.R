@@ -58,7 +58,15 @@ cut_trim <- function(directory_path,
                      rm.lowcomplex = 0,
                      orient.fwd = NULL,
                      id.field = NULL,
-                     minCutadaptlength = 50) {
+                     minCutadaptlength = 50,
+                     force = FALSE) {
+  if (!force & file.exists("post_primer_plot.pdf")) {
+    qc_files <- c(list.files(directory_path, pattern = "qc"))
+    unlink(c("post_primer_plot.pdf", qc_files,
+             "filter_results.RData", "primer_hit_data_post_trim.csv",
+             "filtered_sequences/*", "trimmed_sequences/*",
+             "untrimmed_sequences/*"))
+  }
   run_cutadapt(cutadapt_path,
                data_tables$cutadapt_data,
                minCutadaptlength = minCutadaptlength)

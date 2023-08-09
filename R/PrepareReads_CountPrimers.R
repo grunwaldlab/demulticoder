@@ -29,7 +29,13 @@ prepare_reads <-
            primer_path,
            metadata_path,
            maxN = 0,
-           multithread = FALSE) {
+           multithread = FALSE,
+           force = FALSE) {
+    if(!force & file.exists("pre_primer_plot.pdf")) {
+      unlink(c("pre_primer_plot.pdf", "primer_hit_data_pretrim.csv",
+               "filtered_sequences", "prefiltered_sequences",
+               "trimmed_sequences", "untrimmed_sequences"))
+    }
     primer_data <- orient_primers(primer_path)
     metadata <- prepare_metadata_table(metadata_path, primer_data)
     fastq_data <-

@@ -62,7 +62,13 @@ make_asv_abund_matrix <- function(directory_path,
                                   trimOverhang = FALSE,
                                   orderBy = "abundance",
                                   method = "consensus",
-                                  min_asv_length = 50) {
+                                  min_asv_length = 50,
+                                  force = FALSE) {
+  if (!force & file.exists("asv_hist_plot.pdf")) {
+    unlink(c("asv_hist_plot.pdf", "asvabund_matrixDADA2.Rdata",
+             "error_plots.pdf", "Denoised_data.RData",
+             "read_merging.jpg", "Merged_reads.RData"))
+  }
   infer_asv_command(
     directory_path,
     multithread = multithread,
