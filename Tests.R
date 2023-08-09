@@ -5,7 +5,7 @@ devtools::document()
 #browseVignettes('rps10package')
 
 directory_path<-"~/rps10package3/raw_data/rps10_its" ##choose a directory for all downstream steps
-directory_path_temp <- file.path(tempdir(), paste0("run10_", Sys.Date()))
+directory_path_temp <- file.path(tempdir(), paste0("run2_", Sys.Date()))
 dir.create(directory_path_temp)
 primer_path <-file.path(directory_path, "primer_info.csv") ##modify .csv name or keep this name
 metadata_path <-file.path(directory_path,"metadata.csv") ##modify .csv name or keep this name. The sample_name in the metadata sheet needs to match the first part (before first underscore), of the zipped raw FASTQ files

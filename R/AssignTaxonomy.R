@@ -352,7 +352,6 @@ assignTax_as_char <- function(tax_results) {
 #' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
 #' @param seq_tax_asv An amplified sequence variants matrix with taxonomic information
 #' @keywords internal
-#Reformat ASV matrix
 format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv) {
   formatted_abund_asv <- t(asv_abund_matrix)
   formatted_abund_asv <- cbind(sequence = rownames(formatted_abund_asv),
@@ -361,26 +360,10 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv) {
                                formatted_abund_asv)
   formatted_abund_asv <- as_tibble(formatted_abund_asv)
   write_csv(formatted_abund_asv, file = file.path(directory_path, 'final_asv_abundance_matrix.csv'))
-#  #make results folder
-
   print(formatted_abund_asv)
   return(formatted_abund_asv)
 }
 
-
-#format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv) {
-#  formatted_abund_asv <- t(asv_abund_matrix)
-#  formatted_abund_asv <- cbind(sequence = rownames(formatted_abund_asv),
-#                               dada2_tax = str_match(seq_tax_asv[rownames(formatted_abund_asv)], pattern = "^(.+)--Species")[,1],
-#                               dada2_pid = as.numeric(str_match(seq_tax_asv[rownames(formatted_abund_asv)], '--([0-9.]+)--ASV$')[, 2]),
-#                               formatted_abund_asv)
-#  formatted_abund_asv <- as_tibble(formatted_abund_asv)
-#  write_csv(formatted_abund_asv, file = file.path(directory_path, 'final_asv_abundance_matrix.csv'))
-  #  #make results folder
-  
-#  print(formatted_abund_asv)
-#  return(formatted_abund_asv)
-#}
 
 #' Final inventory of read counts after each step from input to removal of chimeras. This function deals with if you have more than one sample. TODO optimize for one sample
 #'
