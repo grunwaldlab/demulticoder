@@ -1,15 +1,11 @@
 #' Create modified reference rps10 database for downstream analysis
-#'
-#' @param directory_path The path to the directory containing the fastq,
-#' metadata, and primer_info files
-#' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow
-#' metadata, and primer_info files
+#' 
+#' @param directory_path A path to a directory that contains raw data
 #' @param database_rps10 The name of the database
 #' @return A rps10 database that has modified headers and is output in the reference_databases folder.
-#' @keywords internal
-#'
-format_database_rps10 <-function(directory_path, directory_path_temp, database_rps10){
-  database_path <- file.path(directory_path_temp, "rps10_reference_db.fa")
+#' @examples
+format_database_rps10 <-function(directory_path, database_rps10){
+  database_path <- file.path(directory_path, "rps10_reference_db.fa")
   rps10_db <- read_fasta(file.path(directory_path, database_rps10))
   rps10_data <- str_match(names(rps10_db), pattern = "name=(.+)\\|strain=(.+)\\|ncbi_acc=(.+)\\|ncbi_taxid=(.+)\\|oodb_id=(.+)\\|taxonomy=(.+)$")
   colnames(rps10_data) <- c("header", "name", "strain", "ncbi_acc", "ncbi_taxid", "oodb_id", "taxonomy")
@@ -33,24 +29,23 @@ format_database_rps10 <-function(directory_path, directory_path_temp, database_r
   count_table <- as.data.frame(genus_count, stringsAsFactors = FALSE)
   count_table <- as_tibble(count_table)
   names(count_table) <- c('Genus', 'Number of sequences')
+  #directory_path <- file.path(directory_path, "reference_databases")
   write_csv(count_table, file = file.path(directory_path, "rps10_genus_count_table.csv"))
-  write_lines(paste0(">", rps10_data$taxonomy, "\n", rps10_db), file = database_path)
+  rps10_ref_path <- file.path(directory_path, "rps10_reference_db.fa")
+  paste0(">", rps10_data$taxonomy, "\n", rps10_db) %>%
+    write_lines(file = rps10_ref_path)
   return(rps10_data)
 }
 
 
 #' An ITS database that has modified headers and is output in the reference_databases folder.
-#'
-#' @param directory_path The path to the directory containing the fastq,
-#' metadata, and primer_info files
-#' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow
-#' metadata, and primer_info files
+#' 
+#' @param directory_path A path to a directory that contains raw data
 #' @param database_its The name of the database
 #' @return An ITS database that has modified headers and is output in the reference_databases folder.
-#' @keywords internal
-#'
-format_database_its <-function(directory_path, directory_path_temp, database_its){
-  database_path <- file.path(directory_path_temp, "its_reference_db.fa")
+#' @examples
+format_database_its <-function(directory_path, database_its){
+  database_path <- file.path(directory_path, "its_reference_db.fa")
   its_db <- read_fasta(file.path(directory_path, database_its))
   its_data <- str_match(names(its_db), pattern = "(.+)\\|(.+)\\|(.+)\\|(.+)\\|(.+)$")
   colnames(its_data) <- c("header", "name", "ncbi_acc", "unite_db", "db", "taxonomy")
@@ -69,6 +64,8 @@ format_database_its <-function(directory_path, directory_path_temp, database_its
   count_table <- as_tibble(count_table)
   names(count_table) <- c('Genus', 'Number of sequences')
   write_csv(count_table, file = file.path(directory_path, "its_genus_count_table.csv"))
-  write_lines(paste0(">", its_data$taxonomy, "\n", its_db), file = database_path)
+  its_ref_path <- file.path(directory_path , "its_reference_db.fa")
+  paste0(">", its_data$taxonomy, "\n", its_db) %>%
+    write_lines(file = its_ref_path)
   return(its_data)
 }

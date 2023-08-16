@@ -8,12 +8,10 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-Package readme in progress
-
 ## Installation
 
 You can install the development version of rps10package from
-[GitHub](https://github.com/) with:
+[GitHub](https://github.com/) with: XX
 
 *TODO-still working on documentation*
 
@@ -26,8 +24,6 @@ devtools::document()
 # install.packages("devtools")
 # devtools::install_github("grunwaldlab/rps10_metabarcoding_tool")
 ```
-
-***To do-paste in other examples of outputs***
 
 ## Dependencies
 

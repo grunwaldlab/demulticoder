@@ -2,7 +2,10 @@
 #'
 #' @param rawSeqTab_fileName A filename as which the raw sequence table will be saved
 #' @param abundMatrix_fileName A filename as which the abundance matrix will be saved
-#' @param directory_path Folder path of read files and metadata file
+#' @param directory_path The path to the directory containing the fastq,
+#' metadata, and primer_info files
+#' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow
+#' metadata, and primer_info files
 #' @inheritParams infer_asv_command
 #' @inheritParams merge_reads_command
 #' @return The asv abundance matrix asv_abund_matrix
@@ -71,6 +74,7 @@ make_asv_abund_matrix <- function(directory_path,
   }
   infer_asv_command(
     directory_path,
+    directory_path_temp,
     multithread = multithread,
     nbases = nbases,
     errorEstimationFunction = errorEstimationFunction,
@@ -103,28 +107,34 @@ make_asv_abund_matrix <- function(directory_path,
   return(asv_abund_matrix)
 }
 
-#' Retrieve the paths of the filtered and trimmed Fastq ifiles
+#' Retrieve the paths of the filtered and trimmed Fastq files
 #'
 #' @param my_direction Whether primer is in forward or reverse direction
 #' @param my_primer_pair_id The the specific barcode id 
 #' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
 #' @keywords internal
 get_fastq_paths <- function(my_direction, my_primer_pair_id) {
-  data_tables$cutadapt_data %>%
-    filter(
-      direction == my_direction,
-      primer_name == my_primer_pair_id,
-      file.exists(filtered_path)
-    ) %>%
-    pull(filtered_path)
+  filtered_paths <- character()
+  
+  for (i in seq_along(data_tables$cutadapt_data$direction)) {
+    if (data_tables$cutadapt_data$direction[i] == my_direction &&
+        data_tables$cutadapt_data$primer_name[i] == my_primer_pair_id &&
+        file.exists(data_tables$cutadapt_data$filtered_path[i])) {
+      filtered_paths <- c(filtered_paths, data_tables$cutadapt_data$filtered_path[i])
+    }
+  }
+  
+  filtered_paths
 }
+
 
 #' Core DADA2 function to learn errors and infer ASVs
 #'
-#' param directory_path Location of read files and metadata file
 #' @inheritParams dada2::learnErrors
 #' @inheritParams dada2::dada
 #' @inheritParams dada2::plotErrors
+#' @param directory_path The path to the directory containing the fastq,
+#' metadata, and primer_info files
 #' @param my_primer_pair_id The the specific barcode id 
 #' @param my_direction Location of read files and metadata file
 #' @return asv_data
@@ -200,12 +210,15 @@ infer_asvs <-
 
 #' Function function to infer ASVs, for multiple loci
 #'
-#' param directory_path
+#' @param directory_path The path to the directory containing the fastq,
+#' metadata, and primer_info files
+#' 
 #' @inheritParams infer_asvs
 #' @param denoised_data_path Path to saved intermediate denoised data
 #' @keywords internal
 infer_asv_command <-
   function(directory_path,
+           directory_path_temp,
            multithread = FALSE,
            nbases = 1e+08,
            errorEstimationFunction = loessErrfun,
@@ -221,12 +234,12 @@ infer_asv_command <-
            selfConsist = FALSE,
            verbose = FALSE) {
     denoised_data_path <-
-      file.path(directory_path, "Denoised_data.Rdata")
+      file.path(directory_path_temp, "Denoised_data.Rdata")
     if (file.exists(denoised_data_path)) {
       print("File already exists")
     } else {
       run_dada <- function(direction) {
-        lapply(unique(data_tables$cutadapt_data$primer_name), function(primer_name)
+        dada_output <- lapply(unique(data_tables$cutadapt_data$primer_name), function(primer_name)
           infer_asvs(
             directory_path,
             primer_name,
@@ -245,8 +258,8 @@ infer_asv_command <-
             pool = pool,
             selfConsist = selfConsist,
             verbose = verbose
-          )) %>%
-          unlist(recursive = FALSE)
+          ))
+        unlist(dada_output, recursive = FALSE)
       }
       dada_forward <- run_dada("Forward")
       dada_reverse <- run_dada("Reverse")
@@ -257,7 +270,6 @@ infer_asv_command <-
 
 #' Merge forward and reverse reads
 #'
-#' param directory_path
 #' @inheritParams dada2::mergePairs
 #' @param directory_path A path to the intermediate folder and directory
 #' @param merged_read_data_path Path to R data file containing merged read data
@@ -272,10 +284,10 @@ merge_reads_command <-
            trimOverhang = FALSE,
            verbose = FALSE) {
     denoised_data_path <-
-      file.path(directory_path, "Denoised_data.Rdata")
+      file.path(directory_path_temp, "Denoised_data.Rdata")
     load(denoised_data_path) #incorporate into function
     merged_read_data_path <-
-      file.path(directory_path, "Merged_reads.Rdata")
+      file.path(directory_path_temp, "Merged_reads.Rdata")
     formatted_ref_dir <-
       if (file.exists(merged_read_data_path)) {
         load(merged_read_data_path)
@@ -284,13 +296,13 @@ merge_reads_command <-
         merged_reads <- dada2::mergePairs(
           dadaF = dada_forward,
           derepF = file.path(
-            directory_path,
+            directory_path_temp,
             'filtered_sequences',
             names(dada_forward)
           ),
           dadaR = dada_reverse,
           derepR = file.path(
-            directory_path,
+            directory_path_temp,
             'filtered_sequences',
             names(dada_reverse)
           ),
@@ -311,42 +323,39 @@ merge_reads_command <-
 #'
 #' @param merged_reads Intermediate merged read R data file
 #' @return A plot describing how well reads merged and information on overlap between reads
+#' Count overlap to see how well the reads were merged
+#'
+#' @param merged_reads Intermediate merged read R data file
+#' @param directory_path Directory path to save the plot
+#' @return A plot describing how well reads merged and information on overlap between reads
 countOverlap <- function(merged_reads, directory_path) {
-  non_empty_merged_reads <-
-    merged_reads[map_dbl(merged_reads, nrow) > 0]
-  non_empty_merged_reads
-  merge_data <- non_empty_merged_reads %>%
-    bind_rows() %>%
-    mutate(fullsample_name = rep(
-      names(non_empty_merged_reads),
-      map_int(non_empty_merged_reads, nrow)
-    )) %>%
-    as_tibble() #check best practices
-
-  data_tables$cutadapt_data$fullsample_name <-
-    paste0(data_tables$cutadapt_data$file_id,
-           '_',
-           data_tables$cutadapt_data$primer_name)
-  cutadapt_short <- data_tables$cutadapt_data %>%
-    select(fullsample_name, sample_name, primer_name)
-  merge_data2 <- merge_data %>%
-    left_join(cutadapt_short, by = c("fullsample_name" = "fullsample_name"))
-  merge_data2 <- mutate(
-    merge_data2,
-    overlap = nmatch + nmismatch,
-    mismatch = nmismatch + nindel,
-    identity = (overlap - mismatch) / overlap
+  library(ggplot2)
+  
+  non_empty_merged_reads <- merged_reads[sapply(merged_reads, nrow) > 0]
+  
+  merge_data <- do.call(rbind, non_empty_merged_reads)
+  merge_data$samplename_barcode <- rep(names(non_empty_merged_reads), sapply(non_empty_merged_reads, nrow))
+  
+  merge_data2 <- merge_data[merge_data$samplename_barcode %in% data_tables$cutadapt_data$samplename_barcode, ]
+  merge_data2 <- merge(merge_data2, data_tables$cutadapt_data, by = "samplename_barcode")
+  
+  merge_data2$overlap <- merge_data2$nmatch + merge_data2$nmismatch
+  merge_data2$mismatch <- merge_data2$nmismatch + merge_data2$nindel
+  merge_data2$identity <- (merge_data2$overlap - merge_data2$mismatch) / merge_data2$overlap
+  
+  # Make dataframe long
+  merge_plot <- data.frame(
+    locus = merge_data2$primer_name,
+    Mismatches_and_Indels = merge_data2$mismatch,
+    Merged = merge_data2$accept,
+    Overlap_Length = merge_data2$overlap
   )
-  merge_plot <- merge_data2 %>%
-    select(primer_name, mismatch, accept, overlap) %>%
-    rename(
-      'locus' = primer_name,
-      'Mismatches and Indels' = mismatch,
-      'Merged' = accept,
-      'Overlap Length' = overlap
-    ) %>%
-    gather(key = 'stat', value = 'value',-locus,-Merged) %>%
-    ggplot(aes(x = value, fill = Merged)) +
+  
+  long_df <- stack(merge_plot[,c("Mismatches_and_Indels", "Overlap_Length")])
+  merge_plot <- cbind(merge_plot[,"locus"], merge_plot[,"Merged"], long_df)
+  names(merge_plot) <- c("locus", "Merged", "value", "stat")
+  
+  merge_plot_output <- ggplot(merge_plot, aes(x = value, fill = Merged)) +
     facet_grid(locus ~ stat, scales = 'free') +
     geom_histogram(bins = 50) +
     scale_fill_viridis_d(begin = 0.8, end = 0.2) +
@@ -356,15 +365,19 @@ countOverlap <- function(merged_reads, directory_path) {
       panel.grid.minor = element_blank(),
       legend.position = "bottom"
     )
+  
   ggsave(
-    merge_plot,
-    filename = 'read_merging.jpg',
+    merge_plot_output,
+    filename = 'read_merging_info.pdf',
     path = directory_path,
     width = 8,
     height = 8
   )
-  merge_plot
+  
+  merge_plot_output
 }
+
+
 
 #' Make ASV sequence matrix
 #'
@@ -394,11 +407,14 @@ make_abund_matrix <-
     asv_abund_matrix <-
       seqtab.nochim[, nchar(colnames(seqtab.nochim)) >= min_asv_length]
     asvabund_matrix_path <-
-      file.path(directory_path, "asvabund_matrixDADA2.Rdata")
+      file.path(directory_path_temp, "asvabund_matrixDADA2.Rdata")
     save(asv_abund_matrix, file = asvabund_matrix_path)
     return(asv_abund_matrix)
   }
 
+
+
+#Make separate plots for each barcode? 
 #' Plots a histogram of read length counts of all sequences within the ASV matrix
 #'
 #' @param asv_abund_matrix The returned final ASV abundance matrix
@@ -406,23 +422,27 @@ make_abund_matrix <-
 #' @return histogram with read length counts of all sequences within ASV matrix
 #' @keywords internal
 make_seqhist <- function(asv_abund_matrix) {
-  ab_matrix <- nchar(getSequences(asv_abund_matrix))
-  data1 <- data.frame(ab_matrix)
-  hist_plot <-
-    ggplot2::qplot(
-      ab_matrix,
-      data = data1,
+  matrix_row <- unique(gsub(".*_", "", rownames(asv_abund_matrix)))
+  
+  for (locus in matrix_row) {
+    locus_ab_matrix <- nchar(getSequences(asv_abund_matrix[, grepl(paste0("_", locus), rownames(asv_abund_matrix))]))
+    data <- data.frame(locus_ab_matrix)
+    
+    hist_plot <- ggplot2::qplot(
+      locus_ab_matrix,
+      data = data,
       geom = "histogram",
       xlab = 'Length of sequence (bp)',
       ylab = 'Counts',
-      main = 'Read length counts of all sequences within the ASV matrix'
+      main = paste("Read length counts of ASVs produced from", locus, "amplicon data")
     )
-  ggsave(
-    hist_plot,
-    filename = "asv_hist_plot.pdf",
-    path = directory_path,
-    width = 8,
-    height = 8
-  )
+    
+    ggsave(
+      hist_plot,
+      filename = paste("asv_seqlength_plot_",locus,".pdf", sep = ""),
+      path = directory_path,
+      width = 8,
+      height = 8
+    )
+  }
 }
-

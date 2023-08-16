@@ -1,19 +1,8 @@
 ---
-title: "Package_Workflow"
-output: 
-  rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Package_Workflow}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+title: "Example_Workflow"
+output: html_document
+date: "2023-07-05"
 ---
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
 
 ## Documentation 
 
@@ -48,14 +37,14 @@ Include any other metadata columns you'd like to use during later steps of the a
 #temporary installation method
 #ADJUST PATHS FOR MOMENT
 devtools::load_all("/Users/masudermann/rps10package")
-document()
+devtools::document()
 ```
 
 ### Specify directory paths
 
 ```{r set paths, message=FALSE, warnings=FALSE}
 #Change as needed based on where test dataset is located
-directory_path<-"/Users/masudermann/rps10package/raw_data/rps10_ITS" ##choose a directory for all downstream steps
+directory_path<-"/Users/masudermann/rps10package/raw_data/rps10" ##choose a directory for all downstream steps
 primer_path <-file.path(directory_path, "primer_info.csv") ##modify .csv name or keep this name
 metadata_path <-file.path(directory_path,"metadata.csv") ##modify .csv name or keep this name. The sample_name in the metadata sheet needs to match the first part (before first underscore), of the zipped raw FASTQ files
 #Specify the location of where cutadapt is located
@@ -132,7 +121,7 @@ summary <- assignTax(
   data_tables,
   asv_abund_matrix,
   multithread = TRUE,
-  barcode = "rps10_its",
+  barcode = "rps10",
 )
 ```
 
@@ -143,7 +132,7 @@ While some users will appreciate having a matrix with all ASV sequences, taxonom
 Two wrapper functions are shared. They are derived from Metacoder functions 'parse_tax_data' and 'as_phyloseq'.
 
 ```{r Reformat ASV abundance matrix}
-obj_dada<-asvmatrix_to_taxmap(asv_abund_matrix, min_read_depth=10, minimum_bootstrap=75)
+obj_dada<-asvmatrix_to_taxmap(asv_abund_matrix, min_read_depth=0, minimum_bootstrap=0)
 phylo_obj<-taxmap_to_phyloseq(obj_dada)
 ```
 
