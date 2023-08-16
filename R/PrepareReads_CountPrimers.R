@@ -39,6 +39,7 @@ prepare_reads <-
            multithread = FALSE,
            force = FALSE) {
     if(!force & file.exists("pre_primer_plot.pdf")) {
+      print("Force flag applied")
       unlink(c("pre_primer_plot.pdf", "primer_hit_data_pretrim.csv",
                "filtered_sequences", "prefiltered_sequences",
                "trimmed_sequences", "untrimmed_sequences"))

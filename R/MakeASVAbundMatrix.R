@@ -68,6 +68,7 @@ make_asv_abund_matrix <- function(directory_path,
                                   min_asv_length = 50,
                                   force = FALSE) {
   if (!force & file.exists("asv_hist_plot.pdf")) {
+    print("Force flag applied")
     unlink(c("asv_hist_plot.pdf", "asvabund_matrixDADA2.Rdata",
              "error_plots.pdf", "Denoised_data.RData",
              "read_merging.jpg", "Merged_reads.RData"))
