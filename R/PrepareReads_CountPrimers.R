@@ -1,18 +1,16 @@
-#Prepare reads. A wrapper function to prepare reads for trimming using Cutadapt. Counts of primers on reads will be output.
-#' Main command prepare reads for primer trimming
+#' Prepare reads for primer trimming using Cutadapt
 #'
-#' @param directory_path The path to the directory containing the fastq,
-#' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow
-#' metadata, and primer_info files
-#' @param primer_path a path to the csv file that holds the primer
-#' information
-#' @param metadata_path The path to the metadata file
+#' @param directory_path Path to the directory containing the input FASTQ files.
+#' @param directory_path_temp Temporary directory specified by the user where intermediate 
+#'        files will be placed during the workflow.
+#' @param primer_path Path to the CSV file containing primer information.
+#' @param metadata_path Path to CSV file containing the metadata 
 #' @inheritParams read_prefilt_fastq
-#' @return A list containinpre_primer_hit_data the following data tables:
-#' \itemize{
-#'   \item \code{cutadapt_data}: The cutadapt data table.
-#'   \item \code{primer_data}: The primer data table.
-#'   \item \code{fastq_data}: The fastq data table.
+#' @return A list containing the following data tables:
+#'   \itemize{
+#'   \item \code{cutadapt_data}: Data table related to Cutadapt trimming.
+#'   \item \code{primer_data}: Data table detailing primer sequences.
+#'   \item \code{fastq_data}: Data table listing input FASTQ files and related information.
 #'   \item \code{metadata}: The metadata table.
 #' }
 #' @export prepare_reads
