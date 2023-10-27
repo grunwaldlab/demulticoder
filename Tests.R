@@ -14,6 +14,13 @@ primer_path <-file.path(directory_path, "primer_info.csv") ##modify .csv name or
 metadata_path <-file.path(directory_path,"metadata.csv") ##modify .csv name or keep this name. The sample_name in the metadata sheet needs to match the first part (before first underscore), of the zipped raw FASTQ files
 cutadapt_path<-"/opt/homebrew/bin/cutadapt"
 
+dir_paths <- 
+  setup_directories(
+    data_directory = "inst/extdata",
+    output_directory = "~/outputs",
+    tempdir_id = "run1"
+  )
+
 data_tables <-
   prepare_reads(
     directory_path,

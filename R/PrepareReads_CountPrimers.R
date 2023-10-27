@@ -1,39 +1,63 @@
-#' Set Up Paths for Analysis
+#' Set Up Directory Paths for Analysis
 #'
-#' This function sets up the necessary paths for the analysis, based on user input or default settings.
-#' The function returns a list containing paths for the primer file, metadata file, and a temporary directory.
+#' This function sets up the paths for the analysis.
+#' It checks whetherthe specified output directories exist or creates them if they don't. 
+#' The function also provides paths to primer and metadata files within the data directory.
 #'
-#' @param directory_path A character string specifying the directory path. Default is "inst/extdata".
-#' @param temp_path_run_no A character string specifying temporary path run number. Default is "run1".
-#' @param primer_file A character string specifying the filename of the primer information. Default is "primer_info.csv".
-#' @param metadata_file A character string specifying the filename of the metadata. Default is "metadata.csv".
-#' @param cutadapt_path A character string specifying the path to the cutadapt tool. Default is "/usr/bin/cutadapt".
+#' @param data_directory Character string specifying the directory where data files are located. 
+#'        Default is "inst/extdata".
+#' @param output_directory Character string specifying the directory for analysis outputs. 
+#'        Default is "outputs".
+#' @param tempdir_id Character string specifying an ID for temporary directories. 
+#'        This ID will be combined with the current date. Default is "run1".
 #'
-#' @return A list containing paths for the directory path ("directory_path"), temporary path run number ("temp_path_run_no"), primer file ("primer_path"), and metadata file ("metadata_path").
+#' @return A list with the following elements:
+#' \itemize{
+#'   \item \code{data_directory}: The data directory path.
+#'   \item \code{output_directory}: The output directory path.
+#'   \item \code{temp_directory}: The path to the temporary directory.
+#'   \item \code{primer_path}: The path to the primer information file.
+#'   \item \code{metadata_path}: The path to the metadata file.
 #' 
 #' @examples
-#' paths <- setup_paths(directory_path = "path/to/my/data")
-#' print(paths$primer_path)
-#' 
-#' 
-#' @export
-setup_paths <- function(
-    directory_path = "inst/extdata",
-    temp_path_run_no="run1",
-    primer_file = "primer_info.csv",
-    metadata_file = "metadata.csv",
-    cutadapt_path = "/opt/homebrew/bin/cutadapt"
-) {
-  directory_path_temp <- file.path(tempdir(), paste0(temp_path_run_no, Sys.Date()))
-  dir.create(directory_path_temp, showWarnings = FALSE)
-  primer_path <- file.path(directory_path, primer_file)
-  metadata_path <- file.path(directory_path, metadata_file)
+#' \dontrun{
+#' dirs <- setup_directories(data_directory = "path/to/my/data", 
+#'                           output_directory = "path/to/output")
+#' print(dirs$primer_path)
+#' }
+#'
+#'
+#' @export setup_directories
+
+setup_directories <- function(data_directory = "data", 
+                              output_directory = "outputs", 
+                              tempdir_id = "run1") {
+  # Paths
+  data_primer_path <- file.path(data_directory, "primer_info.csv")
+  data_metadata_path <- file.path(data_directory, "metadata.csv")
   
-  return(list(directory_path = directory_path, temp_path = directory_path_temp, primer_path = primer_path, metadata_path = metadata_path))
+  # Create output directory if it doesn't exist
+  if (!dir.exists(output_directory)) {
+    dir.create(output_directory, recursive = TRUE)
+  }
+  
+  output_path <- file.path(output_directory)
+  if (!dir.exists(output_path)) {
+    dir.create(output_path, recursive = TRUE)
+  }
+  
+  temp_path <- file.path(tempdir(), paste0(tempdir_id, "_", Sys.Date()))
+  if (!dir.exists(temp_path)) {
+    dir.create(temp_path, recursive = TRUE)
+  }
+  
+  return(list(data_directory = data_directory, 
+              output_directory = output_directory, 
+              temp_directory = temp_path, 
+              primer_path = data_primer_path, 
+              metadata_path = data_metadata_path))
 }
 
-# For users, they can modify like:
-# paths <- setup_paths(directory_path = "path/to/my/data", primer_file = "myprimer.csv")
 
 #' Prepare reads for primer trimming using Cutadapt
 #'

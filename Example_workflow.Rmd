@@ -59,10 +59,12 @@ The sample names, primer sequences and other metadata are reorganized in prepara
 data_tables <-
   prepare_reads(
     directory_path,
+    directory_path_temp,
     primer_path,
     metadata_path,
     maxN = 0,
-    multithread = TRUE
+    multithread = TRUE,
+    overwrite_existing=TRUE
   )
 ```
 
@@ -75,6 +77,7 @@ If primers still remain, you may want to adjust the parameters or manually remov
 ```{r Trim function, include=TRUE}
 cut_trim(
   directory_path,
+  directory_path_temp,
   cutadapt_path,
   verbose = TRUE,
   maxEE = 2,
@@ -82,7 +85,7 @@ cut_trim(
   minLen = 200,
   maxLen = 297,
   minCutadaptlength = 50
-) 
+)
 ```
 
 
@@ -96,6 +99,7 @@ Depending on chosen specifications, the minOverlap and maxMismatch can be change
 asv_abund_matrix <-
   make_asv_abund_matrix(
     directory_path,
+    directory_path_temp,
     minOverlap = 15,
     maxMismatch = 2,
     verbose = TRUE,
@@ -118,10 +122,12 @@ Within the main directory, user must also have retrieved the rps10 oomycetedb (a
 ```{r assign tax, include=TRUE}
 summary <- assignTax(
   directory_path,
+  directory_path_temp,
   data_tables,
   asv_abund_matrix,
   multithread = TRUE,
-  barcode = "rps10",
+  barcode = "rps10", 
+  retrieve_files=TRUE
 )
 ```
 
@@ -132,7 +138,11 @@ While some users will appreciate having a matrix with all ASV sequences, taxonom
 Two wrapper functions are shared. They are derived from Metacoder functions 'parse_tax_data' and 'as_phyloseq'.
 
 ```{r Reformat ASV abundance matrix}
-obj_dada<-asvmatrix_to_taxmap(asv_abund_matrix, min_read_depth=0, minimum_bootstrap=0)
+obj_dada <-
+  asvmatrix_to_taxmap(asv_abund_matrix,
+                      min_read_depth = 10,
+                      minimum_bootstrap = 0)
+
 phylo_obj<-taxmap_to_phyloseq(obj_dada)
 ```
 
