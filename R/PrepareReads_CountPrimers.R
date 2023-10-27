@@ -1,3 +1,40 @@
+#' Set Up Paths for Analysis
+#'
+#' This function sets up the necessary paths for the analysis, based on user input or default settings.
+#' The function returns a list containing paths for the primer file, metadata file, and a temporary directory.
+#'
+#' @param directory_path A character string specifying the directory path. Default is "inst/extdata".
+#' @param temp_path_run_no A character string specifying temporary path run number. Default is "run1".
+#' @param primer_file A character string specifying the filename of the primer information. Default is "primer_info.csv".
+#' @param metadata_file A character string specifying the filename of the metadata. Default is "metadata.csv".
+#' @param cutadapt_path A character string specifying the path to the cutadapt tool. Default is "/usr/bin/cutadapt".
+#'
+#' @return A list containing paths for the directory path ("directory_path"), temporary path run number ("temp_path_run_no"), primer file ("primer_path"), and metadata file ("metadata_path").
+#' 
+#' @examples
+#' paths <- setup_paths(directory_path = "path/to/my/data")
+#' print(paths$primer_path)
+#' 
+#' 
+#' @export
+setup_paths <- function(
+    directory_path = "inst/extdata",
+    temp_path_run_no="run1",
+    primer_file = "primer_info.csv",
+    metadata_file = "metadata.csv",
+    cutadapt_path = "/opt/homebrew/bin/cutadapt"
+) {
+  directory_path_temp <- file.path(tempdir(), paste0(temp_path_run_no, Sys.Date()))
+  dir.create(directory_path_temp, showWarnings = FALSE)
+  primer_path <- file.path(directory_path, primer_file)
+  metadata_path <- file.path(directory_path, metadata_file)
+  
+  return(list(directory_path = directory_path, temp_path = directory_path_temp, primer_path = primer_path, metadata_path = metadata_path))
+}
+
+# For users, they can modify like:
+# paths <- setup_paths(directory_path = "path/to/my/data", primer_file = "myprimer.csv")
+
 #' Prepare reads for primer trimming using Cutadapt
 #'
 #' @param directory_path Path to the directory containing the input FASTQ files.
@@ -5,6 +42,13 @@
 #'        files will be placed during the workflow.
 #' @param primer_path Path to the CSV file containing primer information.
 #' @param metadata_path Path to CSV file containing the metadata 
+#' @param overwrite_existing A logical flag indicating whether to remove or overwrite 
+#'        existing files and directories from previous runs. If set to TRUE,
+#'        output files (e.g., "pre_primer_plot.pdf", "primer_hit_data_pretrim.csv","filtered_sequences", 
+#'        "prefiltered_sequences","trimmed_sequences", "untrimmed_sequences") 
+#'        will be deleted if they exist, ensuring a fresh start for the current run. 
+#'        Default is FALSE, meaning the function will halt or skip specific steps if 
+#'        it detects existing files or directories.
 #' @inheritParams read_prefilt_fastq
 #' @return A list containing the following data tables:
 #'   \itemize{
@@ -35,8 +79,8 @@ prepare_reads <-
            metadata_path,
            maxN = 0,
            multithread = FALSE,
-           force = FALSE) {
-    if(!force & file.exists("pre_primer_plot.pdf")) {
+           overwrite_existing = TRUE) {
+    if(!overwrite_existing & file.exists("pre_primer_plot.pdf")) {
       print("Force flag applied")
       unlink(c("pre_primer_plot.pdf", "primer_hit_data_pretrim.csv",
                "filtered_sequences", "prefiltered_sequences",

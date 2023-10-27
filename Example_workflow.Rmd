@@ -36,7 +36,7 @@ Include any other metadata columns you'd like to use during later steps of the a
 ```{r installation, message=FALSE, warnings=FALSE}
 #temporary installation method
 #ADJUST PATHS FOR MOMENT
-devtools::load_all("/Users/masudermann/rps10package")
+devtools::load_all("/Users/masudermann/rps10package3")
 devtools::document()
 ```
 
@@ -44,7 +44,7 @@ devtools::document()
 
 ```{r set paths, message=FALSE, warnings=FALSE}
 #Change as needed based on where test dataset is located
-directory_path<-"/Users/masudermann/rps10package/raw_data/rps10" ##choose a directory for all downstream steps
+directory_path<-"/Users/masudermann/rps10package3/inst/extdata" ##choose a directory for all downstream steps
 primer_path <-file.path(directory_path, "primer_info.csv") ##modify .csv name or keep this name
 metadata_path <-file.path(directory_path,"metadata.csv") ##modify .csv name or keep this name. The sample_name in the metadata sheet needs to match the first part (before first underscore), of the zipped raw FASTQ files
 #Specify the location of where cutadapt is located
