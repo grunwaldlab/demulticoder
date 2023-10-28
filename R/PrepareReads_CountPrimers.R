@@ -1,27 +1,15 @@
-#' Set Up Directory Paths for Analysis
+#' Set up directory paths for subsequent analyses
 #'
 #' This function sets up the paths for the analysis.
-#' It checks whetherthe specified output directories exist or creates them if they don't. 
+#' It checks whether the specified output directories exist or creates them if they don't. 
 #' The function also provides paths to primer and metadata files within the data directory.
 #'
-#' @param data_directory Character string specifying the directory where data files are located. 
-#'        Default is "inst/extdata".
-#' @param output_directory Character string specifying the directory for analysis outputs. 
-#'        Default is "outputs".
-#' @param tempdir_id Character string specifying an ID for temporary directories. 
-#'        This ID will be combined with the current date. Default is "run1".
-#'
-#' @return A list with the following elements:
-#' \itemize{
-#'   \item \code{data_directory}: The data directory path.
-#'   \item \code{output_directory}: The output directory path.
-#'   \item \code{temp_directory}: The path to the temporary directory.
-#'   \item \code{primer_path}: The path to the primer information file.
-#'   \item \code{metadata_path}: The path to the metadata file.
-#' 
-#'
+#' @param data_directory Directory for data files. Default is "data".
+#' @param output_directory Directory for analysis outputs. Default is "outputs".
+#' @param tempdir_id ID for temporary directories, combined with the current date. Default is "run1".
+#' @return A list with paths for data, output, temporary directories, primer, and metadata files.
 #' @keywords internal
-
+#' 
 setup_directories <- function(data_directory = "data", 
                               output_directory = "outputs", 
                               tempdir_id = "run1") {
@@ -51,56 +39,31 @@ setup_directories <- function(data_directory = "data",
               metadata_path = data_metadata_path))
 }
 
-
 #' Prepare reads for primer trimming using Cutadapt
 #'
-#' @param directory_path Path to the directory containing the input FASTQ files.
-#' @param directory_path_temp Temporary directory specified by the user where intermediate 
-#'        files will be placed during the workflow.
-#' @param primer_path Path to the CSV file containing primer information.
-#' @param metadata_path Path to CSV file containing the metadata 
-#' @param overwrite_existing A logical flag indicating whether to remove or overwrite 
-#'        existing files and directories from previous runs. If set to TRUE,
-#'        output files (e.g., "pre_primer_plot.pdf", "primer_hit_data_pretrim.csv","filtered_sequences", 
-#'        "prefiltered_sequences","trimmed_sequences", "untrimmed_sequences") 
-#'        will be deleted if they exist, ensuring a fresh start for the current run. 
-#'        Default is FALSE, meaning the function will halt or skip specific steps if 
-#'        it detects existing files or directories.
-#' @inheritParams read_prefilt_fastq
-#' @inheritParams setup_directories
-#' 
-#' @return A list containing the following data tables:
-#'   \itemize{
-#'   \item \code{cutadapt_data}: Data table related to Cutadapt trimming.
-#'   \item \code{primer_data}: Data table detailing primer sequences.
-#'   \item \code{fastq_data}: Data table listing input FASTQ files and related information.
-#'   \item \code{metadata}: The metadata table.
-#' }
-#' @export prepare_reads
-#' @examples
-#' directory_path<-"~/rps10package/raw_data/rps10_ITS"
-#' primer_path <-file.path(directory_path, "primer_info.csv")
-#' metadata_path <-file.path(directory_path,"metadata.csv")
-#' cutadapt_path<-"/opt/homebrew/bin/cutadapt"
-#' data_tables <-
-#' prepare_reads(
-#' directory_path,
-#' primer_path,
-#' metadata_path,
-#' maxN = 0,
-#' )
+#' This function prepares sequencing reads for primer trimming using Cutadapt by setting up necessary directories, reading in metadata and primer data, and performing pre-trimming quality control steps.
 #'
+#' @inheritParams dada2::filterAndTrim
+#' @param overwrite_existing Logical, indicating whether to remove or overwrite existing files and directories from previous runs. If set to TRUE, specific output files 
+#' @param data_directory Directory for data files. Default is "data".
+#' @param output_directory Directory for outputs. Default is "output".
+#' @param tempdir_id ID for temporary directories, combined with the current date. Default is "run1".
+#' @return A list with data tables for trimming and directory paths.
+#' @export 
+#' @examples
+#' outputs <- prepare_reads(maxN = 0, data_directory = "data", output_directory = "output")
+#' }
 
 prepare_reads <-
-  function(maxN = 0, multithread = FALSE, overwrite_existing = TRUE,
-           data_directory = "path/to/data", 
-           output_directory = "path/to/output", 
+  function(maxN = 0, multithread = FALSE, overwrite_existing = FALSE,
+           data_directory = "data", 
+           output_directory = "output", 
            tempdir_id = "run1") {
     
     # Get paths from setup_directories function
     dir_paths <- setup_directories(data_directory, output_directory, tempdir_id)
-    
-    directory_path <- dir_paths$data_directory
+    directory_path <- dir_paths$output_directory
+    data_path <- dir_paths$data_directory
     directory_path_temp <- dir_paths$temp_directory
     primer_path <- dir_paths$primer_path
     metadata_path <- dir_paths$metadata_path
@@ -113,7 +76,7 @@ prepare_reads <-
     }
     primer_data <- orient_primers(primer_path)
     metadata <- prepare_metadata_table(metadata_path, primer_data)
-    fastq_data <- read_prefilt_fastq(directory_path, maxN, multithread, directory_path_temp)
+    fastq_data <- read_prefilt_fastq(data_path, maxN, multithread, directory_path_temp)
     pre_primer_hit_data <-
       get_pre_primer_hits(primer_data, fastq_data, directory_path)
     pre_primer_plot <-
@@ -130,7 +93,7 @@ prepare_reads <-
         fastq_data = fastq_data,
         metadata = metadata
       )
-    outputs<-list(data_tables = data_tables, dirs = dir_paths)
+    outputs<-list(data_tables = data_tables, dir_paths = dir_paths)
     return(outputs)
   }
 
@@ -204,9 +167,9 @@ orient_primers <- function(primer_path) {
 #' @keywords internal
 #' sequences, and names of sequences
 
-read_fastq <- function(directory_path, directory_path_temp) {
+read_fastq <- function(data_path, directory_path_temp) {
   
-  fastq_paths <- list.files(directory_path, pattern = "\\.fastq(|\\.gz)$")
+  fastq_paths <- list.files(data_path, pattern = "\\.fastq(|\\.gz)$")
   
   # Extract file_id and sample_name using regex
   file_id <- sub("\\.fastq(|\\.gz)$", "", fastq_paths)
@@ -215,7 +178,7 @@ read_fastq <- function(directory_path, directory_path_temp) {
   # Determine direction based on file name
   direction <- ifelse(grepl("_R1", fastq_paths), "Forward", "Reverse")
 
-  directory_data_path <- file.path(directory_path, fastq_paths)
+  directory_data_path <- file.path(data_path, fastq_paths)
   temp_data_path <- file.path(directory_path_temp, fastq_paths)
   
   # Create the data frame
@@ -254,8 +217,8 @@ primer_check <- function(fastq_data) {
 #' @return Returns filtered reads that have no Ns
 #' @keywords internal
 
-read_prefilt_fastq <- function(directory_path, maxN = 0, multithread = FALSE, directory_path_temp) {
-  fastq_data <- read_fastq(directory_path, directory_path_temp)
+read_prefilt_fastq <- function(data_path, maxN = 0, multithread = FALSE, directory_path_temp) {
+  fastq_data <- read_fastq(data_path, directory_path_temp)
   primer_check(fastq_data)
   fastq_data <- remove_ns(fastq_data, maxN, multithread = multithread, directory_path_temp)
   return(fastq_data)

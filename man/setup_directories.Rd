@@ -31,15 +31,7 @@ A list with the following elements:
 }
 \description{
 This function sets up the paths for the analysis.
-It checks whetherthe specified output directories exist or creates them if they don't.
+It checks whether the specified output directories exist or creates them if they don't.
 The function also provides paths to primer and metadata files within the data directory.
 }
-\examples{
-\dontrun{
-dirs <- setup_directories(data_directory = "path/to/my/data", 
-                          output_directory = "path/to/output")
-print(dirs$primer_path)
-}
-
-
-}
+\keyword{internal}

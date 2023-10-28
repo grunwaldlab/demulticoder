@@ -5,68 +5,40 @@
 \title{Prepare reads for primer trimming using Cutadapt}
 \usage{
 prepare_reads(
-  directory_path,
-  directory_path_temp,
-  primer_path,
-  metadata_path,
   maxN = 0,
   multithread = FALSE,
-  overwrite_existing = TRUE
+  overwrite_existing = FALSE,
+  data_directory = "path/to/data",
+  output_directory = "path/to/output",
+  tempdir_id = "run1"
 )
 }
 \arguments{
-\item{directory_path}{Path to the directory containing the input FASTQ files.}
+\item{maxN}{Integer, maximum number of Ns allowed in the sequence. Sequences with more than this many Ns will be discarded. Default is 0.}
 
-\item{directory_path_temp}{Temporary directory specified by the user where intermediate
-files will be placed during the workflow.}
+\item{multithread}{Logical, indicating whether multithreading should be used. Default is FALSE.}
 
-\item{primer_path}{Path to the CSV file containing primer information.}
+\item{overwrite_existing}{Logical, indicating whether to remove or overwrite existing files and directories from previous runs. If set to TRUE, specific output files will be deleted if they exist, ensuring a fresh start for the current run. Default is TRUE.}
 
-\item{metadata_path}{Path to CSV file containing the metadata}
+\item{data_directory}{Character string specifying the directory where data files are located. Default is "path/to/data".}
 
-\item{maxN}{(Optional). Default 0.
-After truncation, sequences with more than \code{maxN} Ns will be discarded. 
-Note that \code{\link[dada2]{dada}} does not allow Ns.}
+\item{output_directory}{Character string specifying the directory for analysis outputs. Default is "path/to/output".}
 
-\item{multithread}{(Optional). Default is FALSE.
- If TRUE, input files are filtered in parallel via \code{\link[parallel]{mclapply}}.
- If an integer is provided, it is passed to the \code{mc.cores} argument of \code{\link[parallel]{mclapply}}.
- Note that the parallelization here is by forking, and each process is loading another fastq file into
- memory. This option is ignored in Windows, as Windows does not support forking, with \code{mc.cores} set to 1.
-If memory is an issue, execute in a clean environment and reduce the chunk size \code{n} and/or
- the number of threads.}
-
-\item{overwrite_existing}{A logical flag indicating whether to remove or overwrite
-existing files and directories from previous runs. If set to TRUE,
-output files (e.g., "pre_primer_plot.pdf", "primer_hit_data_pretrim.csv","filtered_sequences",
-"prefiltered_sequences","trimmed_sequences", "untrimmed_sequences")
-will be deleted if they exist, ensuring a fresh start for the current run.
-Default is FALSE, meaning the function will halt or skip specific steps if
-it detects existing files or directories.}
+\item{tempdir_id}{Character string specifying an ID for temporary directories. This ID will be combined with the current date. Default is "run1".}
 }
 \value{
-A list containing the following data tables:
+A list with the following elements:
 \itemize{
-\item \code{cutadapt_data}: Data table related to Cutadapt trimming.
-\item \code{primer_data}: Data table detailing primer sequences.
-\item \code{fastq_data}: Data table listing input FASTQ files and related information.
-\item \code{metadata}: The metadata table.
+\item \code{data_tables}: A list containing data tables related to Cutadapt trimming, primer sequences, input FASTQ files, and metadata.
+\item \code{dir_paths}: A list containing the paths set up by the \code{setup_directories} function, including data directory, output directory, temporary directory, primer path, and metadata path.
 }
 }
 \description{
-Prepare reads for primer trimming using Cutadapt
+This function prepares sequencing reads for primer trimming using Cutadapt by setting up necessary directories, reading in metadata and primer data, and performing pre-trimming quality control steps.
 }
 \examples{
-directory_path<-"~/rps10package/raw_data/rps10_ITS"
-primer_path <-file.path(directory_path, "primer_info.csv")
-metadata_path <-file.path(directory_path,"metadata.csv")
-cutadapt_path<-"/opt/homebrew/bin/cutadapt"
-data_tables <-
-prepare_reads(
-directory_path,
-primer_path,
-metadata_path,
-maxN = 0,
-)
+\dontrun{
+outputs <- prepare_reads(maxN = 0, data_directory = "path/to/data", output_directory = "path/to/output")
+}
 
 }

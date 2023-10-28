@@ -7,30 +7,35 @@ devtools::document()
 #TODO-make separate data directory vs. working directory-otherwise test folder gets messy
 #Revise instruction and documentation so more consistent and clearer
 #If everything comes together finally add functionality for other barcodes. How hard to integrate ITSx? 
-directory_path<-"inst/extdata" ##choose a directory for all downstream steps
-directory_path_temp <- file.path(tempdir(), paste0("run10_", Sys.Date()))
-dir.create(directory_path_temp)
-primer_path <-file.path(directory_path, "primer_info.csv") ##modify .csv name or keep this name
-metadata_path <-file.path(directory_path,"metadata.csv") ##modify .csv name or keep this name. The sample_name in the metadata sheet needs to match the first part (before first underscore), of the zipped raw FASTQ files
-cutadapt_path<-"/opt/homebrew/bin/cutadapt"
 
-dir_paths <- 
-  setup_directories(
-    data_directory = "inst/extdata",
-    output_directory = "~/outputs",
-    tempdir_id = "run1"
-  )
+outputs <- prepare_reads(maxN = 0, data_directory = "inst/extdata", output_directory = "~/output_package", tempdir_id = "run2")
 
-data_tables <-
-  prepare_reads(
-    directory_path,
-    directory_path_temp,
-    primer_path,
-    metadata_path,
-    maxN = 0,
-    multithread = TRUE,
-    overwrite_existing=TRUE
-  )
+#directory_path<-"inst/extdata" ##choose a directory for all downstream steps
+#directory_path_temp <- file.path(tempdir(), paste0("run10_", Sys.Date()))
+#dir.create(directory_path_temp)
+#primer_path <-file.path(directory_path, "primer_info.csv") ##modify .csv name or keep this name
+#metadata_path <-file.path(directory_path,"metadata.csv") ##modify .csv name or keep this name. The sample_name in the metadata sheet needs to match the first part (before first underscore), of the zipped raw FASTQ files
+#cutadapt_path<-"/opt/homebrew/bin/cutadapt"
+
+#dir_paths <- 
+#  setup_directories(
+#    data_directory = "inst/extdata",
+#    output_directory = "~/outputs",
+#    tempdir_id = "run1"
+#  )
+
+
+#data_tables <- prepare_reads(
+#  directory_path = dirs$data_directory,
+#  directory_path_temp = dirs$temp_directory,
+#  primer_path = dirs$primer_path,
+#  metadata_path = dirs$metadata_path,
+#  maxN = 0,
+#  multithread = TRUE,
+#  overwrite_existing = TRUE
+#)
+
+
 
 cut_trim(
   directory_path,

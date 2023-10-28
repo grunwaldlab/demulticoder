@@ -6,13 +6,13 @@
 the paths to files that will be created and used in the future.
 Included in a larger 'read_prefilt_fastq' function}
 \usage{
-read_fastq(directory_path, directory_path_temp)
+read_fastq(data_path, directory_path_temp)
 }
 \arguments{
+\item{directory_path_temp}{User-defined temporary directory to place reads throughout the workflow.}
+
 \item{directory_path}{The path to the directory containing the fastq,
 metadata, and primer_info files}
-
-\item{directory_path_temp}{User-defined temporary directory to place reads throughout the workflow.}
 }
 \value{
 A tibble with the fastq file paths, the direction of the
