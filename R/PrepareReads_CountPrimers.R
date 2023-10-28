@@ -19,15 +19,8 @@
 #'   \item \code{primer_path}: The path to the primer information file.
 #'   \item \code{metadata_path}: The path to the metadata file.
 #' 
-#' @examples
-#' \dontrun{
-#' dirs <- setup_directories(data_directory = "path/to/my/data", 
-#'                           output_directory = "path/to/output")
-#' print(dirs$primer_path)
-#' }
 #'
-#'
-#' @export setup_directories
+#' @keywords internal
 
 setup_directories <- function(data_directory = "data", 
                               output_directory = "outputs", 
@@ -74,6 +67,8 @@ setup_directories <- function(data_directory = "data",
 #'        Default is FALSE, meaning the function will halt or skip specific steps if 
 #'        it detects existing files or directories.
 #' @inheritParams read_prefilt_fastq
+#' @inheritParams setup_directories
+#' 
 #' @return A list containing the following data tables:
 #'   \itemize{
 #'   \item \code{cutadapt_data}: Data table related to Cutadapt trimming.
@@ -97,13 +92,19 @@ setup_directories <- function(data_directory = "data",
 #'
 
 prepare_reads <-
-  function(directory_path,
-           directory_path_temp,
-           primer_path,
-           metadata_path,
-           maxN = 0,
-           multithread = FALSE,
-           overwrite_existing = TRUE) {
+  function(maxN = 0, multithread = FALSE, overwrite_existing = TRUE,
+           data_directory = "path/to/data", 
+           output_directory = "path/to/output", 
+           tempdir_id = "run1") {
+    
+    # Get paths from setup_directories function
+    dir_paths <- setup_directories(data_directory, output_directory, tempdir_id)
+    
+    directory_path <- dir_paths$data_directory
+    directory_path_temp <- dir_paths$temp_directory
+    primer_path <- dir_paths$primer_path
+    metadata_path <- dir_paths$metadata_path
+    
     if(!overwrite_existing & file.exists("pre_primer_plot.pdf")) {
       print("Force flag applied")
       unlink(c("pre_primer_plot.pdf", "primer_hit_data_pretrim.csv",
@@ -129,7 +130,8 @@ prepare_reads <-
         fastq_data = fastq_data,
         metadata = metadata
       )
-    return(data_tables)
+    outputs<-list(data_tables = data_tables, dirs = dir_paths)
+    return(outputs)
   }
 
 #' Read in the metadata from user and combine it with the primer data.
