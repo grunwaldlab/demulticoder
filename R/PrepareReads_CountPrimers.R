@@ -13,6 +13,7 @@
 setup_directories <- function(data_directory = "data", 
                               output_directory = "outputs", 
                               tempdir_id = "run1") {
+  
   # Paths
   data_primer_path <- file.path(data_directory, "primer_info.csv")
   data_metadata_path <- file.path(data_directory, "metadata.csv")
@@ -32,7 +33,7 @@ setup_directories <- function(data_directory = "data",
     dir.create(temp_path, recursive = TRUE)
   }
   
-  return(list(data_directory = data_directory, 
+  outputs <- (list(data_directory = data_directory, 
               output_directory = output_directory, 
               temp_directory = temp_path, 
               primer_path = data_primer_path, 
@@ -52,13 +53,14 @@ setup_directories <- function(data_directory = "data",
 #' @export 
 #' @examples
 #' outputs <- prepare_reads(maxN = 0, data_directory = "data", output_directory = "output")
-#' }
 
 prepare_reads <-
-  function(maxN = 0, multithread = FALSE, overwrite_existing = FALSE,
-           data_directory = "data", 
+  function(data_directory = "data", 
            output_directory = "output", 
-           tempdir_id = "run1") {
+           tempdir_id = "run1",
+           maxN = 0, 
+           multithread = FALSE, 
+           overwrite_existing = FALSE) {
     
     # Get paths from setup_directories function
     dir_paths <- setup_directories(data_directory, output_directory, tempdir_id)
@@ -93,8 +95,9 @@ prepare_reads <-
         fastq_data = fastq_data,
         metadata = metadata
       )
-    outputs<-list(data_tables = data_tables, dir_paths = dir_paths)
-    return(outputs)
+    analysis_setup <-list(data_tables = data_tables, dir_paths = dir_paths)
+    assign("analysis_setup", analysis_setup, envir = .GlobalEnv)
+    return(analysis_setup)
   }
 
 #' Read in the metadata from user and combine it with the primer data.

@@ -1,5 +1,6 @@
 #' Make an amplified sequence variants abundance matrix with data processed through preceding steps
-#'
+#' @param A list containing directory paths and data tables, produced by the 
+#' `prepare_reads` function
 #' @param rawSeqTab_fileName A filename as which the raw sequence table will be saved
 #' @param abundMatrix_fileName A filename as which the abundance matrix will be saved
 #' @param directory_path The path to the directory containing the fastq,
@@ -43,7 +44,7 @@
 #'
 #'
 #'
-make_asv_abund_matrix <- function(directory_path,
+make_asv_abund_matrix <- function(analysis_setup=analysis_setup,
                                   multithread = FALSE,
                                   nbases = 1e+08,
                                   errorEstimationFunction = loessErrfun,
@@ -67,15 +68,24 @@ make_asv_abund_matrix <- function(directory_path,
                                   method = "consensus",
                                   min_asv_length = 50,
                                   force = FALSE) {
+  
   if (!force & file.exists("asv_hist_plot.pdf")) {
     print("Force flag applied")
     unlink(c("asv_hist_plot.pdf", "asvabund_matrixDADA2.Rdata",
              "error_plots.pdf", "Denoised_data.RData",
              "read_merging.jpg", "Merged_reads.RData"))
   }
+  
+  dir_paths <- analysis_setup$dir_paths
+  data_tables <- analysis_setup$data_tables
+  directory_path <- dir_paths$output_directory
+  data_path <- dir_paths$data_directory
+  directory_path_temp <- dir_paths$temp_directory
+  
   infer_asv_command(
-    directory_path,
-    directory_path_temp,
+    directory_path=directory_path,
+    directory_path_temp=directory_path_temp,
+    data_tables=data_tables,
     multithread = multithread,
     nbases = nbases,
     errorEstimationFunction = errorEstimationFunction,
@@ -93,7 +103,7 @@ make_asv_abund_matrix <- function(directory_path,
   )
   merged_reads <-
     merge_reads_command(
-      directory_path,
+      directory_path_temp=directory_path_temp,
       minOverlap = minOverlap,
       maxMismatch = maxMismatch,
       returnRejects = returnRejects,
@@ -101,11 +111,11 @@ make_asv_abund_matrix <- function(directory_path,
       verbose = verbose
     )
   countOverlap(merged_reads, directory_path)
-  raw_seqtab <- makeSeqtab(merged_reads, orderBy = orderBy)
+  raw_seqtab <- createASVSequenceTable(merged_reads, orderBy = orderBy)
   asv_abund_matrix <-
-    make_abund_matrix(raw_seqtab, min_asv_length = min_asv_length)
-  make_seqhist(asv_abund_matrix)
-  return(asv_abund_matrix)
+    make_abund_matrix(raw_seqtab, min_asv_length = min_asv_length, directory_path_temp=directory_path_temp)
+  make_seqhist(asv_abund_matrix, directory_path)
+  assign("asv_abund_matrix", asv_abund_matrix, envir = .GlobalEnv)
 }
 
 #' Retrieve the paths of the filtered and trimmed Fastq files
@@ -114,9 +124,9 @@ make_asv_abund_matrix <- function(directory_path,
 #' @param my_primer_pair_id The the specific barcode id 
 #' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
 #' @keywords internal
-get_fastq_paths <- function(my_direction, my_primer_pair_id) {
+get_fastq_paths <- function(analysis_setup, my_direction, my_primer_pair_id) {
+  data_tables <- analysis_setup$data_tables
   filtered_paths <- character()
-  
   for (i in seq_along(data_tables$cutadapt_data$direction)) {
     if (data_tables$cutadapt_data$direction[i] == my_direction &&
         data_tables$cutadapt_data$primer_name[i] == my_primer_pair_id &&
@@ -141,7 +151,8 @@ get_fastq_paths <- function(my_direction, my_primer_pair_id) {
 #' @return asv_data
 #' @keywords internal
 infer_asvs <-
-  function(directory_path,
+  function(directory_path = directory_path,
+           directory_path_temp = directory_path_temp,
            my_primer_pair_id,
            my_direction,
            multithread = FALSE,
@@ -158,8 +169,10 @@ infer_asvs <-
            pool = FALSE,
            selfConsist = FALSE,
            verbose = FALSE) {
+
+    
     #may need to adjust the parameters
-    fastq_paths <- get_fastq_paths(my_direction, my_primer_pair_id)
+    fastq_paths <- get_fastq_paths(analysis_setup,my_direction, my_primer_pair_id)
     error_profile <-
       dada2::learnErrors(
         fastq_paths,
@@ -220,6 +233,7 @@ infer_asvs <-
 infer_asv_command <-
   function(directory_path,
            directory_path_temp,
+           data_tables,
            multithread = FALSE,
            nbases = 1e+08,
            errorEstimationFunction = loessErrfun,
@@ -242,7 +256,8 @@ infer_asv_command <-
       run_dada <- function(direction) {
         dada_output <- lapply(unique(data_tables$cutadapt_data$primer_name), function(primer_name)
           infer_asvs(
-            directory_path,
+            directory_path=directory_path,
+            directory_path_temp = directory_path_temp,
             primer_name,
             direction,
             multithread = multithread,
@@ -277,7 +292,7 @@ infer_asv_command <-
 #' @return merged_reads Intermediate merged read R data file
 #' @keywords internal
 merge_reads_command <-
-  function(directory_path,
+  function(directory_path_temp,
            minOverlap = 12,
            maxMismatch = 0,
            returnRejects = FALSE,
@@ -286,7 +301,7 @@ merge_reads_command <-
            verbose = FALSE) {
     denoised_data_path <-
       file.path(directory_path_temp, "Denoised_data.Rdata")
-    load(denoised_data_path) #incorporate into function
+    load(denoised_data_path)
     merged_read_data_path <-
       file.path(directory_path_temp, "Merged_reads.Rdata")
     formatted_ref_dir <-
@@ -386,7 +401,7 @@ countOverlap <- function(merged_reads, directory_path) {
 #' @param merged_reads Intermediate merged read R data file
 #' @return raw_seqtab
 #' @keywords internal
-makeSeqtab <- function(merged_reads, orderBy = "abundance") {
+createASVSequenceTable <- function(merged_reads, orderBy = "abundance") {
   raw_seqtab <- makeSequenceTable(merged_reads, orderBy = orderBy)
   return(raw_seqtab)
 }
@@ -402,7 +417,8 @@ make_abund_matrix <-
   function(raw_seqtab,
            method = "consensus",
            verbose = FALSE,
-           min_asv_length = 50) {
+           min_asv_length = 50,
+           directory_path_temp=directory_path_temp) {
     seqtab.nochim <-
       dada2::removeBimeraDenovo(raw_seqtab, method = method, verbose = verbose)
     asv_abund_matrix <-
@@ -422,7 +438,7 @@ make_abund_matrix <-
 #' @keywords internal
 #' @return histogram with read length counts of all sequences within ASV matrix
 #' @keywords internal
-make_seqhist <- function(asv_abund_matrix) {
+make_seqhist <- function(asv_abund_matrix, directory_path=directory_path) {
   matrix_row <- unique(gsub(".*_", "", rownames(asv_abund_matrix)))
   
   for (locus in matrix_row) {

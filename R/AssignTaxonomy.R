@@ -1,9 +1,5 @@
 #' Assign rps10 and ITS taxonomy
-#'
-#' @param directory_path Location of read files and metadata file
-#' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow
-#' metadata, and primer_info files
-#' @param data_tables specify dataframe
+#' @param analysis_setup A list containing directory paths and data tables, produced by the `prepare_reads` function.
 #' @param barcode specify which barcode you have used, 'rps10', 'its', or 'rps10_its'
 #' @param asv_abund_matrix specify the ASV abundance matrix for which taxonomic assignments will be given
 #' @param retrieve_files Specify TRUE/FALSE whether to copy files from the tempdirectory (which will be deleted) 
@@ -49,54 +45,41 @@
 #' barcode = "rps10"
 #' )
 #'
-assignTax <-
-  function(directory_path,
-           directory_path_temp,
-           data_tables,
-           asv_abund_matrix,
-           tryRC = FALSE,
-           verbose = FALSE,
-           multithread = FALSE,
-           retrieve_files = FALSE,
-           barcode = "rps10"){
-    if (barcode == "rps10") {
-      format_database_rps10(directory_path, directory_path_temp, "oomycetedb.fasta")
-      summary_table <-
-        process_single_barcode(data_tables,
-                               asv_abund_matrix,
-                               multithread = multithread,
-                               barcode = "rps10")
-        if (retrieve_files=="TRUE"){
-          file.copy(directory_path_temp, directory_path, recursive=TRUE)
-        }
-    } else if (barcode == "its") {
-      format_database_its(directory_path, directory_path_temp, "fungidb.fasta")
-      summary_table <-
-        process_single_barcode(data_tables,
-                               asv_abund_matrix,
-                               multithread = multithread,
-                               barcode = "its")
-        if (retrieve_files=="TRUE"){
-          file.copy(directory_path_temp, directory_path, recursive=TRUE)
-      }
-    } else if (barcode == "rps10_its") {
-      format_database_rps10(directory_path, directory_path_temp, "oomycetedb.fasta")
-      format_database_its(directory_path, directory_path_temp, "fungidb.fasta")
-      summary_table <-
-        process_pooled_barcode(
-          data_tables,
-          asv_abund_matrix,
-          multithread = multithread,
-          barcode1 = "rps10",
-          barcode2 = "its"
-        )
-        if (retrieve_files=="TRUE"){
-          file.copy(directory_path_temp, directory_path, recursive=TRUE)
-        }
-    } else {
-      print("Barcodes not recognized")
+assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, barcode = "rps10") {
+  dir_paths <- analysis_setup$dir_paths
+  data_tables <- analysis_setup$data_tables
+  directory_path <- dir_paths$output_directory
+  directory_path_temp <- dir_paths$temp_directory  # Define directory_path_temp here
+  
+  if (barcode == "rps10") {
+    format_database_rps10(analysis_setup, "oomycetedb.fasta")
+    summary_table <- process_single_barcode(data_tables, directory_path_temp, directory_path, asv_abund_matrix, multithread = multithread, barcode = "rps10")
+    assign("summary_table", summary_table, envir = .GlobalEnv)
+    
+    if (retrieve_files) {
+      file.copy(directory_path_temp, directory_path, recursive = TRUE)
     }
+  } else if (barcode == "its") {
+    format_database_its(analysis_setup, "fungidb.fasta")
+    summary_table <- process_single_barcode(data_tables, directory_path_temp, directory_path, asv_abund_matrix, multithread = multithread, barcode = "its")
+    assign("summary_table", summary_table, envir = .GlobalEnv)
+    
+    if (retrieve_files) {
+      file.copy(directory_path_temp, directory_path, recursive = TRUE)
+    }
+  } else if (barcode == "rps10_its") {
+    format_database_rps10(analysis_setup, "oomycetedb.fasta")
+    format_database_its(analysis_setup, "fungidb.fasta")
+    summary_table <- process_pooled_barcode(data_tables, directory_path_temp, directory_path, asv_abund_matrix, multithread = multithread, barcode1 = "rps10", barcode2 = "its")
+    assign("summary_table", summary_table, envir = .GlobalEnv)
+    
+    if (retrieve_files) {
+      file.copy(directory_path_temp, directory_path, recursive = TRUE)
+    }
+  } else {
+    print("Barcodes not recognized")
   }
+}
 
 #' Process the information from an ASV abundance matrix to run DADA2 for single barcode
 #'
@@ -109,6 +92,8 @@ assignTax <-
 #name the ref db by barcode name
 process_single_barcode <-
   function(data_tables,
+           directory_path_temp,
+           directory_path,
            asv_abund_matrix,
            tryRC = FALSE,
            verbose = FALSE,
@@ -145,6 +130,8 @@ process_single_barcode <-
 #' @keywords internal
 process_pooled_barcode <-
   function(data_tables,
+           directory_path_temp,
+           directory_path,
            asv_abund_matrix,
            tryRC = FALSE,
            verbose = FALSE,
@@ -386,4 +373,3 @@ get_read_counts <- function(asv_abund_matrix) {
   write_csv(track, track_read_counts_path)
   print(track)
 }
-

@@ -8,9 +8,14 @@
 #' @return A rps10 database that has modified headers and is output in the reference_databases folder.
 #' @keywords internal
 #'
-format_database_rps10 <-function(directory_path, directory_path_temp, database_rps10){
+format_database_rps10 <-function(analysis_setup, database_rps10){
+  dir_paths <- analysis_setup$dir_paths
+  data_tables <- analysis_setup$data_tables
+  directory_path <- dir_paths$output_directory
+  data_path <- dir_paths$data_directory
+  directory_path_temp <- dir_paths$temp_directory
   database_path <- file.path(directory_path_temp, "rps10_reference_db.fa")
-  rps10_db <- read_fasta(file.path(directory_path, database_rps10))
+  rps10_db <- read_fasta(file.path(data_path, database_rps10))
   rps10_data <- str_match(names(rps10_db), pattern = "name=(.+)\\|strain=(.+)\\|ncbi_acc=(.+)\\|ncbi_taxid=(.+)\\|oodb_id=(.+)\\|taxonomy=(.+)$")
   colnames(rps10_data) <- c("header", "name", "strain", "ncbi_acc", "ncbi_taxid", "oodb_id", "taxonomy")
   rps10_data <- as_tibble(rps10_data)
@@ -49,9 +54,14 @@ format_database_rps10 <-function(directory_path, directory_path_temp, database_r
 #' @return An ITS database that has modified headers and is output in the reference_databases folder.
 #' @keywords internal
 #'
-format_database_its <-function(directory_path, directory_path_temp, database_its){
+format_database_its <-function(analysis_setup, database_its){
+  dir_paths <- analysis_setup$dir_paths
+  data_tables <- analysis_setup$data_tables
+  directory_path <- dir_paths$output_directory
+  data_path <- dir_paths$data_directory
+  directory_path_temp <- dir_paths$temp_directory
   database_path <- file.path(directory_path_temp, "its_reference_db.fa")
-  its_db <- read_fasta(file.path(directory_path, database_its))
+  its_db <- read_fasta(file.path(data_path, database_its))
   its_data <- str_match(names(its_db), pattern = "(.+)\\|(.+)\\|(.+)\\|(.+)\\|(.+)$")
   colnames(its_data) <- c("header", "name", "ncbi_acc", "unite_db", "db", "taxonomy")
   its_data <- as_tibble(its_data)

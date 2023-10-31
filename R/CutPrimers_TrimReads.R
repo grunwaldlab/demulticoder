@@ -1,46 +1,17 @@
-#Trim primers
 #' Main command to trim primers based on DADA2 functions
 #'
+#' @param analysis_setup A list containing directory paths and data tables, produced by the `prepare_reads` function.
+#' @param cutadapt_path A path to the cutadapt program.
+#' @param rawSeqTab_fileName A filename as which the raw sequence table will be saved.
+#' @param abundMatrix_fileName A filename as which the abundance matrix will be saved.
+#' @return Reads trimmed of primers and filtered, primer counts after running Cutadapt, quality plots after poor quality reads are trimmed or removed, and the ASV matrix.
+#' @export
 #' @inheritParams plot_qc
 #' @inheritParams filter_and_trim
-#' @inheritParams plot_post_trim_qc
 #' @inheritParams run_cutadapt
-#' @inheritParams infer_asv_command
-#' @inheritParams merge_reads_command
-#' @param directory_path The path to the directory containing the fastq,
-#' metadata, and primer_info files
-#' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow
-#' metadata, and primer_info files
-#' @param cutadapt_path A path to the cutadapt program
-#' @return Reads trimmed of primers and filtered, primer counts after running Cutadapt, and quality plots after poor quality reads or trimmed or removed
-#' @param rawSeqTab_fileName A filename as which the raw sequence table will be saved
-#' @param abundMatrix_fileName A filenmae as which the abundance matrix will be saved
-#' @return ASV matrix
-#' @export cut_trim
-#' @examples
-#' directory_path<-"~/rps10package/raw_data/rps10_ITS"
-#' primer_path <-file.path(directory_path, "primer_info.csv")
-#' metadata_path <-file.path(directory_path,"metadata.csv")
-#' cutadapt_path<-"/opt/homebrew/bin/cutadapt"
-#' data_tables <-
-#' prepare_reads(
-#' directory_path,
-#' primer_path,
-#' metadata_path,
-#' maxN = 0,
-#' )
-#' cut_trim(
-#' directory_path,
-#' cutadapt_path,
-#' verbose = TRUE,
-#' maxEE = 2,
-#' truncQ = 5,
-#' minLen = 200,
-#' maxLen = 297,
-#' minCutadaptlength = 50
-#')
-cut_trim <- function(directory_path,
-                     directory_path_temp,
+
+
+cut_trim <- function(analysis_setup,
                      cutadapt_path,
                      maxEE = Inf,
                      truncQ = 2,
@@ -64,6 +35,13 @@ cut_trim <- function(directory_path,
                      id.field = NULL,
                      minCutadaptlength = 50,
                      force = FALSE) {
+  
+  dir_paths <- analysis_setup$dir_paths
+  data_tables <- analysis_setup$data_tables
+  directory_path <- dir_paths$output_directory
+  data_path <- dir_paths$data_directory
+  directory_path_temp <- dir_paths$temp_directory
+  
   if (!force & file.exists("post_primer_plot.pdf")) {
     qc_files <- c(list.files(directory_path, pattern = "qc"))
     unlink(c("post_primer_plot.pdf", qc_files,
@@ -112,17 +90,18 @@ cut_trim <- function(directory_path,
     plot_post_trim_qc(data_tables$cutadapt_data, directory_path)
 }
 
+
+#' Core function for running cutadapt
 #' Core function for running cutadapt
 #'
-#' @param cutadapt_path A path to the cutadapt program
-#' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
+#' @param cutadapt_path A path to the cutadapt program.
+#' @param cutadapt_data Directory_data folder with trimmed and filtered reads for each sample.
 #' @param minCutadaptlength Read lengths that are lower than this threshold will be discarded. Default is 50.
-#' @return Trimmed read
+#' @return Trimmed read.
 #' @keywords internal
-run_cutadapt <-
-  function(cutadapt_path = cutadapt_path,
-           cutadapt_data,
-           minCutadaptlength = 20) {
+run_cutadapt <- function(cutadapt_path,
+                         cutadapt_data,
+                         minCutadaptlength = 20) {
     cutadapt <- cutadapt_path
     tryCatch(
       system2(cutadapt, args = "--version"),
@@ -303,7 +282,7 @@ get_post_primer_hits <-
         r_rev,
         r_rc
       )
-
+    
     #from DADA2
     post_primer_hits <- function(primer, path) {
       # Counts number of reads in which the primer is found
@@ -311,7 +290,7 @@ get_post_primer_hits <-
         vcountPattern(primer, sread(readFastq(path)), fixed = FALSE)
       return(sum(nhits > 0))
     }
-
+    
     post_primer_hit_data_csv_path <-
       file.path(directory_path, "primer_hit_data_post_trim.csv")
     #if a file exists in there, then write the path to it
