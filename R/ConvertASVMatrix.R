@@ -1,6 +1,5 @@
 #' Filter ASV abundance matrix and convert to taxmap object
 #'
-#' @param asv_abund_matrix The final ASV abundance matrix
 #' @param min_read_depth Threshold for ASVs to remove if number of
 #' reads is less than this value across all samples-todo check on this
 #' @param minimum_bootstrap Threshold for bootstrap support value
@@ -58,7 +57,7 @@
 #' min_read_depth = 10,
 #' minimum_bootstrap = 75
 #' )
-asv_matrix_to_taxmap <- function(min_read_depth=0, minimum_bootstrap=50, pid_species=0, pid_genus=0, pid_family=0){
+asv_matrix_to_taxmap <- function(min_read_depth=0, minimum_bootstrap=0, pid_species=0, pid_genus=0, pid_family=0){
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   directory_path <- dir_paths$output_directory

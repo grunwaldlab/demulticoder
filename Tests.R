@@ -4,10 +4,6 @@ devtools::document()
 #devtools::build_rmd("vignettes/Introduction.Rmd")
 #browseVignettes('rps10package')
 
-#TODO-make separate data directory vs. working directory-otherwise test folder gets messy
-#Revise instruction and documentation so more consistent and clearer
-#If everything comes together finally add functionality for other barcodes. How hard to integrate ITSx? 
-
 prepare_reads(
   maxN = 0, 
   data_directory = "inst/extdata", 
@@ -40,9 +36,7 @@ assignTax(
 )
 
 
-asv_matrix_to_taxmap(asv_abund_matrix,
-                     min_read_depth = 10,
-                     minimum_bootstrap = 0)
+asv_matrix_to_taxmap()
 
 taxmap_to_phyloseq()
 
