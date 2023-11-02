@@ -110,7 +110,7 @@ make_asv_abund_matrix <- function(analysis_setup=analysis_setup,
       justConcatenate = justConcatenate,
       verbose = verbose
     )
-  countOverlap(merged_reads, directory_path)
+  countOverlap(merged_reads, data_tables, directory_path)
   raw_seqtab <- createASVSequenceTable(merged_reads, orderBy = orderBy)
   asv_abund_matrix <-
     make_abund_matrix(raw_seqtab, min_asv_length = min_asv_length, directory_path_temp=directory_path_temp)
@@ -344,7 +344,7 @@ merge_reads_command <-
 #' @param merged_reads Intermediate merged read R data file
 #' @param directory_path Directory path to save the plot
 #' @return A plot describing how well reads merged and information on overlap between reads
-countOverlap <- function(merged_reads, directory_path) {
+countOverlap <- function(merged_reads, data_tables, directory_path) {
   library(ggplot2)
   
   non_empty_merged_reads <- merged_reads[sapply(merged_reads, nrow) > 0]
@@ -361,18 +361,18 @@ countOverlap <- function(merged_reads, directory_path) {
   
   # Make dataframe long
   merge_plot <- data.frame(
-    locus = merge_data2$primer_name,
+    barcode = merge_data2$primer_name,
     Mismatches_and_Indels = merge_data2$mismatch,
     Merged = merge_data2$accept,
     Overlap_Length = merge_data2$overlap
   )
   
   long_df <- stack(merge_plot[,c("Mismatches_and_Indels", "Overlap_Length")])
-  merge_plot <- cbind(merge_plot[,"locus"], merge_plot[,"Merged"], long_df)
-  names(merge_plot) <- c("locus", "Merged", "value", "stat")
+  merge_plot <- cbind(merge_plot[,"barcode"], merge_plot[,"Merged"], long_df)
+  names(merge_plot) <- c("barcode", "Merged", "value", "stat")
   
   merge_plot_output <- ggplot(merge_plot, aes(x = value, fill = Merged)) +
-    facet_grid(locus ~ stat, scales = 'free') +
+    facet_grid(barcode ~ stat, scales = 'free') +
     geom_histogram(bins = 50) +
     scale_fill_viridis_d(begin = 0.8, end = 0.2) +
     labs(x = '', y = 'ASV count', fill = 'Merged') +
@@ -441,22 +441,22 @@ make_abund_matrix <-
 make_seqhist <- function(asv_abund_matrix, directory_path=directory_path) {
   matrix_row <- unique(gsub(".*_", "", rownames(asv_abund_matrix)))
   
-  for (locus in matrix_row) {
-    locus_ab_matrix <- nchar(getSequences(asv_abund_matrix[, grepl(paste0("_", locus), rownames(asv_abund_matrix))]))
-    data <- data.frame(locus_ab_matrix)
+  for (barcode in matrix_row) {
+    barcode_ab_matrix <- nchar(getSequences(asv_abund_matrix[, grepl(paste0("_", barcode), rownames(asv_abund_matrix))]))
+    data <- data.frame(barcode_ab_matrix)
     
     hist_plot <- ggplot2::qplot(
-      locus_ab_matrix,
+      barcode_ab_matrix,
       data = data,
       geom = "histogram",
       xlab = 'Length of sequence (bp)',
       ylab = 'Counts',
-      main = paste("Read length counts of ASVs produced from", locus, "amplicon data")
+      main = paste("Read length counts of ASVs produced from", barcode, "amplicon data")
     )
     
     ggsave(
       hist_plot,
-      filename = paste("asv_seqlength_plot_",locus,".pdf", sep = ""),
+      filename = paste("asv_seqlength_plot_",barcode,".pdf", sep = ""),
       path = directory_path,
       width = 8,
       height = 8

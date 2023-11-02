@@ -7,8 +7,8 @@ devtools::document()
 prepare_reads(
   maxN = 0, 
   data_directory = "inst/extdata", 
-  output_directory = "~/output_package2", 
-  tempdir_id = "run1")
+  output_directory = "~/output_package", 
+  tempdir_id = "run3")
 
 cut_trim(
   analysis_setup,
@@ -25,23 +25,25 @@ make_asv_abund_matrix(
   minOverlap = 15,
   maxMismatch = 2,
   verbose = TRUE,
-  multithread = TRUE)
+  multithread = TRUE,
+  force = TRUE
+  )
 
 assignTax(
   analysis_setup,
   asv_abund_matrix,
   multithread = TRUE,
-  barcode = "rps10", 
+  barcode = "its", 
   retrieve_files=TRUE
 )
 
 
-asv_matrix_to_taxmap()
+asv_matrix_to_taxmap(save_taxmap = TRUE)
 
-taxmap_to_phyloseq()
+taxmap_to_phyloseq(save_phyloseq=TRUE)
 
 
-library(testthat)
+alibrary(testthat)
 check()
 
 #R CMD build

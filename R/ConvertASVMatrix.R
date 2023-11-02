@@ -11,6 +11,7 @@
 #' level, taxonomic assignment will be set to N/A
 #' @param pid_family If percent identity is below this value, at the family
 #' level, taxonomic assignment will be set to N/A
+#' @param save_taxmap Logical, indicating whether to save the taxmap object. Default is FALSE.
 #' @return ASV matrix converted to taxmap object
 #' @export asv_matrix_to_taxmap
 #' @examples
@@ -57,7 +58,7 @@
 #' min_read_depth = 10,
 #' minimum_bootstrap = 75
 #' )
-asv_matrix_to_taxmap <- function(min_read_depth=0, minimum_bootstrap=0, pid_species=0, pid_genus=0, pid_family=0){
+asv_matrix_to_taxmap <- function(min_read_depth=0, minimum_bootstrap=0, pid_species=0, pid_genus=0, pid_family=0, save_taxmap = FALSE){
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   directory_path <- dir_paths$output_directory
@@ -80,9 +81,10 @@ asv_matrix_to_taxmap <- function(min_read_depth=0, minimum_bootstrap=0, pid_spec
                                         class_key = c(taxon = 'taxon_name', boot = 'info', rank = 'taxon_rank'))
   names(obj_dada$data) <- c('abund', 'score')
   
-  taxmap_path <-
-    file.path(directory_path, "taxmap_obj.RData")
-  save(obj_dada, file = taxmap_path)
+  if (save_taxmap) {
+    taxmap_path <- file.path(directory_path, "taxmap_obj.RData")
+    save(obj_dada, file = taxmap_path)
+  }
   
   assign("obj_dada", obj_dada, envir = .GlobalEnv)
 }
@@ -90,6 +92,7 @@ asv_matrix_to_taxmap <- function(min_read_depth=0, minimum_bootstrap=0, pid_spec
 #' Convert taxmap object to Phyloseq object (metacoder wrapper function)
 #'
 #' @param taxmap_obj ASV matrix converted to taxmap object using asv_matrix_to_taxmap function
+#' @param save_phyloseq Logical, indicating whether to save the taxmap object. Default is FALSE.
 #' @return Taxmap object converted to a phyloseq object
 #' @export taxmap_to_phyloseq
 #' @examples
@@ -136,7 +139,7 @@ asv_matrix_to_taxmap <- function(min_read_depth=0, minimum_bootstrap=0, pid_spec
 #' minimum_bootstrap=75
 #' )
 #' phylo_obj<-taxmap_to_phyloseq(obj_dada)
-taxmap_to_phyloseq <- function(taxmap_obj=obj_dada) {
+taxmap_to_phyloseq <- function(taxmap_obj=obj_dada, save_phyloseq = FALSE) {
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   directory_path <- dir_paths$output_directory
@@ -152,7 +155,8 @@ taxmap_to_phyloseq <- function(taxmap_obj=obj_dada) {
   
   assign("phylo_obj", phylo_obj, envir = .GlobalEnv)
   
-  phylo_path <-
-    file.path(directory_path, "phylo_obj.RData")
-  save(phylo_obj, file = phylo_path)
+  if (save_phyloseq) {
+    phyloseq_path <- file.path(directory_path, "phylo_obj.RData")
+    save(phylo_obj, file = phyloseq_path)
+  }
 }
