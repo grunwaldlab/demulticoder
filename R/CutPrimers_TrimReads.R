@@ -42,9 +42,9 @@ cut_trim <- function(analysis_setup,
   data_path <- dir_paths$data_directory
   directory_path_temp <- dir_paths$temp_directory
   
-  if (!overwrite_existing & file.exists("post_primer_plot.pdf")) {
+  if (!overwrite_existing & file.exists("posttrim_primer_plot.pdf")) {
     qc_files <- c(list.files(directory_path, pattern = "qc"))
-    unlink(c("post_primer_plot.pdf", qc_files,
+    unlink(c("posttrim_primer_plot.pdf", qc_files,
              "filter_results.RData", "primer_hit_data_post_trim.csv",
              "filtered_sequences/*", "trimmed_sequences/*",
              "untrimmed_sequences/*"))
@@ -84,7 +84,7 @@ cut_trim <- function(analysis_setup,
       post_primer_hit_data,
       data_tables$fastq_data,
       directory_path,
-      "post_primer_plot.pdf"
+      "posttrim_primer_plot.pdf"
     )
   quality_plots2 <-
     plot_post_trim_qc(data_tables$cutadapt_data, directory_path)
@@ -163,7 +163,7 @@ plot_qc <- function(cutadapt_data, directory_path, n = 500000) {
   {
     sample_info = cutadapt_data$trimmed_path[cutadapt_data$sample_name == i]
     quality_plots <- dada2::plotQualityProfile(sample_info, n)
-    name1 = paste0('qcpre_trim_plot_', i, '.pdf')
+    name1 = paste0('readqual_pretrim_plot_', i, '.pdf')
     ggplot2::ggsave(
       quality_plots,
       filename = name1,
@@ -330,7 +330,7 @@ plot_post_trim_qc <-
     {
       sample_info2 = cutadapt_data$filtered_path[cutadapt_data$sample_name == i]
       quality_plots2 <- dada2::plotQualityProfile(sample_info2, n)
-      name = paste0('qcpost_trim_plot_', i, '.pdf')
+      name = paste0('readqual_posttrim_plot_', i, '.pdf')
       ggplot2::ggsave(
         quality_plots2,
         filename = name,

@@ -67,12 +67,24 @@ prepare_reads <-
     primer_path <- dir_paths$primer_path
     metadata_path <- dir_paths$metadata_path
     
-    if(!overwrite_existing & file.exists("pre_primer_plot.pdf")) {
-      print("Force flag applied")
-      unlink(c("pre_primer_plot.pdf", "primer_hit_data_pretrim.csv",
-               "filtered_sequences", "prefiltered_sequences",
-               "trimmed_sequences", "untrimmed_sequences"))
+    if (overwrite_existing) {
+      if (dir.exists(directory_path)) {
+        unlink(directory_path, recursive = TRUE)
+      }
+      if (dir.exists(directory_path_temp)) {
+        unlink(directory_path_temp, recursive = TRUE)
+      }
+      
     }
+    
+    if (!dir.exists(directory_path)) {
+      dir.create(directory_path, recursive = TRUE)
+    }
+    
+    if (!dir.exists(directory_path_temp)) {
+      dir.create(directory_path_temp, recursive = TRUE)
+    }
+    
     primer_data <- orient_primers(primer_path)
     metadata <- prepare_metadata_table(metadata_path, primer_data)
     fastq_data <- read_prefilt_fastq(data_path, maxN, multithread, directory_path_temp)
@@ -82,7 +94,7 @@ prepare_reads <-
       make_primer_hit_plot(pre_primer_hit_data,
                            fastq_data,
                            directory_path,
-                           "pre_primer_plot.pdf")
+                           "pretrim_primer_plot.pdf")
     cutadapt_data <-
       make_cutadapt_tibble(fastq_data, metadata, directory_path_temp)
     data_tables <-
@@ -286,7 +298,7 @@ get_pre_primer_hits <-
     }
     
     primer_hit_data_csv_path <-
-      file.path(directory_path, "primer_hit_data_pre_trim.csv")
+      file.path(directory_path, "primer_hit_data_pretrim.csv")
 
     if (file.exists(primer_hit_data_csv_path)) {
       primer_hit_data <- read_csv(primer_hit_data_csv_path)
@@ -324,25 +336,15 @@ make_primer_hit_plot <- function(primer_hits,
                                  plot_name) {
   
   primer_hits <- primer_hits[-(3)]
-  
   primer_hits$primer_type <- paste(primer_hits$primer_name, primer_hits$orientation)
-  
   new_primer_hits <- primer_hits[-(1:2)]
-
   new_primer_hits <- new_primer_hits[, c("primer_type", setdiff(colnames(new_primer_hits), "primer_type"))]
-  
   only_counts <- new_primer_hits[-(1)]
-  
   colnames(only_counts) <- paste("Col", colnames(only_counts), sep = "-")
-  
   total_nums <- apply(only_counts, 1, function(row) sum(as.numeric(row), na.rm = TRUE))
-  
   new_primer_hits$Total <- paste(total_nums)
-  
   total_primers <- new_primer_hits[, c("primer_type", "Total")]
-  
   total_primers$Total <- as.numeric(total_primers$Total)
-  
   plot <- ggplot(data = total_primers, aes(x = primer_type, y = Total)) +
     geom_bar(stat = "identity", width = 0.8, fill = "seagreen3") +
     geom_text(aes(label = Total), vjust = -0.5, color = "black", size = 3) +

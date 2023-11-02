@@ -8,8 +8,8 @@ prepare_reads(
   maxN = 0, 
   data_directory = "inst/extdata", 
   output_directory = "~/output_package", 
-  tempdir_id = "run3",
-  overwrite_existing = TRUE)
+  tempdir_id = "run1",
+  overwrite_existing = FALSE)
 
 cut_trim(
   analysis_setup,
@@ -20,7 +20,7 @@ cut_trim(
   minLen = 200,
   maxLen = 297,
   minCutadaptlength = 50, 
-  overwrite_existing = TRUE)
+  overwrite_existing = FALSE)
 
 make_asv_abund_matrix(
   analysis_setup,
