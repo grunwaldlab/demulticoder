@@ -14,11 +14,9 @@ setup_directories <- function(data_directory = "data",
                               output_directory = "outputs", 
                               tempdir_id = "run1") {
   
-  # Paths
   data_primer_path <- file.path(data_directory, "primer_info.csv")
   data_metadata_path <- file.path(data_directory, "metadata.csv")
   
-  # Create output directory if it doesn't exist
   if (!dir.exists(output_directory)) {
     dir.create(output_directory, recursive = TRUE)
   }
@@ -62,7 +60,6 @@ prepare_reads <-
            multithread = FALSE, 
            overwrite_existing = FALSE) {
     
-    # Get paths from setup_directories function
     dir_paths <- setup_directories(data_directory, output_directory, tempdir_id)
     directory_path <- dir_paths$output_directory
     data_path <- dir_paths$data_directory
@@ -135,7 +132,6 @@ orient_primers <- function(primer_path) {
   primer_data_path <- file.path(primer_path)
   primer_data <- read_csv(primer_data_path)
   
-  #separate forward and reverse to make various primers
   forward_primers <- primer_data[, c(1:2)]
   reverse_primers <- primer_data[, c(1, 3)]
   
@@ -173,18 +169,15 @@ orient_primers <- function(primer_path) {
 read_fastq <- function(data_path, directory_path_temp) {
   
   fastq_paths <- list.files(data_path, pattern = "\\.fastq(|\\.gz)$")
-  
-  # Extract file_id and sample_name using regex
+
   file_id <- sub("\\.fastq(|\\.gz)$", "", fastq_paths)
   sample_name = gsub(fastq_paths, pattern = "_R1|_R2\\.fastq|.fastq\\.gz|.gz$", replacement = "")
   
-  # Determine direction based on file name
   direction <- ifelse(grepl("_R1", fastq_paths), "Forward", "Reverse")
 
   directory_data_path <- file.path(data_path, fastq_paths)
   temp_data_path <- file.path(directory_path_temp, fastq_paths)
   
-  # Create the data frame
   fastq_data <- data.frame(file_id, sample_name, direction, directory_data_path, temp_data_path)
   
   return(fastq_data)
@@ -286,9 +279,7 @@ get_pre_primer_hits <-
         r_rc
       )
     
-    #from DADA2
     primer_hits <- function(primer, path) {
-      # Counts number of reads in which the primer is found
       nhits <-
         vcountPattern(primer, sread(readFastq(path)), fixed = FALSE)
       return(sum(nhits > 0))
@@ -296,20 +287,18 @@ get_pre_primer_hits <-
     
     primer_hit_data_csv_path <-
       file.path(directory_path, "primer_hit_data_pre_trim.csv")
-    #if a file exists in there, then write the path to it
+
     if (file.exists(primer_hit_data_csv_path)) {
       primer_hit_data <- read_csv(primer_hit_data_csv_path)
       print(primer_hit_data)
-      #if the file doesn't exist in primer hit data
-      #map applied a function to each part of that specific vector
+
     } else {
       primer_hit_counts <- future_map(fastq_data$prefiltered_path,
                                       function (a_path)
                                         map_dbl(primer_hit_data$sequence, primer_hits, path = a_path))
-      #gets or sets the name of an object
+     
       names(primer_hit_counts) <- paste0(fastq_data$file_id)
-      #primer hit data will be a tibble with the columns of primer hit data plus the primer hit counts
-      #with names pulled from the fastq_data file
+
       primer_hit_data <-
         bind_cols(primer_hit_data, as_tibble(primer_hit_counts))
       print(primer_hit_data)
@@ -334,47 +323,34 @@ make_primer_hit_plot <- function(primer_hits,
                                  directory_path,
                                  plot_name) {
   
-  # Removing the sequence in the primer_hits tibble
   primer_hits <- primer_hits[-(3)]
   
-  # Concatenating the two beginning columns
   primer_hits$primer_type <- paste(primer_hits$primer_name, primer_hits$orientation)
   
-  # Subsetting just the concatenated column
   new_primer_hits <- primer_hits[-(1:2)]
-  
-  # Move name to the first column
+
   new_primer_hits <- new_primer_hits[, c("primer_type", setdiff(colnames(new_primer_hits), "primer_type"))]
   
-  # Easier to work without the character names
   only_counts <- new_primer_hits[-(1)]
   
-  # Add a prefix to the columns so they are easier to mutate
   colnames(only_counts) <- paste("Col", colnames(only_counts), sep = "-")
   
-  # Add them all up
   total_nums <- apply(only_counts, 1, function(row) sum(as.numeric(row), na.rm = TRUE))
   
-  # Add back to new_primer_hits
   new_primer_hits$Total <- paste(total_nums)
   
-  # Subset just the names and the totals
   total_primers <- new_primer_hits[, c("primer_type", "Total")]
   
-  # Convert the total column to numeric
   total_primers$Total <- as.numeric(total_primers$Total)
   
-  # Create a bar chart using ggplot2
   plot <- ggplot(data = total_primers, aes(x = primer_type, y = Total)) +
     geom_bar(stat = "identity", width = 0.8, fill = "seagreen3") +
     geom_text(aes(label = Total), vjust = -0.5, color = "black", size = 3) +
     coord_flip() +
     labs(title = "Number of primers found by barcode and orientation", x = "Primer Type", y = "Total")
   
-  # Print the plot
   print(plot)
   
-  # Save the plot to a file
   ggsave(plot, filename = file.path(directory_path, paste0(plot_name)), width = 8, height = 8)
   
   return(invisible(plot))
@@ -390,7 +366,6 @@ make_primer_hit_plot <- function(primer_hits,
 #' @keywords internal
 make_cutadapt_tibble <-
   function(fastq_data, metadata, directory_path_temp) {
-    # merge metadata and fastq_data by 'sample_name'
     cutadapt_data <- merge(metadata, fastq_data, by = "sample_name")
     
     trimmed_read_dir <- file.path(directory_path_temp, "trimmed_sequences")

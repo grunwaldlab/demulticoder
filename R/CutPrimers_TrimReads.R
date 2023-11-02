@@ -34,7 +34,7 @@ cut_trim <- function(analysis_setup,
                      orient.fwd = NULL,
                      id.field = NULL,
                      minCutadaptlength = 50,
-                     force = FALSE) {
+                     overwrite_existing = FALSE) {
   
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
@@ -42,7 +42,7 @@ cut_trim <- function(analysis_setup,
   data_path <- dir_paths$data_directory
   directory_path_temp <- dir_paths$temp_directory
   
-  if (!force & file.exists("post_primer_plot.pdf")) {
+  if (!overwrite_existing & file.exists("post_primer_plot.pdf")) {
     qc_files <- c(list.files(directory_path, pattern = "qc"))
     unlink(c("post_primer_plot.pdf", qc_files,
              "filter_results.RData", "primer_hit_data_post_trim.csv",

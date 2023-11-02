@@ -67,13 +67,13 @@ make_asv_abund_matrix <- function(analysis_setup=analysis_setup,
                                   orderBy = "abundance",
                                   method = "consensus",
                                   min_asv_length = 50,
-                                  force = FALSE) {
+                                  overwrite_existing = FALSE) {
   
-  if (!force & file.exists("asv_hist_plot.pdf")) {
-    print("Force flag applied")
+  if (!overwrite_existing & file.exists("asv_hist_plot.pdf")) {
+    print("overwrite_existing flag applied")
     unlink(c("asv_hist_plot.pdf", "asvabund_matrixDADA2.Rdata",
              "error_plots.pdf", "Denoised_data.RData",
-             "read_merging.jpg", "Merged_reads.RData"))
+             "read_merging_info.pdf", "Merged_reads.RData"))
   }
   
   dir_paths <- analysis_setup$dir_paths
