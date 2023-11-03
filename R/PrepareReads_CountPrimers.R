@@ -85,6 +85,11 @@ prepare_reads <-
       dir.create(directory_path_temp, recursive = TRUE)
     }
     
+    existing_files <- list.files(directory_path)
+    if (length(existing_files)>0) {
+      message("N's have already been removed from reads and primer counts have been compiled. To overwrite, specify overwrite_existing = TRUE")
+    }
+    
     primer_data <- orient_primers(primer_path)
     metadata <- prepare_metadata_table(metadata_path, primer_data)
     fastq_data <- read_prefilt_fastq(data_path, maxN, multithread, directory_path_temp)

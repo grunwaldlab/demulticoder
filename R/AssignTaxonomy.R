@@ -4,6 +4,7 @@
 #' @param asv_abund_matrix specify the ASV abundance matrix for which taxonomic assignments will be given
 #' @param retrieve_files Specify TRUE/FALSE whether to copy files from the tempdirectory (which will be deleted) 
 #' to directory specified by directory path
+#' @param overwrite_existing Logical, indicating whether to remove or overwrite existing files and directories from previous runs. If set to TRUE, specific output files 
 #' @inheritParams assign_taxonomyDada2
 #' @inheritParams dada2::assignTaxonomy
 #' @return Taxonomic assignments of each unique ASV sequence
@@ -45,13 +46,48 @@
 #' barcode = "rps10"
 #' )
 #'
-assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, barcode = "rps10") {
+assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, barcode = "rps10", overwrite_existing=FALSE) {
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   directory_path <- dir_paths$output_directory
   data_path <- dir_paths$data_directory
   directory_path_temp <- dir_paths$temp_directory
   
+  if (overwrite_existing) {
+    
+    patterns_to_remove <- c(
+      "*_genus_count_table.csv",
+      "dada2_asv_alignments.txt",
+      "final_asv_abundance_matrix.csv",
+      "track_reads.csv"
+    )
+    
+    for (pattern in patterns_to_remove) {
+      full_pattern <- file.path(directory_path, pattern)
+      files_to_remove <- list.files(path = directory_path, pattern = pattern, full.names = TRUE)
+      
+      if (length(files_to_remove) > 0) {
+        file.remove(files_to_remove)
+      }
+    }
+    
+    patterns_to_remove_temp <- c(
+      "*_reference_db.fa",
+      "*_taxmatrix.Rdata",
+      "Final_tax_matrix.Rdata"
+    )
+    
+    for (pattern in patterns_to_remove_temp) {
+      full_pattern <- file.path(directory_path_temp, pattern)
+      files_to_remove <- list.files(path = directory_path_temp, pattern = pattern, full.names = TRUE)
+      
+      if (length(files_to_remove) > 0) {
+        file.remove(files_to_remove)
+      }
+    }
+    
+  }
+    
   if (barcode == "rps10") {
     format_database_rps10(analysis_setup, "oomycetedb.fasta")
     summary_table <- process_single_barcode(data_tables, directory_path_temp, directory_path, asv_abund_matrix, multithread = multithread, barcode = "rps10")
@@ -213,7 +249,7 @@ prep_abund_matrix <-function(cutadapt_data, asv_abund_matrix, data_tables, locus
 #' @param directory_path A path to the intermediate folder and directory
 #' @param asv_abund_matrix The non-separated ASV matrix 
 #' @keywords internal
-separate_abund_matrix <- function(abund_asv_barcode2, abund_asv_barcode1, directory_path, asv_abund_matrix){
+separate_abund_matrix <- function(abund_asv_barcode2, abund_asv_barcode1, directory_path_temp, asv_abund_matrix){
   separate_abund_path <- file.path(directory_path_temp, "Separate_abund.Rdata")
   in_both <- colSums(abund_asv_barcode2) != 0 & colSums(abund_asv_barcode1) != 0
   assign_to_barcode2 <- in_both & colSums(abund_asv_barcode1) > colSums(abund_asv_barcode2)

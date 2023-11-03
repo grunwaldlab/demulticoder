@@ -4,6 +4,7 @@
 #' @param cutadapt_path A path to the cutadapt program.
 #' @param rawSeqTab_fileName A filename as which the raw sequence table will be saved.
 #' @param abundMatrix_fileName A filename as which the abundance matrix will be saved.
+#' @param overwrite_existing Logical, indicating whether to remove or overwrite existing files and directories from previous runs. If set to TRUE, specific output files 
 #' @return Reads trimmed of primers and filtered, primer counts after running Cutadapt, quality plots after poor quality reads are trimmed or removed, and the ASV matrix.
 #' @export
 #' @inheritParams plot_qc
@@ -42,13 +43,47 @@ cut_trim <- function(analysis_setup,
   data_path <- dir_paths$data_directory
   directory_path_temp <- dir_paths$temp_directory
   
-  if (!overwrite_existing & file.exists("posttrim_primer_plot.pdf")) {
-    qc_files <- c(list.files(directory_path, pattern = "qc"))
-    unlink(c("posttrim_primer_plot.pdf", qc_files,
-             "filter_results.RData", "primer_hit_data_post_trim.csv",
-             "filtered_sequences/*", "trimmed_sequences/*",
-             "untrimmed_sequences/*"))
+  if (overwrite_existing) {
+    
+    patterns_to_remove <- c(
+      "primer_hit_data_posttrim.csv", 
+      "posttrim_primer_plot.pdf",
+      "readqual*"
+      )
+    
+    for (pattern in patterns_to_remove) {
+      full_pattern <- file.path(directory_path, pattern)
+      files_to_remove <- list.files(path = directory_path, pattern = pattern, full.names = TRUE)
+      
+      if (length(files_to_remove) > 0) {
+        file.remove(files_to_remove)
+      }
+    }
+    
+    patterns_to_remove_temp <- "filter_results.RData"
+    
+    for (pattern in patterns_to_remove_temp) {
+      full_pattern <- file.path(directory_path_temp, pattern)
+      files_to_remove <- list.files(path = directory_path_temp, pattern = pattern, full.names = TRUE)
+      
+      if (length(files_to_remove) > 0) {
+        file.remove(files_to_remove)
+      }
+    }
+    
+    subdirectory_names <- c("filtered_sequences", "trimmed_sequences", "untrimmed_sequences")
+    
+    for (seqdir_name in subdirectory_names) {
+      seqdir_path <- file.path(directory_path_temp, seqdir_name)
+      
+      if (dir.exists(seqdir_path)) {
+        files_to_remove <- list.files(seqdir_path, full.names = TRUE)
+        file.remove(files_to_remove)
+      }
+    }
+    
   }
+    
   run_cutadapt(cutadapt_path,
                data_tables$cutadapt_data,
                minCutadaptlength = minCutadaptlength)
@@ -159,19 +194,20 @@ run_cutadapt <- function(cutadapt_path,
 
 plot_qc <- function(cutadapt_data, directory_path, n = 500000) {
   #just retrieve all plots for first sample
-  for (i in unique(cutadapt_data$sample_name))
-  {
-    sample_info = cutadapt_data$trimmed_path[cutadapt_data$sample_name == i]
-    quality_plots <- dada2::plotQualityProfile(sample_info, n)
+  for (i in unique(cutadapt_data$sample_name)) {
     name1 = paste0('readqual_pretrim_plot_', i, '.pdf')
-    ggplot2::ggsave(
-      quality_plots,
-      filename = name1,
-      path = directory_path,
-      width = 8,
-      height = 8
-    )
-    #print(quality_plots)
+    pdf_path = file.path(directory_path, name1)
+    if (!file.exists(pdf_path)) {
+      sample_info = cutadapt_data$trimmed_path[cutadapt_data$sample_name == i]
+      quality_plots <- dada2::plotQualityProfile(sample_info, n)
+      ggplot2::ggsave(
+        quality_plots,
+        filename = name1,
+        path = directory_path,
+        width = 8,
+        height = 8
+      )
+    }
   }
 }
 
@@ -292,7 +328,7 @@ get_post_primer_hits <-
     }
     
     post_primer_hit_data_csv_path <-
-      file.path(directory_path, "primer_hit_data_post_trim.csv")
+      file.path(directory_path, "primer_hit_data_posttrim.csv")
     #if a file exists in there, then write the path to it
     if (file.exists(post_primer_hit_data_csv_path)) {
       post_primer_hit_data <- read_csv(post_primer_hit_data_csv_path)
@@ -324,20 +360,22 @@ get_post_primer_hits <-
 #' @return Quality profiles of reads after primer trimming
 #' @keywords internal
 plot_post_trim_qc <-
+  lot_post_trim_qc <-
   function(cutadapt_data, directory_path, n = 500000) {
     #just retrieve all plots for first sample
-    for (i in unique(cutadapt_data$sample_name))
-    {
-      sample_info2 = cutadapt_data$filtered_path[cutadapt_data$sample_name == i]
-      quality_plots2 <- dada2::plotQualityProfile(sample_info2, n)
-      name = paste0('readqual_posttrim_plot_', i, '.pdf')
-      ggplot2::ggsave(
-        quality_plots2,
-        filename = name,
-        path = directory_path,
-        width = 8,
-        height = 8
-      )
-      #print(quality_plots2)
+    for (i in unique(cutadapt_data$sample_name)) {
+      name2 = paste0('readqual_posttrim_plot_', i, '.pdf')
+      pdf_path = file.path(directory_path, name2)
+      if (!file.exists(pdf_path)) {
+        sample_info2 = cutadapt_data$filtered_path[cutadapt_data$sample_name == i]
+        quality_plots2 <- dada2::plotQualityProfile(sample_info2, n)
+        ggplot2::ggsave(
+          quality_plots2,
+          filename = name2,
+          path = directory_path,
+          width = 8,
+          height = 8
+        )
+      }
     }
   }

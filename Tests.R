@@ -7,45 +7,44 @@ devtools::document()
 prepare_reads(
   maxN = 0, 
   data_directory = "inst/extdata", 
-  output_directory = "~/output_package", 
-  tempdir_id = "run1",
+  output_directory = "~/output_package2", 
+  tempdir_id = "run5",
   overwrite_existing = FALSE)
 
 cut_trim(
   analysis_setup,
   cutadapt_path="/opt/homebrew/bin/cutadapt",
   verbose = TRUE,
-  maxEE = 2,
-  truncQ = 5,
-  minLen = 200,
-  maxLen = 297,
-  minCutadaptlength = 50, 
+  #maxEE = 2,
+  #truncQ = 5,
+  #minLen = 200,
+  #maxLen = 297,
+  #minCutadaptlength = 50, 
   overwrite_existing = FALSE)
+
 
 make_asv_abund_matrix(
   analysis_setup,
-  minOverlap = 15,
-  maxMismatch = 2,
+  #minOverlap = 15,
+  #maxMismatch = 2,
   verbose = TRUE,
   multithread = TRUE,
-  overwrite_existing = TRUE
-  )
+  overwrite_existing = FALSE)
 
 assignTax(
   analysis_setup,
   asv_abund_matrix,
   multithread = TRUE,
-  barcode = "its", 
-  retrieve_files=TRUE
-)
+  barcode = "rps10_its", 
+  retrieve_files=TRUE,
+  overwrite_existing=FALSE)
 
 
 asv_matrix_to_taxmap(save_taxmap = TRUE)
-
 taxmap_to_phyloseq(save_phyloseq=TRUE)
 
 
-alibrary(testthat)
+library(testthat)
 check()
 
 #R CMD build

@@ -69,18 +69,50 @@ make_asv_abund_matrix <- function(analysis_setup=analysis_setup,
                                   min_asv_length = 50,
                                   overwrite_existing = FALSE) {
   
-  if (!overwrite_existing & file.exists("asv_hist_plot.pdf")) {
-    print("overwrite_existing flag applied")
-    unlink(c("asv_hist_plot.pdf", "asvabund_matrixDADA2.Rdata",
-             "error_plots.pdf", "Denoised_data.RData",
-             "read_merging_info.pdf", "Merged_reads.RData"))
-  }
-  
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   directory_path <- dir_paths$output_directory
   data_path <- dir_paths$data_directory
   directory_path_temp <- dir_paths$temp_directory
+  
+  if (!overwrite_existing && file.exists(file.path(directory_path_temp, "asvabund_matrixDADA2.Rdata"))) {
+    load_matrix <- load(file.path(directory_path_temp, "asvabund_matrixDADA2.Rdata"))
+    asv_abund_matrix <- get(load_matrix)
+    assign("asv_abund_matrix", asv_abund_matrix, envir = .GlobalEnv)
+  }
+  
+  if (overwrite_existing) {
+    
+    patterns_to_remove <- c(
+      "error_plot_*.pdf",
+      "read_merging_info.pdf",
+      "asv_seqlength_plot_*.pdf"
+    )
+    
+    for (pattern in patterns_to_remove) {
+      full_pattern <- file.path(directory_path, pattern)
+      files_to_remove <- list.files(path = directory_path, pattern = pattern, full.names = TRUE)
+      
+      if (length(files_to_remove) > 0) {
+        file.remove(files_to_remove)
+      }
+    }
+    
+    patterns_to_remove_temp <- c(
+      "asvabund_matrixDADA2.Rdata",
+      "Denoised_data.RData",
+      "Merged_reads.RData"
+    )
+    
+    for (pattern in patterns_to_remove_temp) {
+      full_pattern <- file.path(directory_path_temp, pattern)
+      files_to_remove <- list.files(path = directory_path_temp, pattern = pattern, full.names = TRUE)
+      
+      if (length(files_to_remove) > 0) {
+        file.remove(files_to_remove)
+      }
+    }
+  }
   
   infer_asv_command(
     directory_path=directory_path,
@@ -170,9 +202,10 @@ infer_asvs <-
            selfConsist = FALSE,
            verbose = FALSE) {
 
-    
-    #may need to adjust the parameters
     fastq_paths <- get_fastq_paths(analysis_setup,my_direction, my_primer_pair_id)
+    
+    error_plot_filename <- paste0("error_plot_", my_primer_pair_id, ".pdf")
+    
     error_profile <-
       dada2::learnErrors(
         fastq_paths,
@@ -194,6 +227,7 @@ infer_asvs <-
         ' \n'
       )
     )
+    
     plot_errors <-
       dada2::plotErrors(
         error_profile,
@@ -204,7 +238,7 @@ infer_asvs <-
       )
     ggsave(
       plot_errors,
-      filename = 'error_plots.pdf',
+      filename = error_plot_filename,
       path = directory_path,
       width = 8,
       height = 8
@@ -250,9 +284,6 @@ infer_asv_command <-
            verbose = FALSE) {
     denoised_data_path <-
       file.path(directory_path_temp, "Denoised_data.Rdata")
-    if (file.exists(denoised_data_path)) {
-      print("File already exists")
-    } else {
       run_dada <- function(direction) {
         dada_output <- lapply(unique(data_tables$cutadapt_data$primer_name), function(primer_name)
           infer_asvs(
@@ -281,7 +312,6 @@ infer_asv_command <-
       dada_reverse <- run_dada("Reverse")
       save(dada_forward, dada_reverse, file = denoised_data_path)
       print("File is now saved")
-    }
   }
 
 #' Merge forward and reverse reads
@@ -305,10 +335,6 @@ merge_reads_command <-
     merged_read_data_path <-
       file.path(directory_path_temp, "Merged_reads.Rdata")
     formatted_ref_dir <-
-      if (file.exists(merged_read_data_path)) {
-        load(merged_read_data_path)
-        return(merged_reads)
-      } else {
         merged_reads <- dada2::mergePairs(
           dadaF = dada_forward,
           derepF = file.path(
@@ -332,7 +358,6 @@ merge_reads_command <-
                                     gsub("R1_", "", names(merged_reads), fixed = TRUE))
         save(merged_reads, file = merged_read_data_path)
         return(merged_reads)
-      }
   }
 
 #' Count overlap to see how well the reads were merged
