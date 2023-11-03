@@ -7,9 +7,11 @@
 #' @param data_directory Directory for data files. Default is "data".
 #' @param output_directory Directory for analysis outputs. Default is "outputs".
 #' @param tempdir_id ID for temporary directories, combined with the current date. Default is "run1".
-#' @return A list with paths for data, output, temporary directories, primer, and metadata files.
-#' @keywords internal
 #' 
+#' @return A list with paths for data, output, temporary directories, primer, and metadata files.
+#' 
+#' @keywords internal
+
 setup_directories <- function(data_directory = "data", 
                               output_directory = "outputs", 
                               tempdir_id = "run1") {
@@ -48,9 +50,18 @@ setup_directories <- function(data_directory = "data",
 #' @param output_directory Directory for outputs. Default is "output".
 #' @param tempdir_id ID for temporary directories, combined with the current date. Default is "run1".
 #' @return A list with data tables for trimming and directory paths.
+#' 
 #' @export 
 #' @examples
-#' outputs <- prepare_reads(maxN = 0, data_directory = "data", output_directory = "output")
+#' Pre-filter raw reads and parse metadata and primer_information to prepare for primer trimming and filter
+#' analysis_setup <- prepare_reads(
+#'   data_directory = system.file("extdata", package = "your_package_name"),
+#'   output_directory = tempdir(),
+#'   tempdir_id = "run1",
+#'   overwrite_existing = FALSE)
+#'   
+#' @importFrom dada2 filterAndTrim
+
 
 prepare_reads <-
   function(data_directory = "data", 

@@ -98,7 +98,7 @@ assignTax(
   analysis_setup,
   asv_abund_matrix,
   multithread = TRUE,
-  barcode = "rps10", 
+  barcode = "rps10_its", 
   retrieve_files=TRUE
 )
 ```

@@ -10,43 +10,37 @@
 #' @return Taxonomic assignments of each unique ASV sequence
 #' @export assignTax
 #' @examples
-#' directory_path<-"~/rps10package/raw_data/rps10_ITS"
-#' primer_path <-file.path(directory_path, "primer_info.csv")
-#' metadata_path <-file.path(directory_path,"metadata.csv")
-#' cutadapt_path<-"/opt/homebrew/bin/cutadapt"
-#' data_tables <-
-#' prepare_reads(
-#' directory_path,
-#' primer_path,
-#' metadata_path,
-#' maxN = 0
-#' )
-#' cut_trim(
-#' directory_path,
-#' cutadapt_path,
-#' verbose = TRUE,
-#' maxEE = 2,
-#' truncQ = 5,
-#' minLen = 200,
-#' maxLen = 297,
-#' minCutadaptlength = 50
-#')
-#' asv_abund_matrix <-
-#' make_asv_abund_matrix(
-#' directory_path,
-#' minOverlap = 15,
-#' maxMismatch = 2,
-#' verbose = TRUE
-#' )
-#' summary <- assignTax(
-#' directory_path,
-#' data_tables,
-#' asv_abund_matrix,
-#' multithread = TRUE,
-#' barcode = "rps10"
-#' )
+#' # Load the package and prepare analysis setup
+#' library(your_package_name)
+#' analysis_setup <- prepare_reads(
+#'   data_directory = system.file("extdata", package = "your_package_name"),
+#'   output_directory = tempdir(),
+#'   tempdir_id = "run1",
+#'   overwrite_existing = FALSE)
 #'
-assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, barcode = "rps10", overwrite_existing=FALSE) {
+#' # Main function to trim primers based on Cutadapt and DADA2 functions
+#' cut_trim(
+#'   analysis_setup,
+#'   cutadapt_path = "/opt/homebrew/bin/cutadapt",
+#'   overwrite_existing = FALSE)
+#'
+#' # Main function to make ASV abundance matrix
+#' make_asv_abund_matrix(
+#'   analysis_setup,
+#'   verbose = TRUE,
+#'   overwrite_existing = FALSE)
+#'
+#' # Assign rps10 and/or ITS taxonomy
+#' assignTax(
+#'   analysis_setup,
+#'   asv_abund_matrix,
+#'   barcode = "rps10_its",
+#'   retrieve_files = FALSE,
+#'   overwrite_existing = FALSE)
+#'
+#'
+
+assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, barcode = "rps10", rps10_db="oomycetedb.fasta", its_db="fungidb.fasta", overwrite_existing=FALSE) {
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   directory_path <- dir_paths$output_directory
@@ -89,7 +83,7 @@ assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose =
   }
     
   if (barcode == "rps10") {
-    format_database_rps10(analysis_setup, "oomycetedb.fasta")
+    format_database_rps10(analysis_setup, rps10_db)
     summary_table <- process_single_barcode(data_tables, directory_path_temp, directory_path, asv_abund_matrix, multithread = multithread, barcode = "rps10")
     assign("summary_table", summary_table, envir = .GlobalEnv)
     
@@ -97,7 +91,7 @@ assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose =
       file.copy(directory_path_temp, directory_path, recursive = TRUE)
     }
   } else if (barcode == "its") {
-    format_database_its(analysis_setup, "fungidb.fasta")
+    format_database_its(analysis_setup, its_db)
     summary_table <- process_single_barcode(data_tables, directory_path_temp, directory_path, asv_abund_matrix, multithread = multithread, barcode = "its")
     assign("summary_table", summary_table, envir = .GlobalEnv)
     
@@ -105,8 +99,8 @@ assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose =
       file.copy(directory_path_temp, directory_path, recursive = TRUE)
     }
   } else if (barcode == "rps10_its") {
-    format_database_rps10(analysis_setup, "oomycetedb.fasta")
-    format_database_its(analysis_setup, "fungidb.fasta")
+    format_database_rps10(analysis_setup, rps10_db)
+    format_database_its(analysis_setup, its_db)
     summary_table <- process_pooled_barcode(data_tables, directory_path_temp, directory_path, asv_abund_matrix, multithread = multithread, barcode1 = "rps10", barcode2 = "its")
     assign("summary_table", summary_table, envir = .GlobalEnv)
     

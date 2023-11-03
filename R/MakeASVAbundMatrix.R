@@ -1,4 +1,4 @@
-#' Make an amplified sequence variants abundance matrix with data processed through preceding steps
+#' Make an amplified sequence variant abundance matrix with data processed through preceding steps
 #' @param A list containing directory paths and data tables, produced by the 
 #' `prepare_reads` function
 #' @param rawSeqTab_fileName A filename as which the raw sequence table will be saved
@@ -12,38 +12,25 @@
 #' @return The asv abundance matrix asv_abund_matrix
 #' @export make_asv_abund_matrix
 #' @examples
-#' directory_path<-"~/rps10package/raw_data/rps10_ITS"
-#' primer_path <-file.path(directory_path, "primer_info.csv")
-#' metadata_path <-file.path(directory_path,"metadata.csv")
-#' cutadapt_path<-"/opt/homebrew/bin/cutadapt"
-#' data_tables <-
-#' prepare_reads(
-#' directory_path,
-#' primer_path,
-#' metadata_path,
-#' maxN = 0,
-#' )
+#' # Pre-filter raw reads and parse metadata and primer_information to prepare for primer trimming and filter
+#' analysis_setup <- prepare_reads(
+#'   data_directory = system.file("extdata", package = "your_package_name"),
+#'   output_directory = tempdir(),
+#'   tempdir_id = "run1",
+#'   overwrite_existing = FALSE)
+#'
+#' # Main function to trim primers based on Cutadapt and DADA2 functions
 #' cut_trim(
-#' directory_path,
-#' cutadapt_path,
-#' verbose = TRUE,
-#' maxEE = 2,
-#' truncQ = 5,
-#' minLen = 200,
-#' maxLen = 297,
-#' minCutadaptlength = 50
-#')
-#' asv_abund_matrix <-
+#'   analysis_setup,
+#'   cutadapt_path = "/opt/homebrew/bin/cutadapt",
+#'   overwrite_existing = FALSE)
+#'
+#' # Main function to make ASV abundance matrix
 #' make_asv_abund_matrix(
-#' directory_path,
-#' minOverlap = 15,
-#' maxMismatch = 2,
-#' verbose = TRUE,
-#' )
-#'
-#'
-#'
-#'
+#'   analysis_setup,
+#'   verbose = TRUE,
+#'   overwrite_existing = FALSE)
+
 make_asv_abund_matrix <- function(analysis_setup=analysis_setup,
                                   multithread = FALSE,
                                   nbases = 1e+08,

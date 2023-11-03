@@ -1,7 +1,7 @@
-#' Main command to trim primers based on DADA2 functions
+#' Main command to trim primers based on Cutadapt and DADA2 functions. If samples contain pooled barcodes, reads will also be demultiplexed. 
 #'
 #' @param analysis_setup A list containing directory paths and data tables, produced by the `prepare_reads` function.
-#' @param cutadapt_path A path to the cutadapt program.
+#' @param cutadapt_path A path to the Cutadapt program.
 #' @param rawSeqTab_fileName A filename as which the raw sequence table will be saved.
 #' @param abundMatrix_fileName A filename as which the abundance matrix will be saved.
 #' @param overwrite_existing Logical, indicating whether to remove or overwrite existing files and directories from previous runs. If set to TRUE, specific output files 
@@ -10,6 +10,19 @@
 #' @inheritParams plot_qc
 #' @inheritParams filter_and_trim
 #' @inheritParams run_cutadapt
+#' 
+#' @examples
+#' analysis_setup <- prepare_reads(
+#'   data_directory = system.file("extdata", package = "your_package_name"),
+#'   output_directory = tempdir(),
+#'   tempdir_id = "run1",
+#'   overwrite_existing = FALSE)
+#'
+#' # Main function to trim primers based on Cutadapt and DADA2 functions
+#' cut_trim(
+#'   analysis_setup,
+#'   cutadapt_path = "/opt/homebrew/bin/cutadapt",
+#'   overwrite_existing = FALSE)
 
 
 cut_trim <- function(analysis_setup,
