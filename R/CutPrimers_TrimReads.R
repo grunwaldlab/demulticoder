@@ -277,7 +277,7 @@ filter_and_trim <-
           filt.rev = cutadapt_data$filtered_path[cutadapt_data$direction == "Reverse"],
           maxN = maxN,
           maxEE = c(maxEE, maxEE),
-          truncLen = truncLen,
+          truncLen = c(truncLen, truncLen),
           truncQ = truncQ,
           minLen = minLen,
           maxLen = maxLen,
