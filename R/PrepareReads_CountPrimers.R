@@ -106,11 +106,6 @@ prepare_reads <-
     fastq_data <- read_prefilt_fastq(data_path, maxN, multithread, directory_path_temp)
     pre_primer_hit_data <-
       get_pre_primer_hits(primer_data, fastq_data, directory_path)
-    pre_primer_plot <-
-      make_primer_hit_plot(pre_primer_hit_data,
-                           fastq_data,
-                           directory_path,
-                           "pretrim_primer_plot.pdf")
     cutadapt_data <-
       make_cutadapt_tibble(fastq_data, metadata, directory_path_temp)
     data_tables <-
@@ -332,47 +327,34 @@ get_pre_primer_hits <-
       print(primer_hit_data)
       write_csv(primer_hit_data, primer_hit_data_csv_path)
     }
-    return(primer_hit_data)
     
+    make_primer_hit_plot <- function(primer_hits,
+                                     directory_path,
+                                     plot_name) {
+      
+      primer_hits <- primer_hits[-(3)]
+      primer_hits$primer_type <- paste(primer_hits$primer_name, primer_hits$orientation)
+      new_primer_hits <- primer_hits[-(1:2)]
+      new_primer_hits <- new_primer_hits[, c("primer_type", setdiff(colnames(new_primer_hits), "primer_type"))]
+      only_counts <- new_primer_hits[-(1)]
+      colnames(only_counts) <- paste("Col", colnames(only_counts), sep = "-")
+      total_nums <- apply(only_counts, 1, function(row) sum(as.numeric(row), na.rm = TRUE))
+      new_primer_hits$Total <- paste(total_nums)
+      total_primers <- new_primer_hits[, c("primer_type", "Total")]
+      total_primers$Total <- as.numeric(total_primers$Total)
+      plot <- ggplot(data = total_primers, aes(x = primer_type, y = Total)) +
+        geom_bar(stat = "identity", width = 0.8, fill = "seagreen3") +
+        geom_text(aes(label = Total), vjust = -0.5, color = "black", size = 3) +
+        coord_flip() +
+        labs(title = "Number of primers found by barcode and orientation", x = "Primer Type", y = "Total")
+      
+      print(plot)
+      ggsave(plot, filename = file.path(directory_path, paste0(plot_name)), width = 8, height = 8)
+      return(invisible(plot))
+    }
+    
+    make_primer_hit_plot(primer_hit_data, directory_path, "pretrim_primer_plot.pdf")
   }
-
-#' Make a barplot of primers identified on reads
-#' @param directory_path The path to the directory containing the fastq,
-#' metadata, and primer_info files
-#' @param primer_hits A number of reads in which the primer is found
-#' @param fastq_data A tibble with the fastq file paths, the direction of
-#' the sequences, and names of sequences
-#' @param plot_name A filename under which a PDF file of the plot will be saved as
-#' @return Returns a barplot with read counts
-#' @keywords internal
-
-make_primer_hit_plot <- function(primer_hits,
-                                 fastq_data,
-                                 directory_path,
-                                 plot_name) {
-  
-  primer_hits <- primer_hits[-(3)]
-  primer_hits$primer_type <- paste(primer_hits$primer_name, primer_hits$orientation)
-  new_primer_hits <- primer_hits[-(1:2)]
-  new_primer_hits <- new_primer_hits[, c("primer_type", setdiff(colnames(new_primer_hits), "primer_type"))]
-  only_counts <- new_primer_hits[-(1)]
-  colnames(only_counts) <- paste("Col", colnames(only_counts), sep = "-")
-  total_nums <- apply(only_counts, 1, function(row) sum(as.numeric(row), na.rm = TRUE))
-  new_primer_hits$Total <- paste(total_nums)
-  total_primers <- new_primer_hits[, c("primer_type", "Total")]
-  total_primers$Total <- as.numeric(total_primers$Total)
-  plot <- ggplot(data = total_primers, aes(x = primer_type, y = Total)) +
-    geom_bar(stat = "identity", width = 0.8, fill = "seagreen3") +
-    geom_text(aes(label = Total), vjust = -0.5, color = "black", size = 3) +
-    coord_flip() +
-    labs(title = "Number of primers found by barcode and orientation", x = "Primer Type", y = "Total")
-  
-  print(plot)
-  
-  ggsave(plot, filename = file.path(directory_path, paste0(plot_name)), width = 8, height = 8)
-  
-  return(invisible(plot))
-}
 
 #' Prepare for primmer trimming with Cutaapt. Make new sub-directories
 #' and specify paths for the trimmed and untrimmed reads
