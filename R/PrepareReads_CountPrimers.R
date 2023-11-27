@@ -329,8 +329,7 @@ get_pre_primer_hits <-
     }
     
     make_primer_hit_plot <- function(primer_hits,
-                                     directory_path,
-                                     plot_name) {
+                                     directory_path) {
       
       primer_hits <- primer_hits[-(3)]
       primer_hits$primer_type <- paste(primer_hits$primer_name, primer_hits$orientation)
@@ -349,11 +348,11 @@ get_pre_primer_hits <-
         labs(title = "Number of primers found by barcode and orientation", x = "Primer Type", y = "Total")
       
       print(plot)
-      ggsave(plot, filename = file.path(directory_path, paste0(plot_name)), width = 8, height = 8)
+      ggsave(plot, filename = file.path(directory_path, "pretrim_primer_plot.pdf"), width = 8, height = 8)
       return(invisible(plot))
     }
     
-    make_primer_hit_plot(primer_hit_data, directory_path, "pretrim_primer_plot.pdf")
+    make_primer_hit_plot(primer_hit_data, directory_path)
   }
 
 #' Prepare for primmer trimming with Cutaapt. Make new sub-directories

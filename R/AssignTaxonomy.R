@@ -50,7 +50,7 @@ assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose =
   if (overwrite_existing) {
     
     patterns_to_remove <- c(
-      "*_genus_count_table.csv",
+      "*_species_count_table.csv",
       "dada2_asv_alignments.txt",
       "final_asv_abundance_matrix.csv",
       "track_reads.csv"
