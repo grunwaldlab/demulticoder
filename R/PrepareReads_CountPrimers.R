@@ -345,6 +345,7 @@ get_pre_primer_hits <-
         geom_bar(stat = "identity", width = 0.8, fill = "seagreen3") +
         geom_text(aes(label = Total), vjust = -0.5, color = "black", size = 3) +
         coord_flip() +
+        theme_minimal()+
         labs(title = "Number of primers found by barcode and orientation", x = "Primer Type", y = "Total")
       
       print(plot)

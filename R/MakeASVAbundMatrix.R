@@ -450,28 +450,39 @@ make_abund_matrix <-
 #' @keywords internal
 #' @return histogram with read length counts of all sequences within ASV matrix
 #' @keywords internal
-make_seqhist <- function(asv_abund_matrix, directory_path=directory_path) {
-  matrix_row <- unique(gsub(".*_", "", rownames(asv_abund_matrix)))
-  
-  for (barcode in matrix_row) {
-    barcode_ab_matrix <- nchar(getSequences(asv_abund_matrix[, grepl(paste0("_", barcode), rownames(asv_abund_matrix))]))
-    data <- data.frame(barcode_ab_matrix)
+make_seqhist <- function(asv_abund_matrix, directory_path) {
+  getPrimerLengths <- function(asv_abund_matrix) {
+    barcodes <- unique(sub(".*_(.*)", "\\1", rownames(asv_abund_matrix)))
+    primer_lengths <- list()
     
-    hist_plot <- ggplot2::qplot(
-      barcode_ab_matrix,
-      data = data,
-      geom = "histogram",
-      xlab = 'Length of sequence (bp)',
-      ylab = 'Counts',
-      main = paste("Read length counts of ASVs produced from", barcode, "amplicon data")
-    )
+    for (barcode in barcodes) {
+      indices <- grepl(paste0("_", barcode), rownames(asv_abund_matrix))
+      primer_seqs <- colnames(asv_abund_matrix)[apply(asv_abund_matrix[indices, , drop = FALSE] > 0, 2, any)]
+      seq_lengths <- nchar(getSequences(asv_abund_matrix[indices, primer_seqs, drop = FALSE]))
+      primer_lengths[[barcode]] <- seq_lengths
+    }
+    return(primer_lengths)
+  }
+  
+  primer_lengths <- getPrimerLengths(asv_abund_matrix)
+  
+  for (barcode in names(primer_lengths)) {
+    data <- data.frame(Length = unlist(primer_lengths[[barcode]]))
+    
+    hist_plot <- ggplot(data, aes(x = Length)) +
+      geom_histogram(binwidth = 10, fill = "blue", color = "black", alpha = 0.7, ) +
+      labs(x = 'Length of sequence (bp)', y = 'Counts', title = paste("ASV Lengths for Barcode", barcode)) +
+      theme_minimal()+
+      theme(panel.grid = element_blank())
     
     ggsave(
       hist_plot,
-      filename = paste("asv_seqlength_plot_",barcode,".pdf", sep = ""),
+      filename = paste("asv_seqlength_plot_", barcode, ".pdf", sep = ""),
       path = directory_path,
       width = 8,
       height = 8
     )
   }
 }
+
+

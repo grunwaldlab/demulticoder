@@ -426,7 +426,8 @@ get_post_trim_hits <- function(primer_data, cutadapt_data, directory_path) {
       geom_bar(stat = "identity", width = 0.8, fill = "seagreen3") +
       geom_text(aes(label = Total), vjust = -0.5, color = "black", size = 3) +
       coord_flip() +
-      labs(title = "Number of primers found by barcode and orientation", x = "Primer Type", y = "Total")
+      labs(title = "Number of primers found by barcode and orientation", x = "Primer Type", y = "Total")+
+      theme_minimal()
     
     print(plot)
     ggsave(plot, filename = file.path(directory_path, "posttrim_primer_plot.pdf"), width = 8, height = 8)

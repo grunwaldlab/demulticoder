@@ -10,8 +10,8 @@ sessionInfo()
 prepare_reads(
   maxN = 0, 
   data_directory = "inst/extdata", 
-  output_directory = "~/results_test2", 
-  tempdir_id = "run2",
+  output_directory = "~/results_test1", 
+  tempdir_id = "run3",
   overwrite_existing = TRUE)
 
 cut_trim(
