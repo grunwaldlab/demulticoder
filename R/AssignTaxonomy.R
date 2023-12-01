@@ -380,9 +380,58 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv, directory_path) {
                                dada2_pid = as.numeric(str_match(seq_tax_asv[rownames(formatted_abund_asv)], '--([0-9.]+)--ASV$')[, 2]),
                                formatted_abund_asv)
   formatted_abund_asv <- as_tibble(formatted_abund_asv)
-  write_csv(formatted_abund_asv, file = file.path(directory_path, 'final_asv_abundance_matrix.csv'))
-  print(formatted_abund_asv)
-  return(formatted_abund_asv)
+  
+  test_sequence <- "ACGTTGGTTAGAGTAAAAGACTAGAATAACTTTTAAATCAATAGAAAAAATAAATAAACTAAAACAAAATTTATTAAAATTAAAAAAAATAAATAAATTTAAAAATATTCAAATAAATGGAATATTTAAAAAAAAAGATAAAAATAAAATTTTTACTTTATTAAAATCACCTCACGTAAATAAAAAATCACGTGAACATTTTATTTATAAAAATTATACTCAAAAAATTAATGTAAAATTTTCAAATATTATTGAATTATTTAATTTTATGATAATTGTTAAAAAAGTTTTAACAGAAAATTTTATAATAAATTTTAAAATTTTAAAACTTAATAAAAAAAAATGCTTATAGCTTAATGGATAAAGCGTTAGATTGCGGATCTATAAAATGAA"
+  
+  # Append the test sequence to formatted_abund_asv
+  test_row <- c(sequence = test_sequence, dada2_tax = "Eukaryota--100--Domain;Heterokontophyta--100", dada2_pid = NA, rep(0, ncol(formatted_abund_asv) - 3))
+  formatted_abund_asv <- rbind(formatted_abund_asv, test_row)
+  
+  primer_seqs <- apply(analysis_setup$data_tables$primer_data[, 2:ncol(analysis_setup$data_tables$primer_data)], 2, paste, collapse = "|")
+  
+  # Function to create a regular expression pattern for a primer with ambiguity codes
+  # Function to create a regular expression pattern for a primer with ambiguity codes
+  create_primer_pattern <- function(primer_seq) {
+    # Replace ambiguity codes with corresponding regular expression patterns
+    ambig_code_mapping <- c("R" = "[AG]", "Y" = "[CT]", "S" = "[GC]", "W" = "[AT]", "K" = "[GT]", "M" = "[AC]", "B" = "[CGT]", "D" = "[AGT]", "H" = "[ACT]", "V" = "[ACG]", "N" = "[ACGT]")
+    
+    pattern <- ""
+    for (char in strsplit(primer_seq, '')[[1]]) {
+      if (char %in% names(ambig_code_mapping)) {
+        pattern <- paste0(pattern, ambig_code_mapping[char])
+      } else {
+        pattern <- paste0(pattern, char)
+      }
+    }
+    
+    return(pattern)
+  }
+  
+  # Create regular expression patterns for each primer
+  primer_patterns <- sapply(primer_seqs, create_primer_pattern)
+  
+  # Filter out sequences based on primers
+  keep_rows <- sapply(formatted_abund_asv$sequence, function(asv_seq) {
+    # Check if any of the primer sequences are present in the ASV sequence
+    match_primer <- sapply(primer_patterns, function(pattern) any(grepl(pattern, asv_seq, ignore.case = TRUE)))
+    
+    if (any(match_primer)) {
+      cat("ASV Sequence:", asv_seq, "\n")
+      cat("Matching Primer(s):", primer_seqs[match_primer], "\n")
+      cat("Sequence removed\n-----\n")
+    }
+    
+    # Keep the row if none of the primer sequences match
+    !any(match_primer)
+  })
+  
+  # Update the abundance matrix with filtered rows
+  filtered_abund_matrix <- formatted_abund_asv[keep_rows, ]
+  
+  # Return the filtered abundance matrix
+
+  write_csv(filtered_abund_matrix, file = file.path(directory_path, 'final_asv_abundance_matrix.csv'))
+  return(filtered_abund_matrix)
 }
 
 

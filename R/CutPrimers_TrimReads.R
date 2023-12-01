@@ -100,10 +100,6 @@ cut_trim <- function(analysis_setup,
                data_tables$cutadapt_data,
                minCutadaptlength = minCutadaptlength)
   
-  post_cutadapt_hits <- get_post_cutadapt_hits(data_tables$primer_data,
-                 data_tables$cutadapt_data,
-                 directory_path)
-  
   quality_plots <- plot_qc(data_tables$cutadapt_data, directory_path)
   
   filter_results <-
@@ -201,64 +197,6 @@ run_cutadapt <- function(cutadapt_path,
   }
 }
 
-#' Get primer counts for each sample after cutadapt is run
-#'
-#' @param primer_data The primer data tibble created in orient_primers function
-#' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
-#' @param directory_path 
-#' @return Table of read counts across each sample
-#' @keywords internal
-get_post_cutadapt_hits <- function(primer_data, cutadapt_data, directory_path) {
-  post_cutadapt_hit_data <- gather(
-    primer_data,
-    key = "orientation",
-    value = "sequence",
-    forward,
-    f_compt,
-    f_rev,
-    f_rc,
-    reverse,
-    r_compt,
-    r_rev,
-    r_rc
-  )
-  
-  # Function to count the number of reads in which the primer is found
-  post_cutadapt_hits <- function(primer, path) {
-    nhits <- vcountPattern(primer, sread(readFastq(path)), fixed = FALSE)
-    return(sum(nhits > 0))
-  }
-  
-  post_primer_hit_data_csv_path <- file.path(directory_path, "primer_hit_data_postcutdapt.csv")
-  post_primer_hit_counts <- future_map(cutadapt_data$trimmed_path,
-                                       function(a_path)
-                                         map_dbl(post_cutadapt_hit_data$sequence, post_cutadapt_hits, path = a_path))
-  
-  names(post_primer_hit_counts) <- paste0(cutadapt_data$file_id, "_", cutadapt_data$primer_name)
-  post_cutadapt_hit_data <- bind_cols(post_cutadapt_hit_data, as_tibble(post_primer_hit_counts))
-  write_csv(post_cutadapt_hit_data, post_primer_hit_data_csv_path)
-
-  post_cutadapt_hit_data <- post_cutadapt_hit_data %>%
-    mutate(primer_type = paste(primer_name, orientation))
-  
-  for (i in seq_along(cutadapt_data$trimmed_path)) {
-    reads <- readFastq(cutadapt_data$trimmed_path[i])
-    remaining_primers <- post_cutadapt_hit_data$sequence[post_cutadapt_hit_data[[i]] > 0]
-    
-    for (primer in remaining_primers) {
-      reads <- reads[!(vcountPattern(primer, sread(reads), fixed = FALSE) > 0)]
-    }
-    
-    if (file.exists(cutadapt_data$trimmed_path[i])) {
-      file.remove(cutadapt_data$trimmed_path[i])
-    }
-    
-    # Save the reads without remaining primers
-    writeFastq(reads, cutadapt_data$trimmed_path[i], mode = "w", compress = TRUE)
-  }
-
-  return(post_cutadapt_hit_data)
-}
 
 #' Wrapper function for plotQualityProfile function
 #'
@@ -399,7 +337,6 @@ get_post_trim_hits <- function(primer_data, cutadapt_data, directory_path) {
     return(sum(nhits > 0))
   }
 
-  
   post_primer_hit_data_csv_path <- file.path(directory_path, "primer_hit_data_posttrim.csv")
   post_primer_hit_counts <- future_map(cutadapt_data$trimmed_path,
                                        function(a_path)

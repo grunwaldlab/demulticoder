@@ -442,8 +442,6 @@ make_abund_matrix <-
   }
 
 
-
-#Make separate plots for each barcode? 
 #' Plots a histogram of read length counts of all sequences within the ASV matrix
 #'
 #' @param asv_abund_matrix The returned final ASV abundance matrix

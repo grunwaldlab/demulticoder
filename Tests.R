@@ -1,6 +1,6 @@
 devtools::load_all("/Users/masudermann/rps10package")
 devtools::document()
-sessionInfo()
+#sessionInfo()
 
 
 #devtools::install
@@ -9,15 +9,15 @@ sessionInfo()
 
 prepare_reads(
   maxN = 0, 
-  data_directory = "inst/extdata", 
-  output_directory = "~/results_test1", 
-  tempdir_id = "run3",
-  overwrite_existing = TRUE)
+  data_directory = "~/rps10_rerun_rev_db/data", 
+  output_directory = "~/rps10_rerun_rev_db/results_2_ee7_truncq5_minasv300", 
+  tempdir_id = "run2",
+  overwrite_existing = FALSE)
 
 cut_trim(
   analysis_setup,
   cutadapt_path="/opt/homebrew/bin/cutadapt",
-  maxEE=8, 
+  maxEE=5, 
   truncQ=5,
   minCutadaptlength = 50,
   multithread=TRUE,
@@ -28,12 +28,13 @@ make_asv_abund_matrix(
   verbose = TRUE,
   maxMismatch = 2,
   minOverlap = 15,
+  min_asv_length=300,
   overwrite_existing = TRUE)
 
 assignTax(
   analysis_setup,
   asv_abund_matrix,
-  barcode = "rps10_its",
+  barcode = "rps10",
   retrieve_files=TRUE,
   overwrite_existing=TRUE)
 
