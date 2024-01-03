@@ -16,7 +16,7 @@ setup_directories <- function(data_directory = "data",
                               output_directory = "outputs", 
                               tempdir_id = "run1") {
   
-  data_primer_path <- file.path(data_directory, "primer_info.csv")
+  data_primers_params_path <- file.path(data_directory, "primerinfo_params.csv")
   data_metadata_path <- file.path(data_directory, "metadata.csv")
   
   if (!dir.exists(output_directory)) {
@@ -36,7 +36,7 @@ setup_directories <- function(data_directory = "data",
   outputs <- (list(data_directory = data_directory, 
               output_directory = output_directory, 
               temp_directory = temp_path, 
-              primer_path = data_primer_path, 
+              primers_params_path = data_primers_params_path, 
               metadata_path = data_metadata_path))
 }
 
@@ -75,7 +75,7 @@ prepare_reads <-
     directory_path <- dir_paths$output_directory
     data_path <- dir_paths$data_directory
     directory_path_temp <- dir_paths$temp_directory
-    primer_path <- dir_paths$primer_path
+    primers_params_path <- dir_paths$primers_params_path
     metadata_path <- dir_paths$metadata_path
     
     if (overwrite_existing) {
@@ -101,7 +101,8 @@ prepare_reads <-
       message("N's have already been removed from reads and primer counts have been compiled. To overwrite, specify overwrite_existing = TRUE")
     }
     
-    primer_data <- orient_primers(primer_path)
+    primer_data <- orient_primers(primers_params_path)
+    parameters <- read_parameters(primers_params_path)
     metadata <- prepare_metadata_table(metadata_path, primer_data)
     fastq_data <- read_prefilt_fastq(data_path, maxN, multithread, directory_path_temp)
     pre_primer_hit_data <-
@@ -113,6 +114,7 @@ prepare_reads <-
         cutadapt_data = cutadapt_data,
         primer_data = primer_data,
         fastq_data = fastq_data,
+        parameters = parameters,
         metadata = metadata
       )
     analysis_setup <-list(data_tables = data_tables, dir_paths = dir_paths)
@@ -122,7 +124,7 @@ prepare_reads <-
 
 #' Read in the metadata from user and combine it with the primer data.
 #' Included in a larger function prepare_reads.
-#' @param primer_path a path to the csv file that holds the primer
+#' @param primers_params_path a path to the csv file that holds the primer
 #' information
 #' @param metadata_path The path to the metadata file
 #' @return A dataframe containing the merged metadata and primer
@@ -147,16 +149,17 @@ prepare_metadata_table <- function(metadata_path, primer_data) {
 
 #' Take in user's primers and creates the complement, reverse,
 #' reverse complement of primers in one tibble
-#' @param primer_path a path to the csv file that holds the primer
+#' @param primers_params_path a path to the csv file that holds the primer
 #' information
 #' @return A data frame with oriented primer information
 #' @keywords internal
-orient_primers <- function(primer_path) {
-  primer_data_path <- file.path(primer_path)
+orient_primers <- function(primers_params_path) {
+  primer_data_path <- file.path(primers_params_path)
   primer_data <- read_csv(primer_data_path)
   
   forward_primers <- primer_data[, c(1:2)]
   reverse_primers <- primer_data[, c(1, 3)]
+  
   
   forward_primers$f_compt <- sapply(forward_primers$forward, function(x)
     toString(Biostrings::complement(DNAString(x))))
@@ -174,8 +177,20 @@ orient_primers <- function(primer_path) {
   
   #add back together
   primer_data <- merge(forward_primers, reverse_primers, by = "primer_name")
-  
   return(primer_data)
+}
+
+#' Take in user's DADA2 parameters and make a dataframe for downstream steps
+#' @param primers_params_path a path to the csv file that holds the primer
+#' information
+#' @return A data frame with information on the DADA2 parameters
+#' @keywords internal
+#' 
+read_parameters <- function(primers_params_path){
+  params_data_path<-file.path(primers_params_path)
+  param_data <- read_csv(params_data_path)
+  parameters <- param_data[, c(1, 4:ncol(param_data))]
+  return(parameters)
 }
 
 #' Takes in the fastq files from the user and creates a tibble with

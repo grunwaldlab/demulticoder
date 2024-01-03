@@ -1,0 +1,3 @@
+primer_name,forward,reverse,minCutadaptlength,multithread,verbose ,maxN,maxEE_forward ,maxEE_reverse ,truncLen_forward ,truncLen_reverse,truncQ,minLen,maxLen,minQ,trimLeft,trimRight,rm.lowcomplex,minOverlap,maxMismatch,min_asv_length
+rps10,GTTGGTTAGAGYARAAGACT,ATRYYTAGAAAGAYTYGAACT,50,TRUE,TRUE,1.00E+05,2,5,0,0,5,150,Inf,0,0,0,0,12,0,150
+its,CTTGGTCATTTAGAGGAAGTAA,GCTGCGTTCTTCATCGATGC,50,TRUE,TRUE,1.00E+05,2,2,0,0,5,50,Inf,0,0,0,0,12,0,50
