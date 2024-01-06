@@ -1,4 +1,4 @@
-#' Assign rps10 and ITS taxonomy
+#' Assign taxonomy functions
 #' @param analysis_setup A list containing directory paths and data tables, produced by the `prepare_reads` function.
 #' @param barcode specify which barcode you have used, 'rps10', 'its', or 'rps10_its'
 #' @param asv_abund_matrix specify the ASV abundance matrix for which taxonomic assignments will be given
@@ -34,18 +34,20 @@
 #' assignTax(
 #'   analysis_setup,
 #'   asv_abund_matrix,
-#'   barcode = "rps10_its",
 #'   retrieve_files = FALSE,
 #'   overwrite_existing = FALSE)
 #'
-#'
 
-assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, barcode = "rps10", rps10_db="oomycetedb.fasta", its_db="fungidb.fasta", overwrite_existing=FALSE) {
+#denoised_data_path <- file.path(directory_path_temp, paste0("Denoised_data_", barcode, ".Rdata"))
+#load(denoised_data_path)
+
+assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, db_rps10="oomycetedb.fasta", db_its="fungidb.fasta", overwrite_existing=FALSE) {
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   directory_path <- dir_paths$output_directory
   data_path <- dir_paths$data_directory
   directory_path_temp <- dir_paths$temp_directory
+  unique_barcodes <- unique(data_tables$cutadapt_data$primer_name)
   
   if (overwrite_existing) {
     
@@ -79,36 +81,25 @@ assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose =
         file.remove(files_to_remove)
       }
     }
-    
   }
+  
+  for (barcode in unique_barcodes) {
+    # Load merged reads for the current barcode
+    load(file.path(directory_path_temp, paste0("asvabund_matrixDADA2_", barcode, ".Rdata")))
     
-  if (barcode == "rps10") {
-    format_database_rps10(analysis_setup, rps10_db)
-    summary_table <- process_single_barcode(data_tables, directory_path_temp, directory_path, asv_abund_matrix, multithread = multithread, barcode = "rps10")
-    assign("summary_table", summary_table, envir = .GlobalEnv)
+    format_database(analysis_setup, barcode, db_its, db_rps10)
     
-    if (retrieve_files) {
-      file.copy(directory_path_temp, directory_path, recursive = TRUE)
-    }
-  } else if (barcode == "its") {
-    format_database_its(analysis_setup, its_db)
-    summary_table <- process_single_barcode(data_tables, directory_path_temp, directory_path, asv_abund_matrix, multithread = multithread, barcode = "its")
-    assign("summary_table", summary_table, envir = .GlobalEnv)
-    
-    if (retrieve_files) {
-      file.copy(directory_path_temp, directory_path, recursive = TRUE)
-    }
-  } else if (barcode == "rps10_its") {
-    format_database_rps10(analysis_setup, rps10_db)
-    format_database_its(analysis_setup, its_db)
-    summary_table <- process_pooled_barcode(data_tables, directory_path_temp, directory_path, asv_abund_matrix, multithread = multithread, barcode1 = "rps10", barcode2 = "its")
-    assign("summary_table", summary_table, envir = .GlobalEnv)
-    
-    if (retrieve_files) {
-      file.copy(directory_path_temp, directory_path, recursive = TRUE)
-    }
-  } else {
-    print("Barcodes not recognized")
+    # Run taxonomy assignment for the current barcode
+    process_single_barcode(
+      data_tables=data_tables,
+      directory_path_temp = directory_path_temp,
+      directory_path = dir_paths$output_directory,
+      asv_abund_matrix = asv_abund_matrix,
+      locus = barcode
+    )
+  }
+  if (retrieve_files) {
+    file.copy(directory_path_temp, dir_paths$output_directory, recursive = TRUE)
   }
 }
 
@@ -129,97 +120,28 @@ process_single_barcode <-
            tryRC = FALSE,
            verbose = FALSE,
            multithread = FALSE,
-           barcode = "rps10")
+           locus = barcode)
   {
     abund_asv_single <-
-      prep_abund_matrix(data_tables$cutadapt_data, asv_abund_matrix, data_tables, barcode)
-    refdb = paste0(barcode, "_reference_db.fa")
-    taxmat = paste0(barcode, "_taxmatrix.Rdata")
+      prep_abund_matrix(data_tables$cutadapt_data, asv_abund_matrix, data_tables, locus)
+    refdb = paste0(locus, "_reference_db.fa")
+    taxmat = paste0(locus, "_taxmatrix.Rdata")
     tax_results_single_asv <-
       assign_taxonomyDada2(
         abund_asv_single,
         directory_path_temp,
-        refdb,
-        taxmat,
         tryRC = tryRC,
         verbose = verbose,
-        multithread = multithread
+        multithread = multithread,
+        locus=locus
       )
-    single_pids_asv <- get_pids(tax_results_single_asv, directory_path_temp, directory_path, refdb)
+    single_pids_asv <- get_pids(tax_results_single_asv, directory_path_temp, directory_path, refdb, locus)
     tax_results_single_asv_pid <-
       add_pid_to_tax(tax_results_single_asv, single_pids_asv)
-    seq_tax_asv <- assignTax_as_char(tax_results_single_asv_pid, directory_path_temp)
+    seq_tax_asv <- assignTax_as_char(tax_results_single_asv_pid, directory_path_temp, locus)
     formatted_abund_asv <-
-      format_abund_matrix(asv_abund_matrix, seq_tax_asv, directory_path)
-    get_read_counts(asv_abund_matrix, directory_path_temp, directory_path)
-  }
-
-#' Main trim command to run core DADA2 functions for 2 barcodes
-#'
-#' @param data_tables list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
-#' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
-#' @inheritParams assign_taxonomyDada2
-#' @keywords internal
-process_pooled_barcode <-
-  function(data_tables,
-           directory_path_temp,
-           directory_path,
-           asv_abund_matrix,
-           tryRC = FALSE,
-           verbose = FALSE,
-           multithread = FALSE,
-           barcode1 = "rps10",
-           barcode2 = "its")
-  {
-    abund_asv_barcode1 <-
-      prep_abund_matrix(data_tables$cutadapt_data, asv_abund_matrix, data_tables, barcode1)
-    abund_asv_barcode2 <-
-      prep_abund_matrix(data_tables$cutadapt_data, asv_abund_matrix, data_tables, barcode2)
-    separate_abund_matrix(abund_asv_barcode2,
-                          abund_asv_barcode1,
-                          directory_path_temp,
-                          asv_abund_matrix)
-    separate_abund_filepath <-
-      file.path(directory_path_temp, "Separate_abund.Rdata")
-    load(separate_abund_filepath)
-    refdb1 = paste0(barcode1, "_reference_db.fa")
-    taxmat1 = paste0(barcode1, "_taxmatrix.Rdata")
-    refdb2 = paste0(barcode2, "_reference_db.fa")
-    taxmat2 = paste0(barcode2, "_taxmatrix.Rdata")
-    tax_results_barcode1_asv <-
-      assign_taxonomyDada2(
-        abund_asv_barcode1,
-        directory_path_temp,
-        refdb1,
-        taxmat1,
-        tryRC = FALSE,
-        verbose = FALSE,
-        multithread = FALSE
-      )
-    tax_results_barcode2_asv <-
-      assign_taxonomyDada2(
-        abund_asv_barcode2,
-        directory_path_temp,
-        refdb2,
-        taxmat2,
-        tryRC = FALSE,
-        verbose = FALSE,
-        multithread = FALSE
-      )
-    barcode1_pids_asv <- get_pids(tax_results_barcode1_asv, directory_path_temp, directory_path, refdb1)
-    barcode2_pids_asv <- get_pids(tax_results_barcode2_asv, directory_path_temp, directory_path, refdb2)
-    tax_results_barcode1_asv_pid <-
-      add_pid_to_tax(tax_results_barcode1_asv, barcode1_pids_asv)
-    tax_results_barcode2_asv_pid <-
-      add_pid_to_tax(tax_results_barcode2_asv, barcode2_pids_asv)
-    seq_tax_asv <-
-      c(
-        assignTax_as_char(tax_results_barcode1_asv_pid, directory_path_temp),
-        assignTax_as_char(tax_results_barcode2_asv_pid, directory_path_temp) 
-      )
-    formatted_abund_asv <-
-      format_abund_matrix(asv_abund_matrix, seq_tax_asv,directory_path)
-    get_read_counts(asv_abund_matrix, directory_path_temp, directory_path)
+      format_abund_matrix(asv_abund_matrix, seq_tax_asv, directory_path, locus)
+    get_read_counts(asv_abund_matrix, directory_path_temp, directory_path, locus)
   }
 
 ###
@@ -236,46 +158,24 @@ prep_abund_matrix <-function(cutadapt_data, asv_abund_matrix, data_tables, locus
   return(asv_abund_matrix)
 }
 
-#' Separate abundance matrices
-#'
-#' @param abund_asv_barcode2 The separated matrix for second barcode 
-#' @param abund_asv_barcode1 The separated matrix for first barcode
-#' @param directory_path A path to the intermediate folder and directory
-#' @param asv_abund_matrix The non-separated ASV matrix 
-#' @keywords internal
-separate_abund_matrix <- function(abund_asv_barcode2, abund_asv_barcode1, directory_path_temp, asv_abund_matrix){
-  separate_abund_path <- file.path(directory_path_temp, "Separate_abund.Rdata")
-  in_both <- colSums(abund_asv_barcode2) != 0 & colSums(abund_asv_barcode1) != 0
-  assign_to_barcode2 <- in_both & colSums(abund_asv_barcode1) > colSums(abund_asv_barcode2)
-  assign_to_barcode1 <- in_both & colSums(abund_asv_barcode1) < colSums(abund_asv_barcode2)
-  is_barcode2 <- (colSums(abund_asv_barcode2) != 0 & colSums(abund_asv_barcode1) == 0) | assign_to_barcode2
-  is_barcode1 <- (colSums(abund_asv_barcode1) != 0 & colSums(abund_asv_barcode2) == 0) | assign_to_barcode1
-  abund_asv_barcode2 <- abund_asv_barcode2[ , is_barcode2]
-  abund_asv_barcode1 <- abund_asv_barcode1[ , is_barcode1]
-  #The number of ASVs left in the two groups should sum to the total number of ASVs, since there should be no overlap.
-  save(abund_asv_barcode2, abund_asv_barcode1, file = separate_abund_path)
-  stopifnot(ncol(abund_asv_barcode2) + ncol(abund_asv_barcode1) == ncol(asv_abund_matrix)) #make more messaging
-}
+
 #' Assign taxonomy
 #'
 #' @inheritParams dada2::assignTaxonomy
 #' @param asv_abund_matrix The ASV abundance matrix
 #' @param ref_database The reference database used for taxonomic inference steps
-#' @param taxresults_file The name of the file for saving taxonomic assignment results
 #' @keywords internal
-assign_taxonomyDada2<-function(asv_abund_matrix, directory_path_temp, ref_database, taxresults_file, minBoot=0, tryRC=FALSE, verbose=FALSE, multithread=TRUE){
+assign_taxonomyDada2<-function(asv_abund_matrix, directory_path_temp, minBoot=0, tryRC=FALSE, verbose=FALSE, multithread=TRUE, locus=barcode){
   tax_results<- dada2::assignTaxonomy(asv_abund_matrix,
-                                      refFasta = file.path(directory_path_temp, ref_database),
+                                      refFasta = file.path(directory_path_temp, paste0(locus, "_reference_db.fa")),
                                       taxLevels = c("Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
                                       minBoot = minBoot,
                                       tryRC = tryRC,
                                       outputBootstraps = TRUE,
                                       multithread = multithread)
-  #if statement for bacteria
-  tax_matrix_path <- file.path(directory_path_temp, taxresults_file)
+  tax_matrix_path <- file.path(directory_path_temp, paste0("TaxMatrix_", locus, ".Rdata"))
   save(tax_results, file = tax_matrix_path)
   return(tax_results)
-  #save these results
 }
 
 ##
@@ -285,7 +185,7 @@ assign_taxonomyDada2<-function(asv_abund_matrix, directory_path_temp, ref_databa
 #' @param tax_results The dataframe containing taxonomic assignments
 #' @keywords internal
 
-get_pids <- function(tax_results, directory_path_temp, directory_path, db) {
+get_pids <- function(tax_results, directory_path_temp, directory_path, db, locus) {
   db_seqs <- read_fasta(file.path(directory_path_temp, db))
   ref_seqs <- get_ref_seq(tax_results, db_seqs)
   asv_seqs <- rownames(tax_results$tax)
@@ -321,7 +221,7 @@ get_pids <- function(tax_results, directory_path_temp, directory_path, db) {
     unlist(sapply(asv_ref_align, function(align) align@subject)), '\n'
   )
   write_lines(paste(collapse = '==================================================\n', alignment_text),
-              file = file.path(directory_path, 'dada2_asv_alignments.txt'))
+              file = file.path(directory_path, paste0("dada2_asv_alignments_", locus, ".txt")))
   
   return(asv_pids)
 }
@@ -352,8 +252,8 @@ add_pid_to_tax <- function(tax_results, asv_pid) {
 #'
 #' @param tax_results The dataframe containing taxonomic assignments
 #' @keywords internal
-assignTax_as_char <- function(tax_results, directory_path_temp) {
-  tax_matrix_path <- file.path(directory_path_temp, "Final_tax_matrix.Rdata")
+assignTax_as_char <- function(tax_results, directory_path_temp, locus) {
+  tax_matrix_path <- file.path(directory_path_temp, paste0("Final_tax_matrix_", locus, ".Rdata"))
   tax_out <- vapply(1:nrow(tax_results$tax), FUN.VALUE = character(1), function(i) {
     paste(tax_results$tax[i, ],
           tax_results$boot[i, ],
@@ -373,19 +273,13 @@ assignTax_as_char <- function(tax_results, directory_path_temp) {
 #' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
 #' @param seq_tax_asv An amplified sequence variants matrix with taxonomic information
 #' @keywords internal
-format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv, directory_path) {
+format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv, directory_path, locus) {
   formatted_abund_asv <- t(asv_abund_matrix)
   formatted_abund_asv <- cbind(sequence = rownames(formatted_abund_asv),
                                dada2_tax = str_match(seq_tax_asv[rownames(formatted_abund_asv)], pattern = "^(.+)--Species")[,1],
                                dada2_pid = as.numeric(str_match(seq_tax_asv[rownames(formatted_abund_asv)], '--([0-9.]+)--ASV$')[, 2]),
                                formatted_abund_asv)
   formatted_abund_asv <- as_tibble(formatted_abund_asv)
-  
-  test_sequence <- "ACGTTGGTTAGAGTAAAAGACTAGAATAACTTTTAAATCAATAGAAAAAATAAATAAACTAAAACAAAATTTATTAAAATTAAAAAAAATAAATAAATTTAAAAATATTCAAATAAATGGAATATTTAAAAAAAAAGATAAAAATAAAATTTTTACTTTATTAAAATCACCTCACGTAAATAAAAAATCACGTGAACATTTTATTTATAAAAATTATACTCAAAAAATTAATGTAAAATTTTCAAATATTATTGAATTATTTAATTTTATGATAATTGTTAAAAAAGTTTTAACAGAAAATTTTATAATAAATTTTAAAATTTTAAAACTTAATAAAAAAAAATGCTTATAGCTTAATGGATAAAGCGTTAGATTGCGGATCTATAAAATGAA"
-  
-  # Append the test sequence to formatted_abund_asv
-  test_row <- c(sequence = test_sequence, dada2_tax = "Eukaryota--100--Domain;Heterokontophyta--100", dada2_pid = NA, rep(0, ncol(formatted_abund_asv) - 3))
-  formatted_abund_asv <- rbind(formatted_abund_asv, test_row)
   
   primer_seqs <- apply(analysis_setup$data_tables$primer_data[, 2:ncol(analysis_setup$data_tables$primer_data)], 2, paste, collapse = "|")
   
@@ -430,7 +324,7 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv, directory_path) {
   
   # Return the filtered abundance matrix
 
-  write_csv(filtered_abund_matrix, file = file.path(directory_path, 'final_asv_abundance_matrix.csv'))
+  write_csv(filtered_abund_matrix, file = file.path(directory_path, paste0('final_asv_abundance_matrix_', locus, '.csv')))
   return(filtered_abund_matrix)
 }
 
@@ -439,12 +333,12 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv, directory_path) {
 #'
 #' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
 #' @keywords internal
-get_read_counts <- function(asv_abund_matrix, directory_path_temp, directory_path) {
-  filter_results_path<-file.path(directory_path_temp, "filter_results.RData")
+get_read_counts <- function(asv_abund_matrix, directory_path_temp, directory_path, locus) {
+  filter_results_path<-file.path(directory_path_temp, paste0("Filter_results_", locus, ".RData"))
   load(filter_results_path) #incorporate into function
-  denoised_data_path <- file.path(directory_path_temp, "Denoised_data.Rdata")
+  denoised_data_path <- file.path(directory_path_temp, paste0("Denoised_data_", locus, ".RData"))
   load(denoised_data_path) #incorporate into function
-  merged_read_data_path <- file.path(directory_path_temp, "Merged_reads.Rdata")
+  merged_read_data_path <- file.path(directory_path_temp, paste0("Merged_reads_", locus, ".Rdata"))
   load(merged_read_data_path)
   getN <- function(x) sum(dada2::getUniques(x))
   track <- cbind(filter_results, sapply(dada_forward, getN), sapply(dada_reverse, getN), sapply(merged_reads, getN), rowSums(asv_abund_matrix))
@@ -452,7 +346,7 @@ get_read_counts <- function(asv_abund_matrix, directory_path_temp, directory_pat
   colnames(track) <- c("samplename_barcode", "input", "filtered", "denoisedF", "denoisedR", "merged", "nonchim")
   track$samplename_barcode<- gsub(".fastq.gz", "",
                                   gsub("R1_", "", track$samplename_barcode, fixed = TRUE))
-  track_read_counts_path <- file.path(directory_path, "track_reads.csv")
+  track_read_counts_path <- file.path(directory_path, paste0("track_reads_", locus, ".csv"))
   write_csv(track, track_read_counts_path)
   print(track)
 }

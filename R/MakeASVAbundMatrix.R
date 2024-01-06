@@ -57,7 +57,7 @@ make_asv_abund_matrix <- function(analysis_setup,
     verbose = FALSE,
     minOverlap = 12,
     maxMismatch = 0,
-    removeBimeraDenovo_method="consensus",
+    method="consensus",
     min_asv_length = 50)
   
   unique_barcodes <- unique(data_tables$cutadapt_data$primer_name)
@@ -346,7 +346,7 @@ make_abund_matrix <- function(raw_seqtab,
                               directory_path_temp,
                               barcode_params=barcode_params,
                               barcode) {
-  seqtab.nochim <- dada2::removeBimeraDenovo(raw_seqtab, method=barcode_params$removeBimeraDenovo_method, verbose=barcode_params$verbose)
+  seqtab.nochim <- dada2::removeBimeraDenovo(raw_seqtab, method=barcode_params$method, verbose=barcode_params$verbose)
   asv_abund_matrix <- seqtab.nochim[, nchar(colnames(seqtab.nochim)) >= barcode_params$min_asv_length]
   
   asvabund_matrix_path <- file.path(directory_path_temp, paste0("asvabund_matrixDADA2_", barcode, ".Rdata"))
