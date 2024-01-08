@@ -11,9 +11,9 @@ format_database <- function(analysis_setup, barcode, db_its, db_rps10, db_16S, d
   } else if (barcode == "its") {
     return(format_database_its(analysis_setup, db_its))
   } else if (barcode == "16s") {
-    return(format_database_16s(analysis_setup, db_its))
+    return(format_database_16s(analysis_setup, db_16s))
   } else if (barcode == "other") {
-    return(format_database_other(analysis_setup, db_its))
+    return(format_database_other(analysis_setup, db_other))
   } else {
     stop("Barcode not recognized")
   }
@@ -29,7 +29,7 @@ format_database <- function(analysis_setup, barcode, db_its, db_rps10, db_16S, d
 #' @return A rps10 database that has modified headers and is output in the reference_databases folder.
 #' @keywords internal
 #'
-format_database_rps10 <-function(analysis_setup, database_rps10){
+format_database_rps10 <-function(analysis_setup, db_rps10){
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   directory_path <- dir_paths$output_directory
@@ -75,7 +75,7 @@ format_database_rps10 <-function(analysis_setup, database_rps10){
 #' @return An ITS database that has modified headers and is output in the reference_databases folder.
 #' @keywords internal
 #'
-format_database_its <-function(analysis_setup, database_its){
+format_database_its <-function(analysis_setup, db_its){
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   directory_path <- dir_paths$output_directory
@@ -104,7 +104,6 @@ format_database_its <-function(analysis_setup, database_its){
   return(data_its)
 }
 
-
 #' An 16s database that has modified headers and is output in the reference_databases folder.
 #'
 #' @param directory_path The path to the directory containing the fastq,
@@ -115,7 +114,7 @@ format_database_its <-function(analysis_setup, database_its){
 #' @return An 16s database that has modified headers and is output in the reference_databases folder.
 #' @keywords internal
 #'
-format_database_16s <-function(analysis_setup, database_16s){
+format_database_16s <-function(analysis_setup, db_16s){
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   directory_path <- dir_paths$output_directory
@@ -181,7 +180,7 @@ format_database_16s <-function(analysis_setup, database_16s){
 #' @return An other database that has modified headers and is output in the reference_databases folder.
 #' @keywords internal
 #'
-format_database_other <-function(analysis_setup, database_other){
+format_database_other <-function(analysis_setup, db_other){
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   directory_path <- dir_paths$output_directory

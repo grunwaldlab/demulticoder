@@ -1,3 +1,5 @@
+#Add function to combine final matrix if that is desired (need one step to make sure that  no redundant ASVs)
+
 #' Filter ASV abundance matrix and convert to taxmap object
 #'
 #' @param min_read_depth Threshold for ASVs to remove if number of
