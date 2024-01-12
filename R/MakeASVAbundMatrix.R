@@ -34,7 +34,6 @@ make_asv_abund_matrix <- function(analysis_setup,
   
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
-  directory_path <- dir_paths$output_directory
   data_path <- dir_paths$data_directory
   directory_path_temp <- dir_paths$temp_directory
   
@@ -75,6 +74,12 @@ make_asv_abund_matrix <- function(analysis_setup,
       print(barcode)
       print(barcode_params)
       
+      dir_paths <- analysis_setup$dir_paths
+      data_tables <- analysis_setup$data_tables
+      directory_path <- dir_paths$output_directory
+      data_path <- dir_paths$data_directory
+      directory_path_temp <- dir_paths$temp_directory
+      
       if (overwrite_existing || !file.exists(file.path(directory_path_temp, "asvabund_matrixDADA2.Rdata"))) {
         infer_asv_command(
           directory_path = directory_path,
@@ -86,6 +91,7 @@ make_asv_abund_matrix <- function(analysis_setup,
         
         # Merge reads with barcode-specific parameters
         merged_reads <- merge_reads_command(
+          directory_path=directory_path,
           directory_path_temp = directory_path_temp,
           barcode_params = barcode_params,
           barcode=barcode
@@ -139,7 +145,7 @@ get_fastq_paths <- function(analysis_setup, my_direction, my_primer_pair_id) {
 #' @param my_direction Location of read files and metadata file
 #' @return asv_data
 #' @keywords internal
-infer_asvs <- function(my_direction, my_primer_pair_id, barcode_params) {
+infer_asvs <- function(my_direction, my_primer_pair_id, barcode_params, directory_path) {
   fastq_paths <- get_fastq_paths(analysis_setup, my_direction, my_primer_pair_id)
   
   error_plot_filename <- paste0("error_plot_", my_primer_pair_id, ".pdf")
@@ -177,7 +183,7 @@ infer_asvs <- function(my_direction, my_primer_pair_id, barcode_params) {
   ggsave(
     plot_errors,
     filename = error_plot_filename,
-    path = barcode_params$directory_path,
+    path = directory_path,
     width = 8,
     height = 8
   )
@@ -198,6 +204,7 @@ infer_asvs <- function(my_direction, my_primer_pair_id, barcode_params) {
 #' @param denoised_data_path Path to saved intermediate denoised data
 #' @keywords internal
 infer_asv_command <- function(directory_path, directory_path_temp, data_tables, barcode_params, barcode) {
+  
   multithread <- barcode_params$multithread
   nbases <- barcode_params$nbases
   errorEstimationFunction <- barcode_params$errorEstimationFunction
@@ -220,7 +227,8 @@ infer_asv_command <- function(directory_path, directory_path_temp, data_tables, 
       infer_asvs(
         direction,
         primer_name,
-        barcode_params
+        barcode_params, 
+        directory_path
       )
     })
     unlist(dada_output, recursive = FALSE)
@@ -240,7 +248,7 @@ infer_asv_command <- function(directory_path, directory_path_temp, data_tables, 
 #' @param merged_read_data_path Path to R data file containing merged read data
 #' @return merged_reads Intermediate merged read R data file
 #' @keywords internal
-merge_reads_command <- function(directory_path_temp, barcode_params, barcode) {
+merge_reads_command <- function(directory_path, directory_path_temp, barcode_params, barcode) {
   denoised_data_path <- file.path(directory_path_temp, paste0("Denoised_data_", barcode, ".Rdata"))
   load(denoised_data_path)
   
@@ -273,16 +281,11 @@ merge_reads_command <- function(directory_path_temp, barcode_params, barcode) {
 #' @param directory_path Directory path to save the plot
 #' @return A plot describing how well reads merged and information on overlap between reads
 countOverlap <- function(merged_reads, data_tables, directory_path, barcode) {
-  library(ggplot2)
-  
   non_empty_merged_reads <- merged_reads[sapply(merged_reads, nrow) > 0]
-  
   merge_data <- do.call(rbind, non_empty_merged_reads)
   merge_data$samplename_barcode <- rep(names(non_empty_merged_reads), sapply(non_empty_merged_reads, nrow))
-  
   merge_data2 <- merge_data[merge_data$samplename_barcode %in% data_tables$cutadapt_data$samplename_barcode, ]
   merge_data2 <- merge(merge_data2, data_tables$cutadapt_data, by = "samplename_barcode")
-  
   merge_data2$overlap <- merge_data2$nmatch + merge_data2$nmismatch
   merge_data2$mismatch <- merge_data2$nmismatch + merge_data2$nindel
   merge_data2$identity <- (merge_data2$overlap - merge_data2$mismatch) / merge_data2$overlap

@@ -7,13 +7,13 @@
 #'
 format_database <- function(analysis_setup, barcode, db_its, db_rps10, db_16S, db_other) {
   if (barcode == "rps10") {
-    return(format_database_rps10(analysis_setup, db_rps10))
+    return(format_db_rps10(analysis_setup, db_rps10))
   } else if (barcode == "its") {
-    return(format_database_its(analysis_setup, db_its))
+    return(format_db_its(analysis_setup, db_its))
   } else if (barcode == "16s") {
-    return(format_database_16s(analysis_setup, db_16s))
+    return(format_db_16s(analysis_setup, db_16s))
   } else if (barcode == "other") {
-    return(format_database_other(analysis_setup, db_other))
+    return(format_db_other(analysis_setup, db_other))
   } else {
     stop("Barcode not recognized")
   }
@@ -25,18 +25,18 @@ format_database <- function(analysis_setup, barcode, db_its, db_rps10, db_16S, d
 #' metadata, and primer_info files
 #' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow
 #' metadata, and primer_info files
-#' @param database_rps10 The name of the database
+#' @param db_rps10 The name of the database
 #' @return A rps10 database that has modified headers and is output in the reference_databases folder.
 #' @keywords internal
 #'
-format_database_rps10 <-function(analysis_setup, db_rps10){
+format_db_rps10 <-function(analysis_setup, db_rps10){
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   directory_path <- dir_paths$output_directory
   data_path <- dir_paths$data_directory
   directory_path_temp <- dir_paths$temp_directory
   database_path <- file.path(directory_path_temp, "rps10_reference_db.fa")
-  db_rps10 <- read_fasta(file.path(data_path, database_rps10))
+  db_rps10 <- read_fasta(file.path(data_path, db_rps10))
   data_rps10 <- str_match(names(db_rps10), pattern = "name=(.+)\\|strain=(.+)\\|ncbi_acc=(.+)\\|ncbi_taxid=(.+)\\|oodb_id=(.+)\\|taxonomy=(.+)$")
   colnames(data_rps10) <- c("header", "name", "strain", "ncbi_acc", "ncbi_taxid", "oodb_id", "taxonomy")
   data_rps10 <- as_tibble(data_rps10)
@@ -64,25 +64,24 @@ format_database_rps10 <-function(analysis_setup, db_rps10){
   return(data_rps10)
 }
 
-
 #' An ITS database that has modified headers and is output in the reference_databases folder.
 #'
 #' @param directory_path The path to the directory containing the fastq,
 #' metadata, and primer_info files
 #' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow
 #' metadata, and primer_info files
-#' @param database_its The name of the database
+#' @param db_its The name of the database
 #' @return An ITS database that has modified headers and is output in the reference_databases folder.
 #' @keywords internal
 #'
-format_database_its <-function(analysis_setup, db_its){
+format_db_its <-function(analysis_setup, db_its){
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   directory_path <- dir_paths$output_directory
   data_path <- dir_paths$data_directory
   directory_path_temp <- dir_paths$temp_directory
   database_path <- file.path(directory_path_temp, "its_reference_db.fa")
-  db_its <- read_fasta(file.path(data_path, database_its))
+  db_its <- read_fasta(file.path(data_path, db_its))
   data_its <- str_match(names(db_its), pattern = "(.+)\\|(.+)\\|(.+)\\|(.+)\\|(.+)$")
   colnames(data_its) <- c("header", "name", "ncbi_acc", "unite_db", "db", "taxonomy")
   data_its <- as_tibble(data_its)
@@ -110,18 +109,18 @@ format_database_its <-function(analysis_setup, db_its){
 #' metadata, and primer_info files
 #' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow
 #' metadata, and primer_info files
-#' @param database_16s The name of the database
+#' @param db_16s The name of the database
 #' @return An 16s database that has modified headers and is output in the reference_databases folder.
 #' @keywords internal
 #'
-format_database_16s <-function(analysis_setup, db_16s){
+format_db_16s <-function(analysis_setup, db_16s){
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   directory_path <- dir_paths$output_directory
   data_path <- dir_paths$data_directory
   directory_path_temp <- dir_paths$temp_directory
   database_path <- file.path(directory_path_temp, "16s_reference_db.fa")
-  db_16s <- read_fasta(file.path(data_path, database_16s))
+  db_16s <- read_fasta(file.path(data_path, db_16s))
   
   data_16s <- tibble(
     taxonomy = str_replace(names(db_16s), ">", "")
@@ -176,18 +175,18 @@ format_database_16s <-function(analysis_setup, db_16s){
 #' metadata, and primer_info files
 #' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow
 #' metadata, and primer_info files
-#' @param database_other The name of the database
+#' @param db_other The name of the database
 #' @return An other database that has modified headers and is output in the reference_databases folder.
 #' @keywords internal
 #'
-format_database_other <-function(analysis_setup, db_other){
+format_db_other <-function(analysis_setup, db_other){
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   directory_path <- dir_paths$output_directory
   data_path <- dir_paths$data_directory
   directory_path_temp <- dir_paths$temp_directory
   database_path <- file.path(directory_path_temp, "other_reference_db.fa")
-  db_other <- read_fasta(file.path(data_path, database_other))
+  db_other <- read_fasta(file.path(data_path, db_other))
   data_other <- str_match(names(db_other), pattern = "(.+)\\|(.+)\\|(.+)\\|(.+)\\|(.+)$")
   colnames(data_other) <- c("header", "name", "ncbi_acc", "unite_db", "db", "taxonomy")
   data_other <- as_tibble(data_other)

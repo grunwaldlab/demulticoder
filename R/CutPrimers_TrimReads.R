@@ -12,322 +12,6 @@
 #'   output_directory = tempdir(),
 #'   tempdir_id = "run1",
 #'   overwrite_existing = FALSE)
-#'
-#' # Main function to trim primers based on Cutadapt and DADA2 functions
-#' cut_trim(
-#'   analysis_setup,
-#'   cutadapt_path = "/opt/homebrew/bin/cutadapt",
-#'   overwrite_existing = FALSE)
-
-cut_trim <- function(analysis_setup,
-                     cutadapt_path,
-                     overwrite_existing = FALSE) {
-  
-  dir_paths <- analysis_setup$dir_paths
-  data_tables <- analysis_setup$data_tables
-  directory_path <- dir_paths$output_directory
-  directory_path_temp <- dir_paths$temp_directory
-  
-  if (overwrite_existing) {
-    patterns_to_remove <- c(
-      "primer_hit_data_posttrim.csv", 
-      "posttrim_primer_plot.pdf",
-      "readqual*"
-    )
-    
-    for (pattern in patterns_to_remove) {
-      full_pattern <- file.path(directory_path, pattern)
-      files_to_remove <- list.files(path = directory_path, pattern = pattern, full.names = TRUE)
-      
-      if (length(files_to_remove) > 0) {
-        file.remove(files_to_remove)
-      }
-    }
-    
-    patterns_to_remove_temp <- "filter_results.RData"
-    
-    for (pattern in patterns_to_remove_temp) {
-      full_pattern <- file.path(directory_path_temp, pattern)
-      files_to_remove <- list.files(path = directory_path_temp, pattern = pattern, full.names = TRUE)
-      
-      if (length(files_to_remove) > 0) {
-        file.remove(files_to_remove)
-      }
-    }
-    
-    subdirectory_names <- c("filtered_sequences", "trimmed_sequences", "untrimmed_sequences")
-    
-    for (seqdir_name in subdirectory_names) {
-      seqdir_path <- file.path(directory_path_temp, seqdir_name)
-      
-      if (dir.exists(seqdir_path)) {
-        files_to_remove <- list.files(seqdir_path, full.names = TRUE)
-        file.remove(files_to_remove)
-      }
-    }
-  }
-  
-  default_params <- list(
-    maxEE_forward = Inf,
-    maxEE_reverse = Inf,
-    truncQ = 2,
-    minLen = 20,
-    maxLen = Inf,
-    truncLen_forward = 0,
-    truncLen_reverse = 0,
-    maxN = 0,
-    minQ = 0,
-    trimLeft = 0,
-    trimRight = 0,
-    rm.phix = TRUE,
-    multithread = FALSE,
-    verbose = FALSE,
-    qualityType = "Auto",
-    OMP = TRUE,
-    n = 1e+05,
-    id.sep = "\\s",
-    rm.lowcomplex = 0,
-    orient.fwd = NULL,
-    id.field = NULL,
-    overwrite_existing = FALSE
-  )
-  
-  unique_primers <- unique(data_tables$primer_data$primer_name)
-  
-  for (barcode in unique_primers) {
-    barcode_params <- filter(data_tables$parameters, primer_name == barcode)
-    
-    if (nrow(barcode_params) > 0) {
-      barcode_params <- as.list(barcode_params)
-      
-      # Merge default_params with barcode_params, favoring barcode-specific ones
-      barcode_params <- modifyList(default_params, barcode_params)
-      
-      cutadapt_data_barcode <- subset(data_tables$cutadapt_data, primer_name == barcode)
-      
-      if (nrow(cutadapt_data_barcode) > 0 && !any(file.exists(c(cutadapt_data_barcode$trimmed_path)))) {
-        # Continue with your existing code for Cutadapt
-        run_cutadapt(
-          cutadapt_path,
-          cutadapt_data_barcode,
-          barcode_params,
-          minCutadaptlength = barcode_params$minCutadaptlength
-        )
-      }
-      
-      quality_plots <- plot_qc(cutadapt_data_barcode, directory_path)
-      
-      if (length(barcode_params) > 0) {
-        barcode_params <- as.list(barcode_params)
-        filter_and_trim(
-          directory_path,
-          directory_path_temp,
-          cutadapt_data_barcode,
-          barcode_params
-        )
-      }
-    }
-  }
-  post_primer_hit_data <- get_post_trim_hits(data_tables$primer_data, data_tables$cutadapt_data, directory_path)
-  quality_plots2 <- plot_post_trim_qc(data_tables$cutadapt_data, directory_path, barcode)
-}
-  
-#' Core function for running cutadapt
-
-#' @param cutadapt_path A path to the cutadapt program.
-#' @param cutadapt_data Directory_data folder with trimmed and filtered reads for each sample.
-#' @param minCutadaptlength Read lengths that are lower than this threshold will be discarded. Default is 50.
-#' @return Trimmed read.
-#' @keywords internal
-#' Core function for running cutadapt
-#' Core function for running cutadapt
-#'
-#' Core function for running cutadapt
-#'
-#' @param cutadapt_path A path to the cutadapt program.
-#' @param cutadapt_data Directory_data folder with trimmed and filtered reads for each sample.
-#' @param minCutadaptlength Read lengths that are lower than this threshold will be discarded. Default is 50.
-#' @return Trimmed read.
-#' @keywords internal
-#'
-
-#' Core function for running cutadapt
-#'
-#' @param cutadapt_path A path to the cutadapt program.
-#' @param cutadapt_data Directory_data folder with trimmed and filtered reads for each sample.
-#' @param minCutadaptlength Read lengths that are lower than this threshold will be discarded. Default is 20.
-#' @return Trimmed read.
-#' @keywords internal
-#'
-#' Core function for running cutadapt
-#'
-#' @param cutadapt_path A path to the cutadapt program.
-#' @param cutadapt_data Directory_data folder with trimmed and filtered reads for each sample.
-#' @param minCutadaptlength Read lengths that are lower than this threshold will be discarded. Default is 20.
-#' @param user_params A list of user-defined parameters.
-#' @return Trimmed read.
-#' @keywords internal
-#'
-run_cutadapt <- function(cutadapt_path,
-                         cutadapt_data_barcode,
-                         barcode_params,
-                         minCutadaptlength) {
-  
-  cutadapt <- cutadapt_path
-  tryCatch(
-    system2(cutadapt, args = "--version"),
-    warning = function(w) {
-      stop("cutadapt cannot be found on PATH. Check if it is installed?")
-    }
-  )
-  
-  # Simplify
-  cutadapt <- path.expand(cutadapt_path)
-  R1_flags = unique(paste("-g", cutadapt_data_barcode$forward, "-a", cutadapt_data_barcode$r_rc))
-  R2_flags = unique(paste("-G", cutadapt_data_barcode$reverse, "-A", cutadapt_data_barcode$f_rc))
-  fwd_trim = cutadapt_data_barcode[cutadapt_data_barcode$direction == "Forward",][["trimmed_path"]]
-  rev_trim = cutadapt_data_barcode[cutadapt_data_barcode$direction == "Reverse",][["trimmed_path"]]
-  fwd_untrim = cutadapt_data_barcode[cutadapt_data_barcode$direction == "Forward",][["untrimmed_path"]]
-  rev_untrim = cutadapt_data_barcode[cutadapt_data_barcode$direction == "Reverse",][["untrimmed_path"]]
-  fwd_prefilt = cutadapt_data_barcode[cutadapt_data_barcode$direction == "Forward",][["prefiltered_path"]]
-  rev_prefilt = cutadapt_data_barcode[cutadapt_data_barcode$direction == "Reverse",][["prefiltered_path"]]
-  
-  # Construct command arguments
-  command_args = paste(
-    R1_flags,
-    R2_flags,
-    "-n",
-    2,
-    "-o",
-    fwd_trim,
-    "-p",
-    rev_trim,
-    "--minimum-length",
-    minCutadaptlength,
-    "--untrimmed-output",
-    fwd_untrim,
-    "--untrimmed-paired-output",
-    rev_untrim,
-    "--quiet",
-    fwd_prefilt,
-    rev_prefilt
-  )
-  
-  # Print command arguments
-  print("Command Arguments:")
-  print(command_args)
-  
-  # Run cutadapt if trimmed files don't exist
-  if (!all(file.exists(c(cutadapt_data_barcode$trimmed_path)))) {
-    cutadapt_output <-
-      furrr::future_map(command_args, ~ system2(cutadapt, args = .x))
-    # Print Cutadapt output
-    print("Cutadapt Output:")
-    print(cutadapt_output)
-  }
-}
-#' Wrapper function for plotQualityProfile function
-#'
-#' @inheritParams dada2::plotQualityProfile
-#' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
-#' @param directory_path The path to the directory containing the fastq,
-#' metadata, and primers and params files
-#' @inheritParams plotQualityProfile
-#' @return Dada2 wrapper function for making quality profiles for each sample
-#' @keywords internal
-
-plot_qc <- function(cutadapt_data, directory_path, n = 500000) {
-  #just retrieve all plots for first sample
-  for (i in unique(cutadapt_data$sample_name)) {
-    name1 = paste0('readqual_pretrim_plot_', i, '.pdf')
-    pdf_path = file.path(directory_path, name1)
-    if (!file.exists(pdf_path)) {
-      sample_info = cutadapt_data$trimmed_path[cutadapt_data$sample_name == i]
-      quality_plots <- dada2::plotQualityProfile(sample_info, n)
-      ggplot2::ggsave(
-        quality_plots,
-        filename = name1,
-        path = directory_path,
-        width = 8,
-        height = 8
-      )
-    }
-  }
-}
-
-#' Wrapper function for filterAndTrim function from DADA2 after primer removal
-#'
-#' @inheritParams dada2::filterAndTrim
-#' @param directory_path The path to the directory containing the fastq,
-#' metadata, and primersinfo_params files
-#' @param cutadapt_data_barcode directory_data folder with trimmed and filtered reads for each sample
-#' @return Filtered and trimmed reads
-#' @keywords internal
-#'
-
-filter_and_trim <- function(directory_path,
-                            directory_path_temp,
-                            cutadapt_data_barcode,
-                            barcode_params) {
-  filtered_read_dir <- file.path(directory_path_temp, "filtered_sequences")
-  cutadapt_data_barcode$filtered_path <-
-    file.path(
-      filtered_read_dir,
-      paste0(
-        cutadapt_data_barcode$file_id,
-        "_",
-        cutadapt_data_barcode$primer_name,
-        ".fastq.gz"
-      )
-    )
-  if (!all(file.exists(cutadapt_data_barcode$filtered_path))) {
-    filter_results <-
-      dada2::filterAndTrim(
-        fwd = cutadapt_data_barcode$trimmed_path[cutadapt_data_barcode$direction == "Forward"],
-        filt = cutadapt_data_barcode$filtered_path[cutadapt_data_barcode$direction == "Forward"],
-        rev = cutadapt_data_barcode$trimmed_path[cutadapt_data_barcode$direction == "Reverse"],
-        filt.rev = cutadapt_data_barcode$filtered_path[cutadapt_data_barcode$direction == "Reverse"],
-        maxN = barcode_params$maxN,
-        maxEE = c(barcode_params$maxEE_forward, barcode_params$maxEE_reverse),
-        truncLen = c(barcode_params$truncLen_forward, barcode_params$truncLen_reverse),
-        truncQ = barcode_params$truncQ,
-        minLen = barcode_params$minLen,
-        maxLen = barcode_params$maxLen,
-        minQ = barcode_params$minQ,
-        trimLeft = barcode_params$trimLeft,
-        trimRight = barcode_params$trimRight,
-        rm.phix = TRUE,
-        compress = TRUE,
-        matchIDs = TRUE,
-        multithread = barcode_params$multithread,
-        verbose = barcode_params$verbose,
-        OMP = TRUE,
-        n = 1e+05,
-        id.sep = "\\s",
-        rm.lowcomplex = barcode_params$rm.lowcomplex,
-        orient.fwd = NULL,
-        qualityType = "Auto",
-        id.field = NULL
-      )
-    filter_results <- as_tibble(filter_results)
-  }
-}
-    #' Main command to trim primers based on Cutadapt and DADA2 functions. If samples contain pooled barcodes, reads will also be demultiplexed. 
-#'
-#' @param analysis_setup A list containing directory paths and data tables, produced by the `prepare_reads` function.
-#' @param cutadapt_path A path to the Cutadapt program.
-#' @param overwrite_existing Logical, indicating whether to remove or overwrite existing files and directories from previous runs. If set to TRUE, specific output files 
-#' @return Reads trimmed of primers and filtered, primer counts after running Cutadapt, quality plots after poor quality reads are trimmed or removed, and the ASV matrix.
-#' @export
-#' 
-#' @examples
-#' analysis_setup <- prepare_reads(
-#'   data_directory = system.file("extdata", package = "your_package_name"),
-#'   output_directory = tempdir(),
-#'   tempdir_id = "run1",
-#'   overwrite_existing = FALSE)
-#'
-#' # Main function to trim primers based on Cutadapt and DADA2 functions
 #' cut_trim(
 #'   analysis_setup,
 #'   cutadapt_path = "/opt/homebrew/bin/cutadapt",
@@ -418,35 +102,31 @@ cut_trim <- function(analysis_setup,
       barcode_params <- modifyList(default_params, barcode_params)
       
       cutadapt_data_barcode <- subset(data_tables$cutadapt_data, primer_name == barcode)
-      
-      if (nrow(cutadapt_data_barcode) > 0 && !any(file.exists(c(cutadapt_data_barcode$trimmed_path)))) {
-        # Continue with your existing code for Cutadapt
+      if (nrow(cutadapt_data_barcode) > 0 && !all(file.exists(c(cutadapt_data_barcode$trimmed_path)))) {
         run_cutadapt(
           cutadapt_path,
           cutadapt_data_barcode,
           barcode_params,
-          minCutadaptlength = barcode_params$minCutadaptlength
-        )
-      }
-      
-      quality_plots <- plot_qc(cutadapt_data_barcode, directory_path)
-      
-      if (length(barcode_params) > 0) {
-        barcode_params <- as.list(barcode_params)
-        filter_and_trim(
-          directory_path,
-          directory_path_temp,
-          cutadapt_data_barcode,
-          barcode_params, 
-          barcode
-        )
+          minCutadaptlength = barcode_params$minCutadaptlength)
+        
+        quality_plots <- plot_qc(cutadapt_data_barcode, directory_path)
+        
+        if (length(barcode_params) > 0) {
+          barcode_params <- as.list(barcode_params)
+          filter_and_trim(
+            directory_path,
+            directory_path_temp,
+            cutadapt_data_barcode,
+            barcode_params, 
+            barcode)
+        }
       }
     }
   }
   post_primer_hit_data <- get_post_trim_hits(data_tables$primer_data, data_tables$cutadapt_data, directory_path)
   quality_plots2 <- plot_post_trim_qc(data_tables$cutadapt_data, directory_path)
 }
-  
+
 #' Core function for running cutadapt
 
 #' @param cutadapt_path A path to the cutadapt program.
@@ -456,32 +136,6 @@ cut_trim <- function(analysis_setup,
 #' @keywords internal
 #' Core function for running cutadapt
 #' Core function for running cutadapt
-#'
-#' Core function for running cutadapt
-#'
-#' @param cutadapt_path A path to the cutadapt program.
-#' @param cutadapt_data Directory_data folder with trimmed and filtered reads for each sample.
-#' @param minCutadaptlength Read lengths that are lower than this threshold will be discarded. Default is 50.
-#' @return Trimmed read.
-#' @keywords internal
-#'
-
-#' Core function for running cutadapt
-#'
-#' @param cutadapt_path A path to the cutadapt program.
-#' @param cutadapt_data Directory_data folder with trimmed and filtered reads for each sample.
-#' @param minCutadaptlength Read lengths that are lower than this threshold will be discarded. Default is 20.
-#' @return Trimmed read.
-#' @keywords internal
-#'
-#' Core function for running cutadapt
-#'
-#' @param cutadapt_path A path to the cutadapt program.
-#' @param cutadapt_data Directory_data folder with trimmed and filtered reads for each sample.
-#' @param minCutadaptlength Read lengths that are lower than this threshold will be discarded. Default is 20.
-#' @param user_params A list of user-defined parameters.
-#' @return Trimmed read.
-#' @keywords internal
 #'
 run_cutadapt <- function(cutadapt_path,
                          cutadapt_data_barcode,
@@ -533,12 +187,28 @@ run_cutadapt <- function(cutadapt_path,
   print(command_args)
   
   # Run cutadapt if trimmed files don't exist
-  if (!all(file.exists(c(cutadapt_data_barcode$trimmed_path)))) {
-    cutadapt_output <-
-      furrr::future_map(command_args, ~ system2(cutadapt, args = .x))
+  if (!all(file.exists(c(cutadapt_data_barcode$trimmed_path))) && !barcode_params$already_trimmed) {
+    cutadapt_output <- furrr::future_map(command_args, ~ system2(cutadapt, args = .x))
     # Print Cutadapt output
     print("Cutadapt Output:")
     print(cutadapt_output)
+  }
+  
+  else if (!all(file.exists(c(cutadapt_data_barcode$trimmed_path))) && barcode_params$already_trimmed) {
+    cutadapt_output <- furrr::future_map(command_args, ~ system2(cutadapt, args = .x))
+    print("cutadapt_output")
+    
+    for (i in seq_along(fwd_untrim)) {
+      fwd_untrim_reads <- readFastq(fwd_untrim[i])
+      rev_untrim_reads <- readFastq(rev_untrim[i])
+      writeFastq(fwd_untrim_reads, fwd_trim[i], mode = 'a')
+      print(fwd_untrim[i])
+      print(fwd_untrim_reads)
+      writeFastq(rev_untrim_reads, rev_trim[i], mode = 'a')
+      print(rev_trim_reads)
+      print(rev_trim_reads[i])
+      cat("Contents appended to trimmed files.\n")
+    }
   }
 }
 #' Wrapper function for plotQualityProfile function
@@ -661,7 +331,7 @@ get_post_trim_hits <- function(primer_data, cutadapt_data, directory_path) {
     nhits <- vcountPattern(primer, sread(readFastq(path)), fixed = FALSE)
     return(sum(nhits > 0))
   }
-
+  
   post_primer_hit_data_csv_path <- file.path(directory_path, "primer_hit_data_posttrim.csv")
   post_primer_hit_counts <- future_map(cutadapt_data$trimmed_path,
                                        function(a_path)
@@ -673,7 +343,7 @@ get_post_trim_hits <- function(primer_data, cutadapt_data, directory_path) {
   
   
   make_posttrim_primer_plot <- function(post_trim_hits,
-                                   directory_path) {
+                                        directory_path) {
     post_trim_hits <- post_trim_hits[-(3)]
     post_trim_hits$primer_type <- paste(post_trim_hits$primer_name, post_trim_hits$orientation)
     new_primer_hits <- post_trim_hits[-(1:2)]
@@ -695,38 +365,12 @@ get_post_trim_hits <- function(primer_data, cutadapt_data, directory_path) {
     ggsave(plot, filename = file.path(directory_path, "posttrim_primer_plot.pdf"), width = 8, height = 8)
     return(invisible(plot))
   }
-
+  
   make_posttrim_primer_plot(post_trim_hit_data, directory_path)
 }
 # Assuming check_primer_counts is not needed anymore
 # You can directly call the function with post_primer_hit_data
 
-
-#' Wrapper script for plotQualityProfile after trim steps and primer removal.
-#'
-#' @inheritParams dada2::plotQualityProfile
-#' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
-#' @param directory_path The path to the directory containing the fastq,
-#' metadata, and primersinfo_params files
-#' @return Quality profiles of reads after primer trimming
-#' @keywords internal
-plot_post_trim_qc <- function(cutadapt_data, directory_path, n = 500000, barcode) {
-  for (i in unique(cutadapt_data$sample_name)) {
-    name2 = paste0('readqual_posttrim_plot_', i, '.pdf')
-    pdf_path = file.path(directory_path, name2)
-    if (!file.exists(pdf_path)) {
-      sample_info2 = cutadapt_data$filtered_path[cutadapt_data$sample_name == i]
-      quality_plots2 <- dada2::plotQualityProfile(sample_info2, n)
-      ggplot2::ggsave(
-        quality_plots2,
-        filename = name2,
-        path = directory_path,
-        width = 8,
-        height = 8
-      )
-    }
-  }
-}
 
 #' Get primer counts for reach sample after primer removal and trimming steps
 #'
@@ -757,7 +401,7 @@ get_post_trim_hits <- function(primer_data, cutadapt_data, directory_path) {
     nhits <- vcountPattern(primer, sread(readFastq(path)), fixed = FALSE)
     return(sum(nhits > 0))
   }
-
+  
   post_primer_hit_data_csv_path <- file.path(directory_path, "primer_hit_data_posttrim.csv")
   post_primer_hit_counts <- future_map(cutadapt_data$trimmed_path,
                                        function(a_path)
@@ -769,7 +413,7 @@ get_post_trim_hits <- function(primer_data, cutadapt_data, directory_path) {
   
   
   make_posttrim_primer_plot <- function(post_trim_hits,
-                                   directory_path) {
+                                        directory_path) {
     post_trim_hits <- post_trim_hits[-(3)]
     post_trim_hits$primer_type <- paste(post_trim_hits$primer_name, post_trim_hits$orientation)
     new_primer_hits <- post_trim_hits[-(1:2)]
@@ -791,7 +435,7 @@ get_post_trim_hits <- function(primer_data, cutadapt_data, directory_path) {
     ggsave(plot, filename = file.path(directory_path, "posttrim_primer_plot.pdf"), width = 8, height = 8)
     return(invisible(plot))
   }
-
+  
   make_posttrim_primer_plot(post_trim_hit_data, directory_path)
 }
 # Assuming check_primer_counts is not needed anymore

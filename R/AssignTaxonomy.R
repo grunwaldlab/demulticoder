@@ -41,7 +41,7 @@
 #denoised_data_path <- file.path(directory_path_temp, paste0("Denoised_data_", barcode, ".Rdata"))
 #load(denoised_data_path)
 
-assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, db_rps10="oomycetedb.fasta", db_its="fungidb.fasta", overwrite_existing=FALSE) {
+assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, db_rps10="oomycetedb.fasta", db_its="fungidb.fasta", db_16s="bacteriadb.fasta", db_other="otherdb.fasta", overwrite_existing=FALSE) {
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   directory_path <- dir_paths$output_directory
@@ -87,7 +87,7 @@ assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose =
     # Load merged reads for the current barcode
     load(file.path(directory_path_temp, paste0("asvabund_matrixDADA2_", barcode, ".Rdata")))
     
-    format_database(analysis_setup, barcode, db_its, db_rps10)
+    format_database(analysis_setup, barcode, db_its, db_rps10, db_16s, db_other)
     
     # Run taxonomy assignment for the current barcode
     process_single_barcode(
