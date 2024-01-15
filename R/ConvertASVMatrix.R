@@ -13,152 +13,54 @@
 #' level, taxonomic assignment will be set to N/A
 #' @param pid_family If percent identity is below this value, at the family
 #' level, taxonomic assignment will be set to N/A
-#' @param save_taxmap Logical, indicating whether to save the taxmap object. Default is FALSE.
+#' @param save_outputs Logical, indicating whether to save the taxmap object. Default is FALSE.
 #' @return ASV matrix converted to taxmap object
-#' @export asv_matrix_to_taxmap
 #' @examples
-#' directory_path<-"~/Desktop/rps10test"
-#' primer_path <-file.path(directory_path, "primer_info.csv")
-#' metadata_path <-file.path(directory_path,"metadata.csv")
-#' cutadapt_path<-"/opt/homebrew/bin/cutadapt"
-#' data_tables <-
-#' prepare_reads(
-#' directory_path,
-#' primer_path,
-#' metadata_path,
-#' maxN = 0,
-#' )
-#' cut_trim(
-#' directory_path,
-#' cutadapt_path,
-#' verbose = TRUE,
-#' maxEE = 2,
-#' truncQ = 5,
-#' minLen = 200,
-#' maxLen = 297,
-#' minCutadaptlength = 50
-#')
-#' asv_abund_matrix <-
-#' make_asv_abund_matrix(
-#' directory_path,
-#' minOverlap = 15,
-#' maxMismatch = 2,
-#' verbose = TRUE,
-#' )
-#' summary <- assignTax(
-#' directory_path,
-#' data_tables,
-#' asv_abund_matrix,
-#' multithread = TRUE,
-#' barcode = "rps10",
-#' database_rps10 = "oomycetedb.fasta",
-#' database_its = "sh_general_release_dynamic_22.08.2016.fasta"
-#' )
-#' obj_dada <-
-#' asv_matrix_to_taxmap(
-#' asv_abund_matrix,
-#' min_read_depth = 10,
-#' minimum_bootstrap = 75
-#' )
-asv_matrix_to_taxmap <- function(min_read_depth=0, minimum_bootstrap=0, pid_species=0, pid_genus=0, pid_family=0, save_taxmap = FALSE){
-  dir_paths <- analysis_setup$dir_paths
-  data_tables <- analysis_setup$data_tables
-  directory_path <- dir_paths$output_directory
-  
-  abund_matrix <- read_csv(file.path(directory_path,'final_asv_abundance_matrix.csv'))
-  is_low_abund <- rowSums(abund_matrix[, data_tables$metadata$samplename_barcode]) < min_read_depth
-  abundance <- filter(abund_matrix, ! is_low_abund)
-  pid_cutoffs <- list(species = pid_species, genus = pid_genus, family = pid_family)
-  
-  abundance$dada2_tax <- map_chr(strsplit(abundance$dada2_tax, ';'), function(x) {
-    map_chr(strsplit(x, '--'), function(parts) {
-      if (parts[[3]] != "ASV" && as.numeric(parts[[2]]) <= minimum_bootstrap) {
-        parts[[1]] <- "Unknown"
-      }
-      return(paste(parts, collapse = '--'))
-    }) %>% paste(collapse = ';')
-  })
-  obj_dada <- metacoder::parse_tax_data(abundance, class_cols = 'dada2_tax', class_sep = ';', include_tax_data = TRUE,
-                                        class_regex = '^(.+)--(.+)--(.+)$',
-                                        class_key = c(taxon = 'taxon_name', boot = 'info', rank = 'taxon_rank'))
-  names(obj_dada$data) <- c('abund', 'score')
-  
-  if (save_taxmap) {
-    taxmap_path <- file.path(directory_path, "taxmap_obj.RData")
-    save(obj_dada, file = taxmap_path)
-  }
-  
-  assign("obj_dada", obj_dada, envir = .GlobalEnv)
-}
 
-#' Convert taxmap object to Phyloseq object (metacoder wrapper function)
-#'
-#' @param taxmap_obj ASV matrix converted to taxmap object using asv_matrix_to_taxmap function
-#' @param save_phyloseq Logical, indicating whether to save the taxmap object. Default is FALSE.
-#' @return Taxmap object converted to a phyloseq object
-#' @export taxmap_to_phyloseq
-#' @examples
-#' directory_path<-"~/Desktop/rps10test"
-#' primer_path <-file.path(directory_path, "primer_info.csv")
-#' metadata_path <-file.path(directory_path,"metadata.csv")
-#' cutadapt_path<-"/opt/homebrew/bin/cutadapt"
-#' data_tables <-
-#' prepare_reads(
-#' directory_path,
-#' primer_path,
-#' metadata_path,
-#' maxN = 0,
-#' )
-#' cut_trim(
-#' directory_path,
-#' cutadapt_path,
-#' verbose = TRUE,
-#' maxEE = 2,
-#' truncQ = 5,
-#' minLen = 200,
-#' maxLen = 297,
-#' minCutadaptlength = 50
-#')
-#' asv_abund_matrix <-
-#' make_asv_abund_matrix(
-#' directory_path,
-#' minOverlap = 15,
-#' maxMismatch = 2,
-#' verbose = TRUE,
-#' )
-#' summary <- assignTax(
-#' directory_path,
-#' data_tables,
-#' asv_abund_matrix,
-#' multithread = TRUE,
-#' barcode = "rps10",
-#' database_rps10 = "oomycetedb.fasta",
-#' database_its = "sh_general_release_dynamic_22.08.2016.fasta"
-#' )
-#' obj_dada<-asv_matrix_to_taxmap(
-#' asv_abund_matrix,
-#' min_read_depth=10,
-#' minimum_bootstrap=75
-#' )
-#' phylo_obj<-taxmap_to_phyloseq(obj_dada)
-taxmap_to_phyloseq <- function(taxmap_obj=obj_dada, save_phyloseq = FALSE) {
+asv_matrix_to_taxmap_phyloseq <- function(min_read_depth=0, minimum_bootstrap=0, pid_species=0, pid_genus=0, pid_family=0, save_outputs = FALSE) {
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   directory_path <- dir_paths$output_directory
   
-  taxmap_obj$data$otu_table=taxmap_obj$data$abund[,-2:-4]
-  taxmap_obj$data$otu_table$otu_id=paste0('ASV', 1:nrow(taxmap_obj$data$otu_table))
-  taxmap_obj$data$sample_data=data_tables$metadata
+  files <- list.files(path = directory_path, pattern = "^final_asv_abundance_matrix_.*\\.csv$", full.names = TRUE)
+  suffixes <- gsub("^final_asv_abundance_matrix_(.*)\\.csv$", "\\1", basename(files))
+  unique_suffixes <- unique(suffixes)
   
-  phylo_obj<-metacoder::as_phyloseq(
-    taxmap_obj,
-    sample_data = obj_dada$data$sample_data,
-    sample_id_col = "samplename_barcode")
-  
-  assign("phylo_obj", phylo_obj, envir = .GlobalEnv)
-  
-  if (save_phyloseq) {
-    phyloseq_path <- file.path(directory_path, "phylo_obj.RData")
-    save(phylo_obj, file = phyloseq_path)
+  for (suffix in unique_suffixes) {
+    abundance <- read_csv(file.path(directory_path, paste0('final_asv_abundance_matrix_', suffix, '.csv')))
+    is_low_abund <- rowSums(abundance[, grepl(paste0("_", suffix, "$"), colnames(abundance))]) < min_read_depth
+    abundance <- filter(abundance, ! is_low_abund)
+    abundance$dada2_tax <- map_chr(strsplit(abundance$dada2_tax, ';'), function(x) {
+      map_chr(strsplit(x, '--'), function(parts) {
+        if (parts[[3]] != "ASV" && as.numeric(parts[[2]]) <= minimum_bootstrap) {
+          parts[[1]] <- "Unknown"
+        }
+        return(paste(parts, collapse = '--'))
+      }) %>% paste(collapse = ';')
+    })
+    obj_dada <- metacoder::parse_tax_data(abundance, class_cols = 'dada2_tax', class_sep = ';', include_tax_data = TRUE,
+                                          class_regex = '^(.+)--(.+)--(.+)$',
+                                          class_key = c(taxon = 'taxon_name', boot = 'info', rank = 'taxon_rank'))
+    names(obj_dada$data) <- c('abund', 'score')
+    
+    obj_dada$data$otu_table=obj_dada$data$abund[,-2:-4]
+    obj_dada$data$otu_table$otu_id=paste0('ASV', 1:nrow(obj_dada$data$otu_table))
+    obj_dada$data$sample_data=data_tables$metadata
+    
+    phylo_obj<-metacoder::as_phyloseq(
+      obj_dada,
+      sample_data = obj_dada$data$sample_data,
+      sample_id_col = "samplename_barcode")
+    
+    assign(paste0("obj_dada_", suffix), obj_dada, envir = .GlobalEnv)
+    
+    assign(paste0("phyloseq_obj_", suffix), phylo_obj, envir = .GlobalEnv)
+    
+    if (save_outputs==TRUE) {
+      taxmap_path <- file.path(directory_path, paste0("taxmap_obj_", suffix, ".RData"))
+      save(obj_dada, file = taxmap_path)
+      phyloseq_path <- file.path(directory_path, paste0("phyloseq_obj_", suffix, ".RData"))
+      save(phylo_obj, file = phyloseq_path)
+    }
   }
 }

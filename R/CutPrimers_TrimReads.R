@@ -202,11 +202,7 @@ run_cutadapt <- function(cutadapt_path,
       fwd_untrim_reads <- readFastq(fwd_untrim[i])
       rev_untrim_reads <- readFastq(rev_untrim[i])
       writeFastq(fwd_untrim_reads, fwd_trim[i], mode = 'a')
-      print(fwd_untrim[i])
-      print(fwd_untrim_reads)
       writeFastq(rev_untrim_reads, rev_trim[i], mode = 'a')
-      print(rev_trim_reads)
-      print(rev_trim_reads[i])
       cat("Contents appended to trimmed files.\n")
     }
   }

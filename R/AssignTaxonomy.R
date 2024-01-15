@@ -10,13 +10,7 @@
 #' @return Taxonomic assignments of each unique ASV sequence
 #' @export assignTax
 #' @examples
-#' # Load the package and prepare analysis setup
-#' library(your_package_name)
-#' analysis_setup <- prepare_reads(
-#'   data_directory = system.file("extdata", package = "your_package_name"),
-#'   output_directory = tempdir(),
-#'   tempdir_id = "run1",
-#'   overwrite_existing = FALSE)
+
 #'
 #' # Main function to trim primers based on Cutadapt and DADA2 functions
 #' cut_trim(
@@ -81,25 +75,25 @@ assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose =
         file.remove(files_to_remove)
       }
     }
-  }
   
-  for (barcode in unique_barcodes) {
+    for (barcode in unique_barcodes) {
     # Load merged reads for the current barcode
-    load(file.path(directory_path_temp, paste0("asvabund_matrixDADA2_", barcode, ".Rdata")))
+      load(file.path(directory_path_temp, paste0("asvabund_matrixDADA2_", barcode, ".Rdata")))
     
-    format_database(analysis_setup, barcode, db_its, db_rps10, db_16s, db_other)
+      format_database(analysis_setup, barcode, db_its, db_rps10, db_16s, db_other)
     
-    # Run taxonomy assignment for the current barcode
-    process_single_barcode(
+      # Run taxonomy assignment for the current barcode
+      process_single_barcode(
       data_tables=data_tables,
       directory_path_temp = directory_path_temp,
       directory_path = dir_paths$output_directory,
       asv_abund_matrix = asv_abund_matrix,
       locus = barcode
-    )
-  }
-  if (retrieve_files) {
-    file.copy(directory_path_temp, dir_paths$output_directory, recursive = TRUE)
+      )
+    }
+    if (retrieve_files) {
+      file.copy(directory_path_temp, dir_paths$output_directory, recursive = TRUE)
+    }
   }
 }
 

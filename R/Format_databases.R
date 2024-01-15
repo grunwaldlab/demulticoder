@@ -5,12 +5,12 @@
 #' @return A formatted database based on the specified barcode type
 #' @keywords internal
 #'
-format_database <- function(analysis_setup, barcode, db_its, db_rps10, db_16S, db_other) {
+format_database <- function(analysis_setup, barcode, db_its, db_rps10, db_16s, db_other) {
   if (barcode == "rps10") {
     return(format_db_rps10(analysis_setup, db_rps10))
   } else if (barcode == "its") {
     return(format_db_its(analysis_setup, db_its))
-  } else if (barcode == "16s") {
+  } else if (barcode == "sixteenS") {
     return(format_db_16s(analysis_setup, db_16s))
   } else if (barcode == "other") {
     return(format_db_other(analysis_setup, db_other))
@@ -119,7 +119,7 @@ format_db_16s <-function(analysis_setup, db_16s){
   directory_path <- dir_paths$output_directory
   data_path <- dir_paths$data_directory
   directory_path_temp <- dir_paths$temp_directory
-  database_path <- file.path(directory_path_temp, "16s_reference_db.fa")
+  database_path <- file.path(directory_path_temp, "sixteenS_reference_db.fa")
   db_16s <- read_fasta(file.path(data_path, db_16s))
   
   data_16s <- tibble(
