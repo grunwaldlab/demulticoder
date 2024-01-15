@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# rps10package-working on name
+# demulticoder Package-working name (may revise)
 
 ## Introduction
 
