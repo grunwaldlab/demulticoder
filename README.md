@@ -16,13 +16,8 @@ You can install the development version of rps10package from
 *TODO-still working on documentation*
 
 ``` r
-#temporary installation method
-#ADJUST PATHS FOR MOMENT
-devtools::load_all("/Users/masudermann/rps10package")
-devtools::document()
-
-# install.packages("devtools")
-# devtools::install_github("grunwaldlab/rps10_metabarcoding_tool")
+install.packages("devtools")
+devtools::install_github("grunwaldlab/demulticoder")
 ```
 
 ## Dependencies
