@@ -11,7 +11,8 @@ Please note: **xx** files and directories will be created.
 
 Please ensure that you have enough storage to save intermediate files and reformatted directories on your computer to proceed.  
 
-If you are using the Silva of Unite databases, an ordinary personal computer may not have enough memory.  
+If you are using the SILVA or UNITE databases, an ordinary personal computer may not have enough memory.  
+
 ***TODO-by default, intermediate files will be saved to a temporary directory. Provide instruction to user on how to override this.***
 
 Prepare and input metadata and primer files according to the templates provided. Using the provided templates, paste sample names in the first column.  In the second column, user will specify the barcode they have used. Currently, user can specify 'its' or 'rps10'. These primer names are case sensitive.
