@@ -1,45 +1,3 @@
-#' Set up directory paths for subsequent analyses
-#'
-#' This function sets up the paths for the analysis.
-#' It checks whether the specified output directories exist or creates them if they don't. 
-#' The function also provides paths to primer and metadata files within the data directory.
-#'
-#' @param data_directory Directory for data files. Default is "data".
-#' @param output_directory Directory for analysis outputs. Default is "outputs".
-#' @param tempdir_id ID for temporary directories, combined with the current date. Default is "run1".
-#' 
-#' @return A list with paths for data, output, temporary directories, primer, and metadata files.
-#' 
-#' @keywords internal
-
-setup_directories <- function(data_directory = "data", 
-                              output_directory = "outputs", 
-                              tempdir_id = "run1") {
-  
-  data_primers_params_path <- file.path(data_directory, "primerinfo_params.csv")
-  data_metadata_path <- file.path(data_directory, "metadata.csv")
-  
-  if (!dir.exists(output_directory)) {
-    dir.create(output_directory, recursive = TRUE)
-  }
-  
-  output_path <- file.path(output_directory)
-  if (!dir.exists(output_path)) {
-    dir.create(output_path, recursive = TRUE)
-  }
-  
-  temp_path <- file.path(tempdir(), paste0(tempdir_id, "_", Sys.Date()))
-  if (!dir.exists(temp_path)) {
-    dir.create(temp_path, recursive = TRUE)
-  }
-  
-  outputs <- (list(data_directory = data_directory, 
-              output_directory = output_directory, 
-              temp_directory = temp_path, 
-              primers_params_path = data_primers_params_path, 
-              metadata_path = data_metadata_path))
-}
-
 #' Prepare reads for primer trimming using Cutadapt
 #'
 #' This function prepares sequencing reads for primer trimming using Cutadapt by setting up necessary directories, reading in metadata and primer data, and performing pre-trimming quality control steps.
@@ -54,11 +12,12 @@ setup_directories <- function(data_directory = "data",
 #' @export 
 #' @examples
 #' Pre-filter raw reads and parse metadata and primer_information to prepare for primer trimming and filter
-#' analysis_setup <- prepare_reads(
-#'   data_directory = system.file("extdata", package = "your_package_name"),
-#'   output_directory = tempdir(),
-#'   tempdir_id = "run1",
-#'   overwrite_existing = FALSE)
+#' prepare_reads(
+#' maxN = 0, 
+#' data_directory = "~/demulticoder/inst/extdata", 
+#' output_directory = "~/testing_package9", 
+#' tempdir_id = "run1",
+#' overwrite_existing = TRUE)
 #'   
 #' @importFrom dada2 filterAndTrim
 
@@ -66,12 +25,13 @@ setup_directories <- function(data_directory = "data",
 prepare_reads <-
   function(data_directory = "data", 
            output_directory = "output", 
+           tempdir_path = NULL, 
            tempdir_id = "run1",
            maxN = 0, 
            multithread = FALSE, 
            overwrite_existing = FALSE) {
     
-    dir_paths <- setup_directories(data_directory, output_directory, tempdir_id)
+    dir_paths <- setup_directories(data_directory, output_directory, tempdir_path, tempdir_id)
     directory_path <- dir_paths$output_directory
     data_path <- dir_paths$data_directory
     directory_path_temp <- dir_paths$temp_directory
@@ -121,6 +81,54 @@ prepare_reads <-
     assign("analysis_setup", analysis_setup, envir = .GlobalEnv)
     return(analysis_setup)
   }
+
+#' Set up directory paths for subsequent analyses
+#'
+#' This function sets up the paths for the analysis.
+#' It checks whether the specified output directories exist or creates them if they don't. 
+#' The function also provides paths to primer and metadata files within the data directory.
+#'
+#' @param data_directory Directory for data files. Default is "data".
+#' @param output_directory Directory for analysis outputs. Default is "outputs".
+#' @param tempdir_id ID for temporary directories, combined with the current date. Default is "run1".
+#' 
+#' @return A list with paths for data, output, temporary directories, primer, and metadata files.
+#' 
+#' @keywords internal
+
+setup_directories <- function(data_directory = "data", 
+                              output_directory = "outputs",
+                              tempdir_path=NULL,
+                              tempdir_id = "run1") {
+  
+  data_primers_params_path <- file.path(data_directory, "primerinfo_params.csv")
+  data_metadata_path <- file.path(data_directory, "metadata.csv")
+  
+  if (!dir.exists(output_directory)) {
+    dir.create(output_directory, recursive = TRUE)
+  }
+  
+  output_path <- file.path(output_directory)
+  if (!dir.exists(output_path)) {
+    dir.create(output_path, recursive = TRUE)
+  }
+  
+  if (is.null(tempdir_path)) {
+    temp_path <- file.path(tempdir(), paste0(tempdir_id, "_", Sys.Date()))
+  } else {
+    temp_path <- file.path(tempdir_path, paste0(tempdir_id, "_", Sys.Date()))
+  }
+  
+  if (!dir.exists(temp_path)) {
+    dir.create(temp_path, recursive = TRUE)
+  }
+  
+  outputs <- (list(data_directory = data_directory, 
+                   output_directory = output_directory, 
+                   temp_directory = temp_path, 
+                   primers_params_path = data_primers_params_path, 
+                   metadata_path = data_metadata_path))
+}
 
 #' Read in the metadata from user and combine it with the primer data.
 #' Included in a larger function prepare_reads.
@@ -207,12 +215,12 @@ read_parameters <- function(primers_params_path){
 read_fastq <- function(data_path, directory_path_temp) {
   
   fastq_paths <- list.files(data_path, pattern = "\\.fastq(|\\.gz)$")
-
+  
   file_id <- sub("\\.fastq(|\\.gz)$", "", fastq_paths)
   sample_name = gsub(fastq_paths, pattern = "_R1|_R2\\.fastq|.fastq\\.gz|.gz$", replacement = "")
   
   direction <- ifelse(grepl("_R1", fastq_paths), "Forward", "Reverse")
-
+  
   directory_data_path <- file.path(data_path, fastq_paths)
   temp_data_path <- file.path(directory_path_temp, fastq_paths)
   
@@ -325,18 +333,18 @@ get_pre_primer_hits <-
     
     primer_hit_data_csv_path <-
       file.path(directory_path, "primer_hit_data_pretrim.csv")
-
+    
     if (file.exists(primer_hit_data_csv_path)) {
       primer_hit_data <- read_csv(primer_hit_data_csv_path)
       print(primer_hit_data)
-
+      
     } else {
       primer_hit_counts <- future_map(fastq_data$prefiltered_path,
                                       function (a_path)
                                         map_dbl(primer_hit_data$sequence, primer_hits, path = a_path))
-     
+      
       names(primer_hit_counts) <- paste0(fastq_data$file_id)
-
+      
       primer_hit_data <-
         bind_cols(primer_hit_data, as_tibble(primer_hit_counts))
       print(primer_hit_data)

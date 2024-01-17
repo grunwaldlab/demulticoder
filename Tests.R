@@ -1,50 +1,37 @@
-devtools::load_all("/Users/masudermann/rps10package")
+devtools::load_all("/Users/masudermann/demulticoder")
 devtools::document()
+
+#install.packages("devtools")
+#devtools::install_github("grunwaldlab/demulticoder")
+
 #sessionInfo()
-
-
 #devtools::install
 #devtools::build_rmd("vignettes/Introduction.Rmd")
 #browseVignettes('rps10package')
 
 prepare_reads(
   maxN = 0, 
-  data_directory = "~/rps10_rerun_rev_db/data", 
-  output_directory = "~/rps10_rerun_rev_db/results_2_ee7_truncq5_minasv300", 
-  tempdir_id = "run2",
-  overwrite_existing = FALSE)
+  data_directory = "~/demulticoder/inst/extdata", 
+  output_directory = "~/testing_package9", 
+  tempdir_id = "run1",
+  overwrite_existing = TRUE)
 
 cut_trim(
   analysis_setup,
   cutadapt_path="/opt/homebrew/bin/cutadapt",
-  maxEE=5, 
-  truncQ=5,
-  minCutadaptlength = 50,
-  multithread=TRUE,
   overwrite_existing = TRUE)
 
 make_asv_abund_matrix(
   analysis_setup,
-  verbose = TRUE,
-  maxMismatch = 2,
-  minOverlap = 15,
-  min_asv_length=300,
   overwrite_existing = TRUE)
 
 assignTax(
   analysis_setup,
   asv_abund_matrix,
-  barcode = "rps10",
   retrieve_files=TRUE,
   overwrite_existing=TRUE)
 
-
-asv_matrix_to_taxmap(save_taxmap = TRUE)
-taxmap_to_phyloseq(save_phyloseq=TRUE)
-
-
-summary_table <- process_single_barcode(analysis_setup$data_tables, analysis_setup$dir_paths$temp_directory, analysis_setup$dir_paths$output_directory, asv_abund_matrix, barcode = "rps10")
-assign("summary_table", summary_table, envir = .GlobalEnv)
+asv_matrix_to_taxmap_phyloseq(save_outputs=TRUE)
 
 library(testthat)
 check()
@@ -58,6 +45,6 @@ check()
 #usethis::use_vignette("Package_Workflow")
 
 
-#To do-16S functionality, and if so any permutation of two barcodes
-#Would need to resolve issues with cutandtrim-being able to adjust the parameters for barcodes individually
+#Need to be clear for ASV inference step, for DADA2 needs greater than 1 sample!!!
+#make sure input requirements are clear and there are templates and examples
 #IDtaxa-requires specific db formats but this could solve some issues as well, and maybe make others? 

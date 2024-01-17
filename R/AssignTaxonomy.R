@@ -75,20 +75,20 @@ assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose =
         file.remove(files_to_remove)
       }
     }
-  
+    
     for (barcode in unique_barcodes) {
-    # Load merged reads for the current barcode
+      # Load merged reads for the current barcode
       load(file.path(directory_path_temp, paste0("asvabund_matrixDADA2_", barcode, ".Rdata")))
-    
+      
       format_database(analysis_setup, barcode, db_its, db_rps10, db_16s, db_other)
-    
+      
       # Run taxonomy assignment for the current barcode
       process_single_barcode(
-      data_tables=data_tables,
-      directory_path_temp = directory_path_temp,
-      directory_path = dir_paths$output_directory,
-      asv_abund_matrix = asv_abund_matrix,
-      locus = barcode
+        data_tables=data_tables,
+        directory_path_temp = directory_path_temp,
+        directory_path = dir_paths$output_directory,
+        asv_abund_matrix = asv_abund_matrix,
+        locus = barcode
       )
     }
     if (retrieve_files) {
@@ -317,7 +317,7 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv, directory_path, l
   filtered_abund_matrix <- formatted_abund_asv[keep_rows, ]
   
   # Return the filtered abundance matrix
-
+  
   write_csv(filtered_abund_matrix, file = file.path(directory_path, paste0('final_asv_abundance_matrix_', locus, '.csv')))
   return(filtered_abund_matrix)
 }
