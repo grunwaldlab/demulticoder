@@ -10,24 +10,10 @@
 #' @return The asv abundance matrix asv_abund_matrix
 #' @export make_asv_abund_matrix
 #' @examples
-#' # Pre-filter raw reads and parse metadata and primerinfo_paramsrmation to prepare for primer trimming and filter
-#' analysis_setup <- prepare_reads(
-#'   data_directory = system.file("extdata", package = "your_package_name"),
-#'   output_directory = tempdir(),
-#'   tempdir_id = "run1",
-#'   overwrite_existing = FALSE)
-#'
-#' # Main function to trim primers based on Cutadapt and DADA2 functions
-#' cut_trim(
-#'   analysis_setup,
-#'   cutadapt_path = "/opt/homebrew/bin/cutadapt",
-#'   overwrite_existing = FALSE)
-#'
-#' # Main function to make ASV abundance matrix
-#' make_asv_abund_matrix(
-#'   analysis_setup,
-#'   verbose = TRUE,
-#'   overwrite_existing = FALSE)
+#' The primary wrapper function for DADA2 ASV inference steps
+#' prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "run1", overwrite_existing = TRUE)
+#' cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = TRUE)
+#' make_asv_abund_matrix(analysis_setup, overwrite_existing = TRUE)
 
 make_asv_abund_matrix <- function(analysis_setup,
                                   overwrite_existing = FALSE) {

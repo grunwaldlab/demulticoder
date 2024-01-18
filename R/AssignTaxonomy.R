@@ -10,30 +10,11 @@
 #' @return Taxonomic assignments of each unique ASV sequence
 #' @export assignTax
 #' @examples
-
-#'
-#' # Main function to trim primers based on Cutadapt and DADA2 functions
-#' cut_trim(
-#'   analysis_setup,
-#'   cutadapt_path = "/opt/homebrew/bin/cutadapt",
-#'   overwrite_existing = FALSE)
-#'
-#' # Main function to make ASV abundance matrix
-#' make_asv_abund_matrix(
-#'   analysis_setup,
-#'   verbose = TRUE,
-#'   overwrite_existing = FALSE)
-#'
-#' # Assign rps10 and/or ITS taxonomy
-#' assignTax(
-#'   analysis_setup,
-#'   asv_abund_matrix,
-#'   retrieve_files = FALSE,
-#'   overwrite_existing = FALSE)
-#'
-
-#denoised_data_path <- file.path(directory_path_temp, paste0("Denoised_data_", barcode, ".Rdata"))
-#load(denoised_data_path)
+#' Assign taxonomies to ASVs on a per barcode basis
+#' prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "run1", overwrite_existing = TRUE)
+#' cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = TRUE)
+#' make_asv_abund_matrix(analysis_setup, overwrite_existing = TRUE)
+#' assignTax(analysis_setup,asv_abund_matrix, retrieve_files=TRUE, overwrite_existing=TRUE)
 
 assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, db_rps10="oomycetedb.fasta", db_its="fungidb.fasta", db_16s="bacteriadb.fasta", db_other="otherdb.fasta", overwrite_existing=FALSE) {
   dir_paths <- analysis_setup$dir_paths

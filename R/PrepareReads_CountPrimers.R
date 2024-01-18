@@ -8,19 +8,11 @@
 #' @param output_directory Directory for outputs. Default is "output".
 #' @param tempdir_id ID for temporary directories, combined with the current date. Default is "run1".
 #' @return A list with data tables for trimming and directory paths.
-#' 
 #' @export 
 #' @examples
 #' Pre-filter raw reads and parse metadata and primer_information to prepare for primer trimming and filter
-#' prepare_reads(
-#' maxN = 0, 
-#' data_directory = "~/demulticoder/inst/extdata", 
-#' output_directory = "~/testing_package9", 
-#' tempdir_id = "run1",
-#' overwrite_existing = TRUE)
-#'   
+#' #' prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "run1", overwrite_existing = TRUE)
 #' @importFrom dada2 filterAndTrim
-
 
 prepare_reads <-
   function(data_directory = "data", 

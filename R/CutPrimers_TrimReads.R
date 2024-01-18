@@ -5,18 +5,10 @@
 #' @param overwrite_existing Logical, indicating whether to remove or overwrite existing files and directories from previous runs. If set to TRUE, specific output files 
 #' @return Reads trimmed of primers and filtered, primer counts after running Cutadapt, quality plots after poor quality reads are trimmed or removed, and the ASV matrix.
 #' @export
-#' 
 #' @examples
-#' analysis_setup <- prepare_reads(
-#'   data_directory = system.file("extdata", package = "your_package_name"),
-#'   output_directory = tempdir(),
-#'   tempdir_id = "run1",
-#'   overwrite_existing = FALSE)
-#' cut_trim(
-#'   analysis_setup,
-#'   cutadapt_path = "/opt/homebrew/bin/cutadapt",
-#'   overwrite_existing = FALSE)
-
+#' Remove remaining primers from raw reads, demultiplex pooled barcoded samples, and then trim reads based on specific DADA2 parameters
+#' prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "run1", overwrite_existing = TRUE)
+#' cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = TRUE)
 cut_trim <- function(analysis_setup,
                      cutadapt_path,
                      overwrite_existing = FALSE) {
