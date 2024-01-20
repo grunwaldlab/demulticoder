@@ -13,7 +13,6 @@ prepare_reads(
   maxN = 0, 
   data_directory = "~/demulticoder/inst/extdata", 
   output_directory = "~/testing_package", 
-  tempdir_path="~/",
   tempdir_id = "run1",
   overwrite_existing = TRUE)
 

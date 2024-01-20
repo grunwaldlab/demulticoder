@@ -106,9 +106,9 @@ setup_directories <- function(data_directory = "data",
   }
   
   if (is.null(tempdir_path)) {
-    temp_path <- file.path(tempdir(), paste0(tempdir_id, "_", Sys.Date()))
+    temp_path <- file.path(tempdir(), paste0(tempdir_id))
   } else {
-    temp_path <- file.path(tempdir_path, paste0(tempdir_id, "_", Sys.Date()))
+    temp_path <- file.path(tempdir_path, paste0(tempdir_id))
   }
   
   if (!dir.exists(temp_path)) {
