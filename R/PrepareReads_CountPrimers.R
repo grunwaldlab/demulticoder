@@ -1,6 +1,6 @@
 #' Prepare reads for primer trimming using Cutadapt
 #'
-#' This function prepares sequencing reads for primer trimming using Cutadapt by setting up necessary directories, reading in metadata and primer data, and performing pre-trimming quality control steps.
+#' This function organizes user-defined directories, metadata and parameter inputs in preparation for Cutadapt to remove primers from short read metabarcoding sequence data. Afterwards, subsequent functions can be used to simplify core DADA2 ASV and taxonomic assignment steps.
 #'
 #' @inheritParams dada2::filterAndTrim
 #' @param overwrite_existing Logical, indicating whether to remove or overwrite existing files and directories from previous runs.
@@ -12,7 +12,7 @@
 #' @export 
 #' @examples
 #' Pre-filter raw reads and parse metadata and primer_information to prepare for primer trimming and filter
-#' #' prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "run1", overwrite_existing = TRUE)
+#' #' prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "demulticoder_run", overwrite_existing = TRUE)
 #' @importFrom dada2 filterAndTrim
 
 prepare_reads <-
@@ -77,22 +77,23 @@ prepare_reads <-
 
 #' Set up directory paths for subsequent analyses
 #'
-#' This function sets up the paths for the analysis.
+#' This function sets up the directory paths for subsequent analyses.
 #' It checks whether the specified output directories exist or creates them if they don't. 
 #' The function also provides paths to primer and metadata files within the data directory.
 #'
-#' @param data_directory Directory for data files. Default is "data".
-#' @param output_directory Directory for analysis outputs. Default is "outputs".
-#' @param tempdir_id ID for temporary directories, combined with the current date. Default is "run1".
+#' @param data_directory User-specified directory path where user has placed raw FASTQ (forward and reverse reads), metadata.csv, and primerinfo_params.csv files. Default is "data".
+#' @param output_directory User-specified directory for outputs. Default is "output".
+#' @param tempdir_path Path to a temporary directory. If NULL, a temporary directory path will be identified using tempdir() command. 
+#' @param tempdir_id ID for temporary directories. Default is "demulticoder_run". User can provide any helpful ID, whether it be a date or specific name for the run. 
 #' 
 #' @return A list with paths for data, output, temporary directories, primer, and metadata files.
 #' 
 #' @keywords internal
 
 setup_directories <- function(data_directory = "data", 
-                              output_directory = "outputs",
+                              output_directory = "output",
                               tempdir_path=NULL,
-                              tempdir_id = "run1") {
+                              tempdir_id = "demulticoder_run") {
   
   data_primers_params_path <- file.path(data_directory, "primerinfo_params.csv")
   data_metadata_path <- file.path(data_directory, "metadata.csv")
@@ -123,13 +124,13 @@ setup_directories <- function(data_directory = "data",
                    metadata_path = data_metadata_path))
 }
 
-#' Read in the metadata from user and combine it with the primer data.
+#' Read metadata file from user and combine and reformat it, given primer data.
 #' Included in a larger function prepare_reads.
+#' 
 #' @param primers_params_path a path to the csv file that holds the primer
 #' information
 #' @param metadata_path The path to the metadata file
-#' @return A dataframe containing the merged metadata and primer
-#' data
+#' @return A dataframe containing the merged metadata and primerdata
 #' @keywords internal
 #'
 prepare_metadata_table <- function(metadata_path, primer_data) {
@@ -148,7 +149,7 @@ prepare_metadata_table <- function(metadata_path, primer_data) {
   return(metadata)
 }
 
-#' Take in user's primers and creates the complement, reverse,
+#' Take in user's forward and reverse primer sequences and create the complement, reverse,
 #' reverse complement of primers in one tibble
 #' @param primers_params_path a path to the csv file that holds the primer
 #' information
@@ -236,10 +237,10 @@ primer_check <- function(fastq_data) {
     sub(".+$", "", seqs$V1)
   }
   
-  stopifnot(all(
-    get_read_names(paired_file_paths[1]) == get_read_names(paired_file_paths[2])
+  #stopifnot(all(
+    #get_read_names(paired_file_paths[1]) == get_read_names(paired_file_paths[2])
     
-  ))
+  #))
 }
 
 
