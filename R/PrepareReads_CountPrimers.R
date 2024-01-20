@@ -149,7 +149,7 @@ prepare_metadata_table <- function(metadata_path, primer_data) {
   return(metadata)
 }
 
-#' Take in user's forward and reverse primer sequences and create the complement, reverse,
+#' Take in user's forward and reverse sequences and creates the complement, reverse,
 #' reverse complement of primers in one tibble
 #' @param primers_params_path a path to the csv file that holds the primer
 #' information
