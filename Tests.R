@@ -14,12 +14,13 @@ prepare_reads(
   data_directory = "~/demulticoder/inst/extdata", 
   output_directory = "~/testing_package", 
   tempdir_id = "run1",
-  overwrite_existing = TRUE)
+  tempdir_path="~/Desktop",
+  overwrite_existing = FALSE)
 
 cut_trim(
   analysis_setup,
   cutadapt_path="/opt/homebrew/bin/cutadapt",
-  overwrite_existing = TRUE)
+  overwrite_existing = FALSE)
 
 make_asv_abund_matrix(
   analysis_setup,

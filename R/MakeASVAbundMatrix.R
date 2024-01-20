@@ -95,15 +95,6 @@ make_asv_abund_matrix <- function(analysis_setup,
     }
   }
 }
-  
-  # Combine abundance matrices from different barcodes
-  #combined_asv_abund_matrix <- Reduce(function(x, y) merge_asv_matrices(x, y), asv_abund_matrix_list)
-  
-  # Save the combined matrix to file
-  #save(combined_asv_abund_matrix, file = file.path(directory_path_temp, "combined_asvabund_matrixDADA2.Rdata"))
-  
-  #return(combined_asv_abund_matrix)
-#}
 
 #' Retrieve the paths of the filtered and trimmed Fastq files
 #'

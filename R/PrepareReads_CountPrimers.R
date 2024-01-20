@@ -3,11 +3,12 @@
 #' This function prepares sequencing reads for primer trimming using Cutadapt by setting up necessary directories, reading in metadata and primer data, and performing pre-trimming quality control steps.
 #'
 #' @inheritParams dada2::filterAndTrim
-#' @param overwrite_existing Logical, indicating whether to remove or overwrite existing files and directories from previous runs. If set to TRUE, specific output files 
-#' @param data_directory Directory for data files. Default is "data".
-#' @param output_directory Directory for outputs. Default is "output".
-#' @param tempdir_id ID for temporary directories, combined with the current date. Default is "run1".
-#' @return A list with data tables for trimming and directory paths.
+#' @param overwrite_existing Logical, indicating whether to remove or overwrite existing files and directories from previous runs.
+#' @param data_directory User-specified directory path where user has placed raw FASTQ (forward and reverse reads), metadata.csv, and primerinfo_params.csv files. Default is "data".
+#' @param output_directory User-specified directory for outputs. Default is "output".
+#' @param tempdir_path Path to a temporary directory. If NULL, a temporary directory path will be identified using tempdir() command. 
+#' @param tempdir_id ID for temporary directories. Default is "demulticoder_run". User can provide any helpful ID, whether it be a date or specific name for the run. 
+#' @return A list containing data tables, including metadata, primer sequences, paths for trimming reads, and user-defined parameters.
 #' @export 
 #' @examples
 #' Pre-filter raw reads and parse metadata and primer_information to prepare for primer trimming and filter
@@ -18,7 +19,7 @@ prepare_reads <-
   function(data_directory = "data", 
            output_directory = "output", 
            tempdir_path = NULL, 
-           tempdir_id = "run1",
+           tempdir_id = "demulticoder_run",
            maxN = 0, 
            multithread = FALSE, 
            overwrite_existing = FALSE) {
