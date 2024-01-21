@@ -1,13 +1,13 @@
-#' Make an amplified sequence variant abundance matrix with data processed through preceding steps
-#' @param A list containing directory paths and data tables, produced by the 
-#' `prepare_reads` function
-#' @param directory_path The path to the directory containing the fastq,
-#' metadata, and primerinfo_params files
-#' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow
-#' metadata, and primerinfo_params files
-#' @inheritParams infer_asv_command
-#' @inheritParams merge_reads_command
-#' @return The asv abundance matrix asv_abund_matrix
+#' Make an Amplified Sequence Variant (ASV) Abundance Matrix
+#' This function generates an ASV abundance matrix based on data processed through
+#' the preceding steps, including read preparation, cut and trim, and ASV inference.
+#' @param analysis_setup A list containing directory paths and data tables, produced by the 
+#' `prepare_reads` function.
+#' @param overwrite_existing Logical, indicating whether to overwrite existing results.
+#' @details The function processes data for each unique barcode separately, inferring
+#' ASVs, merging reads, and creating an ASV abundance matrix.
+#' @return The ASV abundance matrix (`asv_abund_matrix`).
+#' @keywords internal
 #' @export make_asv_abund_matrix
 #' @examples
 #' The primary wrapper function for DADA2 ASV inference steps

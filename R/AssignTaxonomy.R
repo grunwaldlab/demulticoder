@@ -1,10 +1,11 @@
 #' Assign taxonomy functions
 #' @param analysis_setup A list containing directory paths and data tables, produced by the `prepare_reads` function.
-#' @param barcode specify which barcode you have used, 'rps10', 'its', or 'rps10_its'
-#' @param asv_abund_matrix specify the ASV abundance matrix for which taxonomic assignments will be given
-#' @param retrieve_files Specify TRUE/FALSE whether to copy files from the tempdirectory (which will be deleted) 
-#' to directory specified by directory path
-#' @param overwrite_existing Logical, indicating whether to remove or overwrite existing files and directories from previous runs. If set to TRUE, specific output files 
+#' @param asv_abund_matrix ASV abundance matrix.
+#' @param tryRC Whether to try reverse complementing sequences during taxonomy assignment.
+#' @param verbose Logical, indicating whether to display verbose output.
+#' @param multithread Logical, indicating whether to use multithreading.
+#' @param retrieve_files Specify TRUE/FALSE whether to copy files from the temp directory to the output directory.
+#' @param overwrite_existing Logical, indicating whether to remove or overwrite existing files and directories from previous runs.
 #' @inheritParams assign_taxonomyDada2
 #' @inheritParams dada2::assignTaxonomy
 #' @return Taxonomic assignments of each unique ASV sequence
