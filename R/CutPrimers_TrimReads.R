@@ -2,7 +2,7 @@
 #'
 #' @param analysis_setup A list containing directory paths and data tables, produced by the `prepare_reads` function.
 #' @param cutadapt_path A path to the Cutadapt program.
-#' @param overwrite_existing Logical, indicating whether to remove or overwrite existing files and directories from previous runs. If set to TRUE, specific output files 
+#' @param overwrite_existing Logical, indicating whether to remove or overwrite existing files and directories from previous runs.
 #' @return Reads trimmed of primers and filtered, primer counts after running Cutadapt, quality plots after poor quality reads are trimmed or removed, and the ASV matrix.
 #' @export
 #' @examples

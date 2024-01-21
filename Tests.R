@@ -12,8 +12,8 @@ devtools::document()
 prepare_reads(
   maxN = 0, 
   data_directory = "~/demulticoder/inst/extdata", 
-  output_directory = "~/testing_package", 
-  tempdir_id = "run1",
+  output_directory = "~/testing_package2", 
+  tempdir_id = "run2",
   tempdir_path="~/Desktop",
   overwrite_existing = TRUE)
 
