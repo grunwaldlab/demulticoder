@@ -237,10 +237,10 @@ primer_check <- function(fastq_data) {
     sub(".+$", "", seqs$V1)
   }
   
-  #stopifnot(all(
-    #get_read_names(paired_file_paths[1]) == get_read_names(paired_file_paths[2])
+  stopifnot(all(
+    get_read_names(paired_file_paths[1]) == get_read_names(paired_file_paths[2])
     
-  #))
+  ))
 }
 
 
