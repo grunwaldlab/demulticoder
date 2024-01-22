@@ -7,7 +7,6 @@
 #' @details The function processes data for each unique barcode separately, inferring
 #' ASVs, merging reads, and creating an ASV abundance matrix.
 #' @return The ASV abundance matrix (`asv_abund_matrix`).
-#' @keywords internal
 #' @export make_asv_abund_matrix
 #' @examples
 #' The primary wrapper function for DADA2 ASV inference steps
@@ -21,6 +20,7 @@ make_asv_abund_matrix <- function(analysis_setup,
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   data_path <- dir_paths$data_directory
+  directory_path <- dir_paths$output_directory
   directory_path_temp <- dir_paths$temp_directory
   
   asv_abund_matrix_list <- list()  # To store individual matrices for each barcode
@@ -45,57 +45,92 @@ make_asv_abund_matrix <- function(analysis_setup,
     method="consensus",
     min_asv_length = 50)
   
-  unique_barcodes <- unique(data_tables$cutadapt_data$primer_name)
+  # Additional check for specific files in the temporary directory
+  files_to_check <- c("asvabund_matrixDADA2_*", "*_taxmatrix.Rdata")
   
-  for (barcode in unique_barcodes) {
+  if (!overwrite_existing || any(!file.exists(list.files(directory_path_temp, pattern = files_to_check, full.names = TRUE)))) {
+    message("Files have already been processed. To overwrite, specify overwrite_existing = TRUE.")
+    return(invisible())
+  
+    } else {
+    patterns_to_remove <- c(
+      "asv_seqlength_plot_*",
+      "error_plot_*",
+      "read_merging_info_*"
+    )
     
-    # Get barcode-specific parameters
-    params <- filter(data_tables$parameters, primer_name == barcode)
+    for (pattern in patterns_to_remove) {
+      full_pattern <- file.path(directory_path, pattern)
+      files_to_remove <- list.files(path = directory_path, pattern = pattern, full.names = TRUE)
+      
+      if (length(files_to_remove) > 0) {
+        file.remove(files_to_remove)
+      }
+    }
     
-    if (nrow(params) > 0) {
-      params <- as.list(params)
+    patterns_to_remove_temp <- c(
+      "asvabund_matrixDADA2_*",
+      "*_taxmatrix.Rdata"
+    )
+    
+    for (pattern in patterns_to_remove_temp) {
+      full_pattern <- file.path(directory_path_temp, pattern)
+      files_to_remove <- list.files(path = directory_path_temp, pattern = pattern, full.names = TRUE)
       
-      # Modify default parameters with barcode-specific ones
-      barcode_params <- modifyList(default_params, params)
-      print(barcode)
-      print(barcode_params)
-      
-      dir_paths <- analysis_setup$dir_paths
-      data_tables <- analysis_setup$data_tables
-      directory_path <- dir_paths$output_directory
-      data_path <- dir_paths$data_directory
-      directory_path_temp <- dir_paths$temp_directory
-      
-      if (overwrite_existing || !file.exists(file.path(directory_path_temp, "asvabund_matrixDADA2.Rdata"))) {
-        infer_asv_command(
-          directory_path = directory_path,
-          directory_path_temp = directory_path_temp,
-          data_tables = data_tables,
-          barcode_params = barcode_params,
-          barcode=barcode
-        )
+      if (length(files_to_remove) > 0) {
+        file.remove(files_to_remove)
+      }
+    }
+    
+    unique_barcodes <- unique(data_tables$cutadapt_data$primer_name)
+    
+    for (barcode in unique_barcodes) {
+      # Get barcode-specific parameters
+      params <- filter(data_tables$parameters, primer_name == barcode)
+      if (nrow(params) > 0) {
+        params <- as.list(params)
         
-        # Merge reads with barcode-specific parameters
-        merged_reads <- merge_reads_command(
-          directory_path=directory_path,
-          directory_path_temp = directory_path_temp,
-          barcode_params = barcode_params,
-          barcode=barcode
-        )
+        # Modify default parameters with barcode-specific ones
+        barcode_params <- modifyList(default_params, params)
+        print(barcode)
+        print(barcode_params)
         
-        countOverlap(merged_reads, data_tables, directory_path, barcode)
+        dir_paths <- analysis_setup$dir_paths
+        data_tables <- analysis_setup$data_tables
+        directory_path <- dir_paths$output_directory
+        data_path <- dir_paths$data_directory
+        directory_path_temp <- dir_paths$temp_directory
         
-        raw_seqtab <- createASVSequenceTable(merged_reads, orderBy = "abundance")
-        
-        asv_abund_matrix <- make_abund_matrix(raw_seqtab, directory_path_temp = directory_path_temp, barcode_params, barcode)
-        
-        make_seqhist(asv_abund_matrix, directory_path)
-        #assign("asv_abund_matrix", asv_abund_matrix, envir = .GlobalEnv) #Decide if necessary to retain-maybe just confusing
+        if (overwrite_existing || !file.exists(file.path(directory_path_temp, "asvabund_matrixDADA2.Rdata"))) {
+          infer_asv_command(
+            directory_path = directory_path,
+            directory_path_temp = directory_path_temp,
+            data_tables = data_tables,
+            barcode_params = barcode_params,
+            barcode=barcode
+          )
+          
+          # Merge reads with barcode-specific parameters
+          merged_reads <- merge_reads_command(
+            directory_path=directory_path,
+            directory_path_temp = directory_path_temp,
+            barcode_params = barcode_params,
+            barcode=barcode
+          )
+          
+          countOverlap(merged_reads, data_tables, directory_path, barcode)
+          
+          raw_seqtab <- createASVSequenceTable(merged_reads, orderBy = "abundance")
+          
+          asv_abund_matrix <- make_abund_matrix(raw_seqtab, directory_path_temp = directory_path_temp, barcode_params, barcode)
+          
+          make_seqhist(asv_abund_matrix, directory_path)
+          #assign("asv_abund_matrix", asv_abund_matrix, envir = .GlobalEnv) #Decide if necessary to retain-maybe just confusing
+        }
       }
     }
   }
 }
-
 #' Retrieve the paths of the filtered and trimmed Fastq files
 #'
 #' @param my_direction Whether primer is in forward or reverse direction

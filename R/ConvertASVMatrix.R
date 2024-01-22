@@ -15,7 +15,13 @@
 #' level, taxonomic assignment will be set to N/A
 #' @param save_outputs Logical, indicating whether to save the taxmap object. Default is FALSE.
 #' @return ASV matrix converted to taxmap object
-#' @examples
+#' @examples 
+#' Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
+#' prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "run1", overwrite_existing = TRUE)
+#' cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = TRUE)
+#' make_asv_abund_matrix(analysis_setup, overwrite_existing = TRUE)
+#' assignTax(analysis_setup,asv_abund_matrix, retrieve_files=TRUE, overwrite_existing=TRUE
+#' asv_matrix_to_taxmap_phyloseq(save_outputs=TRUE)
 
 asv_matrix_to_taxmap_phyloseq <- function(min_read_depth=0, minimum_bootstrap=0, pid_species=0, pid_genus=0, pid_family=0, save_outputs = FALSE) {
   dir_paths <- analysis_setup$dir_paths

@@ -9,6 +9,7 @@
 #' Remove remaining primers from raw reads, demultiplex pooled barcoded samples, and then trim reads based on specific DADA2 parameters
 #' prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "run1", overwrite_existing = TRUE)
 #' cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = TRUE)
+
 cut_trim <- function(analysis_setup,
                      cutadapt_path,
                      overwrite_existing = FALSE) {
@@ -18,7 +19,11 @@ cut_trim <- function(analysis_setup,
   directory_path <- dir_paths$output_directory
   directory_path_temp <- dir_paths$temp_directory
   
-  if (overwrite_existing) {
+  if (!overwrite_existing) {
+    message("Files have already been processed. To overwrite, specify overwrite_existing = TRUE.")
+    return(invisible())
+    
+  } else {
     patterns_to_remove <- c(
       "primer_hit_data_posttrim.csv", 
       "posttrim_primer_plot.pdf",
@@ -34,7 +39,9 @@ cut_trim <- function(analysis_setup,
       }
     }
     
-    patterns_to_remove_temp <- "Filter_results.RData"
+    patterns_to_remove_temp <- c(  # <- This was missing in your code
+      "Filter_results_*"
+    )
     
     for (pattern in patterns_to_remove_temp) {
       full_pattern <- file.path(directory_path_temp, pattern)
@@ -45,14 +52,27 @@ cut_trim <- function(analysis_setup,
       }
     }
     
+    temp_untrimmed <- file.path(directory_path_temp, "untrimmed_sequenced")
+    temp_trimmed <- file.path(directory_path_temp, "trimmed_sequences")
+    temp_filtered <- file.path(directory_path_temp, "filtered_sequences")
+    
+    if (dir.exists(temp_untrimmed)) {
+      unlink(list.files(temp_untrimmed, full.names = TRUE), recursive = TRUE)
+    }
+    if (dir.exists(temp_trimmed)) {
+      unlink(list.files(temp_trimmed, full.names = TRUE), recursive = TRUE)
+    }
+    if (dir.exists(temp_filtered)) {
+      unlink(list.files(temp_filtered, full.names = TRUE), recursive = TRUE)
+    }
+    
     subdirectory_names <- c("filtered_sequences", "trimmed_sequences", "untrimmed_sequences")
     
     for (seqdir_name in subdirectory_names) {
       seqdir_path <- file.path(directory_path_temp, seqdir_name)
       
       if (dir.exists(seqdir_path)) {
-        files_to_remove <- list.files(seqdir_path, full.names = TRUE)
-        file.remove(files_to_remove)
+        unlink(list.files(seqdir_path, full.names = TRUE), recursive = TRUE)
       }
     }
   }

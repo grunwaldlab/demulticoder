@@ -17,7 +17,7 @@
 #' make_asv_abund_matrix(analysis_setup, overwrite_existing = TRUE)
 #' assignTax(analysis_setup,asv_abund_matrix, retrieve_files=TRUE, overwrite_existing=TRUE)
 
-assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, db_rps10="oomycetedb.fasta", db_its="fungidb.fasta", db_16s="bacteriadb.fasta", db_other="otherdb.fasta", overwrite_existing=FALSE) {
+assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, db_rps10 = "oomycetedb.fasta", db_its = "fungidb.fasta", db_16s = "bacteriadb.fasta", db_other = "otherdb.fasta", overwrite_existing = FALSE) {
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   directory_path <- dir_paths$output_directory
@@ -25,16 +25,20 @@ assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose =
   directory_path_temp <- dir_paths$temp_directory
   unique_barcodes <- unique(data_tables$cutadapt_data$primer_name)
   
-  if (overwrite_existing) {
-    
-    patterns_to_remove <- c(
-      "*_species_count_table.csv",
-      "dada2_asv_alignments.txt",
-      "final_asv_abundance_matrix.csv",
-      "track_reads.csv"
-    )
-    
-    for (pattern in patterns_to_remove) {
+  files_to_check <- c("*_reference_db.fa", "TaxMatrix_*", "Final_tax_matrix_*")
+  if (!overwrite_existing || any(!file.exists(list.files(directory_path_temp, pattern = files_to_check, full.names = TRUE)))) {
+    message("Files have already been processed. To overwrite, specify overwrite_existing = TRUE.")
+    return(invisible())
+  
+    } else {
+      patterns_to_remove <- c(
+        "*_species_count_table.csv",
+        "dada2_asv_alignments_*",
+        "final_asv_abundance_matrix_*",
+        "track_reads_*"
+      )
+      
+      for (pattern in patterns_to_remove) {
       full_pattern <- file.path(directory_path, pattern)
       files_to_remove <- list.files(path = directory_path, pattern = pattern, full.names = TRUE)
       
@@ -45,8 +49,8 @@ assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose =
     
     patterns_to_remove_temp <- c(
       "*_reference_db.fa",
-      "*_taxmatrix.Rdata",
-      "Final_tax_matrix.Rdata"
+      "TaxMatrix_*",
+      "Final_tax_matrix_*.Rdata"
     )
     
     for (pattern in patterns_to_remove_temp) {
@@ -66,13 +70,14 @@ assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose =
       
       # Run taxonomy assignment for the current barcode
       process_single_barcode(
-        data_tables=data_tables,
+        data_tables = data_tables,
         directory_path_temp = directory_path_temp,
         directory_path = dir_paths$output_directory,
         asv_abund_matrix = asv_abund_matrix,
         locus = barcode
       )
     }
+    
     if (retrieve_files) {
       file.copy(directory_path_temp, dir_paths$output_directory, recursive = TRUE)
     }

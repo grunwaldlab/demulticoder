@@ -15,66 +15,62 @@
 #' #' prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "demulticoder_run", overwrite_existing = TRUE)
 #' @importFrom dada2 filterAndTrim
 
-prepare_reads <-
-  function(data_directory = "data", 
-           output_directory = "output", 
-           tempdir_path = NULL, 
-           tempdir_id = "demulticoder_run",
-           maxN = 0, 
-           multithread = FALSE, 
-           overwrite_existing = FALSE) {
-    
-    dir_paths <- setup_directories(data_directory, output_directory, tempdir_path, tempdir_id)
-    directory_path <- dir_paths$output_directory
-    data_path <- dir_paths$data_directory
-    directory_path_temp <- dir_paths$temp_directory
-    primers_params_path <- dir_paths$primers_params_path
-    metadata_path <- dir_paths$metadata_path
-    
-    if (overwrite_existing) {
-      if (dir.exists(directory_path)) {
-        unlink(directory_path, recursive = TRUE)
-      }
-      if (dir.exists(directory_path_temp)) {
-        unlink(directory_path_temp, recursive = TRUE)
-      }
-      
-    }
-    
-    if (!dir.exists(directory_path)) {
-      dir.create(directory_path, recursive = TRUE)
-    }
-    
-    if (!dir.exists(directory_path_temp)) {
-      dir.create(directory_path_temp, recursive = TRUE)
-    }
-    
+prepare_reads <- function(data_directory = "data", 
+                          output_directory = "output", 
+                          tempdir_path = NULL, 
+                          tempdir_id = "demulticoder_run",
+                          maxN = 0, 
+                          multithread = FALSE, 
+                          overwrite_existing = FALSE) {
+  
+  dir_paths <- setup_directories(data_directory, output_directory, tempdir_path, tempdir_id)
+  directory_path <- dir_paths$output_directory
+  data_path <- dir_paths$data_directory
+  directory_path_temp <- dir_paths$temp_directory
+  primers_params_path <- dir_paths$primers_params_path
+  metadata_path <- dir_paths$metadata_path
+  
+  if (!overwrite_existing) {
     existing_files <- list.files(directory_path)
-    if (length(existing_files)>0) {
-      message("N's have already been removed from reads and primer counts have been compiled. To overwrite, specify overwrite_existing = TRUE")
+    if (length(existing_files) > 0) {
+      message("Some files already exist in specified directories. N's may have already been removed from reads and primer counts have been compiled. To overwrite, specify overwrite_existing = TRUE")
+      return(invisible())
     }
-    
-    primer_data <- orient_primers(primers_params_path)
-    parameters <- read_parameters(primers_params_path)
-    metadata <- prepare_metadata_table(metadata_path, primer_data)
-    fastq_data <- read_prefilt_fastq(data_path, maxN, multithread, directory_path_temp)
-    pre_primer_hit_data <-
-      get_pre_primer_hits(primer_data, fastq_data, directory_path)
-    cutadapt_data <-
-      make_cutadapt_tibble(fastq_data, metadata, directory_path_temp)
-    data_tables <-
-      list(
-        cutadapt_data = cutadapt_data,
-        primer_data = primer_data,
-        fastq_data = fastq_data,
-        parameters = parameters,
-        metadata = metadata
-      )
-    analysis_setup <-list(data_tables = data_tables, dir_paths = dir_paths)
-    assign("analysis_setup", analysis_setup, envir = .GlobalEnv)
-    return(analysis_setup)
+  } else {
+    if (dir.exists(directory_path)) {
+      unlink(directory_path, recursive = TRUE)
+    }
+    if (dir.exists(directory_path_temp)) {
+      unlink(directory_path_temp, recursive = TRUE)
+    }
+  
   }
-
+  
+  if (!dir.exists(directory_path)) {
+    dir.create(directory_path, recursive = TRUE)
+  }
+  
+  if (!dir.exists(directory_path_temp)) {
+    dir.create(directory_path_temp, recursive = TRUE)
+  }
+  
+  primer_data <- orient_primers(primers_params_path)
+  parameters <- read_parameters(primers_params_path)
+  metadata <- prepare_metadata_table(metadata_path, primer_data)
+  fastq_data <- read_prefilt_fastq(data_path, maxN, multithread, directory_path_temp)
+  pre_primer_hit_data <- get_pre_primer_hits(primer_data, fastq_data, directory_path)
+  cutadapt_data <- make_cutadapt_tibble(fastq_data, metadata, directory_path_temp)
+  data_tables <- list(
+    cutadapt_data = cutadapt_data,
+    primer_data = primer_data,
+    fastq_data = fastq_data,
+    parameters = parameters,
+    metadata = metadata
+  )
+  analysis_setup <- list(data_tables = data_tables, dir_paths = dir_paths)
+  assign("analysis_setup", analysis_setup, envir = .GlobalEnv)
+  return(analysis_setup)
+}
 #' Set up directory paths for subsequent analyses
 #'
 #' This function sets up the directory paths for subsequent analyses.
