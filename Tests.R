@@ -24,7 +24,7 @@ cut_trim(
 
 make_asv_abund_matrix(
   analysis_setup,
-  overwrite_existing = TRUE)
+  overwrite_existing = FALSE)
 
 assignTax(
   analysis_setup,
