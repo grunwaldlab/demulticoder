@@ -396,7 +396,7 @@ make_seqhist <- function(asv_abund_matrix, directory_path) {
     
     hist_plot <- ggplot(data, aes(x = Length)) +
       geom_histogram(binwidth = 10, fill = "blue", color = "black", alpha = 0.7, ) +
-      labs(x = 'Length of sequence (bp)', y = 'Counts', title = paste("ASV Lengths for", barcode, "barcode")) +
+      labs(x = 'Length of sequence (bp)', y = 'Counts', title = paste("ASV lengths for", barcode, "locus")) +
       theme_minimal()+
       theme(panel.grid = element_blank())
     
