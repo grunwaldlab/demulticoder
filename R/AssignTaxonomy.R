@@ -315,9 +315,9 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv, directory_path, l
 #' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
 #' @keywords internal
 get_read_counts <- function(asv_abund_matrix, directory_path_temp, directory_path, locus) {
-  filter_results_path<-file.path(directory_path_temp, paste0("Filter_results_", locus, ".RData"))
+  filter_results_path<-file.path(directory_path_temp, paste0("Filter_results_", locus, ".Rdata"))
   load(filter_results_path) #incorporate into function
-  denoised_data_path <- file.path(directory_path_temp, paste0("Denoised_data_", locus, ".RData"))
+  denoised_data_path <- file.path(directory_path_temp, paste0("Denoised_data_", locus, ".Rdata"))
   load(denoised_data_path) #incorporate into function
   merged_read_data_path <- file.path(directory_path_temp, paste0("Merged_reads_", locus, ".Rdata"))
   load(merged_read_data_path)

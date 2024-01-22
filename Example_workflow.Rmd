@@ -1,5 +1,5 @@
 ---
-title: "Example_Workflow"
+title: "Demulticoder_Example_Workflow"
 output: html_document
 date: "2023-07-05"
 ---
@@ -35,7 +35,8 @@ For now, package will be loaded by retrieving the package from Github. Eventuall
 #devtools::document()
 
 #To pull from Github (Grunwald Lab members will need an auth_token as package is currently private)
-devtools:install.github("grunwaldlab/demulticoder", auth_token="")
+library("devtools")
+devtools:install.github("grunwaldlab/demulticoder")
 ```
 
 ### Reorganize data tables for downstream steps and obtain primer counts across all sample reads  
@@ -56,27 +57,14 @@ If primers still remain, you may want to adjust the parameters or manually remov
 ***TODO-include a function to remove any ASV sequences that may still have primers. There likely won't be many-but it might be worth incorporating a function like this***
 
 ```{r Trim function, include=TRUE}
-cut_trim(
-  analysis_setup,
-  cutadapt_path="/opt/homebrew/bin/cutadapt",
-  verbose = TRUE,
-  maxEE = 2,
-  truncQ = 5,
-  minLen = 200,
-  maxLen = 297,
-  minCutadaptlength = 50)
+
 ```
 ### Generate ASV abundance matrix.   
 
 Depending on chosen specifications, the minOverlap and maxMismatch can be changed. The default values are the DADA2 default values 
 
 ```{r asv abund matrix, include=TRUE}
-make_asv_abund_matrix(
-  analysis_setup,
-  minOverlap = 15,
-  maxMismatch = 2,
-  verbose = TRUE,
-  multithread = TRUE)
+
 ```
 
 ### Taxonomic identification steps  
@@ -92,13 +80,7 @@ Within the main directory, user must also have retrieved the rps10 oomycetedb (a
 ***TODO-save renamed db in temporary db or else they will take up too much space.***
 
 ```{r assign tax, include=TRUE}
-assignTax(
-  analysis_setup,
-  asv_abund_matrix,
-  multithread = TRUE,
-  barcode = "rps10_its", 
-  retrieve_files=TRUE
-)
+
 ```
 
 ### Convert ASV matrix to Taxmap and Phyloseq objects
@@ -108,8 +90,6 @@ While some users will appreciate having a matrix with all ASV sequences, taxonom
 Two wrapper functions are shared. They are derived from Metacoder functions 'parse_tax_data' and 'as_phyloseq'.
 
 ```{r Reformat ASV abundance matrix}
-asv_matrix_to_taxmap(save_taxmap = TRUE)
 
-taxmap_to_phyloseq(save_phyloseq=TRUE)
 ```
 
