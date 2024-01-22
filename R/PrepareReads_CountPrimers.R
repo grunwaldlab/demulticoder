@@ -126,7 +126,7 @@ setup_directories <- function(data_directory = "data",
 #' @param primers_params_path a path to the csv file that holds the primer
 #' information
 #' @param metadata_path The path to the metadata file
-#' @return A dataframe containing the merged metadata and primerdata
+#' @return A dataframe containing the merged metadata and primer data
 #' @keywords internal
 #'
 prepare_metadata_table <- function(metadata_path, primer_data) {

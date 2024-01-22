@@ -14,7 +14,7 @@ prepare_metadata_table(metadata_path, primer_data)
 information}
 }
 \value{
-A dataframe containing the merged metadata and primerdata
+A dataframe containing the merged metadata and primer data
 }
 \description{
 Read metadata file from user and combine and reformat it, given primer data.

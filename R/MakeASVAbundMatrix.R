@@ -46,7 +46,7 @@ make_asv_abund_matrix <- function(analysis_setup,
     min_asv_length = 50)
   
   # Additional check for specific files in the temporary directory
-  files_to_check <- c("asvabund_matrixDADA2_*", "*_taxmatrix.Rdata")
+  files_to_check <- c("asvabund_matrixDADA2_*", "*_taxmatrix.RData")
   
   if (!overwrite_existing || any(!file.exists(list.files(directory_path_temp, pattern = files_to_check, full.names = TRUE)))) {
     message("Files have already been processed. To overwrite, specify overwrite_existing = TRUE.")
@@ -70,7 +70,7 @@ make_asv_abund_matrix <- function(analysis_setup,
     
     patterns_to_remove_temp <- c(
       "asvabund_matrixDADA2_*",
-      "*_taxmatrix.Rdata"
+      "*_taxmatrix.RData"
     )
     
     for (pattern in patterns_to_remove_temp) {
@@ -101,7 +101,7 @@ make_asv_abund_matrix <- function(analysis_setup,
         data_path <- dir_paths$data_directory
         directory_path_temp <- dir_paths$temp_directory
         
-        if (overwrite_existing || !file.exists(file.path(directory_path_temp, "asvabund_matrixDADA2.Rdata"))) {
+        if (overwrite_existing || !file.exists(file.path(directory_path_temp, "asvabund_matrixDADA2.RData"))) {
           infer_asv_command(
             directory_path = directory_path,
             directory_path_temp = directory_path_temp,
@@ -232,7 +232,7 @@ infer_asv_command <- function(directory_path, directory_path_temp, data_tables, 
   selfConsist <- barcode_params$selfConsist
   verbose <- barcode_params$verbose
   
-  denoised_data_path <- file.path(directory_path_temp, paste0("Denoised_data_", barcode, ".Rdata"))
+  denoised_data_path <- file.path(directory_path_temp, paste0("Denoised_data_", barcode, ".RData"))
   
   run_dada <- function(direction, data_tables, barcode_params, barcode) {
     dada_output <- lapply(barcode, function(primer_name) {
@@ -261,10 +261,10 @@ infer_asv_command <- function(directory_path, directory_path_temp, data_tables, 
 #' @return merged_reads Intermediate merged read R data file
 #' @keywords internal
 merge_reads_command <- function(directory_path, directory_path_temp, barcode_params, barcode) {
-  denoised_data_path <- file.path(directory_path_temp, paste0("Denoised_data_", barcode, ".Rdata"))
+  denoised_data_path <- file.path(directory_path_temp, paste0("Denoised_data_", barcode, ".RData"))
   load(denoised_data_path)
   
-  merged_read_data_path <- file.path(directory_path_temp, paste0("Merged_reads_", barcode, ".Rdata"))
+  merged_read_data_path <- file.path(directory_path_temp, paste0("Merged_reads_", barcode, ".RData"))
   
   merged_reads <- dada2::mergePairs(
     dadaF = dada_forward,
@@ -364,7 +364,7 @@ make_abund_matrix <- function(raw_seqtab,
   seqtab.nochim <- dada2::removeBimeraDenovo(raw_seqtab, method=barcode_params$method, verbose=barcode_params$verbose)
   asv_abund_matrix <- seqtab.nochim[, nchar(colnames(seqtab.nochim)) >= barcode_params$min_asv_length]
   
-  asvabund_matrix_path <- file.path(directory_path_temp, paste0("asvabund_matrixDADA2_", barcode, ".Rdata"))
+  asvabund_matrix_path <- file.path(directory_path_temp, paste0("asvabund_matrixDADA2_", barcode, ".RData"))
   save(asv_abund_matrix, file = asvabund_matrix_path)
   return(asv_abund_matrix)
 }

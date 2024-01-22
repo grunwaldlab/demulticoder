@@ -50,7 +50,7 @@ assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose =
     patterns_to_remove_temp <- c(
       "*_reference_db.fa",
       "TaxMatrix_*",
-      "Final_tax_matrix_*.Rdata"
+      "Final_tax_matrix_*.RData"
     )
     
     for (pattern in patterns_to_remove_temp) {
@@ -64,7 +64,7 @@ assignTax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose =
     
     for (barcode in unique_barcodes) {
       # Load merged reads for the current barcode
-      load(file.path(directory_path_temp, paste0("asvabund_matrixDADA2_", barcode, ".Rdata")))
+      load(file.path(directory_path_temp, paste0("asvabund_matrixDADA2_", barcode, ".RData")))
       
       format_database(analysis_setup, barcode, db_its, db_rps10, db_16s, db_other)
       
@@ -106,7 +106,7 @@ process_single_barcode <-
     abund_asv_single <-
       prep_abund_matrix(data_tables$cutadapt_data, asv_abund_matrix, data_tables, locus)
     refdb = paste0(locus, "_reference_db.fa")
-    taxmat = paste0(locus, "_taxmatrix.Rdata")
+    taxmat = paste0(locus, "_taxmatrix.RData")
     tax_results_single_asv <-
       assign_taxonomyDada2(
         abund_asv_single,
@@ -154,7 +154,7 @@ assign_taxonomyDada2<-function(asv_abund_matrix, directory_path_temp, minBoot=0,
                                       tryRC = tryRC,
                                       outputBootstraps = TRUE,
                                       multithread = multithread)
-  tax_matrix_path <- file.path(directory_path_temp, paste0("TaxMatrix_", locus, ".Rdata"))
+  tax_matrix_path <- file.path(directory_path_temp, paste0("TaxMatrix_", locus, ".RData"))
   save(tax_results, file = tax_matrix_path)
   return(tax_results)
 }
@@ -234,7 +234,7 @@ add_pid_to_tax <- function(tax_results, asv_pid) {
 #' @param tax_results The dataframe containing taxonomic assignments
 #' @keywords internal
 assignTax_as_char <- function(tax_results, directory_path_temp, locus) {
-  tax_matrix_path <- file.path(directory_path_temp, paste0("Final_tax_matrix_", locus, ".Rdata"))
+  tax_matrix_path <- file.path(directory_path_temp, paste0("Final_tax_matrix_", locus, ".RData"))
   tax_out <- vapply(1:nrow(tax_results$tax), FUN.VALUE = character(1), function(i) {
     paste(tax_results$tax[i, ],
           tax_results$boot[i, ],
@@ -315,11 +315,11 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv, directory_path, l
 #' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
 #' @keywords internal
 get_read_counts <- function(asv_abund_matrix, directory_path_temp, directory_path, locus) {
-  filter_results_path<-file.path(directory_path_temp, paste0("Filter_results_", locus, ".Rdata"))
+  filter_results_path<-file.path(directory_path_temp, paste0("Filter_results_", locus, ".RData"))
   load(filter_results_path) #incorporate into function
-  denoised_data_path <- file.path(directory_path_temp, paste0("Denoised_data_", locus, ".Rdata"))
+  denoised_data_path <- file.path(directory_path_temp, paste0("Denoised_data_", locus, ".RData"))
   load(denoised_data_path) #incorporate into function
-  merged_read_data_path <- file.path(directory_path_temp, paste0("Merged_reads_", locus, ".Rdata"))
+  merged_read_data_path <- file.path(directory_path_temp, paste0("Merged_reads_", locus, ".RData"))
   load(merged_read_data_path)
   getN <- function(x) sum(dada2::getUniques(x))
   track <- cbind(filter_results, sapply(dada_forward, getN), sapply(dada_reverse, getN), sapply(merged_reads, getN), rowSums(asv_abund_matrix))

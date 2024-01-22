@@ -20,11 +20,11 @@ prepare_reads(
 cut_trim(
   analysis_setup,
   cutadapt_path="/opt/homebrew/bin/cutadapt",
-  overwrite_existing = FALSE)
+  overwrite_existing = TRUE)
 
 make_asv_abund_matrix(
   analysis_setup,
-  overwrite_existing = FALSE)
+  overwrite_existing = TRUE)
 
 assignTax(
   analysis_setup,
