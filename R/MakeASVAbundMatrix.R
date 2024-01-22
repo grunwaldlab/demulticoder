@@ -101,7 +101,7 @@ make_asv_abund_matrix <- function(analysis_setup,
         data_path <- dir_paths$data_directory
         directory_path_temp <- dir_paths$temp_directory
         
-        if (overwrite_existing || !file.exists(file.path(directory_path_temp, "asvabund_matrixDADA2.RData"))) {
+        if (overwrite_existing || !file.exists(file.path(directory_path_temp, "asvabund_matrixDADA2_*"))) {
           infer_asv_command(
             directory_path = directory_path,
             directory_path_temp = directory_path_temp,
