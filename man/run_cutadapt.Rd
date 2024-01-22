@@ -5,22 +5,28 @@
 \title{Core function for running cutadapt}
 \usage{
 run_cutadapt(
-  cutadapt_path = cutadapt_path,
-  cutadapt_data,
-  minCutadaptlength = 20
+  cutadapt_path,
+  cutadapt_data_barcode,
+  barcode_params,
+  minCutadaptlength
 )
 }
 \arguments{
-\item{cutadapt_path}{A path to the cutadapt program}
-
-\item{cutadapt_data}{directory_data folder with trimmed and filtered reads for each sample}
+\item{cutadapt_path}{A path to the cutadapt program.}
 
 \item{minCutadaptlength}{Read lengths that are lower than this threshold will be discarded. Default is 50.}
+
+\item{cutadapt_data}{Directory_data folder with trimmed and filtered reads for each sample.}
 }
 \value{
-Trimmed read
+Trimmed read.
 }
 \description{
 Core function for running cutadapt
 }
+\keyword{Core}
+\keyword{cutadapt}
+\keyword{for}
+\keyword{function}
 \keyword{internal}
+\keyword{running}

@@ -6,20 +6,16 @@
 \usage{
 assign_taxonomyDada2(
   asv_abund_matrix,
-  ref_database,
-  taxresults_file,
+  directory_path_temp,
   minBoot = 0,
   tryRC = FALSE,
   verbose = FALSE,
-  multithread = TRUE
+  multithread = TRUE,
+  locus = barcode
 )
 }
 \arguments{
 \item{asv_abund_matrix}{The ASV abundance matrix}
-
-\item{ref_database}{The reference database used for taxonomic inference steps}
-
-\item{taxresults_file}{The name of the file for saving taxonomic assignment results}
 
 \item{minBoot}{(Optional). Default 50. 
 The minimum bootstrap confidence for assigning a taxonomic level.}
@@ -35,6 +31,8 @@ If TRUE, print status to standard output.}
 If TRUE, multithreading is enabled and the number of available threads is automatically determined.   
 If an integer is provided, the number of threads to use is set by passing the argument on to
 \code{\link{setThreadOptions}}.}
+
+\item{ref_database}{The reference database used for taxonomic inference steps}
 }
 \description{
 Assign taxonomy

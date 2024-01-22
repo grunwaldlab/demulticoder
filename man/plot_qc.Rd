@@ -10,7 +10,7 @@ plot_qc(cutadapt_data, directory_path, n = 5e+05)
 \item{cutadapt_data}{directory_data folder with trimmed and filtered reads for each sample}
 
 \item{directory_path}{The path to the directory containing the fastq,
-metadata, and primer_info files}
+metadata, and primers and params files}
 
 \item{n}{(Optional). Default 500,000.
 The number of records to sample from the fastq file.}

@@ -4,7 +4,7 @@
 \alias{format_abund_matrix}
 \title{Format ASV abundance matrix}
 \usage{
-format_abund_matrix(asv_abund_matrix, seq_tax_asv)
+format_abund_matrix(asv_abund_matrix, seq_tax_asv, directory_path, locus)
 }
 \arguments{
 \item{asv_abund_matrix}{An abundance matrix containing amplified sequence variants}

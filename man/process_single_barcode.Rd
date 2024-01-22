@@ -6,11 +6,13 @@
 \usage{
 process_single_barcode(
   data_tables,
+  directory_path_temp,
+  directory_path,
   asv_abund_matrix,
   tryRC = FALSE,
   verbose = FALSE,
   multithread = FALSE,
-  barcode = "rps10"
+  locus = barcode
 )
 }
 \arguments{

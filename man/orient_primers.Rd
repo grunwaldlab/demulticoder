@@ -2,20 +2,20 @@
 % Please edit documentation in R/PrepareReads_CountPrimers.R
 \name{orient_primers}
 \alias{orient_primers}
-\title{Take in user's primers and creates the complement, reverse,
+\title{Take in user's forward and reverse sequences and creates the complement, reverse,
 reverse complement of primers in one tibble}
 \usage{
-orient_primers(primer_path)
+orient_primers(primers_params_path)
 }
 \arguments{
-\item{primer_path}{a path to the csv file that holds the primer
+\item{primers_params_path}{a path to the csv file that holds the primer
 information}
 }
 \value{
 A data frame with oriented primer information
 }
 \description{
-Take in user's primers and creates the complement, reverse,
+Take in user's forward and reverse sequences and creates the complement, reverse,
 reverse complement of primers in one tibble
 }
 \keyword{internal}

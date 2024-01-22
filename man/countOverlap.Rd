@@ -4,7 +4,7 @@
 \alias{countOverlap}
 \title{Count overlap to see how well the reads were merged}
 \usage{
-countOverlap(merged_reads, directory_path)
+countOverlap(merged_reads, data_tables, directory_path, barcode)
 }
 \arguments{
 \item{merged_reads}{Intermediate merged read R data file}

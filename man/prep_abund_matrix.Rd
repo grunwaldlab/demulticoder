@@ -4,7 +4,7 @@
 \alias{prep_abund_matrix}
 \title{Prepare final ASV abundance matrix}
 \usage{
-prep_abund_matrix(cutadapt_data, asv_abund_matrix, locus)
+prep_abund_matrix(cutadapt_data, asv_abund_matrix, data_tables, locus)
 }
 \arguments{
 \item{asv_abund_matrix}{The returned final ASV abundance matrix}

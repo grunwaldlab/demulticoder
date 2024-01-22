@@ -5,40 +5,45 @@
 \title{Prepare reads for primer trimming using Cutadapt}
 \usage{
 prepare_reads(
+  data_directory = "data",
+  output_directory = "output",
+  tempdir_path = NULL,
+  tempdir_id = "demulticoder_run",
   maxN = 0,
   multithread = FALSE,
-  overwrite_existing = FALSE,
-  data_directory = "path/to/data",
-  output_directory = "path/to/output",
-  tempdir_id = "run1"
+  overwrite_existing = FALSE
 )
 }
 \arguments{
-\item{maxN}{Integer, maximum number of Ns allowed in the sequence. Sequences with more than this many Ns will be discarded. Default is 0.}
+\item{data_directory}{User-specified directory path where user has placed raw FASTQ (forward and reverse reads), metadata.csv, and primerinfo_params.csv files. Default is "data".}
 
-\item{multithread}{Logical, indicating whether multithreading should be used. Default is FALSE.}
+\item{output_directory}{User-specified directory for outputs. Default is "output".}
 
-\item{overwrite_existing}{Logical, indicating whether to remove or overwrite existing files and directories from previous runs. If set to TRUE, specific output files will be deleted if they exist, ensuring a fresh start for the current run. Default is TRUE.}
+\item{tempdir_path}{Path to a temporary directory. If NULL, a temporary directory path will be identified using tempdir() command.}
 
-\item{data_directory}{Character string specifying the directory where data files are located. Default is "path/to/data".}
+\item{tempdir_id}{ID for temporary directories. Default is "demulticoder_run". User can provide any helpful ID, whether it be a date or specific name for the run.}
 
-\item{output_directory}{Character string specifying the directory for analysis outputs. Default is "path/to/output".}
+\item{maxN}{(Optional). Default 0.
+After truncation, sequences with more than \code{maxN} Ns will be discarded. 
+Note that \code{\link[dada2]{dada}} does not allow Ns.}
 
-\item{tempdir_id}{Character string specifying an ID for temporary directories. This ID will be combined with the current date. Default is "run1".}
+\item{multithread}{(Optional). Default is FALSE.
+ If TRUE, input files are filtered in parallel via \code{\link[parallel]{mclapply}}.
+ If an integer is provided, it is passed to the \code{mc.cores} argument of \code{\link[parallel]{mclapply}}.
+ Note that the parallelization here is by forking, and each process is loading another fastq file into
+ memory. This option is ignored in Windows, as Windows does not support forking, with \code{mc.cores} set to 1.
+If memory is an issue, execute in a clean environment and reduce the chunk size \code{n} and/or
+ the number of threads.}
+
+\item{overwrite_existing}{Logical, indicating whether to remove or overwrite existing files and directories from previous runs.}
 }
 \value{
-A list with the following elements:
-\itemize{
-\item \code{data_tables}: A list containing data tables related to Cutadapt trimming, primer sequences, input FASTQ files, and metadata.
-\item \code{dir_paths}: A list containing the paths set up by the \code{setup_directories} function, including data directory, output directory, temporary directory, primer path, and metadata path.
-}
+A list containing data tables, including metadata, primer sequences, paths for trimming reads, and user-defined parameters.
 }
 \description{
-This function prepares sequencing reads for primer trimming using Cutadapt by setting up necessary directories, reading in metadata and primer data, and performing pre-trimming quality control steps.
+This function organizes user-defined directories, metadata and parameter inputs in preparation for Cutadapt to remove primers from short read metabarcoding sequence data. Afterwards, subsequent functions can be used to simplify core DADA2 ASV and taxonomic assignment steps.
 }
 \examples{
-\dontrun{
-outputs <- prepare_reads(maxN = 0, data_directory = "path/to/data", output_directory = "path/to/output")
-}
-
+Pre-filter raw reads and parse metadata and primer_information to prepare for primer trimming and filter
+#' prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "demulticoder_run", overwrite_existing = TRUE)
 }

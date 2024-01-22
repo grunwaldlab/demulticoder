@@ -2,88 +2,47 @@
 % Please edit documentation in R/AssignTaxonomy.R
 \name{assignTax}
 \alias{assignTax}
-\title{Assign rps10 and ITS taxonomy}
+\title{Assign taxonomy functions}
 \usage{
 assignTax(
-  directory_path,
-  directory_path_temp,
-  data_tables,
+  analysis_setup,
   asv_abund_matrix,
   tryRC = FALSE,
   verbose = FALSE,
   multithread = FALSE,
   retrieve_files = FALSE,
-  barcode = "rps10"
+  db_rps10 = "oomycetedb.fasta",
+  db_its = "fungidb.fasta",
+  db_16s = "bacteriadb.fasta",
+  db_other = "otherdb.fasta",
+  overwrite_existing = FALSE
 )
 }
 \arguments{
-\item{directory_path}{Location of read files and metadata file}
+\item{analysis_setup}{A list containing directory paths and data tables, produced by the \code{prepare_reads} function.}
 
-\item{directory_path_temp}{User-defined temporary directory to place reads throughout the workflow
-metadata, and primer_info files}
+\item{asv_abund_matrix}{ASV abundance matrix.}
 
-\item{data_tables}{specify dataframe}
+\item{tryRC}{Whether to try reverse complementing sequences during taxonomy assignment.}
 
-\item{asv_abund_matrix}{specify the ASV abundance matrix for which taxonomic assignments will be given}
+\item{verbose}{Logical, indicating whether to display verbose output.}
 
-\item{tryRC}{(Optional). Default FALSE. 
-If TRUE, the reverse-complement of each sequences will be used for classification if it is a better match to the reference
-sequences than the forward sequence.}
+\item{multithread}{Logical, indicating whether to use multithreading.}
 
-\item{verbose}{(Optional). Default FALSE.
-If TRUE, print status to standard output.}
+\item{retrieve_files}{Specify TRUE/FALSE whether to copy files from the temp directory to the output directory.}
 
-\item{multithread}{(Optional). Default is FALSE.
-If TRUE, multithreading is enabled and the number of available threads is automatically determined.   
-If an integer is provided, the number of threads to use is set by passing the argument on to
-\code{\link{setThreadOptions}}.}
-
-\item{retrieve_files}{Specify TRUE/FALSE whether to copy files from the tempdirectory (which will be deleted)
-to directory specified by directory path}
-
-\item{barcode}{specify which barcode you have used, 'rps10', 'its', or 'rps10_its'}
+\item{overwrite_existing}{Logical, indicating whether to remove or overwrite existing files and directories from previous runs.}
 }
 \value{
 Taxonomic assignments of each unique ASV sequence
 }
 \description{
-Assign rps10 and ITS taxonomy
+Assign taxonomy functions
 }
 \examples{
-directory_path<-"~/rps10package/raw_data/rps10_ITS"
-primer_path <-file.path(directory_path, "primer_info.csv")
-metadata_path <-file.path(directory_path,"metadata.csv")
-cutadapt_path<-"/opt/homebrew/bin/cutadapt"
-data_tables <-
-prepare_reads(
-directory_path,
-primer_path,
-metadata_path,
-maxN = 0
-)
-cut_trim(
-directory_path,
-cutadapt_path,
-verbose = TRUE,
-maxEE = 2,
-truncQ = 5,
-minLen = 200,
-maxLen = 297,
-minCutadaptlength = 50
-)
-asv_abund_matrix <-
-make_asv_abund_matrix(
-directory_path,
-minOverlap = 15,
-maxMismatch = 2,
-verbose = TRUE
-)
-summary <- assignTax(
-directory_path,
-data_tables,
-asv_abund_matrix,
-multithread = TRUE,
-barcode = "rps10"
-)
-
+Assign taxonomies to ASVs on a per barcode basis
+prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "run1", overwrite_existing = TRUE)
+cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = TRUE)
+make_asv_abund_matrix(analysis_setup, overwrite_existing = TRUE)
+assignTax(analysis_setup,asv_abund_matrix, retrieve_files=TRUE, overwrite_existing=TRUE)
 }
