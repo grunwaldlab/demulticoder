@@ -9,6 +9,8 @@ devtools::document()
 #devtools::build_rmd("vignettes/Introduction.Rmd")
 #browseVignettes('rps10package')
 
+package_path <- system.file(package = "demulticoder")
+
 prepare_reads(
   maxN = 0, 
   data_directory = "~/demulticoder/inst/extdata", 
