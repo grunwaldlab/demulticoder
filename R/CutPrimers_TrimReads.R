@@ -20,7 +20,7 @@ cut_trim <- function(analysis_setup,
   directory_path_temp <- dir_paths$temp_directory
   
   if (!overwrite_existing) {
-    message("Files have already been processed. To overwrite, specify overwrite_existing = TRUE.")
+    message("Files have already been processed. To overwrite, specify overwrite_existing = TRUE")
     return(invisible())
     
   } else {
@@ -156,11 +156,15 @@ run_cutadapt <- function(cutadapt_path,
   
   cutadapt <- cutadapt_path
   tryCatch(
-    system2(cutadapt, args = "--version"),
+    {
+      version_output <- system2(cutadapt, args = "--version", stdout = TRUE, stderr = TRUE)
+    },
     warning = function(w) {
       stop("cutadapt cannot be found on PATH. Check if it is installed?")
     }
   )
+  
+  cat("Running Cutadapt", version_output, "for", cutadapt_data_barcode$primer_name[1], "sequence data", "\n")
   
   # Simplify
   cutadapt <- path.expand(cutadapt_path)
@@ -194,28 +198,20 @@ run_cutadapt <- function(cutadapt_path,
     rev_prefilt
   )
   
-  # Print command arguments
-  print("Command Arguments:")
-  print(command_args)
-  
-  # Run cutadapt if trimmed files don't exist
   if (!all(file.exists(c(cutadapt_data_barcode$trimmed_path))) && !barcode_params$already_trimmed) {
     cutadapt_output <- furrr::future_map(command_args, ~ system2(cutadapt, args = .x))
-    # Print Cutadapt output
-    print("Cutadapt Output:")
-    print(cutadapt_output)
   }
   
   else if (!all(file.exists(c(cutadapt_data_barcode$trimmed_path))) && barcode_params$already_trimmed) {
     cutadapt_output <- furrr::future_map(command_args, ~ system2(cutadapt, args = .x))
-    print("cutadapt_output")
     
     for (i in seq_along(fwd_untrim)) {
       fwd_untrim_reads <- readFastq(fwd_untrim[i])
       rev_untrim_reads <- readFastq(rev_untrim[i])
       writeFastq(fwd_untrim_reads, fwd_trim[i], mode = 'a')
+      cat("Already trimmed forward reads were appended to trimmed read directory, and they are located here:", fwd_trim[i], "\n")
       writeFastq(rev_untrim_reads, rev_trim[i], mode = 'a')
-      cat("Contents appended to trimmed files.\n")
+      cat("Already trimmed reverse reads were appended to trimmed read directory, and they are located here:", rev_trim[i], "\n")
     }
   }
 }
@@ -307,7 +303,6 @@ filter_and_trim <- function(directory_path,
     filter_results_path <-
       file.path(directory_path_temp, paste0("Filter_results_", barcode, ".RData"))
     save(filter_results, file = filter_results_path)
-    print(colMeans(filter_results))
   }
 }
 #' Get primer counts for reach sample after primer removal and trimming steps

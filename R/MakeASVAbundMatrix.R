@@ -90,11 +90,8 @@ make_asv_abund_matrix <- function(analysis_setup,
       if (nrow(params) > 0) {
         params <- as.list(params)
         
-        # Modify default parameters with barcode-specific ones
         barcode_params <- modifyList(default_params, params)
-        print(barcode)
-        print(barcode_params)
-        
+       
         dir_paths <- analysis_setup$dir_paths
         data_tables <- analysis_setup$data_tables
         directory_path <- dir_paths$output_directory
@@ -249,7 +246,6 @@ infer_asv_command <- function(directory_path, directory_path_temp, data_tables, 
   dada_forward <- run_dada("Forward", data_tables, barcode_params, barcode)
   dada_reverse <- run_dada("Reverse", data_tables, barcode_params, barcode)
   save(dada_forward, dada_reverse, file = denoised_data_path)
-  print("File is now saved")
 }
 
 
@@ -335,7 +331,7 @@ countOverlap <- function(merged_reads, data_tables, directory_path, barcode) {
     height = 8
   )
   
-  merge_plot_output
+  print(merge_plot_output)
 }
 
 
@@ -407,5 +403,6 @@ make_seqhist <- function(asv_abund_matrix, directory_path) {
       width = 8,
       height = 8
     )
+    print(hist_plot)
   }
 }

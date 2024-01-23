@@ -315,19 +315,33 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv, directory_path, l
 #' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
 #' @keywords internal
 get_read_counts <- function(asv_abund_matrix, directory_path_temp, directory_path, locus) {
-  filter_results_path<-file.path(directory_path_temp, paste0("Filter_results_", locus, ".RData"))
-  load(filter_results_path) #incorporate into function
+  filter_results_path <- file.path(directory_path_temp, paste0("Filter_results_", locus, ".RData"))
+  load(filter_results_path)
   denoised_data_path <- file.path(directory_path_temp, paste0("Denoised_data_", locus, ".RData"))
-  load(denoised_data_path) #incorporate into function
+  load(denoised_data_path)
   merged_read_data_path <- file.path(directory_path_temp, paste0("Merged_reads_", locus, ".RData"))
   load(merged_read_data_path)
   getN <- function(x) sum(dada2::getUniques(x))
   track <- cbind(filter_results, sapply(dada_forward, getN), sapply(dada_reverse, getN), sapply(merged_reads, getN), rowSums(asv_abund_matrix))
   track <- cbind(rownames(track), data.frame(track, row.names=NULL))
   colnames(track) <- c("samplename_barcode", "input", "filtered", "denoisedF", "denoisedR", "merged", "nonchim")
-  track$samplename_barcode<- gsub(".fastq.gz", "",
-                                  gsub("R1_", "", track$samplename_barcode, fixed = TRUE))
+  track$samplename_barcode <- gsub(".fastq.gz", "",
+                                   gsub("R1_", "", track$samplename_barcode, fixed = TRUE))
+  
+  output_format <- knitr::opts_knit$get("rmarkdown.pandoc.to")
+  
+  # Set a default output format if NULL
+  if (is.null(output_format)) {
+    output_format <- "console"
+  }
+  
+  # Print the track table based on output format
+  if (output_format == "html") {
+    print(knitr::kable(track))
+  } else {
+    print(track)
+  }
+  
   track_read_counts_path <- file.path(directory_path, paste0("track_reads_", locus, ".csv"))
   write_csv(track, track_read_counts_path)
-  print(track)
 }

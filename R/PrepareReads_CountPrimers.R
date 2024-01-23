@@ -67,9 +67,51 @@ prepare_reads <- function(data_directory = "data",
     parameters = parameters,
     metadata = metadata
   )
+  
+  output_format <- knitr::opts_knit$get("rmarkdown.pandoc.to")
+  
+  # Print the tables to console based on output format
+  output_format <- knitr::opts_knit$get("rmarkdown.pandoc.to")
+  
+  # Set a default output format if NULL
+  if (is.null(output_format)) {
+    output_format <- "console"
+  }
+  
+  # Print the tables to console based on output format
+  if (output_format == "html") {
+
+    message("Primer Data input")
+    print(knitr::kable(primer_data))
+    
+    message("Fastq Data input")
+    print(knitr::kable(fastq_data))
+    
+    message("Parameter inputs")
+    print(knitr::kable(parameters))
+    
+    message("Metadata input")
+    print(knitr::kable(metadata))
+  } else {
+    # Print each individual table to console
+    message("Cutadapt input")
+    print(cutadapt_data)
+    
+    message("Primer input")
+    print(primer_data)
+    
+    message("Fastq input")
+    print(fastq_data)
+    
+    message("Parameters input")
+    print(parameters)
+    
+    message("Metadata input")
+    print(metadata)
+  }
+  
   analysis_setup <- list(data_tables = data_tables, dir_paths = dir_paths)
   assign("analysis_setup", analysis_setup, envir = .GlobalEnv)
-  return(analysis_setup)
 }
 #' Set up directory paths for subsequent analyses
 #'
@@ -326,7 +368,6 @@ get_pre_primer_hits <-
     
     if (file.exists(primer_hit_data_csv_path)) {
       primer_hit_data <- read_csv(primer_hit_data_csv_path)
-      print(primer_hit_data)
       
     } else {
       primer_hit_counts <- future_map(fastq_data$prefiltered_path,
@@ -337,7 +378,6 @@ get_pre_primer_hits <-
       
       primer_hit_data <-
         bind_cols(primer_hit_data, as_tibble(primer_hit_counts))
-      print(primer_hit_data)
       write_csv(primer_hit_data, primer_hit_data_csv_path)
     }
     
