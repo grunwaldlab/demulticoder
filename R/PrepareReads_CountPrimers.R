@@ -69,47 +69,21 @@ prepare_reads <- function(data_directory = "data",
     metadata = metadata
   )
   
-  output_format <- knitr::opts_knit$get("rmarkdown.pandoc.to")
+  message("Cutadapt input")
+  print(cutadapt_data)
+    
+  message("Primer input")
+  print(primer_data)
+    
+  message("Fastq input")
+  print(fastq_data)
+    
+  message("Parameters input")
+  print(parameters)
+    
+  message("Metadata input")
+  print(metadata)
   
-  # Print the tables to console based on output format
-  output_format <- knitr::opts_knit$get("rmarkdown.pandoc.to")
-  
-  # Set a default output format if NULL
-  if (is.null(output_format)) {
-    output_format <- "console"
-  }
-  
-  # Print the tables to console based on output format
-  if (output_format == "html") {
-
-    message("Primer Data input")
-    print(knitr::kable(primer_data))
-    
-    message("Fastq Data input")
-    print(knitr::kable(fastq_data))
-    
-    message("Parameter inputs")
-    print(knitr::kable(parameters))
-    
-    message("Metadata input")
-    print(knitr::kable(metadata))
-  } else {
-    # Print each individual table to console
-    message("Cutadapt input")
-    print(cutadapt_data)
-    
-    message("Primer input")
-    print(primer_data)
-    
-    message("Fastq input")
-    print(fastq_data)
-    
-    message("Parameters input")
-    print(parameters)
-    
-    message("Metadata input")
-    print(metadata)
-  }
   analysis_setup <- list(data_tables = data_tables, dir_paths = dir_paths)
   assign("analysis_setup", analysis_setup, envir = .GlobalEnv)
   analysis_setup_path <-

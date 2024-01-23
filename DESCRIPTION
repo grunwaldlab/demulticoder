@@ -23,7 +23,8 @@ Depends:
         dada2,
         gdata,
         BiocGenerics,
-        knitr
+        knitr,
+        kableExtra
 Remotes:
         bioc::Biostrings,
         bioc::dada2,

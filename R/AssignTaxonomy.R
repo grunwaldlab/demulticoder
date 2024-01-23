@@ -329,19 +329,7 @@ get_read_counts <- function(asv_abund_matrix, directory_path_temp, directory_pat
                                    gsub("R1_", "", track$samplename_barcode, fixed = TRUE))
   
   output_format <- knitr::opts_knit$get("rmarkdown.pandoc.to")
-  
-  # Set a default output format if NULL
-  if (is.null(output_format)) {
-    output_format <- "console"
-  }
-  
-  # Print the track table based on output format
-  if (output_format == "html") {
-    print(knitr::kable(track))
-  } else {
-    print(track)
-  }
-  
+  print(track)
   track_read_counts_path <- file.path(directory_path, paste0("track_reads_", locus, ".csv"))
   write_csv(track, track_read_counts_path)
 }
