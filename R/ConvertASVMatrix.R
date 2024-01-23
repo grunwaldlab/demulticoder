@@ -15,6 +15,7 @@
 #' level, taxonomic assignment will be set to N/A
 #' @param save_outputs Logical, indicating whether to save the taxmap object. Default is FALSE.
 #' @return ASV matrix converted to taxmap object
+#' @export
 #' @examples 
 #' Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
 #' prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "run1", overwrite_existing = TRUE)
