@@ -33,8 +33,9 @@ prepare_reads <- function(data_directory = "data",
   if (!overwrite_existing) {
     existing_files <- list.files(directory_path)
     if (length(existing_files) > 0) {
+      existing_analysis_table <- file.path(directory_path_temp, "analysis_setup_tables.RData")
+      load(existing_analysis_table)
       message("Some files already exist in specified directories. N's may have already been removed from reads and primer counts have been compiled. To overwrite, specify overwrite_existing = TRUE")
-      return(invisible())
     }
   } else {
     if (dir.exists(directory_path)) {
@@ -109,9 +110,11 @@ prepare_reads <- function(data_directory = "data",
     message("Metadata input")
     print(metadata)
   }
-  
   analysis_setup <- list(data_tables = data_tables, dir_paths = dir_paths)
   assign("analysis_setup", analysis_setup, envir = .GlobalEnv)
+  analysis_setup_path <-
+    file.path(directory_path_temp, paste0("analysis_setup_tables", ".RData"))
+  save(analysis_setup, file = analysis_setup_path)
 }
 #' Set up directory paths for subsequent analyses
 #'

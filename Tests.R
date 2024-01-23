@@ -15,7 +15,7 @@ prepare_reads(
   output_directory = "~/testing_package2", 
   tempdir_id = "run2",
   tempdir_path="~/Desktop",
-  overwrite_existing = TRUE)
+  overwrite_existing = FALSE)
 
 cut_trim(
   analysis_setup,
