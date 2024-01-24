@@ -12,9 +12,9 @@ devtools::document()
 prepare_reads(
   maxN = 0, 
   data_directory = "~/demulticoder/inst/extdata", 
-  output_directory = "~/testing_package2", 
-  tempdir_id = "run2",
-  tempdir_path="~/Desktop",
+  output_directory = "~/testing_package", 
+  tempdir_id = "test4",
+  tempdir_path="~/",
   overwrite_existing = FALSE)
 
 cut_trim(

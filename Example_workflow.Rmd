@@ -1,95 +1,180 @@
 ---
-title: "Demulticoder_Example_Workflow"
+title: "Demulticoder Example Workflow"
 output: html_document
 date: "2023-07-05"
 ---
 
-## Documentation 
+### Introduction
 
-Before you start, you will need to prepare your raw read files, and fill in the 'metadata.csv' and 
+The 'demulticoder' package is a robust DADA2 wrapper package for metabarcoding analyses. The package is designed for users with little experience doing metabarcoding analysis and a strength is the ability to to analyses on multiple datasets at once, different barcodes (not just ITS and 16S, but also rps10 for oomycete community analysis, as well as other barcodes, so long as the reference database is formatted like the UNITE fungal database).
 
-Format of the raw read files is as follows:
+The package was developed by Martha Sudermann, Zachary Foster, Niklaus Grunwald, Jeff Chang. Zachary Foster conceptualized much of the core workflow. 
 
-Metadata file (metadata.csv) is of the format:
+### Before You Start
 
-The info on primer sequences and main parameters will be in 'primerinfo_params.csv' file and of the following format: 
+You will need to prepare your raw read files and fill in the 'metadata.csv' and 'primerinfo_params.csv' templates.
 
-Please ensure that you have enough storage to save intermediate files in a temporary directory (default) (or user specified directory) before proceeding.
+A strength of the package is that you can run multiple different datasets at once, which is shown in test dataset below. If samples contain pooled barcodes, you can also use the package to demultiplex and run analyses in tandem. S1 and S2 samples below illustrate this. Both samples contain rps10 and ITS pooled barcodes.
 
-A few additional notes: 
-If you are using the SILVA or UNITE databases, an ordinary personal computer may not have enough memory for the taxonomic assignment steps, even if you have few samples. This issue is not just isolated to this package, but when running the assignTaxonomy function in isolation, using DADA2. 
-The test databases present in the package are randomly subsetted, for demonstration purposes only. User will need to upload their own databases to their input data folder that is also where the raw reads are located. 
+### Format of the Raw Read Files
 
-Prepare and input metadata and primer files according to the templates provided. Using the provided templates, paste sample names in the first column.  In the second column, user will specify the barcode they have used. Currently, user can specify 'its' or 'rps10'. These primer names are case sensitive.
+The package takes foward and reverse Illumina short read sequence data.
 
-The metadata file should look like this:  
+To avoid errors, the only characters that are acceptable in sample names are letters and numbers. Characters can be separated by underscores, but no other symbols. The final characters before the '.fastq.gz' suffix MUST be '_R1' or '_R2'. 
 
+Examples are permissible sample names are as follows:
 
-### Load package
-For now, package will be loaded by retrieving the package from Github. Eventually, the package will be uploaded to CRAN or Bioconductor. 
+* Sample1_R1.fastq.gz
+* Sample1_R2.fastq.gz
 
-```{r installation, message=FALSE, warnings=FALSE}
-#temporary installation method
-#ADJUST PATHS FOR MOMENT
-#devtools::load_all("/Users/masudermann/rps10package")
-#devtools::document()
+Other permissible names are:
 
-#To pull from Github (Grunwald Lab members will need an auth_token as package is currently private)
-library("devtools")
-devtools:install.github("grunwaldlab/demulticoder")
+* Sample1_001_R1.fastq.gz
+* Sample1_001_R2.fastq.gz
+
+What is not permissible and will have to be renamed is:
+
+* Sample1_001_R1_001.fastq.gz
+* Sample1_001_R2_001.fastq.gz
+
+The parsing functions will error out because the R1 and R2 are not directly preceeding the '.fastq.gz' suffix.
+
+### Metadata File (metadata.csv) Format
+
+The format of the CSV file is simple. The only two necessary columns (with these names) are:
+
+1. sample_name column
+2. primer_info column
+
+Any additional metadata should then be pasted after these two columns. They can be referenced later during the analysis steps and save a step of loading metadata later.
+
+S1 and S2 are come from a rhododendron rhizobiome dataset, and S3 and S4 come from an entirely different soil microbiome dataset but are used to illustrate that the package can also be used for 16S analyses.
+
+You will notice S1 and S2 are included twice in the 'metadata.csv' sheet. This is because these two samples contain pooled reads (ITS and rps10). To demultiplex and run both analyses in tandem, include the same sample twice under sample_name, and then change the primer_name.
+
+Example using test dataset:
+
+```{plaintext}
+sample_name,primer_name,well,organism
+S1,rps10,A01,Cry
+S2,rps10,B01,Cin
+S1,its,A01,Cry
+S2,its,B01,Cin
+S3,sixteenS,NA,NA  
+S4,sixteenS,NA,NA
 ```
 
-### Reorganize data tables for downstream steps and obtain primer counts across all sample reads  
-The sample names, primer sequences and other metadata are reorganized in preparation for running Cutadapt to remove primers. 
+### Primer sequence information and user-defined parameters are placed in 'primerinfo_params.csv'
 
-```{r create data tables, message=FALSE, warnings=FALSE}
-prepare_reads(
+To simplify how functions are called, user will provide parameters within this input file. We recommend using the template provided in documentation. 
+
+The only required columns user must fill in are:
+1.primer_name (rps10, sixteenS, its, or other for another barcode)
+2.forward-forward sequence
+3.reverse-reverse sequence
+4.already_trimmed (TRUE/FALSE)   
+
+(Most datasets will require that primers first be removed from reads. However, for some 16S datasets, if protocols like the Earth Microbiome Project were followed, primers are mostly removed during the demultiplexing for barcoded samples following an Illumina run).  It may be that a few primers still remain.  If already_trimmed flag is specified, remaining primers will be removed and then reads for which no primers were located will be copied to the trimmed folder for subsequent analyses.  
+
+If a user doesn't add any info to the subsequent columns, the default DADA2 parameters will be used. 
+
+TODO-provide info on the different parameter descriptions and which functions they are associated with. 
+
+Example template for 'primerinfo_params.csv'
+```{plaintext}
+primer_name,forward,reverse,already_trimmed,minCutadaptlength,multithread,verbose,maxN,maxEE_forward,maxEE_reverse,truncLen_forward,truncLen_reverse,truncQ,minLen,maxLen,minQ,trimLeft,trimRight,rm.lowcomplex,minOverlap,maxMismatch,min_asv_length
+rps10,GTTGGTTAGAGYARAAGACT,ATRYYTAGAAAGAYTYGAACT,FALSE,100,TRUE,FALSE,1.00E+05,5,5,0,0,5,150,Inf,0,0,0,0,15,0,50
+its,CTTGGTCATTTAGAGGAAGTAA,GCTGCGTTCTTCATCGATGC,FALSE,50,TRUE,FALSE,1.00E+05,5,5,0,0,5,50,Inf,0,0,0,0,15,0,50
+sixteenS,GTGYCAGCMGCCGCGGTAA,GGACTACNVGGGTWTCTAAT,TRUE,0,TRUE,FALSE,1.00E+05,2,2,0,0,5,50,Inf,0,0,0,0,15,0,50
+```
+
+### Reference Database Format
+
+For now, the package is compatible with the following databases:
+
+* oomycetedb from: [http://www.oomycetedb.org/](http://www.oomycetedb.org/)
+
+* SILVA 16S database with species assignments: [https://zenodo.org/records/4587955/files/silva_nr99_v138.1_wSpecies_train_set.fa.gz?download=1](https://zenodo.org/records/4587955/files/silva_nr99_v138.1_wSpecies_train_set.fa.gz?download=1)
+
+* UNITE fungal database from [https://unite.ut.ee/repository.php](https://unite.ut.ee/repository.php)
+
+A user can select up to one other database (for now), but will first need to reformat headers exactly like the UNITE fungal database specifications.
+
+### Additional Notes
+
+Computer specifications may be a limiting factor-- If you are using the SILVA or UNITE databases for taxonomic assignment steps, an ordinary personal computer (unless it has sufficient RAM) may not have enough memory for the taxonomic assignment steps, even with few samples. The test databases in the package are randomly subsetted for demonstration purposes. 
+
+Users need to upload their own databases to their input data folder. If computer crashes during the taxonomic assignment step, please switch to a computing cluster.
+
+Please also ensure that you have enough storage to save intermediate files in a temporary directory (default) or user-specified directory before proceeding.
+
+### Loading the Package
+
+For now, the package will be loaded by retrieving it from GitHub. Eventually, the package will be uploaded to CRAN or Bioconductor.
+```{r installation, warnings=FALSE, message=FALSE}
+#To pull from Github (Grunwald Lab members will need an auth_token as the package is currently private)
+#library("devtools")
+#devtools::install_github("grunwaldlab/demulticoder", auth_token="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", force=TRUE)
+#library(demulticoder)
+
+devtools::load_all("/Users/masudermann/demulticoder")
+```
+
+### Reorganize Data Tables
+The sample names, primer sequences, and other metadata are reorganized in preparation for running Cutadapt to remove primers.
+```{r prepare_reads function, message=FALSE}
+demulticoder::prepare_reads(
   maxN = 0, 
-  data_directory = "inst/extdata", 
-  output_directory = "~/output_package", 
-  tempdir_id = "run2")
+  data_directory = system.file("extdata", package = "demulticoder"),
+  output_directory = "~/output_test_dataset", 
+  tempdir_id = "test_dataset_temp",
+  overwrite_existing=TRUE)
 ```
 
-### Remove primers with Cutadapt and check that no primers still remain  
-
-If primers still remain, you may want to adjust the parameters or manually remove any reads that still have primers (TODO-adjust this instruction later). 
-
-***TODO-include a function to remove any ASV sequences that may still have primers. There likely won't be many-but it might be worth incorporating a function like this***
-
-```{r Trim function, include=TRUE}
-
-```
-### Generate ASV abundance matrix.   
-
-Depending on chosen specifications, the minOverlap and maxMismatch can be changed. The default values are the DADA2 default values 
-
-```{r asv abund matrix, include=TRUE}
-
+### Remove Primers with Cutadapt
+Before running Cutadapt, please ensure that you have installed it. 
+```{r remove primers with cut_trim function, message=FALSE}
+demulticoder::cut_trim(
+  analysis_setup,
+  cutadapt_path="/opt/homebrew/bin/cutadapt",
+  overwrite_existing = TRUE)
 ```
 
-### Taxonomic identification steps  
-
-After databases are formatted, taxonomic information will be assigned to the ASVs that were inferred previously. The output will be a csv file containing each unique ASV, the abundance of each ASV across each sample, and the taxonomic assignments, the bootstrap support values, as well as a column listing the percent identity of each sequence to the corresponding sequence in the reference database.  
-
-The user must specify which barcode they are using. Either 'rps10', its, or 'rps10_its'
-
-**Databases** Todo-clarify instructions
-
-Within the main directory, user must also have retrieved the rps10 oomycetedb (add link) or the Unite fungal database of choice. The names of the databases must be 'oomycetedb.fasta' and 'fungidb.fasta', or else they won't be recognized. The headers will altered and new versions of the databse will be saved. This will ensure there is consistency across databases. 
-
-***TODO-save renamed db in temporary db or else they will take up too much space.***
-
-```{r assign tax, include=TRUE}
-
+### ASV inference step
+Raw reads will be merged and ASVs will be inferred
+```{r ASV inference, message=FALSE}
+make_asv_abund_matrix(
+  analysis_setup,
+  overwrite_existing = TRUE)
 ```
 
-### Convert ASV matrix to Taxmap and Phyloseq objects
-
-While some users will appreciate having a matrix with all ASV sequences, taxonomic assignments and abundances of each ASV per sample, others may prefer to reformat matrices into Phyloseq or Taxmap objects. 
-
-Two wrapper functions are shared. They are derived from Metacoder functions 'parse_tax_data' and 'as_phyloseq'.
-
-```{r Reformat ASV abundance matrix}
-
+### Taxonomic assignment step
+Using the core assignTaxonomy function from DADA2, taxonomic assignments will be given to ASVs. 
+```{r Assign taxonomy, message=FALSE}
+assignTax(
+  analysis_setup,
+  asv_abund_matrix,
+  retrieve_files=TRUE,
+  overwrite_existing=TRUE)
 ```
 
+### Reformat ASV matrix as taxmap and phyloseq objects after optional filtering of low abundance ASVs
+```{r Reformat final matrix, message=FALSE}
+asv_matrix_to_taxmap_phyloseq(save_outputs=TRUE)
+```
+
+### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our 16S-barcoded samples 
+```{r Heatree demonstration, message=FALSE}
+```
+
+### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our rps10-barcoded sample
+```{r Heatree demonstration, message=FALSE}
+```
+
+### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded samples
+```{r Heatree demonstration, message=FALSE}
+```
+
+### We can also do a variety of analyses, if we convert to phyloseq object
+```{r Phyloseq demonstration, message=FALSE}
+```

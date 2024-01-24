@@ -78,6 +78,7 @@ cut_trim <- function(analysis_setup,
   }
   
   default_params <- list(
+    minCutadaptlength=50,
     maxEE_forward = Inf,
     maxEE_reverse = Inf,
     truncQ = 2,
@@ -102,7 +103,7 @@ cut_trim <- function(analysis_setup,
     overwrite_existing = FALSE
   )
   
-  unique_primers <- unique(data_tables$primer_data$primer_name)
+  unique_primers <-unique(data_tables$primer_data$primer_name)
   
   for (barcode in unique_primers) {
     barcode_params <- filter(data_tables$parameters, primer_name == barcode)
@@ -110,7 +111,6 @@ cut_trim <- function(analysis_setup,
     if (nrow(barcode_params) > 0) {
       barcode_params <- as.list(barcode_params)
       
-      # Merge default_params with barcode_params, favoring barcode-specific ones
       barcode_params <- modifyList(default_params, barcode_params)
       
       cutadapt_data_barcode <- subset(data_tables$cutadapt_data, primer_name == barcode)

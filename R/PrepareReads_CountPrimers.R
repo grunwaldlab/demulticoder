@@ -14,7 +14,6 @@
 #' Pre-filter raw reads and parse metadata and primer_information to prepare for primer trimming and filter
 #' #' prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "demulticoder_run", overwrite_existing = TRUE)
 #' @importFrom dada2 filterAndTrim
-
 prepare_reads <- function(data_directory = "data", 
                           output_directory = "output", 
                           tempdir_path = NULL, 
@@ -30,12 +29,15 @@ prepare_reads <- function(data_directory = "data",
   primers_params_path <- dir_paths$primers_params_path
   metadata_path <- dir_paths$metadata_path
   
-  if (!overwrite_existing) {
-    existing_files <- list.files(directory_path)
-    if (length(existing_files) > 0) {
-      existing_analysis_table <- file.path(directory_path_temp, "analysis_setup_tables.RData")
+  existing_files <- list.files(directory_path)
+  
+  if (!overwrite_existing && length(existing_files) > 0) {
+    existing_analysis_table <- file.path(directory_path_temp, "analysis_setup_tables.RData")
+    if (file.exists(existing_analysis_table)) {
       load(existing_analysis_table)
-      message("Some files already exist in specified directories. N's may have already been removed from reads and primer counts have been compiled. To overwrite, specify overwrite_existing = TRUE")
+      message("Existing data detected: Primer counts and N's may have been removed from previous runs. Loading existing output. To perform a fresh analysis, specify overwrite_existing = TRUE.")
+    } else {
+      warning("Existing analysis table not found. The 'prepare_reads' function was be rerun")
     }
   } else {
     if (dir.exists(directory_path)) {
@@ -44,7 +46,6 @@ prepare_reads <- function(data_directory = "data",
     if (dir.exists(directory_path_temp)) {
       unlink(directory_path_temp, recursive = TRUE)
     }
-  
   }
   
   if (!dir.exists(directory_path)) {
@@ -71,16 +72,16 @@ prepare_reads <- function(data_directory = "data",
   
   message("Cutadapt input")
   print(cutadapt_data)
-    
+  
   message("Primer input")
   print(primer_data)
-    
+  
   message("Fastq input")
   print(fastq_data)
-    
+  
   message("Parameters input")
   print(parameters)
-    
+  
   message("Metadata input")
   print(metadata)
   
