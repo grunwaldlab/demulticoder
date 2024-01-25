@@ -19,11 +19,24 @@ cut_trim <- function(analysis_setup,
   directory_path <- dir_paths$output_directory
   directory_path_temp <- dir_paths$temp_directory
   
-  if (!overwrite_existing) {
-    message("Files have already been processed. To overwrite, specify overwrite_existing = TRUE")
+  patterns_to_check <- c(
+    "primer_hit_data_posttrim.csv", 
+    "posttrim_primer_plot.pdf",
+    "readqual*"
+  )
+  
+  files_exist <- sapply(patterns_to_check, function(pattern) {
+    full_pattern <- file.path(directory_path, pattern)
+    any(file.exists(list.files(path = directory_path, pattern = pattern, full.names = TRUE, recursive = TRUE)))
+  })
+  
+  if (any(files_exist) && all(files_exist) && !overwrite_existing) {
+    message("Existing data detected: Primer counts and N's may have been removed from previous runs. Loading existing output. To perform a fresh analysis, specify overwrite_existing = TRUE.")
     return(invisible())
+  } else if (!overwrite_existing) {
+    warning("Existing analysis files not found. The 'cut_trim' function was rerun.")
     
-  } else {
+    # Your existing code to remove files and directories
     patterns_to_remove <- c(
       "primer_hit_data_posttrim.csv", 
       "posttrim_primer_plot.pdf",
@@ -39,7 +52,7 @@ cut_trim <- function(analysis_setup,
       }
     }
     
-    patterns_to_remove_temp <- c(  # <- This was missing in your code
+    patterns_to_remove_temp <- c(
       "Filter_results_*"
     )
     
@@ -103,7 +116,7 @@ cut_trim <- function(analysis_setup,
     overwrite_existing = FALSE
   )
   
-  unique_primers <-unique(data_tables$primer_data$primer_name)
+  unique_primers <- unique(data_tables$primer_data$primer_name)
   
   for (barcode in unique_primers) {
     barcode_params <- filter(data_tables$parameters, primer_name == barcode)

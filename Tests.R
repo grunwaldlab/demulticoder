@@ -12,15 +12,15 @@ devtools::document()
 prepare_reads(
   maxN = 0, 
   data_directory = "~/demulticoder/inst/extdata", 
-  output_directory = "~/testing_package", 
-  tempdir_id = "test4",
+  output_directory = "~/testing_package2", 
+  tempdir_id = "test8",
   tempdir_path="~/",
   overwrite_existing = FALSE)
 
 cut_trim(
   analysis_setup,
   cutadapt_path="/opt/homebrew/bin/cutadapt",
-  overwrite_existing = TRUE)
+  overwrite_existing = FALSE)
 
 make_asv_abund_matrix(
   analysis_setup,
