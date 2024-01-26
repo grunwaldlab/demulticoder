@@ -150,7 +150,6 @@ make_asv_abund_matrix(
 
 ### Taxonomic assignment step
 Using the core assignTaxonomy function from DADA2, taxonomic assignments will be given to ASVs. 
-
 ```{r Assign taxonomy, message=FALSE}
 assignTax(
   analysis_setup,
@@ -161,21 +160,190 @@ assignTax(
 
 ### Reformat ASV matrix as taxmap and phyloseq objects after optional filtering of low abundance ASVs
 ```{r Reformat final matrix, message=FALSE}
-asv_matrix_to_taxmap_phyloseq(save_outputs=TRUE)
+asv_matrix_to_taxmap_phyloseq(save_outputs=TRUE, overwrite=TRUE)
 ```
 
 ### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our 16S-barcoded samples 
-```{r Heatree demonstration, message=FALSE}
+```{r Heatree demonstration 16s , message=FALSE}
+load("~/output_test_dataset/obj_dada_sixteenS.RData") 
+obj_dada_16s<-obj_dada
+
+heat_tree(obj_dada_16s,
+          node_label = taxon_names,
+          node_size = n_obs,
+          node_color = n_obs,
+          node_color_axis_label = "ASV count",
+          node_size_axis_label = "Total Abundance of Taxa",
+          layout = "da", initial_layout = "re")
+
 ```
 
 ### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our rps10-barcoded sample
-```{r Heatree demonstration, message=FALSE}
+```{r Heatree demonstration rps10, message=FALSE}
+load("~/output_test_dataset/obj_dada_rps10.RData") 
+obj_dada_rps10<-obj_dada
+
+heat_tree(obj_dada_rps10,
+          node_label = taxon_names,
+          node_size = n_obs,
+          node_color = n_obs,
+          node_color_axis_label = "ASV count",
+          node_size_axis_label = "Total Abundance of Taxa",
+          layout = "da", initial_layout = "re")
 ```
 
 ### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded samples
-```{r Heatree demonstration, message=FALSE}
+```{r Heatree demonstration its, message=FALSE}
+load("~/output_test_dataset/obj_dada_its.RData") 
+obj_dada_its<-obj_dada
+
+heat_tree(obj_dada_its,
+          node_label = taxon_names,
+          node_size = n_obs,
+          node_color = n_obs,
+          node_color_axis_label = "ASV count",
+          node_size_axis_label = "Total Abundance of Taxa",
+          layout = "da", initial_layout = "re")
 ```
 
 ### We can also do a variety of analyses, if we convert to phyloseq object
-```{r Phyloseq demonstration, message=FALSE}
+```{r Phyloseq demonstration 16S, message=FALSE}
+load("~/output_test_dataset/phylo_obj_sixteenS.RData") 
+phylo_data_16s<-phylo_obj
+
+data <- phylo_data_16s %>%
+  tax_glom(taxrank = "Genus") %>%                     
+  transform_sample_counts(function(x) {x/sum(x)} ) %>% 
+  psmelt() %>%                                        
+  filter(Abundance > 0.02) %>%                      
+  arrange(Genus)                                      
+
+abund_plot <- ggplot(data, aes(x = Sample, y = Abundance, fill = Genus)) + 
+  geom_bar(stat = "identity", position = "stack", color = "black", size = 0.2) +
+  scale_fill_viridis_d() +
+  scale_color_viridis_d() +
+  theme_minimal() +
+  labs(
+    y = "Relative Abundance",
+    title = "Relative abundance of taxa by sample",
+    fill = "Genus"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 14),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    legend.position = "top",
+    legend.text = element_text(size = 14),
+    legend.title = element_text(size = 14),  # Adjust legend title size
+    legend.key.size = unit(2, "lines"),  # Adjust the size of the legend color key
+    strip.text = element_text(size = 14),
+    strip.background = element_blank()
+  ) +
+  guides(
+    fill = guide_legend(
+      reverse = TRUE,
+      keywidth = 1,
+      keyheight = 1,
+      title.position = "top",
+      title.hjust = 0.5,  # Center the legend title
+      label.theme = element_text(size = 10)  # Adjust the size of the legend labels
+    )
+  )
+
+print(abund_plot)
+
+```
+
+```{r Phyloseq demonstration ITS, message=FALSE}
+load("~/output_test_dataset/phylo_obj_its.RData") 
+phylo_data_its<-phylo_obj
+
+data <- phylo_data_its %>%
+  tax_glom(taxrank = "Genus") %>%                     
+  transform_sample_counts(function(x) {x/sum(x)} ) %>% 
+  psmelt() %>%                                        
+  filter(Abundance > 0.02) %>%                      
+  arrange(Genus)                                      
+
+abund_plot <- ggplot(data, aes(x = Sample, y = Abundance, fill = Genus)) + 
+  geom_bar(stat = "identity", position = "stack", color = "black", size = 0.2) +
+  scale_fill_viridis_d() +
+  scale_color_viridis_d() +
+  theme_minimal() +
+  labs(
+    y = "Relative Abundance",
+    title = "Relative abundance of taxa by sample",
+    fill = "Genus"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 14),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    legend.position = "top",
+    legend.text = element_text(size = 14),
+    legend.title = element_text(size = 14),  # Adjust legend title size
+    legend.key.size = unit(2, "lines"),  # Adjust the size of the legend color key
+    strip.text = element_text(size = 14),
+    strip.background = element_blank()
+  ) +
+  guides(
+    fill = guide_legend(
+      reverse = TRUE,
+      keywidth = 1,
+      keyheight = 1,
+      title.position = "top",
+      title.hjust = 0.5,  # Center the legend title
+      label.theme = element_text(size = 10)  # Adjust the size of the legend labels
+    )
+  )
+
+print(abund_plot)
+
+```
+
+```{r Phyloseq demonstration rps10, message=FALSE}
+load("~/output_test_dataset/phylo_obj_rps10.RData") 
+phylo_data_rps10 <- phylo_obj
+
+data <- phylo_data_rps10 %>%
+  #tax_glom(taxrank = "Genus") %>%                     
+  transform_sample_counts(function(x) {x/sum(x)} ) %>% 
+  psmelt() %>%                                        
+  filter(Abundance > 0.02) %>%                      
+  arrange(Genus)                                      
+
+abund_plot <- ggplot(data, aes(x = Sample, y = Abundance, fill = Genus)) + 
+  geom_bar(stat = "identity", position = "stack", color = "black", size = 0.2) +
+  scale_fill_viridis_d() +
+  scale_color_viridis_d() +
+  theme_minimal() +
+  labs(
+    y = "Relative Abundance",
+    title = "Relative abundance of taxa by sample",
+    fill = "Genus"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 14),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    legend.position = "top",
+    legend.text = element_text(size = 14),
+    legend.title = element_text(size = 14),  # Adjust legend title size
+    legend.key.size = unit(2, "lines"),  # Adjust the size of the legend color key
+    strip.text = element_text(size = 14),
+    strip.background = element_blank()
+  ) +
+  guides(
+    fill = guide_legend(
+      reverse = TRUE,
+      keywidth = 1,
+      keyheight = 1,
+      title.position = "top",
+      title.hjust = 0.5,  # Center the legend title
+      label.theme = element_text(size = 10)  # Adjust the size of the legend labels
+    )
+  )
+
+print(abund_plot)
+
 ```
