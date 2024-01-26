@@ -21,8 +21,8 @@
 #' prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "run1", overwrite_existing = TRUE)
 #' cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = TRUE)
 #' make_asv_abund_matrix(analysis_setup, overwrite_existing = TRUE)
-#' assignTax(analysis_setup,asv_abund_matrix, retrieve_files=TRUE, overwrite_existing=TRUE
-#' asv_matrix_to_taxmap_phyloseq(save_outputs=TRUE)
+#' assign_tax(analysis_setup,asv_abund_matrix, retrieve_files=TRUE, overwrite_existing=TRUE
+#' convert_asv_matrix_to_objs(save_outputs=TRUE)
 
 convert_asv_matrix_to_objs <- function(min_read_depth = 0, minimum_bootstrap = 0, pid_species = 0, pid_genus = 0, pid_family = 0, save_outputs = FALSE, overwrite = FALSE) {
   dir_paths <- analysis_setup$dir_paths

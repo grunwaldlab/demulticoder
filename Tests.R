@@ -1,14 +1,6 @@
 devtools::load_all("/Users/masudermann/demulticoder")
 devtools::document()
 
-#install.packages("devtools")
-#devtools::install_github("grunwaldlab/demulticoder")
-
-#sessionInfo()
-#devtools::install
-#devtools::build_rmd("vignettes/Introduction.Rmd")
-#browseVignettes('rps10package')
-
 prepare_reads(
   maxN = 0, 
   data_directory = "~/demulticoder/inst/extdata", 
@@ -36,16 +28,3 @@ convert_asv_matrix_to_objs(save_outputs=TRUE, overwrite=TRUE)
 
 library(testthat)
 check()
-
-#R CMD build
-
-#usethis::use_readme_rmd()
-#devtools::build_readme()
-#usethis::use_test("rps10package2")
-#usethis::use_test("PrepareReads_CountPrimers")
-#usethis::use_vignette("Package_Workflow")
-
-
-#Need to be clear for ASV inference step, for DADA2 needs greater than 1 sample!!!
-#make sure input requirements are clear and there are templates and examples
-#IDtaxa-requires specific db formats but this could solve some issues as well, and maybe make others? 
