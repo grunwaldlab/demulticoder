@@ -39,7 +39,7 @@ What is not permissible and will have to be renamed is:
 
 The parsing functions will error out because the R1 and R2 are not directly preceeding the '.fastq.gz' suffix.
 
-### Metadata File (metadata.csv) Format
+### Format of metadata file (*metadata.csv*)
 
 The format of the CSV file is simple. The only two necessary columns (with these names) are:
 
@@ -64,7 +64,7 @@ S3,sixteenS,NA,NA
 S4,sixteenS,NA,NA
 ```
 
-### Primer sequence information and user-defined parameters are placed in 'primerinfo_params.csv'
+### Primer sequence information and user-defined parameters are placed in *primerinfo_params.csv*
 
 To simplify how functions are called, user will provide parameters within this input file. We recommend using the template provided in documentation. 
 
@@ -98,7 +98,9 @@ For now, the package is compatible with the following databases:
 
 * UNITE fungal database from [https://unite.ut.ee/repository.php](https://unite.ut.ee/repository.php)
 
-A user can select up to one other database (for now), but will first need to reformat headers exactly like the UNITE fungal database specifications.
+A user can select up to one other database (for now), but will first need to reformat headers exactly like the UNITE fungal database specifications. 
+
+Databases will be copied into the user-specified data folder where raw data files and csv files are located. The names will be parameters in the *assignTax* function
 
 ### Additional Notes
 
