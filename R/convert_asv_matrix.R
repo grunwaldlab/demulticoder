@@ -24,7 +24,7 @@
 #' assignTax(analysis_setup,asv_abund_matrix, retrieve_files=TRUE, overwrite_existing=TRUE
 #' asv_matrix_to_taxmap_phyloseq(save_outputs=TRUE)
 
-asv_matrix_to_taxmap_phyloseq <- function(min_read_depth = 0, minimum_bootstrap = 0, pid_species = 0, pid_genus = 0, pid_family = 0, save_outputs = FALSE, overwrite = FALSE) {
+convert_asv_matrix_to_objs <- function(min_read_depth = 0, minimum_bootstrap = 0, pid_species = 0, pid_genus = 0, pid_family = 0, save_outputs = FALSE, overwrite = FALSE) {
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   directory_path <- dir_paths$output_directory
