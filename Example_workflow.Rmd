@@ -153,7 +153,7 @@ make_asv_abund_matrix(
 ### Taxonomic assignment step
 Using the core assignTaxonomy function from DADA2, taxonomic assignments will be given to ASVs. 
 ```{r Assign taxonomy, message=FALSE}
-assignTax(
+assign_tax(
   analysis_setup,
   asv_abund_matrix,
   retrieve_files=TRUE,
@@ -162,7 +162,7 @@ assignTax(
 
 ### Reformat ASV matrix as taxmap and phyloseq objects after optional filtering of low abundance ASVs
 ```{r Reformat final matrix, message=FALSE}
-asv_matrix_to_taxmap_phyloseq(save_outputs=TRUE, overwrite=TRUE)
+convert_asv_matrix_to_objs(save_outputs=TRUE, overwrite=TRUE)
 ```
 
 ### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our 16S-barcoded samples 
