@@ -150,6 +150,7 @@ make_asv_abund_matrix(
 
 ### Taxonomic assignment step
 Using the core assignTaxonomy function from DADA2, taxonomic assignments will be given to ASVs. 
+
 ```{r Assign taxonomy, message=FALSE}
 assignTax(
   analysis_setup,
