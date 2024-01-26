@@ -26,7 +26,7 @@ make_asv_abund_matrix(
   analysis_setup,
   overwrite_existing = TRUE)
 
-assignTax(
+assign_tax(
   analysis_setup,
   asv_abund_matrix,
   retrieve_files=TRUE,
