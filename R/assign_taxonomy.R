@@ -9,13 +9,13 @@
 #' @inheritParams assign_taxonomyDada2
 #' @inheritParams dada2::assignTaxonomy
 #' @return Taxonomic assignments of each unique ASV sequence
-#' @export assignTax
+#' @export assign_tax
 #' @examples
 #' Assign taxonomies to ASVs on a per barcode basis
 #' prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "run1", overwrite_existing = TRUE)
 #' cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = TRUE)
 #' make_asv_abund_matrix(analysis_setup, overwrite_existing = TRUE)
-#' assignTax(analysis_setup,asv_abund_matrix, retrieve_files=TRUE, overwrite_existing=TRUE)
+#' assign_tax(analysis_setup,asv_abund_matrix, retrieve_files=TRUE, overwrite_existing=TRUE)
 
 assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, db_rps10 = "oomycetedb.fasta", db_its = "fungidb.fasta", db_16s = "bacteriadb.fasta", db_other = "otherdb.fasta", overwrite_existing = FALSE) {
   dir_paths <- analysis_setup$dir_paths
