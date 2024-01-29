@@ -17,6 +17,7 @@
 #' make_asv_abund_matrix(analysis_setup, overwrite_existing = TRUE)
 #' assign_tax(analysis_setup,asv_abund_matrix, retrieve_files=TRUE, overwrite_existing=TRUE)
 
+
 assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, db_rps10 = "oomycetedb.fasta", db_its = "fungidb.fasta", db_16s = "bacteriadb.fasta", db_other = "otherdb.fasta", overwrite_existing = FALSE) {
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
@@ -26,19 +27,21 @@ assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose 
   unique_barcodes <- unique(data_tables$cutadapt_data$primer_name)
   
   files_to_check <- c("*_reference_db.fa", "TaxMatrix_*", "Final_tax_matrix_*")
-  if (!overwrite_existing || any(!file.exists(list.files(directory_path_temp, pattern = files_to_check, full.names = TRUE)))) {
-    message("Files have already been processed. To overwrite, specify overwrite_existing = TRUE.")
-    return(invisible())
+  existing_files <- list.files(directory_path_temp, pattern = files_to_check, full.names = TRUE)
   
-    } else {
-      patterns_to_remove <- c(
-        "*_species_count_table.csv",
-        "dada2_asv_alignments_*",
-        "final_asv_abundance_matrix_*",
-        "track_reads_*"
-      )
-      
-      for (pattern in patterns_to_remove) {
+  if (!overwrite_existing && length(existing_files) > 0) {
+    message("Existing files found. Specify overwrite=TRUE, to rerun analysis")
+    return(invisible())
+    
+  } else {
+    patterns_to_remove <- c(
+      "*_species_count_table.csv",
+      "dada2_asv_alignments_*",
+      "final_asv_abundance_matrix_*",
+      "track_reads_*"
+    )
+    
+    for (pattern in patterns_to_remove) {
       full_pattern <- file.path(directory_path, pattern)
       files_to_remove <- list.files(path = directory_path, pattern = pattern, full.names = TRUE)
       
@@ -62,6 +65,11 @@ assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose 
       }
     }
     
+    if (length(existing_files) == 0 && !overwrite_existing) {
+      warning("No existing files found. The analysis was run.")
+      # Continue with the analysis
+    }
+    
     for (barcode in unique_barcodes) {
       # Load merged reads for the current barcode
       load(file.path(directory_path_temp, paste0("asvabund_matrixDADA2_", barcode, ".RData")))
@@ -82,7 +90,9 @@ assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose 
       file.copy(directory_path_temp, dir_paths$output_directory, recursive = TRUE)
     }
   }
+  return(invisible())
 }
+
 
 #' Process the information from an ASV abundance matrix to run DADA2 for single barcode
 #'
@@ -183,6 +193,11 @@ get_pids <- function(tax_results, directory_path_temp, directory_path, db, locus
     pid(align, type = "PID1")
   })
   
+  # Extract formatted alignment details
+  formatted_alignments <- lapply(asv_ref_align_normal, function(align) {
+    paste(capture.output(align), collapse = "\n")
+  })
+  
   # Choose the alignment with higher pid
   asv_ref_align <- Map(function(align_normal, align_revcomp, pid_normal, pid_revcomp) {
     if (pid_normal >= pid_revcomp) align_normal else align_revcomp
@@ -193,16 +208,18 @@ get_pids <- function(tax_results, directory_path_temp, directory_path, db, locus
     if (pid_normal >= pid_revcomp) pid_normal else pid_revcomp
   }, asv_pids_normal, asv_pids_revcomp)
   
-  # Write the alignment results to a text file
-  alignment_text <- paste0(
-    'asv: ', asv_seqs, '\n',
-    'ref: ', unlist(ref_seqs), '\n',
-    'pid: ', asv_pids, '\n',
-    unlist(sapply(asv_ref_align, function(align) align@pattern)), '\n',
-    unlist(sapply(asv_ref_align, function(align) align@subject)), '\n'
+  # Format the alignment results
+  alignment_text <- paste(
+    'ASV Sequences:', asv_seqs,
+    '\nReference Sequences:', unlist(ref_seqs),
+    '\nPercent Identity:', asv_pids,
+    '\nAlignment Details:',
+    formatted_alignments,
+    sep = '\n==================================================\n'
   )
-  write_lines(paste(collapse = '==================================================\n', alignment_text),
-              file = file.path(directory_path, paste0("dada2_asv_alignments_", locus, ".txt")))
+  
+  # Write the alignment results to a text file
+  write_lines(alignment_text, file = file.path(directory_path, paste0("dada2_asv_alignments_", locus, ".txt")))
   
   return(asv_pids)
 }

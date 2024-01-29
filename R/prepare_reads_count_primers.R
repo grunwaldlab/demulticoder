@@ -35,9 +35,9 @@ prepare_reads <- function(data_directory = "data",
     existing_analysis_table <- file.path(directory_path_temp, "analysis_setup_tables.RData")
     if (file.exists(existing_analysis_table)) {
       load(existing_analysis_table)
-      message("Existing data detected: Primer counts and N's may have been removed from previous runs. Loading existing output. To perform a fresh analysis, specify overwrite_existing = TRUE.")
+      message("Existing data detected: Primer counts and N's may have been removed from previous runs. Loading existing output. To perform a  new analysis, specify overwrite_existing = TRUE.")
     } else {
-      warning("Existing analysis table not found. The 'prepare_reads' function was be rerun")
+      warning("Existing analysis output table not found. The 'prepare_reads' function was rerun")
     }
   } else {
     if (dir.exists(directory_path)) {

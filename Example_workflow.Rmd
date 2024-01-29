@@ -347,5 +347,9 @@ abund_plot <- ggplot(data, aes(x = Sample, y = Abundance, fill = Genus)) +
   )
 
 print(abund_plot)
+```
 
+Finally, let's retrieve the packages we used and the versions
+```{r}
+sessioninfo::session_info()
 ```

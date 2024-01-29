@@ -4,10 +4,10 @@ devtools::document()
 prepare_reads(
   maxN = 0, 
   data_directory = "~/demulticoder/inst/extdata", 
-  output_directory = "~/testing_package2", 
-  tempdir_id = "test8",
+  output_directory = "~/testing_package3", 
+  tempdir_id = "test10",
   tempdir_path="~/",
-  overwrite_existing = TRUE)
+  overwrite_existing = FALSE)
 
 cut_trim(
   analysis_setup,
@@ -16,7 +16,7 @@ cut_trim(
 
 make_asv_abund_matrix(
   analysis_setup,
-  overwrite_existing = TRUE)
+  overwrite_existing = FALSE)
 
 assign_tax(
   analysis_setup,

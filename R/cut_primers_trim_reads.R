@@ -31,7 +31,7 @@ cut_trim <- function(analysis_setup,
   })
   
   if (any(files_exist) && all(files_exist) && !overwrite_existing) {
-    message("Existing data detected: Primer counts and N's may have been removed from previous runs. Loading existing output. To perform a fresh analysis, specify overwrite_existing = TRUE.")
+    message("Existing data detected: Primer counts and N's may have been removed from previous runs. Loading existing output. To perform a new analysis, specify overwrite_existing = TRUE.")
     return(invisible())
   } else if (!overwrite_existing) {
     warning("Existing analysis files not found. The 'cut_trim' function was rerun.")
