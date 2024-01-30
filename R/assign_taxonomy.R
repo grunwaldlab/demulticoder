@@ -180,47 +180,29 @@ get_pids <- function(tax_results, directory_path_temp, directory_path, db, locus
   db_seqs <- read_fasta(file.path(directory_path_temp, db))
   ref_seqs <- get_ref_seq(tax_results, db_seqs)
   asv_seqs <- rownames(tax_results$tax)
-  
   # Calculate pids for normal alignment
   asv_ref_align_normal <- mapply(pairwiseAlignment, asv_seqs, ref_seqs, MoreArgs = list(type = 'global-local'))
   asv_pids_normal <- sapply(asv_ref_align_normal, function(align) {
     pid(align, type = "PID1")
   })
-  
   # Calculate pids for reverse complement alignment
   asv_ref_align_revcomp <- mapply(pairwiseAlignment, asv_seqs, rev_comp(ref_seqs), MoreArgs = list(type = 'global-local'))
   asv_pids_revcomp <- sapply(asv_ref_align_revcomp, function(align) {
     pid(align, type = "PID1")
   })
-  
-  # Extract formatted alignment details
-  formatted_alignments <- lapply(asv_ref_align_normal, function(align) {
-    paste(capture.output(align), collapse = "\n")
-  })
-  
-  # Choose the alignment with higher pid
-  asv_ref_align <- Map(function(align_normal, align_revcomp, pid_normal, pid_revcomp) {
-    if (pid_normal >= pid_revcomp) align_normal else align_revcomp
-  }, asv_ref_align_normal, asv_ref_align_revcomp, asv_pids_normal, asv_pids_revcomp)
-  
   # Choose the higher pid value
-  asv_pids <- mapply(function(pid_normal, pid_revcomp) {
-    if (pid_normal >= pid_revcomp) pid_normal else pid_revcomp
-  }, asv_pids_normal, asv_pids_revcomp)
-  
+  asv_pids <- ifelse(asv_pids_normal >= asv_pids_revcomp, asv_pids_normal, asv_pids_revcomp)
   # Format the alignment results
-  alignment_text <- paste(
-    'ASV Sequences:', asv_seqs,
-    '\nReference Sequences:', unlist(ref_seqs),
-    '\nPercent Identity:', asv_pids,
-    '\nAlignment Details:',
-    formatted_alignments,
-    sep = '\n==================================================\n'
-  )
-  
+  alignment_text <- paste0(map_chr(seq_along(asv_ref_align_normal), function(i) {
+    paste0('ASV Sequence: ', asv_seqs[[i]], '\n',
+           'Reference Sequence: ', unlist(ref_seqs[[i]]),'\n',
+           'Percent Identity: ', asv_pids[[i]],'\n',
+           'Aligned ASV Sequence: ', asv_ref_align_normal[[i]]@pattern,'\n',
+           'Aligned Reference Sequence: ',asv_ref_align_normal[[i]]@subject,'\n')
+  }), 
+  collapse = '==================================================\n')
   # Write the alignment results to a text file
   write_lines(alignment_text, file = file.path(directory_path, paste0("dada2_asv_alignments_", locus, ".txt")))
-  
   return(asv_pids)
 }
 

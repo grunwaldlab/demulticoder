@@ -18,6 +18,7 @@ make_asv_abund_matrix(
   analysis_setup,
   overwrite_existing = FALSE)
 
+#still need to fix align file
 assign_tax(
   analysis_setup,
   asv_abund_matrix,
@@ -25,6 +26,11 @@ assign_tax(
   overwrite_existing=TRUE)
 
 convert_asv_matrix_to_objs(save_outputs=TRUE, overwrite=TRUE)
+
+#TODO-cleanup functions again and revise documentation
+#fix align file
+#IDtaxa implementation for silva or unite?
+#BLAST addition? 
 
 library(testthat)
 check()
