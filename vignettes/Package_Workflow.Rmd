@@ -8,12 +8,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
----
-title: "Demulticoder Example Workflow"
-output: html_document
-date: "2023-07-05"
----
-
 ### Introduction
 
 The 'demulticoder' package is a robust DADA2 wrapper package for metabarcoding analyses. The package is designed for users with little experience doing metabarcoding analysis and a strength is the ability to to analyses on multiple datasets at once, different barcodes (not just ITS and 16S, but also rps10 for oomycete community analysis, as well as other barcodes, so long as the reference database is formatted like the UNITE fungal database).
