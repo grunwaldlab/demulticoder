@@ -171,7 +171,7 @@ convert_asv_matrix_to_objs(save_outputs=TRUE, overwrite=TRUE)
 ### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded samples 
 ### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded samples
 ```{r Heatree demonstration its, message=FALSE}
-load("~/output_test_dataset/obj_dada_its.RData") 
+load("~/demulticoder/inst/extdata/obj_dada_its.RData") 
 obj_dada_its<-obj_dada
 
 heat_tree(obj_dada_its,
@@ -186,7 +186,7 @@ heat_tree(obj_dada_its,
 
 ### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded sample
 ```{r Heatree demonstration rps10, message=FALSE}
-load("~/output_test_dataset/obj_dada_rps10.RData") 
+load("~/demulticoder/inst/extdata/obj_dada_rps10.RData") 
 obj_dada_rps10<-obj_dada
 
 heat_tree(obj_dada_rps10,
@@ -200,7 +200,7 @@ heat_tree(obj_dada_rps10,
 
 ### We can also do a variety of analyses, if we convert to phyloseq object
 ```{r Phyloseq demonstration ITS, message=FALSE}
-load("~/output_test_dataset/phylo_obj_its.RData") 
+load("~/demulticoder/inst/extdata/phylo_obj_its.RData") 
 phylo_data_its<-phylo_obj
 
 data <- phylo_data_its %>%
@@ -247,7 +247,7 @@ print(abund_plot)
 ```
 
 ```{r Phyloseq demonstration rps10, message=FALSE}
-load("~/output_test_dataset/phylo_obj_rps10.RData") 
+load("~/demulticoder/inst/extdata/phylo_obj_rps10.RData") 
 phylo_data_rps10 <- phylo_obj
 
 data <- phylo_data_rps10 %>%
