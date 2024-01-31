@@ -132,7 +132,7 @@ demulticoder::prepare_reads(
   maxN = 0, 
   data_directory = system.file("extdata", package = "demulticoder"),
   output_directory = "~/output_test_dataset", 
-  tempdir_id = "test_dataset_temp",
+  tempdir_id = "test_dataset",
   overwrite_existing=TRUE)
 ```
 
