@@ -255,10 +255,13 @@ assignTax_as_char <- function(tax_results, directory_path_temp, locus) {
 #' @keywords internal
 format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv, directory_path, locus) {
   formatted_abund_asv <- t(asv_abund_matrix)
-  formatted_abund_asv <- cbind(sequence = rownames(formatted_abund_asv),
-                               dada2_tax = str_match(seq_tax_asv[rownames(formatted_abund_asv)], pattern = "^(.+)--Species")[,1],
-                               dada2_pid = as.numeric(str_match(seq_tax_asv[rownames(formatted_abund_asv)], '--([0-9.]+)--ASV$')[, 2]),
-                               formatted_abund_asv)
+  asv_id_column <- paste("asv_", seq_along(rownames(formatted_abund_asv)), sep = "")
+  formatted_abund_asv <- cbind(
+    asv_id = asv_id_column,
+    sequence = rownames(formatted_abund_asv),
+    dada2_tax = str_match(seq_tax_asv[rownames(formatted_abund_asv)], pattern = "^(.+)--Species")[,1],
+    dada2_pid = as.numeric(str_match(seq_tax_asv[rownames(formatted_abund_asv)], '--([0-9.]+)--ASV$')[, 2]),
+    formatted_abund_asv)
   formatted_abund_asv <- as_tibble(formatted_abund_asv)
   
   primer_seqs <- apply(analysis_setup$data_tables$primer_data[, 2:ncol(analysis_setup$data_tables$primer_data)], 2, paste, collapse = "|")

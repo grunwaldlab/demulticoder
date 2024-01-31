@@ -46,7 +46,7 @@ convert_asv_matrix_to_objs <- function(min_read_depth = 0, minimum_bootstrap = 0
       cat("To overwrite, set overwrite = TRUE\n")
       cat("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
     } else {
-      abundance <- read_csv(file.path(directory_path, paste0('final_asv_abundance_matrix_', suffix, '.csv')), show_col_types = FALSE)
+      abundance <- read_csv(file.path(directory_path, paste0('final_asv_abundance_matrix_', suffix, '.csv')), col_types = cols("asv_id" = col_skip()))
       is_low_abund <- rowSums(abundance[, grepl(paste0("_", suffix, "$"), colnames(abundance))]) < min_read_depth
       abundance <- filter(abundance, !is_low_abund)
       abundance$dada2_tax <- map_chr(strsplit(abundance$dada2_tax, ';'), function(x) {
