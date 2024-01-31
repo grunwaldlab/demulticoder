@@ -58,7 +58,7 @@ You will notice S1 and S2 are included twice in the 'metadata.csv' sheet. This i
 
 Example using test dataset:
 
-```{plaintext}
+
 sample_name,primer_name,well,organism
 S1,rps10,A01,Cry
 S2,rps10,B01,Cin
@@ -66,7 +66,6 @@ S1,its,A01,Cry
 S2,its,B01,Cin
 S3,sixteenS,NA,NA  
 S4,sixteenS,NA,NA
-```
 
 ### Primer sequence information and user-defined parameters are placed in *primerinfo_params.csv*
 
@@ -85,12 +84,12 @@ If a user doesn't add any info to the subsequent columns, the default DADA2 para
 TODO-provide info on the different parameter descriptions and which functions they are associated with. 
 
 Example template for 'primerinfo_params.csv'
-```{plaintext}
+
 primer_name,forward,reverse,already_trimmed,minCutadaptlength,multithread,verbose,maxN,maxEE_forward,maxEE_reverse,truncLen_forward,truncLen_reverse,truncQ,minLen,maxLen,minQ,trimLeft,trimRight,rm.lowcomplex,minOverlap,maxMismatch,min_asv_length
 rps10,GTTGGTTAGAGYARAAGACT,ATRYYTAGAAAGAYTYGAACT,FALSE,100,TRUE,FALSE,1.00E+05,5,5,0,0,5,150,Inf,0,0,0,0,15,0,50
 its,CTTGGTCATTTAGAGGAAGTAA,GCTGCGTTCTTCATCGATGC,FALSE,50,TRUE,FALSE,1.00E+05,5,5,0,0,5,50,Inf,0,0,0,0,15,0,50
 sixteenS,GTGYCAGCMGCCGCGGTAA,GGACTACNVGGGTWTCTAAT,TRUE,0,TRUE,FALSE,1.00E+05,2,2,0,0,5,50,Inf,0,0,0,0,15,0,50
-```
+
 
 ### Reference Database Format
 
@@ -169,35 +168,7 @@ assign_tax(
 convert_asv_matrix_to_objs(save_outputs=TRUE, overwrite=TRUE)
 ```
 
-### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our 16S-barcoded samples 
-```{r Heatree demonstration 16s , message=FALSE}
-load("~/output_test_dataset/obj_dada_sixteenS.RData") 
-obj_dada_16s<-obj_dada
-
-heat_tree(obj_dada_16s,
-          node_label = taxon_names,
-          node_size = n_obs,
-          node_color = n_obs,
-          node_color_axis_label = "ASV count",
-          node_size_axis_label = "Total Abundance of Taxa",
-          layout = "da", initial_layout = "re")
-
-```
-
-### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our rps10-barcoded sample
-```{r Heatree demonstration rps10, message=FALSE}
-load("~/output_test_dataset/obj_dada_rps10.RData") 
-obj_dada_rps10<-obj_dada
-
-heat_tree(obj_dada_rps10,
-          node_label = taxon_names,
-          node_size = n_obs,
-          node_color = n_obs,
-          node_color_axis_label = "ASV count",
-          node_size_axis_label = "Total Abundance of Taxa",
-          layout = "da", initial_layout = "re")
-```
-
+### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded samples 
 ### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded samples
 ```{r Heatree demonstration its, message=FALSE}
 load("~/output_test_dataset/obj_dada_its.RData") 
@@ -212,54 +183,22 @@ heat_tree(obj_dada_its,
           layout = "da", initial_layout = "re")
 ```
 
-### We can also do a variety of analyses, if we convert to phyloseq object
-```{r Phyloseq demonstration 16S, message=FALSE}
-load("~/output_test_dataset/phylo_obj_sixteenS.RData") 
-phylo_data_16s<-phylo_obj
 
-data <- phylo_data_16s %>%
-  tax_glom(taxrank = "Genus") %>%                     
-  transform_sample_counts(function(x) {x/sum(x)} ) %>% 
-  psmelt() %>%                                        
-  filter(Abundance > 0.02) %>%                      
-  arrange(Genus)                                      
+### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded sample
+```{r Heatree demonstration rps10, message=FALSE}
+load("~/output_test_dataset/obj_dada_rps10.RData") 
+obj_dada_rps10<-obj_dada
 
-abund_plot <- ggplot(data, aes(x = Sample, y = Abundance, fill = Genus)) + 
-  geom_bar(stat = "identity", position = "stack", color = "black", size = 0.2) +
-  scale_fill_viridis_d() +
-  scale_color_viridis_d() +
-  theme_minimal() +
-  labs(
-    y = "Relative Abundance",
-    title = "Relative abundance of taxa by sample",
-    fill = "Genus"
-  ) +
-  theme(
-    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 14),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    legend.position = "top",
-    legend.text = element_text(size = 14),
-    legend.title = element_text(size = 14),  # Adjust legend title size
-    legend.key.size = unit(2, "lines"),  # Adjust the size of the legend color key
-    strip.text = element_text(size = 14),
-    strip.background = element_blank()
-  ) +
-  guides(
-    fill = guide_legend(
-      reverse = TRUE,
-      keywidth = 1,
-      keyheight = 1,
-      title.position = "top",
-      title.hjust = 0.5,  # Center the legend title
-      label.theme = element_text(size = 10)  # Adjust the size of the legend labels
-    )
-  )
-
-print(abund_plot)
-
+heat_tree(obj_dada_rps10,
+          node_label = taxon_names,
+          node_size = n_obs,
+          node_color = n_obs,
+          node_color_axis_label = "ASV count",
+          node_size_axis_label = "Total Abundance of Taxa",
+          layout = "da", initial_layout = "re")
 ```
 
+### We can also do a variety of analyses, if we convert to phyloseq object
 ```{r Phyloseq demonstration ITS, message=FALSE}
 load("~/output_test_dataset/phylo_obj_its.RData") 
 phylo_data_its<-phylo_obj
@@ -351,9 +290,4 @@ abund_plot <- ggplot(data, aes(x = Sample, y = Abundance, fill = Genus)) +
   )
 
 print(abund_plot)
-```
-
-Finally, let's retrieve the packages we used and the versions
-```{r}
-sessioninfo::session_info()
 ```
