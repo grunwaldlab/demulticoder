@@ -34,3 +34,6 @@ convert_asv_matrix_to_objs(save_outputs=TRUE, overwrite=TRUE)
 
 library(testthat)
 check()
+
+
+usethis::use_pkgdown()
