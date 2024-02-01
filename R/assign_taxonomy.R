@@ -259,7 +259,7 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv, directory_path, l
   formatted_abund_asv <- cbind(
     asv_id = asv_id_column,
     sequence = rownames(formatted_abund_asv),
-    dada2_tax = str_match(seq_tax_asv[rownames(formatted_abund_asv)], pattern = "^(.+)--Species")[,1],
+    dada2_tax = str_match(seq_tax_asv[rownames(formatted_abund_asv)], pattern = "^(.+)--Reference")[,1],
     dada2_pid = as.numeric(str_match(seq_tax_asv[rownames(formatted_abund_asv)], '--([0-9.]+)--ASV$')[, 2]),
     formatted_abund_asv)
   formatted_abund_asv <- as_tibble(formatted_abund_asv)
