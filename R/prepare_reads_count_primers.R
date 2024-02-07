@@ -9,7 +9,7 @@
 #' @param tempdir_path Path to a temporary directory. If NULL, a temporary directory path will be identified using tempdir() command. 
 #' @param tempdir_id ID for temporary directories. Default is "demulticoder_run". User can provide any helpful ID, whether it be a date or specific name for the run. 
 #' @return A list containing data tables, including metadata, primer sequences, paths for trimming reads, and user-defined parameters.
-#' @export 
+#' @export  
 #' @examples
 #' Pre-filter raw reads and parse metadata and primer_information to prepare for primer trimming and filter
 #' #' prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "demulticoder_run", overwrite_existing = TRUE)

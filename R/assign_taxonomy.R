@@ -18,7 +18,7 @@
 #' assign_tax(analysis_setup,asv_abund_matrix, retrieve_files=TRUE, overwrite_existing=TRUE)
 
 
-assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, db_rps10 = "oomycetedb.fasta", db_its = "fungidb.fasta", db_16s = "bacteriadb.fasta", db_other = "otherdb.fasta", overwrite_existing = FALSE) {
+assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, db_rps10 = "oomycetedb.fasta", db_its = "fungidb.fasta", db_16s = "bacteriadb.fasta", db_other1 = "otherdb1.fasta", db_other2 = "otherdb2.fasta", overwrite_existing = FALSE) {
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   directory_path <- dir_paths$output_directory
@@ -74,7 +74,7 @@ assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose 
       # Load merged reads for the current barcode
       load(file.path(directory_path_temp, paste0("asvabund_matrixDADA2_", barcode, ".RData")))
       
-      format_database(analysis_setup, barcode, db_its, db_rps10, db_16s, db_other)
+      format_database(analysis_setup, barcode, db_its, db_rps10, db_16s, db_other1, db_other2)
       
       # Run taxonomy assignment for the current barcode
       process_single_barcode(
