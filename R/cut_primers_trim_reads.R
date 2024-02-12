@@ -134,8 +134,6 @@ cut_trim <- function(analysis_setup,
           barcode_params,
           minCutadaptlength = barcode_params$minCutadaptlength)
         
-        quality_plots <- plot_qc(cutadapt_data_barcode, directory_path)
-        
         if (length(barcode_params) > 0) {
           barcode_params <- as.list(barcode_params)
           filter_and_trim(
@@ -148,6 +146,7 @@ cut_trim <- function(analysis_setup,
       }
     }
   }
+  quality_plots <- plot_qc(data_tables$cutadapt_data, directory_path)
   post_primer_hit_data <- get_post_trim_hits(data_tables$primer_data, data_tables$cutadapt_data, directory_path)
   quality_plots2 <- plot_post_trim_qc(data_tables$cutadapt_data, directory_path)
 }

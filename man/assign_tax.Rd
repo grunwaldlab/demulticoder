@@ -14,7 +14,8 @@ assign_tax(
   db_rps10 = "oomycetedb.fasta",
   db_its = "fungidb.fasta",
   db_16s = "bacteriadb.fasta",
-  db_other = "otherdb.fasta",
+  db_other1 = "otherdb1.fasta",
+  db_other2 = "otherdb2.fasta",
   overwrite_existing = FALSE
 )
 }

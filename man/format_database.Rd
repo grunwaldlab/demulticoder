@@ -4,7 +4,15 @@
 \alias{format_database}
 \title{General function to format the database based on barcode type}
 \usage{
-format_database(analysis_setup, barcode, db_its, db_rps10, db_16s, db_other)
+format_database(
+  analysis_setup,
+  barcode,
+  db_its,
+  db_rps10,
+  db_16s,
+  db_other1,
+  db_other2
+)
 }
 \arguments{
 \item{analysis_setup}{A list containing directory paths and data tables, produced by the \code{prepare_reads} function.}

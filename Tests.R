@@ -7,7 +7,7 @@ prepare_reads(
   output_directory = "~/testing_package4", 
   tempdir_id = "test11",
   tempdir_path="~/",
-  overwrite_existing = FALSE)
+  overwrite_existing = TRUE)
 
 cut_trim(
   analysis_setup,
@@ -34,6 +34,5 @@ convert_asv_matrix_to_objs(save_outputs=TRUE, overwrite=TRUE)
 
 library(testthat)
 check()
-
 
 usethis::use_pkgdown()
