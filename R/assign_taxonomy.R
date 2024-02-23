@@ -1,7 +1,7 @@
 #' Assign taxonomy functions
 #' @param analysis_setup A list containing directory paths and data tables, produced by the `prepare_reads` function.
 #' @param asv_abund_matrix ASV abundance matrix.
-#' @param tryRC Whether to try reverse complementing sequences during taxonomy assignment.
+#' @param tryRC Whether to try reverse complementing sequences during taxonomic assignment.
 #' @param verbose Logical, indicating whether to display verbose output.
 #' @param multithread Logical, indicating whether to use multithreading.
 #' @param retrieve_files Specify TRUE/FALSE whether to copy files from the temp directory to the output directory.

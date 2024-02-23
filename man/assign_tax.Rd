@@ -24,7 +24,7 @@ assign_tax(
 
 \item{asv_abund_matrix}{ASV abundance matrix.}
 
-\item{tryRC}{Whether to try reverse complementing sequences during taxonomy assignment.}
+\item{tryRC}{Whether to try reverse complementing sequences during taxonomic assignment.}
 
 \item{verbose}{Logical, indicating whether to display verbose output.}
 

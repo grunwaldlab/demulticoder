@@ -22,6 +22,9 @@ make_asv_abund_matrix(
 assign_tax(
   analysis_setup,
   asv_abund_matrix,
+  tryRC = FALSE,
+  db_its = "fungidb.fasta",
+  db_rps10 = "oomycetedb.fasta",
   retrieve_files=TRUE,
   overwrite_existing=TRUE)
 
@@ -36,3 +39,18 @@ library(testthat)
 check()
 
 usethis::use_pkgdown()
+
+load("~/testing_package4/test11/asvabund_matrixDADA2_its.RData")
+taxa<-assignTaxonomy(
+  asv_abund_matrix,
+  "~/demulticoder/inst/extdata/fungidb2.fasta",
+  minBoot = 0,
+  tryRC = FALSE,
+  outputBootstraps = TRUE,
+  taxLevels = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"),
+  multithread = TRUE,
+  verbose = TRUE
+)
+
+save(taxa, "~/test.out")
+write.table(taxa,file="~/test.out",sep="\t",quote=F)

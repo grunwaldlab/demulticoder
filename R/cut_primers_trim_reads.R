@@ -418,7 +418,7 @@ get_post_trim_hits <- function(primer_data, cutadapt_data, directory_path) {
   }
   
   post_primer_hit_data_csv_path <- file.path(directory_path, "primer_hit_data_posttrim.csv")
-  post_primer_hit_counts <- future_map(cutadapt_data$trimmed_path,
+  post_primer_hit_counts <- future_map(cutadapt_data$filtered_path,
                                        function(a_path)
                                          map_dbl(post_trim_hit_data$sequence, post_trim_hits, path = a_path))
   
