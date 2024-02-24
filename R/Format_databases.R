@@ -76,33 +76,61 @@ format_db_rps10 <-function(analysis_setup, db_rps10){
 #' @return An ITS database that has modified headers and is output in the reference_databases folder.
 #' @keywords internal
 #'
-format_db_its <-function(analysis_setup, db_its){
+format_db_its <- function(analysis_setup, db_its) {
+  # Extract directory paths from analysis_setup
   dir_paths <- analysis_setup$dir_paths
-  data_tables <- analysis_setup$data_tables
+  
+  # Set directory paths
   directory_path <- dir_paths$output_directory
   data_path <- dir_paths$data_directory
   directory_path_temp <- dir_paths$temp_directory
+  
+  # Define database path
   database_path <- file.path(directory_path_temp, "its_reference_db.fa")
+  
+  # Read fasta file
   db_its <- read_fasta(file.path(data_path, db_its))
-  data_its <- str_match(names(db_its), pattern = "(.+)\\|(.+)\\|(.+)\\|(.+)\\|(.+)$")
+  
+  # Extract header information
+  data_its <- str_match(names(db_its), pattern = "(.*)\\|(.*)\\|(.*)\\|(.*)\\|(.*)$")
   colnames(data_its) <- c("header", "name", "ncbi_acc", "unite_db", "db", "taxonomy")
   data_its <- as_tibble(data_its)
-  data_its$taxonomy <- gsub(data_its$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
-  data_its$taxonomy <- paste0('Eukaryota;', data_its$taxonomy)
-  data_its$taxonomy <- gsub(data_its$taxonomy, pattern = 'Stramenopila;Oomycota', replacement = 'Heterokontophyta;Stramenopiles', fixed = TRUE)
-  data_its$taxonomy <- paste0(data_its$taxonomy, ';', 'unite_', seq_along(data_its$taxonomy))
-  data_its$taxonomy <- gsub(data_its$taxonomy, pattern = "[a-z]__", replacement = '')
-  data_its$taxonomy <- paste0(data_its$taxonomy, ';')
-  data_its$taxonomy <- trimws(data_its$taxonomy)
-  #Fix after checking out later analysis
-  stopifnot(all(str_count(data_its$taxonomy, pattern = ";") == 9))
-  species_count <- table(map_chr(strsplit(data_its$name, split = '_'), `[`, 1))
+  
+  # Identify indices of headers containing ";unidentified;"
+  unidentified_indices <- grepl("__unidentified;", data_its$taxonomy)
+  
+  # Filter out headers containing ";unidentified;"
+  filtered_data_its <- data_its[!unidentified_indices, ]
+  
+  # Apply modifications to the taxonomy column
+  filtered_data_its$taxonomy <- gsub(filtered_data_its$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
+  filtered_data_its$taxonomy <- paste0('Eukaryota;', filtered_data_its$taxonomy)
+  filtered_data_its$taxonomy <- gsub(filtered_data_its$taxonomy, pattern = 'Stramenopila;Oomycota', replacement = 'Heterokontophyta;Stramenopiles', fixed = TRUE)
+  filtered_data_its$taxonomy <- paste0(filtered_data_its$taxonomy, ';', 'unite_', seq_along(filtered_data_its$taxonomy))
+  filtered_data_its$taxonomy <- gsub(filtered_data_its$taxonomy, pattern = "[a-z]__", replacement = '')
+  filtered_data_its$taxonomy <- paste0(filtered_data_its$taxonomy, ';')
+  filtered_data_its$taxonomy <- trimws(filtered_data_its$taxonomy)
+  
+  # Extract the corresponding sequences
+  filtered_db_its <- db_its[!unidentified_indices]
+  
+  # Extract sequences as character vector
+  sequences <- as.character(filtered_db_its)
+  
+  # Fix after checking out later analysis
+  stopifnot(all(str_count(filtered_data_its$taxonomy, pattern = ";") == 9))
+  species_count <- table(map_chr(strsplit(filtered_data_its$name, split = '_'), `[`, 1))
   count_table <- as.data.frame(species_count, stringsAsFactors = FALSE)
   count_table <- as_tibble(count_table)
   names(count_table) <- c('Species', 'Number of sequences')
+  
+  # Write species count table to CSV
   write_csv(count_table, file = file.path(directory_path, "species_count_table_its.csv"))
-  write_lines(paste0(">", data_its$taxonomy, "\n", db_its), file = database_path)
-  return(data_its)
+  
+  # Write modified headers and corresponding sequences to database file
+  write_lines(paste0(">", filtered_data_its$taxonomy, "\n", sequences), file = database_path)
+  
+  return(filtered_data_its)
 }
 
 #' An 16s database that has modified headers and is output in the reference_databases folder.
