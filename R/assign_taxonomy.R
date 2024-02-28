@@ -157,6 +157,7 @@ prep_abund_matrix <-function(cutadapt_data, asv_abund_matrix, data_tables, locus
 #' @param ref_database The reference database used for taxonomic inference steps
 #' @keywords internal
 assign_taxonomyDada2<-function(asv_abund_matrix, directory_path_temp, minBoot=0, tryRC=FALSE, verbose=FALSE, multithread=TRUE, locus=barcode){
+  set.seed(1)
   tax_results<- dada2::assignTaxonomy(asv_abund_matrix,
                                       refFasta = file.path(directory_path_temp, paste0(locus, "_reference_db.fa")),
                                       taxLevels = c("Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
