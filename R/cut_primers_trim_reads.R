@@ -284,7 +284,6 @@ filter_and_trim <- function(directory_path,
   if (!all(file.exists(cutadapt_data_barcode$filtered_path))) {
     filter_results <-
       dada2::filterAndTrim(
-        
         fwd = cutadapt_data_barcode$trimmed_path[cutadapt_data_barcode$direction == "Forward"],
         filt = cutadapt_data_barcode$filtered_path[cutadapt_data_barcode$direction == "Forward"],
         rev = cutadapt_data_barcode$trimmed_path[cutadapt_data_barcode$direction == "Reverse"],

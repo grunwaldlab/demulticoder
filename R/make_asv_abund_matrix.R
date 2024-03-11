@@ -164,6 +164,7 @@ get_fastq_paths <- function(analysis_setup, my_direction, my_primer_pair_id) {
 #' @return asv_data
 #' @keywords internal
 infer_asvs <- function(my_direction, my_primer_pair_id, barcode_params, directory_path) {
+  set.seed(1)
   fastq_paths <- get_fastq_paths(analysis_setup, my_direction, my_primer_pair_id)
   
   error_plot_filename <- paste0("error_plot_", my_primer_pair_id, ".pdf")
