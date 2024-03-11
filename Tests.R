@@ -1,4 +1,4 @@
-devtools::load_all("/Users/masudermann/demulticoder")
+devtools::load_all("~/demulticoder")
 devtools::document()
 
 prepare_reads(

@@ -159,7 +159,6 @@ format_db_16s <-function(analysis_setup, db_16s){
   data_16s <- as_tibble(data_16s)
   data_16s$taxonomy <- gsub(data_16s$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
   filter_condition <- grepl("Bacteria", data_16s$taxonomy)
-  # Exclude entries with Chloroplast or Mitochondria in the header
   filter_condition <- filter_condition & !grepl("Chloroplast|Mitochondria", data_16s$taxonomy)
   data_16s <- data_16s[filter_condition, ]
   
