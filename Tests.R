@@ -4,10 +4,10 @@ devtools::document()
 prepare_reads(
   maxN = 0, 
   data_directory = "~/demulticoder/inst/extdata", 
-  output_directory = "~/testing_package4", 
+  output_directory = "~/testing_package5", 
   tempdir_id = "test11",
   tempdir_path="~/",
-  overwrite_existing = TRUE)
+  overwrite_existing = FALSE)
 
 cut_trim(
   analysis_setup,
@@ -19,12 +19,14 @@ make_asv_abund_matrix(
   overwrite_existing = TRUE)
 
 #still need to fix align file
+set.seed(2)
 assign_tax(
   analysis_setup,
   asv_abund_matrix,
   tryRC = FALSE,
-  db_its = "fungidb.fasta",
+  db_its = "fungidb_larger3.fasta",
   db_rps10 = "oomycetedb.fasta",
+  db_16s = "bacteriadb.fasta",
   retrieve_files=TRUE,
   overwrite_existing=TRUE)
 
@@ -40,10 +42,11 @@ check()
 
 usethis::use_pkgdown()
 
-load("~/testing_package4/test11/asvabund_matrixDADA2_its.RData")
+load("~/testing_package4/test11/asvabund_matrixDADA2_rps10.RData")
+set.seed(2)
 taxa<-assignTaxonomy(
   asv_abund_matrix,
-  "~/demulticoder/inst/extdata/fungidb2.fasta",
+  "~/demulticoder/inst/extdata/oomycetedb.fasta",
   minBoot = 0,
   tryRC = FALSE,
   outputBootstraps = TRUE,
@@ -52,5 +55,16 @@ taxa<-assignTaxonomy(
   verbose = TRUE
 )
 
-save(taxa, "~/test.out")
-write.table(taxa,file="~/test.out",sep="\t",quote=F)
+set.seed(2)
+load("~/testing_package5/test11/")
+taxa<-assignTaxonomy(
+  asv_abund_matrix,
+  "~/test11/sixteenS_reference_db.fa",
+  minBoot = 0,
+  tryRC = FALSE,
+  outputBootstraps = TRUE,
+  #taxLevels = c("Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
+  multithread = TRUE,
+  verbose = TRUE
+)
+write.table(taxa,file="~/test_rps10original2.out",sep="\t",quote=F)
