@@ -10,7 +10,9 @@ assign_tax(
   tryRC = FALSE,
   verbose = FALSE,
   multithread = FALSE,
-  retrieve_files = FALSE,
+  minBoot = 0,
+  outputBootstraps = TRUE,
+  oretrieve_files = FALSE,
   db_rps10 = "oomycetedb.fasta",
   db_its = "fungidb.fasta",
   db_16s = "bacteriadb.fasta",
@@ -30,9 +32,17 @@ assign_tax(
 
 \item{multithread}{Logical, indicating whether to use multithreading.}
 
-\item{retrieve_files}{Specify TRUE/FALSE whether to copy files from the temp directory to the output directory.}
+\item{minBoot}{(Optional). Default 50. 
+The minimum bootstrap confidence for assigning a taxonomic level.}
+
+\item{outputBootstraps}{(Optional). Default FALSE.
+If TRUE, bootstrap values will be retained in an integer matrix. A named list containing the assigned taxonomies (named "taxa") 
+and the bootstrap values (named "boot") will be returned. Minimum bootstrap confidence filtering still takes place,
+to see full taxonomy set minBoot=0}
 
 \item{overwrite_existing}{Logical, indicating whether to remove or overwrite existing files and directories from previous runs.}
+
+\item{retrieve_files}{Specify TRUE/FALSE whether to copy files from the temp directory to the output directory.}
 }
 \value{
 Taxonomic assignments of each unique ASV sequence
