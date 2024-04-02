@@ -7,7 +7,7 @@
 get_pids(tax_results, directory_path_temp, directory_path, db, locus)
 }
 \arguments{
-\item{tax_results}{The dataframe containing taxonomic assignments}
+\item{tax_results}{The data frame containing taxonomic assignments}
 }
 \description{
 Align ASV sequences to reference sequences from database to get percent ID. Get percent identities.

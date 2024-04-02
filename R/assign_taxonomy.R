@@ -17,7 +17,6 @@
 #' make_asv_abund_matrix(analysis_setup, overwrite_existing = TRUE)
 #' assign_tax(analysis_setup,asv_abund_matrix, retrieve_files=TRUE, overwrite_existing=TRUE)
 
-
 assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, db_rps10 = "oomycetedb.fasta", db_its = "fungidb.fasta", db_16s = "bacteriadb.fasta", db_other1 = "otherdb1.fasta", db_other2 = "otherdb2.fasta", overwrite_existing = FALSE) {
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
@@ -66,8 +65,7 @@ assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose 
     }
     
     if (length(existing_files) == 0 && !overwrite_existing) {
-      warning("No existing files found. The analysis was run.")
-      # Continue with the analysis
+      warning("No existing files found. The analysis will be run.")
     }
     
     for (barcode in unique_barcodes) {
@@ -135,7 +133,6 @@ process_single_barcode <-
     get_read_counts(asv_abund_matrix, directory_path_temp, directory_path, locus)
   }
 
-###
 #' Prepare final ASV abundance matrix
 #'
 #' @param directory_data folder with trimmed and filtered reads for each sample
@@ -143,12 +140,10 @@ process_single_barcode <-
 #' @param locus The barcode selected in the analysis
 #' @keywords internal
 prep_abund_matrix <-function(cutadapt_data, asv_abund_matrix, data_tables, locus){
-  #rownames(asv_abund_matrix) <- sub(rownames(asv_abund_matrix), pattern = ".fastq.gz", replacement = "")
   data_tables$cutadapt_data$file_id_primer <- paste0(data_tables$cutadapt_data$sample_name, "_", data_tables$cutadapt_data$primer_name)
   asv_abund_matrix<- asv_abund_matrix[rownames(asv_abund_matrix) %in% data_tables$cutadapt_data$file_id_primer[data_tables$cutadapt_data$primer_name == locus], ]
   return(asv_abund_matrix)
 }
-
 
 #' Assign taxonomy
 #'
@@ -157,10 +152,10 @@ prep_abund_matrix <-function(cutadapt_data, asv_abund_matrix, data_tables, locus
 #' @param ref_database The reference database used for taxonomic inference steps
 #' @keywords internal
 assign_taxonomyDada2<-function(asv_abund_matrix, directory_path_temp, minBoot=0, tryRC=FALSE, verbose=FALSE, multithread=TRUE, locus=barcode){
-  set.seed(1)
+  set.seed(1) #add parameter
   tax_results<- dada2::assignTaxonomy(asv_abund_matrix,
                                       refFasta = file.path(directory_path_temp, paste0(locus, "_reference_db.fa")),
-                                      taxLevels = c("Domain", "Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
+                                      taxLevels = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
                                       minBoot = minBoot,
                                       tryRC = tryRC,
                                       outputBootstraps = TRUE,
@@ -170,11 +165,9 @@ assign_taxonomyDada2<-function(asv_abund_matrix, directory_path_temp, minBoot=0,
   return(tax_results)
 }
 
-##
-
 #' Align ASV sequences to reference sequences from database to get percent ID. Get percent identities.
 #'
-#' @param tax_results The dataframe containing taxonomic assignments
+#' @param tax_results The data frame containing taxonomic assignments
 #' @keywords internal
 
 get_pids <- function(tax_results, directory_path_temp, directory_path, db, locus) {
