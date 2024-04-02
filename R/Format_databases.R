@@ -142,20 +142,6 @@ format_db_16s <- function(analysis_setup, db_16s) {
   db_16s <- read_fasta(file.path(data_path, db_16s))
   data_16s <- tibble(taxonomy = names(db_16s), sequence = db_16s)
   data_16s$taxonomy <- gsub(data_16s$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
-  
-  add_NA_to_taxonomy <- function(taxonomy) {
-    assignments <- strsplit(taxonomy, ";")[[1]]
-    missing_assignments <- 8 - length(assignments)
-    
-    if (missing_assignments > 0) {
-      assignments <- c(assignments, rep("NA", missing_assignments))
-    }
-    
-    return(paste(assignments, collapse = ";"))
-  }
-  
-  data_16s$taxonomy <- sapply(data_16s$taxonomy, add_NA_to_taxonomy)
-  data_16s$taxonomy <- paste0(data_16s$taxonomy, ';')
   data_16s$taxonomy <- trimws(data_16s$taxonomy)
   data_16s$taxonomy <- str_replace(data_16s$taxonomy, "^((?:[^;]*;){5})([^;]+);([^;]+);$", "\\1\\2;\\2_\\3;")
   

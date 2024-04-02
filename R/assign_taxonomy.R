@@ -17,12 +17,7 @@
 #' make_asv_abund_matrix(analysis_setup, overwrite_existing = TRUE)
 #' assign_tax(analysis_setup,asv_abund_matrix, retrieve_files=TRUE, overwrite_existing=TRUE)
 
-<<<<<<< HEAD
 assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, db_rps10 = "oomycetedb.fasta", db_its = "fungidb.fasta", db_16s = "bacteriadb.fasta", db_other1 = "otherdb1.fasta", db_other2 = "otherdb2.fasta", overwrite_existing = FALSE) {
-=======
-
-assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, minBoot=0, outputBootstraps=TRUE, oretrieve_files = FALSE, db_rps10 = "oomycetedb.fasta", db_its = "fungidb.fasta", db_16s = "bacteriadb.fasta", db_other1 = "otherdb1.fasta", db_other2 = "otherdb2.fasta", overwrite_existing = FALSE) {
->>>>>>> be63bc676798ab0036ddbeeb0e859e9c4e418e13
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   directory_path <- dir_paths$output_directory
@@ -85,12 +80,7 @@ assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose 
         directory_path_temp = directory_path_temp,
         directory_path = dir_paths$output_directory,
         asv_abund_matrix = asv_abund_matrix,
-        locus = barcode,
-        verbose = verbose,
-        tryRC = tryRC,
-        outputBootstraps = outputBootstraps,
-        minBoot = minBoot,
-        multithread = multithread,
+        locus = barcode
       )
     }
     
@@ -116,11 +106,9 @@ process_single_barcode <-
            directory_path_temp,
            directory_path,
            asv_abund_matrix,
-           tryRC = tryRC,
-           outputBootstraps = outputBootstraps,
-           minBoot = minBoot,
-           verbose = verbose,
-           multithread = multithread,
+           tryRC = FALSE,
+           verbose = FALSE,
+           multithread = FALSE,
            locus = barcode)
   {
     abund_asv_single <-
@@ -132,8 +120,6 @@ process_single_barcode <-
         abund_asv_single,
         directory_path_temp,
         tryRC = tryRC,
-        outputBootstraps = utBootstraps,
-        minBoot = minBoot,
         verbose = verbose,
         multithread = multithread,
         locus=locus
@@ -165,13 +151,8 @@ prep_abund_matrix <-function(cutadapt_data, asv_abund_matrix, data_tables, locus
 #' @param asv_abund_matrix The ASV abundance matrix
 #' @param ref_database The reference database used for taxonomic inference steps
 #' @keywords internal
-<<<<<<< HEAD
 assign_taxonomyDada2<-function(asv_abund_matrix, directory_path_temp, minBoot=0, tryRC=FALSE, verbose=FALSE, multithread=TRUE, locus=barcode){
   set.seed(1) #add parameter
-=======
-assign_taxonomyDada2<-function(asv_abund_matrix, directory_path_temp, minBoot=0, tryRC=FALSE, verbose=FALSE, multithread=TRUE, outputBootstraps = TRUE, locus=barcode){
-  set.seed(1)
->>>>>>> be63bc676798ab0036ddbeeb0e859e9c4e418e13
   tax_results<- dada2::assignTaxonomy(asv_abund_matrix,
                                       refFasta = file.path(directory_path_temp, paste0(locus, "_reference_db.fa")),
                                       taxLevels = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
