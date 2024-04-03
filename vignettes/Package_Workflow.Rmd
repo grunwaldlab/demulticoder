@@ -63,15 +63,13 @@ S1,rps10,A01,Cry
 S2,rps10,B01,Cin
 S1,its,A01,Cry
 S2,its,B01,Cin
-S3,sixteenS,NA,NA  
-S4,sixteenS,NA,NA
 
 ### Primer sequence information and user-defined parameters are placed in *primerinfo_params.csv*
 
 To simplify how functions are called, user will provide parameters within this input file. We recommend using the template provided in documentation. 
 
 The only required columns user must fill in are:
-1.primer_name (rps10, sixteenS, its, or other for another barcode)
+1.primer_name (rps10, its, or other for another barcode)
 2.forward-forward sequence
 3.reverse-reverse sequence
 4.already_trimmed (TRUE/FALSE)   
