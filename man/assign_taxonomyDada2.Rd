@@ -11,7 +11,6 @@ assign_taxonomyDada2(
   tryRC = FALSE,
   verbose = FALSE,
   multithread = TRUE,
-  outputBootstraps = TRUE,
   locus = barcode
 )
 }
@@ -32,11 +31,6 @@ If TRUE, print status to standard output.}
 If TRUE, multithreading is enabled and the number of available threads is automatically determined.   
 If an integer is provided, the number of threads to use is set by passing the argument on to
 \code{\link{setThreadOptions}}.}
-
-\item{outputBootstraps}{(Optional). Default FALSE.
-If TRUE, bootstrap values will be retained in an integer matrix. A named list containing the assigned taxonomies (named "taxa") 
-and the bootstrap values (named "boot") will be returned. Minimum bootstrap confidence filtering still takes place,
-to see full taxonomy set minBoot=0}
 
 \item{ref_database}{The reference database used for taxonomic inference steps}
 }

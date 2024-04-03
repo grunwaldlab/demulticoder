@@ -52,12 +52,11 @@ The format of the CSV file is simple. The only two necessary columns (with these
 
 Any additional metadata should then be pasted after these two columns. They can be referenced later during the analysis steps and save a step of loading metadata later.
 
-S1 and S2 are come from a rhododendron rhizobiome dataset, and S3 and S4 come from an entirely different soil microbiome dataset but are used to illustrate that the package can also be used for 16S analyses.
+S1 and S2 are come from a rhododendron rhizobiome dataset and are a random subset of reads. 
 
 You will notice S1 and S2 are included twice in the 'metadata.csv' sheet. This is because these two samples contain pooled reads (ITS and rps10). To demultiplex and run both analyses in tandem, include the same sample twice under sample_name, and then change the primer_name.
 
 Example using test dataset:
-
 
 sample_name,primer_name,well,organism
 S1,rps10,A01,Cry
@@ -88,7 +87,6 @@ Example template for 'primerinfo_params.csv'
 primer_name,forward,reverse,already_trimmed,minCutadaptlength,multithread,verbose,maxN,maxEE_forward,maxEE_reverse,truncLen_forward,truncLen_reverse,truncQ,minLen,maxLen,minQ,trimLeft,trimRight,rm.lowcomplex,minOverlap,maxMismatch,min_asv_length
 rps10,GTTGGTTAGAGYARAAGACT,ATRYYTAGAAAGAYTYGAACT,FALSE,100,TRUE,FALSE,1.00E+05,5,5,0,0,5,150,Inf,0,0,0,0,15,0,50
 its,CTTGGTCATTTAGAGGAAGTAA,GCTGCGTTCTTCATCGATGC,FALSE,50,TRUE,FALSE,1.00E+05,5,5,0,0,5,50,Inf,0,0,0,0,15,0,50
-sixteenS,GTGYCAGCMGCCGCGGTAA,GGACTACNVGGGTWTCTAAT,TRUE,0,TRUE,FALSE,1.00E+05,2,2,0,0,5,50,Inf,0,0,0,0,15,0,50
 
 
 ### Reference Database Format
@@ -117,12 +115,10 @@ Please also ensure that you have enough storage to save intermediate files in a 
 
 For now, the package will be loaded by retrieving it from GitHub. Eventually, the package will be uploaded to CRAN or Bioconductor.
 ```{r installation, warnings=FALSE, message=FALSE}
-#To pull from Github (Grunwald Lab members will need an auth_token as the package is currently private)
-#library("devtools")
-#devtools::install_github("grunwaldlab/demulticoder", auth_token="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", force=TRUE)
-#library(demulticoder)
 
-devtools::load_all("/Users/masudermann/demulticoder")
+library("devtools")
+devtools::install_github("grunwaldlab/demulticoder")
+library(demulticoder)
 ```
 
 ### Reorganize Data Tables

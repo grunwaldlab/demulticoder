@@ -9,11 +9,9 @@ process_single_barcode(
   directory_path_temp,
   directory_path,
   asv_abund_matrix,
-  tryRC = tryRC,
-  outputBootstraps = outputBootstraps,
-  minBoot = minBoot,
-  verbose = verbose,
-  multithread = multithread,
+  tryRC = FALSE,
+  verbose = FALSE,
+  multithread = FALSE,
   locus = barcode
 )
 }
@@ -25,14 +23,6 @@ process_single_barcode(
 \item{tryRC}{(Optional). Default FALSE. 
 If TRUE, the reverse-complement of each sequences will be used for classification if it is a better match to the reference
 sequences than the forward sequence.}
-
-\item{outputBootstraps}{(Optional). Default FALSE.
-If TRUE, bootstrap values will be retained in an integer matrix. A named list containing the assigned taxonomies (named "taxa") 
-and the bootstrap values (named "boot") will be returned. Minimum bootstrap confidence filtering still takes place,
-to see full taxonomy set minBoot=0}
-
-\item{minBoot}{(Optional). Default 50. 
-The minimum bootstrap confidence for assigning a taxonomic level.}
 
 \item{verbose}{(Optional). Default FALSE.
 If TRUE, print status to standard output.}
