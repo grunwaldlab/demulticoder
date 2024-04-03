@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# demulticoder Package-working name (may revise)
+# Demulticoder R package source code
 
 ## Introduction
 
@@ -11,6 +11,10 @@ testing, documentation, website, and examples forthcoming.
 ## Installation
 
 To install the development version of package:
+
+``` r
+devtools::install_github("grunwaldlab/demulticoder")
+```
 
 ## Dependencies
 

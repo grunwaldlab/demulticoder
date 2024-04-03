@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# demulticoder Package-working name (may revise)
+# Demulticoder R package source code
 
 ## Introduction
 
@@ -23,8 +23,8 @@ This package is actively under development. Use with care.  Additional testing, 
 
 To install the development version of package: 
 
-```{r, include=FALSE}
-devtools::install_github("grunwaldlab/demulticoder", auth_token="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", force=TRUE)
+```{r, eval=FALSE, echo=TRUE}
+devtools::install_github("grunwaldlab/demulticoder")
 ```
 
 ## Dependencies
