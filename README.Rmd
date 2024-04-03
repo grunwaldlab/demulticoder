@@ -13,27 +13,18 @@ knitr::opts_chunk$set(
 )
 ```
 
-# rps10package-working on name    
+# demulticoder Package-working name (may revise)
 
 ## Introduction
 
-<!-- badges: start -->
-<!-- badges: end -->
+This package is actively under development. Use with care.  Additional testing, documentation, website, and examples forthcoming.
 
 ## Installation
 
-You can install the development version of rps10package from [GitHub](https://github.com/) with: XX
+To install the development version of package: 
 
-*TODO-still working on documentation*
-
-```{r installation, message=FALSE, warnings=FALSE}
-#temporary installation method
-#ADJUST PATHS FOR MOMENT
-devtools::load_all("/Users/masudermann/rps10package")
-devtools::document()
-
-# install.packages("devtools")
-# devtools::install_github("grunwaldlab/rps10_metabarcoding_tool")
+```{r, include=FALSE}
+devtools::install_github("grunwaldlab/demulticoder", auth_token="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", force=TRUE)
 ```
 
 ## Dependencies

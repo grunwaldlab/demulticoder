@@ -5,17 +5,12 @@
 
 ## Introduction
 
-<!-- badges: start -->
-<!-- badges: end -->
+This package is actively under development. Use with care. Additional
+testing, documentation, website, and examples forthcoming.
 
 ## Installation
 
-To install the development version of package: 
-
-``` r
-install.packages("devtools")
-devtools::install_github("grunwaldlab/demulticoder")
-```
+To install the development version of package:
 
 ## Dependencies
 
