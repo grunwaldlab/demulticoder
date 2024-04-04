@@ -95,8 +95,6 @@ format_db_its <- function(analysis_setup, db_its) {
   data_its$taxonomy <- str_extract(data_its$header, "(?<=\\|)[^|]+$")
   
   data_its$taxonomy <- gsub(" ", "_", data_its$taxonomy)
-  data_its$taxonomy <- gsub(data_its$taxonomy, pattern = 'Stramenopila;Oomycota', replacement = 'Heterokontophyta;Stramenopiles', fixed = TRUE)
-  data_its$taxonomy <- gsub(data_its$taxonomy, pattern = "[a-z]__", replacement = '')
   data_its$taxonomy <- paste0(data_its$taxonomy, ";")
   data_its$taxonomy <- trimws(data_its$taxonomy)
   

@@ -2,10 +2,9 @@ Package: demulticoder
 Title: An R package for the integrated analyis of multiplex metabarcodes 
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+    person("Martha", "Sudermann", , "sudermam@oregonstate.edu", role = c("aut", "cre"))
 Description: A wrapper package to filter, trim primers, and denoise metabarcoding data using Cutadapt and the dada2 R package. The package can handle datasets that contain pooled amplicons, or simpler experimental designs
-License: GPL-3
+License: GPL-2 | GPL-3
 Encoding: UTF-8
 Depends:
         ShortRead,
@@ -36,4 +35,4 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 LazyData: true
-URL: https://grunwaldlab.github.io/demulticoder_documentation/
+URL: https://grunwaldlab.github.io/demulticoder/
