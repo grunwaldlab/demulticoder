@@ -3,5 +3,7 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   example: example.html
-last_built: 2024-04-03T23:57Z
+  example_large_dataset: example_large_dataset.html
+  validation_16S_mothur_SOP: validation_16S_mothur_SOP.html
+last_built: 2024-04-04T00:19Z
 

@@ -52,6 +52,12 @@
 <li>
       <a href="../articles/example.html">Package Workflow</a>
     </li>
+    <li>
+      <a href="../articles/example_large_dataset.html">Example_analysis_rhodendron_rhizobiome</a>
+    </li>
+    <li>
+      <a href="../articles/validation_16S_mothur_SOP.html">mothur_SOP_16S_validation</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -221,12 +227,11 @@ Eventually, the package will be uploaded to CRAN or Bioconductor.</p>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"grunwaldlab/demulticoder"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## <span style="color: #00BBBB;">──</span> <span style="color: #00BBBB;">R CMD build</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">## * checking for file ‘/private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpfVfWhx/remotes11ed619ae75c8/grunwaldlab-demulticoder-0682e41/DESCRIPTION’ ... OK</span></span>
+<span><span class="co">## * checking for file ‘/private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpkA5o7p/remotes125d21cce255f/grunwaldlab-demulticoder-43f6beb/DESCRIPTION’ ... OK</span></span>
 <span><span class="co">## * preparing ‘demulticoder’:</span></span>
 <span><span class="co">## * checking DESCRIPTION meta-information ... OK</span></span>
 <span><span class="co">## * checking for LF line-endings in source and make files and shell scripts</span></span>
 <span><span class="co">## * checking for empty or unneeded directories</span></span>
-<span><span class="co">## Removed empty directory ‘demulticoder/vignettes’</span></span>
 <span><span class="co">## Omitted ‘LazyData’ from DESCRIPTION</span></span>
 <span><span class="co">## * building ‘demulticoder_0.0.0.9000.tar.gz’</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -282,59 +287,59 @@ reorganized in preparation for running Cutadapt to remove primers.</p>
 <span><span class="co">## 7 TCAAGYTYAGAAAGATYYRTA AGTTCRARTCTTTCTARRYAT   S2_R1   Forward</span></span>
 <span><span class="co">## 8 TCAAGYTYAGAAAGATYYRTA AGTTCRARTCTTTCTARRYAT   S2_R2   Reverse</span></span>
 <span><span class="co">##                                                                                                                directory_data_path</span></span>
-<span><span class="co">## 1 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c5afdc739/demulticoder/extdata/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 2 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c5afdc739/demulticoder/extdata/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 3 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c5afdc739/demulticoder/extdata/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 4 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c5afdc739/demulticoder/extdata/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 5 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c5afdc739/demulticoder/extdata/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 6 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c5afdc739/demulticoder/extdata/S2_R2.fastq.gz</span></span>
-<span><span class="co">## 7 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c5afdc739/demulticoder/extdata/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 8 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c5afdc739/demulticoder/extdata/S2_R2.fastq.gz</span></span>
+<span><span class="co">## 1 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S1_R1.fastq.gz</span></span>
+<span><span class="co">## 2 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S1_R2.fastq.gz</span></span>
+<span><span class="co">## 3 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S1_R1.fastq.gz</span></span>
+<span><span class="co">## 4 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S1_R2.fastq.gz</span></span>
+<span><span class="co">## 5 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S2_R1.fastq.gz</span></span>
+<span><span class="co">## 6 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S2_R2.fastq.gz</span></span>
+<span><span class="co">## 7 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S2_R1.fastq.gz</span></span>
+<span><span class="co">## 8 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S2_R2.fastq.gz</span></span>
 <span><span class="co">##                                                                             temp_data_path</span></span>
-<span><span class="co">## 1 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 2 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 5 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 6 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/S2_R2.fastq.gz</span></span>
-<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/S2_R2.fastq.gz</span></span>
+<span><span class="co">## 1 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S1_R1.fastq.gz</span></span>
+<span><span class="co">## 2 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S1_R2.fastq.gz</span></span>
+<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S1_R1.fastq.gz</span></span>
+<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S1_R2.fastq.gz</span></span>
+<span><span class="co">## 5 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S2_R1.fastq.gz</span></span>
+<span><span class="co">## 6 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S2_R2.fastq.gz</span></span>
+<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S2_R1.fastq.gz</span></span>
+<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S2_R2.fastq.gz</span></span>
 <span><span class="co">##                                                                                                 prefiltered_path</span></span>
-<span><span class="co">## 1 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/prefiltered_sequences/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 2 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/prefiltered_sequences/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/prefiltered_sequences/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/prefiltered_sequences/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 5 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/prefiltered_sequences/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 6 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/prefiltered_sequences/S2_R2.fastq.gz</span></span>
-<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/prefiltered_sequences/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/prefiltered_sequences/S2_R2.fastq.gz</span></span>
+<span><span class="co">## 1 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S1_R1.fastq.gz</span></span>
+<span><span class="co">## 2 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S1_R2.fastq.gz</span></span>
+<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S1_R1.fastq.gz</span></span>
+<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S1_R2.fastq.gz</span></span>
+<span><span class="co">## 5 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S2_R1.fastq.gz</span></span>
+<span><span class="co">## 6 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S2_R2.fastq.gz</span></span>
+<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S2_R1.fastq.gz</span></span>
+<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S2_R2.fastq.gz</span></span>
 <span><span class="co">##                                                                                                       trimmed_path</span></span>
-<span><span class="co">## 1   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/trimmed_sequences/S1_R1_its.fastq.gz</span></span>
-<span><span class="co">## 2   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/trimmed_sequences/S1_R2_its.fastq.gz</span></span>
-<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/trimmed_sequences/S1_R1_rps10.fastq.gz</span></span>
-<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/trimmed_sequences/S1_R2_rps10.fastq.gz</span></span>
-<span><span class="co">## 5   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/trimmed_sequences/S2_R1_its.fastq.gz</span></span>
-<span><span class="co">## 6   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/trimmed_sequences/S2_R2_its.fastq.gz</span></span>
-<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/trimmed_sequences/S2_R1_rps10.fastq.gz</span></span>
-<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/trimmed_sequences/S2_R2_rps10.fastq.gz</span></span>
+<span><span class="co">## 1   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/trimmed_sequences/S1_R1_its.fastq.gz</span></span>
+<span><span class="co">## 2   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/trimmed_sequences/S1_R2_its.fastq.gz</span></span>
+<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/trimmed_sequences/S1_R1_rps10.fastq.gz</span></span>
+<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/trimmed_sequences/S1_R2_rps10.fastq.gz</span></span>
+<span><span class="co">## 5   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/trimmed_sequences/S2_R1_its.fastq.gz</span></span>
+<span><span class="co">## 6   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/trimmed_sequences/S2_R2_its.fastq.gz</span></span>
+<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/trimmed_sequences/S2_R1_rps10.fastq.gz</span></span>
+<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/trimmed_sequences/S2_R2_rps10.fastq.gz</span></span>
 <span><span class="co">##                                                                                                       untrimmed_path</span></span>
-<span><span class="co">## 1   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/untrimmed_sequences/S1_R1_its.fastq.gz</span></span>
-<span><span class="co">## 2   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/untrimmed_sequences/S1_R2_its.fastq.gz</span></span>
-<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/untrimmed_sequences/S1_R1_rps10.fastq.gz</span></span>
-<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/untrimmed_sequences/S1_R2_rps10.fastq.gz</span></span>
-<span><span class="co">## 5   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/untrimmed_sequences/S2_R1_its.fastq.gz</span></span>
-<span><span class="co">## 6   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/untrimmed_sequences/S2_R2_its.fastq.gz</span></span>
-<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/untrimmed_sequences/S2_R1_rps10.fastq.gz</span></span>
-<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/untrimmed_sequences/S2_R2_rps10.fastq.gz</span></span>
+<span><span class="co">## 1   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/untrimmed_sequences/S1_R1_its.fastq.gz</span></span>
+<span><span class="co">## 2   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/untrimmed_sequences/S1_R2_its.fastq.gz</span></span>
+<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/untrimmed_sequences/S1_R1_rps10.fastq.gz</span></span>
+<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/untrimmed_sequences/S1_R2_rps10.fastq.gz</span></span>
+<span><span class="co">## 5   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/untrimmed_sequences/S2_R1_its.fastq.gz</span></span>
+<span><span class="co">## 6   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/untrimmed_sequences/S2_R2_its.fastq.gz</span></span>
+<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/untrimmed_sequences/S2_R1_rps10.fastq.gz</span></span>
+<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/untrimmed_sequences/S2_R2_rps10.fastq.gz</span></span>
 <span><span class="co">##                                                                                                       filtered_path</span></span>
-<span><span class="co">## 1   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/filtered_sequences/S1_R1_its.fastq.gz</span></span>
-<span><span class="co">## 2   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/filtered_sequences/S1_R2_its.fastq.gz</span></span>
-<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/filtered_sequences/S1_R1_rps10.fastq.gz</span></span>
-<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/filtered_sequences/S1_R2_rps10.fastq.gz</span></span>
-<span><span class="co">## 5   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/filtered_sequences/S2_R1_its.fastq.gz</span></span>
-<span><span class="co">## 6   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/filtered_sequences/S2_R2_its.fastq.gz</span></span>
-<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/filtered_sequences/S2_R1_rps10.fastq.gz</span></span>
-<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/filtered_sequences/S2_R2_rps10.fastq.gz</span></span>
+<span><span class="co">## 1   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/filtered_sequences/S1_R1_its.fastq.gz</span></span>
+<span><span class="co">## 2   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/filtered_sequences/S1_R2_its.fastq.gz</span></span>
+<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/filtered_sequences/S1_R1_rps10.fastq.gz</span></span>
+<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/filtered_sequences/S1_R2_rps10.fastq.gz</span></span>
+<span><span class="co">## 5   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/filtered_sequences/S2_R1_its.fastq.gz</span></span>
+<span><span class="co">## 6   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/filtered_sequences/S2_R2_its.fastq.gz</span></span>
+<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/filtered_sequences/S2_R1_rps10.fastq.gz</span></span>
+<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/filtered_sequences/S2_R2_rps10.fastq.gz</span></span>
 <span><span class="co">##   primer_name                forward                f_compt</span></span>
 <span><span class="co">## 1         its CTTGGTCATTTAGAGGAAGTAA GAACCAGTAAATCTCCTTCATT</span></span>
 <span><span class="co">## 2       rps10   GTTGGTTAGAGYARAAGACT   CAACCAATCTCRTYTTCTGA</span></span>
@@ -350,20 +355,20 @@ reorganized in preparation for running Cutadapt to remove primers.</p>
 <span><span class="co">## 3   S2_R1          S2   Forward</span></span>
 <span><span class="co">## 4   S2_R2          S2   Reverse</span></span>
 <span><span class="co">##                                                                                                                directory_data_path</span></span>
-<span><span class="co">## 1 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c5afdc739/demulticoder/extdata/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 2 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c5afdc739/demulticoder/extdata/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 3 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c5afdc739/demulticoder/extdata/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 4 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c5afdc739/demulticoder/extdata/S2_R2.fastq.gz</span></span>
+<span><span class="co">## 1 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S1_R1.fastq.gz</span></span>
+<span><span class="co">## 2 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S1_R2.fastq.gz</span></span>
+<span><span class="co">## 3 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S2_R1.fastq.gz</span></span>
+<span><span class="co">## 4 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S2_R2.fastq.gz</span></span>
 <span><span class="co">##                                                                             temp_data_path</span></span>
-<span><span class="co">## 1 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 2 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/S2_R2.fastq.gz</span></span>
+<span><span class="co">## 1 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S1_R1.fastq.gz</span></span>
+<span><span class="co">## 2 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S1_R2.fastq.gz</span></span>
+<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S2_R1.fastq.gz</span></span>
+<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S2_R2.fastq.gz</span></span>
 <span><span class="co">##                                                                                                 prefiltered_path</span></span>
-<span><span class="co">## 1 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/prefiltered_sequences/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 2 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/prefiltered_sequences/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/prefiltered_sequences/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/prefiltered_sequences/S2_R2.fastq.gz</span></span>
+<span><span class="co">## 1 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S1_R1.fastq.gz</span></span>
+<span><span class="co">## 2 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S1_R2.fastq.gz</span></span>
+<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S2_R1.fastq.gz</span></span>
+<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S2_R2.fastq.gz</span></span>
 <span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 20</span></span></span>
 <span><span class="co">##   primer_name already_trimmed minCutadaptlength multithread verbose  maxN</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>                       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -462,10 +467,10 @@ it.</p>
 <span><span class="co">## Sample 2 - 3583 reads in 2951 unique sequences.</span></span></code></pre>
 <p><img src="example_files/figure-html/ASV%20inference-2.png" width="700"><img src="example_files/figure-html/ASV%20inference-3.png" width="700"><img src="example_files/figure-html/ASV%20inference-4.png" width="700"></p>
 <pre><code><span><span class="co">## $its</span></span>
-<span><span class="co">## [1] "/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/asvabund_matrixDADA2_its.RData"</span></span>
+<span><span class="co">## [1] "/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/asvabund_matrixDADA2_its.RData"</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $rps10</span></span>
-<span><span class="co">## [1] "/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpfVfWhx/test_dataset/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
+<span><span class="co">## [1] "/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="taxonomic-assignment-step">Taxonomic assignment step<a class="anchor" aria-label="anchor" href="#taxonomic-assignment-step"></a>
@@ -655,7 +660,7 @@ object<a class="anchor" aria-label="anchor" href="#we-can-also-do-a-variety-of-a
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by First Last.</p>
+<p>Developed by Martha Sudermann.</p>
 </div>
 
 <div class="pkgdown">

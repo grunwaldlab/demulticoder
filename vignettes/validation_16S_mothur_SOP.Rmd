@@ -1,0 +1,9 @@
+---
+title: "mothur_SOP_16S_validation"
+output: html_document
+date: "2024-02-12"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
