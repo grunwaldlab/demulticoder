@@ -12,7 +12,7 @@
 #' @export  
 #' @examples
 #' Pre-filter raw reads and parse metadata and primer_information to prepare for primer trimming and filter
-#' #' prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "demulticoder_run", overwrite_existing = TRUE)
+#' prepare_reads(data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "demulticoder_run", overwrite_existing = TRUE)
 #' @importFrom dada2 filterAndTrim
 prepare_reads <- function(data_directory = "data", 
                           output_directory = "output", 

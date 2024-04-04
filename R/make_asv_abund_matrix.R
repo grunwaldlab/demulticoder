@@ -1,6 +1,5 @@
-#' Make an Amplified Sequence Variant (ASV) Abundance Matrix
-#' This function generates an ASV abundance matrix based on data processed through
-#' the preceding steps, including read preparation, cut and trim, and ASV inference.
+#' Make an amplified sequence variant (ASV) abundance matrix
+#' This function generates an ASV abundance matrix using raw reads processed during previous steps, including read preparation, removing primers, and using DADA2 core denoising alogrithm to infer ASVs. 
 #' @param analysis_setup A list containing directory paths and data tables, produced by the 
 #' `prepare_reads` function.
 #' @param overwrite_existing Logical, indicating whether to overwrite existing results.
