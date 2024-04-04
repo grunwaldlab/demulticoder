@@ -47,7 +47,7 @@ format_db_rps10 <- function(analysis_setup, db_rps10) {
   data_rps10$name <- gsub(data_rps10$name, pattern = " ", replacement = "_")
   data_rps10$taxonomy <- gsub(data_rps10$taxonomy, pattern = 'cellular_organisms;', replacement = '', fixed = TRUE)
   data_rps10$taxonomy <- gsub(data_rps10$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
-  data_rps10$taxonomy <- gsub(data_rps10$taxonomy, pattern = 'Eukaryota', replacement = 'Eukaryota;Heterokontophyta', fixed = TRUE)
+  data_rps10$taxonomy <- gsub(data_rps10$taxonomy, pattern = 'Eukaryota;Stramenopiles', replacement = 'Stramenopila;Oomycota', fixed = TRUE)
   data_rps10$taxonomy <- trimws(data_rps10$taxonomy)
   
   data_rps10$taxonomy <- sapply(data_rps10$taxonomy, function(tax) {
