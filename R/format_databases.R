@@ -151,7 +151,7 @@ format_db_16s <- function(analysis_setup, db_16s) {
     paste(tax_parts, collapse = ";")
   })
   
-  data_16s$taxonomy <- paste0(data_16s$taxonomy, ";refdb_", seq_along(data_16s$taxonomy), ";")
+  #data_16s$taxonomy <- paste0(data_16s$taxonomy, ";refdb_", seq_along(data_16s$taxonomy), ";")
   
   data_16s$genus <- ifelse(
     sapply(strsplit(data_16s$taxonomy, ";"), length) >= 7,

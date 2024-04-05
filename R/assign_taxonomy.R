@@ -124,14 +124,14 @@ process_single_barcode <-
         multithread = multithread,
         locus=locus
       )
-    single_pids_asv <- get_pids(tax_results_single_asv, directory_path_temp, directory_path, refdb, locus)
-    tax_results_single_asv_pid <-
-      add_pid_to_tax(tax_results_single_asv, single_pids_asv)
-    seq_tax_asv <- assignTax_as_char(tax_results_single_asv_pid, directory_path_temp, locus)
-    formatted_abund_asv <-
-      format_abund_matrix(asv_abund_matrix, seq_tax_asv, directory_path, locus)
-    get_read_counts(asv_abund_matrix, directory_path_temp, directory_path, locus)
-  }
+    #single_pids_asv <- get_pids(tax_results_single_asv, directory_path_temp, directory_path, refdb, locus)
+    #tax_results_single_asv_pid <-
+      #add_pid_to_tax(tax_results_single_asv, single_pids_asv)
+    #seq_tax_asv <- assignTax_as_char(tax_results_single_asv_pid, directory_path_temp, locus)
+    #formatted_abund_asv <-
+      #format_abund_matrix(asv_abund_matrix, seq_tax_asv, directory_path, locus)
+    #get_read_counts(asv_abund_matrix, directory_path_temp, directory_path, locus)
+}
 
 #' Prepare final ASV abundance matrix
 #'
@@ -155,7 +155,7 @@ assign_taxonomyDada2<-function(asv_abund_matrix, directory_path_temp, minBoot=0,
   set.seed(1) #add parameter
   tax_results<- dada2::assignTaxonomy(asv_abund_matrix,
                                       refFasta = file.path(directory_path_temp, paste0(locus, "_reference_db.fa")),
-                                      taxLevels = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
+                                      #taxLevels = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
                                       minBoot = minBoot,
                                       tryRC = tryRC,
                                       outputBootstraps = TRUE,
