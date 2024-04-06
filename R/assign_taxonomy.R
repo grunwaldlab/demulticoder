@@ -127,10 +127,10 @@ process_single_barcode <-
     #single_pids_asv <- get_pids(tax_results_single_asv, directory_path_temp, directory_path, refdb, locus)
     #tax_results_single_asv_pid <-
       #add_pid_to_tax(tax_results_single_asv, single_pids_asv)
-    #seq_tax_asv <- assignTax_as_char(tax_results_single_asv_pid, directory_path_temp, locus)
-    #formatted_abund_asv <-
-      #format_abund_matrix(asv_abund_matrix, seq_tax_asv, directory_path, locus)
-    #get_read_counts(asv_abund_matrix, directory_path_temp, directory_path, locus)
+    seq_tax_asv <- assignTax_as_char(tax_results_single_asv, directory_path_temp, locus)
+    formatted_abund_asv <-
+      format_abund_matrix(asv_abund_matrix, seq_tax_asv, directory_path, locus)
+    get_read_counts(asv_abund_matrix, directory_path_temp, directory_path, locus)
 }
 
 #' Prepare final ASV abundance matrix
@@ -253,8 +253,8 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv, directory_path, l
   formatted_abund_asv <- cbind(
     asv_id = asv_id_column,
     sequence = rownames(formatted_abund_asv),
-    dada2_tax = str_match(seq_tax_asv[rownames(formatted_abund_asv)], pattern = "^(.+)--Reference")[,1],
-    dada2_pid = as.numeric(str_match(seq_tax_asv[rownames(formatted_abund_asv)], '--([0-9.]+)--ASV$')[, 2]),
+    dada2_tax = str_match(seq_tax_asv[rownames(formatted_abund_asv)], pattern = "^(.+)--Species")[,1],
+    #dada2_pid = as.numeric(str_match(seq_tax_asv[rownames(formatted_abund_asv)], '--([0-9.]+)--ASV$')[, 2]),
     formatted_abund_asv)
   formatted_abund_asv <- as_tibble(formatted_abund_asv)
   

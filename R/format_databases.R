@@ -31,6 +31,7 @@ format_database <- function(analysis_setup, barcode, db_its, db_rps10, db_16s, d
 #' @return A rps10 database that has modified headers and is output in the reference_databases folder.
 #' @keywords internal
 #'
+
 format_db_rps10 <- function(analysis_setup, db_rps10) {
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
@@ -38,36 +39,36 @@ format_db_rps10 <- function(analysis_setup, db_rps10) {
   data_path <- dir_paths$data_directory
   directory_path_temp <- dir_paths$temp_directory
   database_path <- file.path(directory_path_temp, "rps10_reference_db.fa")
-
-  db_rps10 <- read_fasta(file.path(data_path, db_rps10))
-  data_rps10 <- tibble(header = names(db_rps10), sequence = db_rps10)
-  data_rps10$taxonomy <- gsub(".*taxonomy=([^|]+).*", "\\1", data_rps10$header)
   
-  data_rps10$name <- gsub(".*name=([^|]+)\\|.*", "\\1", data_rps10$header)
-  data_rps10$name <- gsub(data_rps10$name, pattern = " ", replacement = "_")
+  db_rps10 <- read_fasta("~/oomycetedb.fasta")
+  
+  data_rps10 <- str_match(names(db_rps10), pattern = "name=(.+)\\|strain=(.+)\\|ncbi_acc=(.+)\\|ncbi_taxid=(.+)\\|oodb_id=(.+)\\|taxonomy=(.+)$")
+  colnames(data_rps10) <- c("header", "name", "strain", "ncbi_acc", "ncbi_taxid", "oodb_id", "taxonomy")
+  data_rps10 <- as_tibble(data_rps10)
+  
   data_rps10$taxonomy <- gsub(data_rps10$taxonomy, pattern = 'cellular_organisms;', replacement = '', fixed = TRUE)
   data_rps10$taxonomy <- gsub(data_rps10$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
   data_rps10$taxonomy <- gsub(data_rps10$taxonomy, pattern = 'Eukaryota;Stramenopiles', replacement = 'Stramenopila;Oomycota', fixed = TRUE)
-  data_rps10$taxonomy <- trimws(data_rps10$taxonomy)
   
-  data_rps10$taxonomy <- sapply(data_rps10$taxonomy, function(tax) {
-    tax_parts <- strsplit(tax, ";")[[1]]
-    while (length(tax_parts) < 7) {
-      tax_parts <- c(tax_parts, "NA")
-    }
-    paste(tax_parts, collapse = ";")
+  binomial <- map_chr(str_split(data_rps10$taxonomy, pattern = ';'), `[`, 6)
+  
+  data_rps10$taxonomy <- map_chr(seq_along(data_rps10$taxonomy), function(index) {
+    sub(data_rps10$taxonomy[index], pattern = binomial[index], replacement = paste0(species[index], ';', binomial[index]))
   })
   
-  data_rps10$taxonomy <- paste0(data_rps10$taxonomy, ";refdb_", seq_along(data_rps10$taxonomy), ";")
+  data_rps10$taxonomy <- trimws(data_rps10$taxonomy)
+  data_rps10$taxonomy <- paste0(data_rps10$taxonomy, ';')
   
-  data_rps10$name <-gsub(data_rps10$name, pattern = " ", replacement = "_")
-  species_count <- table(data_rps10$name)
+  write_lines(paste0(">", data_rps10$taxonomy, "\n", db_rps10), file = database_path)
+  
+  species_count <- table(binomial)
   count_table <- as.data.frame(species_count, stringsAsFactors = FALSE)
   count_table <- as_tibble(count_table)
   names(count_table) <- c('Species', 'Number of sequences')
   
-  write_csv(count_table, file = file.path(directory_path, "species_count_table_rps10.csv"))
+  write.csv(count_table, file = file.path(directory_path, "species_count_table_rps10.csv"), row.names = FALSE)
   write_lines(paste0(">", data_rps10$taxonomy, "\n", db_rps10), file = database_path)
+  
   return(data_rps10)
 }
 
@@ -106,7 +107,8 @@ format_db_its <- function(analysis_setup, db_its) {
     paste(tax_parts, collapse = ";")
   })
   
-  data_its$taxonomy <- paste0(data_its$taxonomy, ";refdb_", seq_along(data_its$taxonomy), ";")
+  #data_its$taxonomy <- paste0(data_its$taxonomy, ";refdb_", seq_along(data_its$taxonomy), ";")
+  data_its$taxonomy <- paste0(data_its$taxonomy, ";")
   
   data_its$name <- sub("^([^|]+)\\|.*$", "\\1", data_its$header)
   species_count <- table(data_its$name)
@@ -201,7 +203,8 @@ format_db_other1 <-function(analysis_setup, db_other1){
     paste(tax_parts, collapse = ";")
   })
   
-  data_other1$taxonomy <- paste0(data_other1$taxonomy, ";refdb_", seq_along(data_other1$taxonomy), ";")
+  #data_other1$taxonomy <- paste0(data_other1$taxonomy, ";refdb_", seq_along(data_other1$taxonomy), ";")
+  data_other1$taxonomy <- paste0(data_other1$taxonomy, ";")
   
   data_other1$genus <- ifelse(
     sapply(strsplit(data_other1$taxonomy, ";"), length) == 7,
@@ -252,7 +255,8 @@ format_db_other2 <-function(analysis_setup, db_other2){
     paste(tax_parts, collapse = ";")
   })
   
-  data_other2$taxonomy <- paste0(data_other2$taxonomy, ";refdb_", seq_along(data_other2$taxonomy), ";")
+  #data_other2$taxonomy <- paste0(data_other2$taxonomy, ";refdb_", seq_along(data_other2$taxonomy), ";")
+  data_other2$taxonomy <- paste0(data_other2$taxonomy, ";")
   
   data_other2$genus <- ifelse(
     sapply(strsplit(data_other2$taxonomy, ";"), length) == 7,
