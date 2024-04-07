@@ -40,7 +40,7 @@ format_db_rps10 <- function(analysis_setup, db_rps10) {
   directory_path_temp <- dir_paths$temp_directory
   database_path <- file.path(directory_path_temp, "rps10_reference_db.fa")
   
-  db_rps10 <- read_fasta("~/oomycetedb.fasta")
+  db_rps10 <- read_fasta(file.path(data_path, db_rps10))
   
   data_rps10 <- str_match(names(db_rps10), pattern = "name=(.+)\\|strain=(.+)\\|ncbi_acc=(.+)\\|ncbi_taxid=(.+)\\|oodb_id=(.+)\\|taxonomy=(.+)$")
   colnames(data_rps10) <- c("header", "name", "strain", "ncbi_acc", "ncbi_taxid", "oodb_id", "taxonomy")
