@@ -51,6 +51,7 @@ format_db_rps10 <- function(analysis_setup, db_rps10) {
   data_rps10$taxonomy <- gsub(data_rps10$taxonomy, pattern = 'Eukaryota;Stramenopiles', replacement = 'Stramenopila;Oomycota', fixed = TRUE)
   
   binomial <- map_chr(str_split(data_rps10$taxonomy, pattern = ';'), `[`, 6)
+  species <- map_chr(str_split(binomial, pattern = '_'), `[`, 1)
   
   data_rps10$taxonomy <- map_chr(seq_along(data_rps10$taxonomy), function(index) {
     sub(data_rps10$taxonomy[index], pattern = binomial[index], replacement = paste0(species[index], ';', binomial[index]))
