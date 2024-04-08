@@ -18,7 +18,6 @@ prepare_reads <- function(data_directory = "data",
                           output_directory = "output", 
                           tempdir_path = NULL, 
                           tempdir_id = "demulticoder_run",
-                          maxN = 0, 
                           multithread = FALSE, 
                           overwrite_existing = FALSE) {
   
@@ -59,7 +58,7 @@ prepare_reads <- function(data_directory = "data",
   primer_data <- orient_primers(primers_params_path)
   parameters <- read_parameters(primers_params_path)
   metadata <- prepare_metadata_table(metadata_path, primer_data)
-  fastq_data <- read_prefilt_fastq(data_path, maxN, multithread, directory_path_temp)
+  fastq_data <- read_prefilt_fastq(data_path, multithread, directory_path_temp)
   pre_primer_hit_data <- get_pre_primer_hits(primer_data, fastq_data, directory_path)
   cutadapt_data <- make_cutadapt_tibble(fastq_data, metadata, directory_path_temp)
   data_tables <- list(
@@ -269,10 +268,10 @@ primer_check <- function(fastq_data) {
 #' @return Returns filtered reads that have no Ns
 #' @keywords internal
 
-read_prefilt_fastq <- function(data_path, maxN = 0, multithread = FALSE, directory_path_temp) {
+read_prefilt_fastq <- function(data_path, multithread = FALSE, directory_path_temp) {
   fastq_data <- read_fastq(data_path, directory_path_temp)
   primer_check(fastq_data)
-  fastq_data <- remove_ns(fastq_data, maxN, multithread = multithread, directory_path_temp)
+  fastq_data <- remove_ns(fastq_data, multithread = multithread, directory_path_temp)
   return(fastq_data)
 }
 
@@ -288,7 +287,6 @@ read_prefilt_fastq <- function(data_path, maxN = 0, multithread = FALSE, directo
 
 remove_ns <-
   function(fastq_data,
-           maxN = 0,
            multithread = TRUE, 
            directory_path_temp) {
     prefiltered_read_dir <-
@@ -303,8 +301,8 @@ remove_ns <-
         filt = fastq_data[fastq_data$direction == "Forward",][["prefiltered_path"]],
         rev = fastq_data[fastq_data$direction == "Reverse",][["directory_data_path"]],
         filt.rev = fastq_data[fastq_data$direction == "Reverse",][["prefiltered_path"]],
-        maxN = maxN,
-        multithread = multithread
+        multithread = multithread,
+        maxN=0
       )
     }
     return(fastq_data)

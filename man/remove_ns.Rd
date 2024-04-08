@@ -4,15 +4,11 @@
 \alias{remove_ns}
 \title{Wrapper function for core DADA2 filter and trim function for first filtering step}
 \usage{
-remove_ns(fastq_data, maxN = 0, multithread = TRUE, directory_path_temp)
+remove_ns(fastq_data, multithread = TRUE, directory_path_temp)
 }
 \arguments{
 \item{fastq_data}{A tibble with the fastq file paths, the direction of the sequences, and names of sequences
 metadata, and primer_info files}
-
-\item{maxN}{(Optional). Default 0.
-After truncation, sequences with more than \code{maxN} Ns will be discarded. 
-Note that \code{\link[dada2]{dada}} does not allow Ns.}
 
 \item{multithread}{(Optional). Default is FALSE.
  If TRUE, input files are filtered in parallel via \code{\link[parallel]{mclapply}}.

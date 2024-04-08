@@ -9,7 +9,6 @@ prepare_reads(
   output_directory = "output",
   tempdir_path = NULL,
   tempdir_id = "demulticoder_run",
-  maxN = 0,
   multithread = FALSE,
   overwrite_existing = FALSE
 )
@@ -22,10 +21,6 @@ prepare_reads(
 \item{tempdir_path}{Path to a temporary directory. If NULL, a temporary directory path will be identified using tempdir() command.}
 
 \item{tempdir_id}{ID for temporary directories. Default is "demulticoder_run". User can provide any helpful ID, whether it be a date or specific name for the run.}
-
-\item{maxN}{(Optional). Default 0.
-After truncation, sequences with more than \code{maxN} Ns will be discarded. 
-Note that \code{\link[dada2]{dada}} does not allow Ns.}
 
 \item{multithread}{(Optional). Default is FALSE.
  If TRUE, input files are filtered in parallel via \code{\link[parallel]{mclapply}}.
