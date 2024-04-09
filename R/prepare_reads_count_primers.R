@@ -69,21 +69,6 @@ prepare_reads <- function(data_directory = "data",
     metadata = metadata
   )
   
-  message("Cutadapt input")
-  print(cutadapt_data)
-  
-  message("Primer input")
-  print(primer_data)
-  
-  message("Fastq input")
-  print(fastq_data)
-  
-  message("Parameters input")
-  print(parameters)
-  
-  message("Metadata input")
-  print(metadata)
-  
   analysis_setup <- list(data_tables = data_tables, dir_paths = dir_paths)
   assign("analysis_setup", analysis_setup, envir = .GlobalEnv)
   analysis_setup_path <-

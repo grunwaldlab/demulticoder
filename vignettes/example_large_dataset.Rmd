@@ -1,7 +1,6 @@
 ---
-title: "Example_analysis_rhodendron_rhizobiome"
+title: "Example workflow and proof of concept analysis of pooled RPS10 and ITS amplicons rhodendron rhizobiome dataset "
 output: html_document
-date: "2024-02-12"
 ---
 
 ```{r setup, include=FALSE}

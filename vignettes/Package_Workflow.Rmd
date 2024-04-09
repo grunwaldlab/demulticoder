@@ -1,6 +1,6 @@
 ---
-title: "Package_Workflow"
-output: 
+title: "Package Workflow and Quick Start"
+output:
   rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Package_Workflow}
@@ -10,9 +10,11 @@ vignette: >
 
 ### Introduction
 
-The 'demulticoder' package is a robust DADA2 wrapper package for metabarcoding analyses. The package is designed for users with little experience doing metabarcoding analysis and a strength is the ability to to analyses on multiple datasets at once, different barcodes (not just ITS and 16S, but also rps10 for oomycete community analysis, as well as other barcodes, so long as the reference database is formatted like the UNITE fungal database).
+The *demulticoder* package is a Cutadapt and DADA2 wrapper package for metabarcoding analyses. The package is designed for users with varying experience doing metabarcoding analysis and a strength is the ability to to analyses on multiple datasets at once, when amplicons have been pooled and contain different barcodes, or when samples are already demultiplexed.
 
-The package was developed by Martha Sudermann, Zachary Foster, Niklaus Grunwald, Jeff Chang. Zachary Foster conceptualized much of the core workflow. 
+The package is capable of streamlined analysis of ITS or 16S metabarcoding data, as well as oomycete rps10 amplicons. There is also the option to input up to two custom databases, so long as databases are formatted according to DADA2 specifications (https://benjjneb.github.io/dada2/training.html), and has no more than 7 taxonomic levels from kingdom down to species.
+
+The package was developed by Martha Sudermann, Zachary Foster, Niklaus Grunwald, Jeff Chang.
 
 ### Before You Start
 
@@ -58,11 +60,14 @@ You will notice S1 and S2 are included twice in the 'metadata.csv' sheet. This i
 
 Example using test dataset:
 
-sample_name,primer_name,well,organism
-S1,rps10,A01,Cry
-S2,rps10,B01,Cin
-S1,its,A01,Cry
-S2,its,B01,Cin
+```{r, echo=FALSE}
+knitr::kable(data.frame(
+  sample_name = c("S1", "S2", "S1", "S2"),
+  primer_name = c("rps10", "rps10", "its", "its"),
+  well = c("A01", "B01", "A01", "B01"),
+  organism = c("Cry", "Cin", "Cry", "Cin")
+), row.names = FALSE)
+```
 
 ### Primer sequence information and user-defined parameters are placed in *primerinfo_params.csv*
 
@@ -82,9 +87,32 @@ TODO-provide info on the different parameter descriptions and which functions th
 
 Example template for 'primerinfo_params.csv'
 
-primer_name,forward,reverse,already_trimmed,minCutadaptlength,multithread,verbose,maxN,maxEE_forward,maxEE_reverse,truncLen_forward,truncLen_reverse,truncQ,minLen,maxLen,minQ,trimLeft,trimRight,rm.lowcomplex,minOverlap,maxMismatch,min_asv_length
-rps10,GTTGGTTAGAGYARAAGACT,ATRYYTAGAAAGAYTYGAACT,FALSE,100,TRUE,FALSE,1.00E+05,5,5,0,0,5,150,Inf,0,0,0,0,15,0,50
-its,CTTGGTCATTTAGAGGAAGTAA,GCTGCGTTCTTCATCGATGC,FALSE,50,TRUE,FALSE,1.00E+05,5,5,0,0,5,50,Inf,0,0,0,0,15,0,50
+```{r, echo=FALSE}
+knitr::kable(data.frame(
+  primer_name = c("rps10", "its"),
+  forward = c("GTTGGTTAGAGYARAAGACT", "CTTGGTCATTTAGAGGAAGTAA"),
+  reverse = c("ATRYYTAGAAAGAYTYGAACT", "GCTGCGTTCTTCATCGATGC"),
+  already_trimmed = c("FALSE", "FALSE"),
+  minCutadaptlength = c(100, 50),
+  multithread = c("TRUE", "TRUE"),
+  verbose = c("FALSE", "FALSE"),
+  maxN = c("1.00E+05", "1.00E+05"),
+  maxEE_forward = c(5, 5),
+  maxEE_reverse = c(5, 5),
+  truncLen_forward = c(0, 0),
+  truncLen_reverse = c(0, 0),
+  truncQ = c(5, 5),
+  minLen = c(150, 50),
+  maxLen = c("Inf", "Inf"),
+  minQ = c(0, 0),
+  trimLeft = c(0, 0),
+  trimRight = c(0, 0),
+  rm.lowcomplex = c(0, 0),
+  minOverlap = c(15, 15),
+  maxMismatch = c(0, 0),
+  min_asv_length = c(50, 50)
+), row.names = FALSE)
+```
 
 
 ### Reference Database Format
@@ -112,7 +140,7 @@ Please also ensure that you have enough storage to save intermediate files in a 
 ### Loading the Package
 
 For now, the package will be loaded by retrieving it from GitHub. Eventually, the package will be uploaded to CRAN or Bioconductor.
-```{r installation, warnings=FALSE, message=FALSE}
+```{r installation, warning=FALSE, message=FALSE}
 
 library("devtools")
 devtools::install_github("grunwaldlab/demulticoder")
@@ -121,9 +149,8 @@ library(demulticoder)
 
 ### Reorganize Data Tables
 The sample names, primer sequences, and other metadata are reorganized in preparation for running Cutadapt to remove primers.
-```{r prepare_reads function, message=FALSE}
+```{r prepare_reads function, warning=FALSE, message=FALSE}
 demulticoder::prepare_reads(
-  maxN = 0, 
   data_directory = system.file("extdata", package = "demulticoder"),
   output_directory = "~/output_test_dataset", 
   tempdir_id = "test_dataset",
@@ -165,9 +192,6 @@ convert_asv_matrix_to_objs(save_outputs=TRUE, overwrite=TRUE)
 ### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded samples 
 ### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded samples
 ```{r Heatree demonstration its, message=FALSE}
-load("~/output_test_dataset/obj_dada_its.RData") 
-obj_dada_its<-obj_dada
-
 heat_tree(obj_dada_its,
           node_label = taxon_names,
           node_size = n_obs,
@@ -180,9 +204,6 @@ heat_tree(obj_dada_its,
 
 ### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded sample
 ```{r Heatree demonstration rps10, message=FALSE}
-load("~/output_test_dataset/obj_dada_rps10.RData") 
-obj_dada_rps10<-obj_dada
-
 heat_tree(obj_dada_rps10,
           node_label = taxon_names,
           node_size = n_obs,
@@ -194,10 +215,7 @@ heat_tree(obj_dada_rps10,
 
 ### We can also do a variety of analyses, if we convert to phyloseq object
 ```{r Phyloseq demonstration ITS, message=FALSE}
-load("~/output_test_dataset/phylo_obj_its.RData") 
-phylo_data_its<-phylo_obj
-
-data <- phylo_data_its %>%
+data <- phylo_obj_its %>%
   tax_glom(taxrank = "Genus") %>%                     
   transform_sample_counts(function(x) {x/sum(x)} ) %>% 
   psmelt() %>%                                        
@@ -241,10 +259,7 @@ print(abund_plot)
 ```
 
 ```{r Phyloseq demonstration rps10, message=FALSE}
-load("~/output_test_dataset/phylo_obj_rps10.RData") 
-phylo_data_rps10 <- phylo_obj
-
-data <- phylo_data_rps10 %>%
+data <- phylo_obj_rps10 %>%
   #tax_glom(taxrank = "Genus") %>%                     
   transform_sample_counts(function(x) {x/sum(x)} ) %>% 
   psmelt() %>%                                        

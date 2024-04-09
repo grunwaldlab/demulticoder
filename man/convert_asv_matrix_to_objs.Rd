@@ -7,9 +7,6 @@
 convert_asv_matrix_to_objs(
   min_read_depth = 0,
   minimum_bootstrap = 0,
-  pid_species = 0,
-  pid_genus = 0,
-  pid_family = 0,
   save_outputs = FALSE,
   overwrite = FALSE
 )
@@ -20,16 +17,7 @@ reads is less than this value across all samples-todo check on this}
 
 \item{minimum_bootstrap}{Threshold for bootstrap support value
 for taxonomic assignments. Below designated minimum bootstrap
-threshold, taxnomoic assignments will be set to N/A.}
-
-\item{pid_species}{If percent identity is below this value, at the species
-level, taxonomic assignment will be set to N/A}
-
-\item{pid_genus}{If percent identity is below this value, at the genus
-level, taxonomic assignment will be set to N/A}
-
-\item{pid_family}{If percent identity is below this value, at the family
-level, taxonomic assignment will be set to N/A}
+threshold, taxnomoic assignments will be set to N/A}
 
 \item{save_outputs}{Logical, indicating whether to save the taxmap object. Default is FALSE.}
 }

@@ -1,13 +1,13 @@
+#TODO fix up documentation 
+
 devtools::load_all("~/demulticoder")
 devtools::document()
 
 prepare_reads(
-  maxN = 0, 
   data_directory = "~/demulticoder/inst/extdata", 
-  output_directory = "~/testing_package10", 
+  output_directory = "~/testing_package11", 
   tempdir_id = "tempdir",
-  tempdir_path="~/",
-  overwrite_existing = FALSE)
+  overwrite_existing = TRUE)
 
 cut_trim(
   analysis_setup,
@@ -24,7 +24,6 @@ assign_tax(
   asv_abund_matrix,
   db_its = "fungidb.fasta",
   db_rps10 = "oomycetedb.fasta",
-  db_16s = "bacteriadb.fasta",
   retrieve_files=TRUE,
   overwrite_existing=TRUE)
 
@@ -38,4 +37,4 @@ library("pkgdown")
 library(pkgdown)
 
 
-pkgdown::build_site("~/demulticoder")
+pkgdown::build_site("./")

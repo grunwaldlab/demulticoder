@@ -2,8 +2,8 @@ pandoc: 3.1.1
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
-  example: example.html
+  Package_Workflow: Package_Workflow.html
   example_large_dataset: example_large_dataset.html
   validation_16S_mothur_SOP: validation_16S_mothur_SOP.html
-last_built: 2024-04-04T00:19Z
+last_built: 2024-04-09T21:53Z
 

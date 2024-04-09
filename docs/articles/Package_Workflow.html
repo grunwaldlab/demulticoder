@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Package Workflow • demulticoder</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<title>Package Workflow and Quick Start • demulticoder</title>
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/sandstone/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Package Workflow">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Package Workflow and Quick Start">
 <meta property="og:description" content="demulticoder">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -50,10 +50,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/example.html">Package Workflow</a>
+      <a href="../articles/Package_Workflow.html">Package Workflow and Quick Start</a>
     </li>
     <li>
-      <a href="../articles/example_large_dataset.html">Example_analysis_rhodendron_rhizobiome</a>
+      <a href="../articles/example_large_dataset.html">Example workflow and proof of concept analysis of pooled RPS10 and ITS amplicons rhodendron rhizobiome dataset </a>
     </li>
     <li>
       <a href="../articles/validation_16S_mothur_SOP.html">mothur_SOP_16S_validation</a>
@@ -74,11 +74,11 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Package Workflow</h1>
+      <h1 data-toc-skip>Package Workflow and Quick Start</h1>
             
       
       
-      <div class="hidden name"><code>example.Rmd</code></div>
+      <div class="hidden name"><code>Package_Workflow.Rmd</code></div>
 
     </div>
 
@@ -87,16 +87,19 @@
 <div class="section level3">
 <h3 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h3>
-<p>The ‘demulticoder’ package is a robust DADA2 wrapper package for
-metabarcoding analyses. The package is designed for users with little
-experience doing metabarcoding analysis and a strength is the ability to
-to analyses on multiple datasets at once, different barcodes (not just
-ITS and 16S, but also rps10 for oomycete community analysis, as well as
-other barcodes, so long as the reference database is formatted like the
-UNITE fungal database).</p>
+<p>The <em>demulticoder</em> package is a Cutadapt and DADA2 wrapper
+package for metabarcoding analyses. The package is designed for users
+with varying experience doing metabarcoding analysis and a strength is
+the ability to to analyses on multiple datasets at once, when amplicons
+have been pooled and contain different barcodes, or when samples are
+already demultiplexed.</p>
+<p>The package is capable of streamlined analysis of ITS or 16S
+metabarcoding data, as well as oomycete rps10 amplicons. There is also
+the option to input up to two custom databases, so long as databases are
+formatted according to DADA2 specifications (<a href="https://benjjneb.github.io/dada2/training.html" class="external-link uri">https://benjjneb.github.io/dada2/training.html</a>), and has
+no more than 7 taxonomic levels from kingdom down to species.</p>
 <p>The package was developed by Martha Sudermann, Zachary Foster,
-Niklaus Grunwald, Jeff Chang. Zachary Foster conceptualized much of the
-core workflow.</p>
+Niklaus Grunwald, Jeff Chang.</p>
 </div>
 <div class="section level3">
 <h3 id="before-you-start">Before You Start<a class="anchor" aria-label="anchor" href="#before-you-start"></a>
@@ -155,8 +158,40 @@ sheet. This is because these two samples contain pooled reads (ITS and
 rps10). To demultiplex and run both analyses in tandem, include the same
 sample twice under sample_name, and then change the primer_name.</p>
 <p>Example using test dataset:</p>
-<p>sample_name,primer_name,well,organism S1,rps10,A01,Cry
-S2,rps10,B01,Cin S1,its,A01,Cry S2,its,B01,Cin</p>
+<table class="table">
+<thead><tr class="header">
+<th align="left">sample_name</th>
+<th align="left">primer_name</th>
+<th align="left">well</th>
+<th align="left">organism</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">S1</td>
+<td align="left">rps10</td>
+<td align="left">A01</td>
+<td align="left">Cry</td>
+</tr>
+<tr class="even">
+<td align="left">S2</td>
+<td align="left">rps10</td>
+<td align="left">B01</td>
+<td align="left">Cin</td>
+</tr>
+<tr class="odd">
+<td align="left">S1</td>
+<td align="left">its</td>
+<td align="left">A01</td>
+<td align="left">Cry</td>
+</tr>
+<tr class="even">
+<td align="left">S2</td>
+<td align="left">its</td>
+<td align="left">B01</td>
+<td align="left">Cin</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section level3">
 <h3 id="primer-sequence-information-and-user-defined-parameters-are-placed-in-primerinfo_params-csv">Primer sequence information and user-defined parameters are placed
@@ -181,9 +216,106 @@ DADA2 parameters will be used.</p>
 <p>TODO-provide info on the different parameter descriptions and which
 functions they are associated with.</p>
 <p>Example template for ‘primerinfo_params.csv’</p>
-<p>primer_name,forward,reverse,already_trimmed,minCutadaptlength,multithread,verbose,maxN,maxEE_forward,maxEE_reverse,truncLen_forward,truncLen_reverse,truncQ,minLen,maxLen,minQ,trimLeft,trimRight,rm.lowcomplex,minOverlap,maxMismatch,min_asv_length
-rps10,GTTGGTTAGAGYARAAGACT,ATRYYTAGAAAGAYTYGAACT,FALSE,100,TRUE,FALSE,1.00E+05,5,5,0,0,5,150,Inf,0,0,0,0,15,0,50
-its,CTTGGTCATTTAGAGGAAGTAA,GCTGCGTTCTTCATCGATGC,FALSE,50,TRUE,FALSE,1.00E+05,5,5,0,0,5,50,Inf,0,0,0,0,15,0,50</p>
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="4%">
+<col width="8%">
+<col width="7%">
+<col width="5%">
+<col width="6%">
+<col width="4%">
+<col width="2%">
+<col width="3%">
+<col width="5%">
+<col width="5%">
+<col width="6%">
+<col width="6%">
+<col width="2%">
+<col width="2%">
+<col width="2%">
+<col width="1%">
+<col width="3%">
+<col width="3%">
+<col width="5%">
+<col width="3%">
+<col width="4%">
+<col width="5%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">primer_name</th>
+<th align="left">forward</th>
+<th align="left">reverse</th>
+<th align="left">already_trimmed</th>
+<th align="right">minCutadaptlength</th>
+<th align="left">multithread</th>
+<th align="left">verbose</th>
+<th align="left">maxN</th>
+<th align="right">maxEE_forward</th>
+<th align="right">maxEE_reverse</th>
+<th align="right">truncLen_forward</th>
+<th align="right">truncLen_reverse</th>
+<th align="right">truncQ</th>
+<th align="right">minLen</th>
+<th align="left">maxLen</th>
+<th align="right">minQ</th>
+<th align="right">trimLeft</th>
+<th align="right">trimRight</th>
+<th align="right">rm.lowcomplex</th>
+<th align="right">minOverlap</th>
+<th align="right">maxMismatch</th>
+<th align="right">min_asv_length</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">rps10</td>
+<td align="left">GTTGGTTAGAGYARAAGACT</td>
+<td align="left">ATRYYTAGAAAGAYTYGAACT</td>
+<td align="left">FALSE</td>
+<td align="right">100</td>
+<td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">1.00E+05</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">5</td>
+<td align="right">150</td>
+<td align="left">Inf</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">15</td>
+<td align="right">0</td>
+<td align="right">50</td>
+</tr>
+<tr class="even">
+<td align="left">its</td>
+<td align="left">CTTGGTCATTTAGAGGAAGTAA</td>
+<td align="left">GCTGCGTTCTTCATCGATGC</td>
+<td align="left">FALSE</td>
+<td align="right">50</td>
+<td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="left">1.00E+05</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">5</td>
+<td align="right">50</td>
+<td align="left">Inf</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">15</td>
+<td align="right">0</td>
+<td align="right">50</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section level3">
 <h3 id="reference-database-format">Reference Database Format<a class="anchor" aria-label="anchor" href="#reference-database-format"></a>
@@ -225,9 +357,13 @@ Eventually, the package will be uploaded to CRAN or Bioconductor.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://devtools.r-lib.org/" class="external-link">"devtools"</a></span><span class="op">)</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"grunwaldlab/demulticoder"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
+<pre><code><span><span class="co">## knitr (1.45  -&gt; 1.46 ) [CRAN]</span></span>
+<span><span class="co">## crul  (1.4.0 -&gt; 1.4.2) [CRAN]</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## The downloaded binary packages are in</span></span>
+<span><span class="co">##  /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/downloaded_packages</span></span>
 <span><span class="co">## <span style="color: #00BBBB;">──</span> <span style="color: #00BBBB;">R CMD build</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">## * checking for file ‘/private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpkA5o7p/remotes125d21cce255f/grunwaldlab-demulticoder-43f6beb/DESCRIPTION’ ... OK</span></span>
+<span><span class="co">## * checking for file ‘/private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpEDjTAY/remotes7b126979f636/grunwaldlab-demulticoder-2684e6b/DESCRIPTION’ ... OK</span></span>
 <span><span class="co">## * preparing ‘demulticoder’:</span></span>
 <span><span class="co">## * checking DESCRIPTION meta-information ... OK</span></span>
 <span><span class="co">## * checking for LF line-endings in source and make files and shell scripts</span></span>
@@ -235,7 +371,7 @@ Eventually, the package will be uploaded to CRAN or Bioconductor.</p>
 <span><span class="co">## Omitted ‘LazyData’ from DESCRIPTION</span></span>
 <span><span class="co">## * building ‘demulticoder_0.0.0.9000.tar.gz’</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://grunwaldlab.github.io/demulticoder_documentation/" class="external-link">demulticoder</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://grunwaldlab.github.io/demulticoder/" class="external-link">demulticoder</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="reorganize-data-tables">Reorganize Data Tables<a class="anchor" aria-label="anchor" href="#reorganize-data-tables"></a>
@@ -244,12 +380,11 @@ Eventually, the package will be uploaded to CRAN or Bioconductor.</p>
 reorganized in preparation for running Cutadapt to remove primers.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">demulticoder</span><span class="fu">::</span><span class="fu"><a href="../reference/prepare_reads.html">prepare_reads</a></span><span class="op">(</span></span>
-<span>  maxN <span class="op">=</span> <span class="fl">0</span>, </span>
 <span>  data_directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"demulticoder"</span><span class="op">)</span>,</span>
 <span>  output_directory <span class="op">=</span> <span class="st">"~/output_test_dataset"</span>, </span>
 <span>  tempdir_id <span class="op">=</span> <span class="st">"test_dataset"</span>,</span>
 <span>  overwrite_existing<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="example_files/figure-html/prepare_reads%20function-1.png" width="700"></p>
+<p><img src="Package_Workflow_files/figure-html/prepare_reads%20function-1.png" width="700"></p>
 <pre><code><span><span class="co">##   sample_name samplename_barcode primer_name well organism</span></span>
 <span><span class="co">## 1          S1             S1_its         its  A01      Cry</span></span>
 <span><span class="co">## 2          S1             S1_its         its  A01      Cry</span></span>
@@ -287,59 +422,59 @@ reorganized in preparation for running Cutadapt to remove primers.</p>
 <span><span class="co">## 7 TCAAGYTYAGAAAGATYYRTA AGTTCRARTCTTTCTARRYAT   S2_R1   Forward</span></span>
 <span><span class="co">## 8 TCAAGYTYAGAAAGATYYRTA AGTTCRARTCTTTCTARRYAT   S2_R2   Reverse</span></span>
 <span><span class="co">##                                                                                                                directory_data_path</span></span>
-<span><span class="co">## 1 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 2 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 3 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 4 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 5 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 6 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S2_R2.fastq.gz</span></span>
-<span><span class="co">## 7 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 8 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S2_R2.fastq.gz</span></span>
+<span><span class="co">## 1 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S1_R1.fastq.gz</span></span>
+<span><span class="co">## 2 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S1_R2.fastq.gz</span></span>
+<span><span class="co">## 3 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S1_R1.fastq.gz</span></span>
+<span><span class="co">## 4 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S1_R2.fastq.gz</span></span>
+<span><span class="co">## 5 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S2_R1.fastq.gz</span></span>
+<span><span class="co">## 6 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S2_R2.fastq.gz</span></span>
+<span><span class="co">## 7 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S2_R1.fastq.gz</span></span>
+<span><span class="co">## 8 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S2_R2.fastq.gz</span></span>
 <span><span class="co">##                                                                             temp_data_path</span></span>
-<span><span class="co">## 1 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 2 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 5 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 6 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S2_R2.fastq.gz</span></span>
-<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S2_R2.fastq.gz</span></span>
+<span><span class="co">## 1 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S1_R1.fastq.gz</span></span>
+<span><span class="co">## 2 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S1_R2.fastq.gz</span></span>
+<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S1_R1.fastq.gz</span></span>
+<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S1_R2.fastq.gz</span></span>
+<span><span class="co">## 5 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S2_R1.fastq.gz</span></span>
+<span><span class="co">## 6 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S2_R2.fastq.gz</span></span>
+<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S2_R1.fastq.gz</span></span>
+<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S2_R2.fastq.gz</span></span>
 <span><span class="co">##                                                                                                 prefiltered_path</span></span>
-<span><span class="co">## 1 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 2 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 5 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 6 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S2_R2.fastq.gz</span></span>
-<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S2_R2.fastq.gz</span></span>
+<span><span class="co">## 1 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S1_R1.fastq.gz</span></span>
+<span><span class="co">## 2 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S1_R2.fastq.gz</span></span>
+<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S1_R1.fastq.gz</span></span>
+<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S1_R2.fastq.gz</span></span>
+<span><span class="co">## 5 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S2_R1.fastq.gz</span></span>
+<span><span class="co">## 6 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S2_R2.fastq.gz</span></span>
+<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S2_R1.fastq.gz</span></span>
+<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S2_R2.fastq.gz</span></span>
 <span><span class="co">##                                                                                                       trimmed_path</span></span>
-<span><span class="co">## 1   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/trimmed_sequences/S1_R1_its.fastq.gz</span></span>
-<span><span class="co">## 2   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/trimmed_sequences/S1_R2_its.fastq.gz</span></span>
-<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/trimmed_sequences/S1_R1_rps10.fastq.gz</span></span>
-<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/trimmed_sequences/S1_R2_rps10.fastq.gz</span></span>
-<span><span class="co">## 5   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/trimmed_sequences/S2_R1_its.fastq.gz</span></span>
-<span><span class="co">## 6   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/trimmed_sequences/S2_R2_its.fastq.gz</span></span>
-<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/trimmed_sequences/S2_R1_rps10.fastq.gz</span></span>
-<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/trimmed_sequences/S2_R2_rps10.fastq.gz</span></span>
+<span><span class="co">## 1   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/trimmed_sequences/S1_R1_its.fastq.gz</span></span>
+<span><span class="co">## 2   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/trimmed_sequences/S1_R2_its.fastq.gz</span></span>
+<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/trimmed_sequences/S1_R1_rps10.fastq.gz</span></span>
+<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/trimmed_sequences/S1_R2_rps10.fastq.gz</span></span>
+<span><span class="co">## 5   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/trimmed_sequences/S2_R1_its.fastq.gz</span></span>
+<span><span class="co">## 6   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/trimmed_sequences/S2_R2_its.fastq.gz</span></span>
+<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/trimmed_sequences/S2_R1_rps10.fastq.gz</span></span>
+<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/trimmed_sequences/S2_R2_rps10.fastq.gz</span></span>
 <span><span class="co">##                                                                                                       untrimmed_path</span></span>
-<span><span class="co">## 1   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/untrimmed_sequences/S1_R1_its.fastq.gz</span></span>
-<span><span class="co">## 2   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/untrimmed_sequences/S1_R2_its.fastq.gz</span></span>
-<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/untrimmed_sequences/S1_R1_rps10.fastq.gz</span></span>
-<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/untrimmed_sequences/S1_R2_rps10.fastq.gz</span></span>
-<span><span class="co">## 5   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/untrimmed_sequences/S2_R1_its.fastq.gz</span></span>
-<span><span class="co">## 6   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/untrimmed_sequences/S2_R2_its.fastq.gz</span></span>
-<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/untrimmed_sequences/S2_R1_rps10.fastq.gz</span></span>
-<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/untrimmed_sequences/S2_R2_rps10.fastq.gz</span></span>
+<span><span class="co">## 1   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/untrimmed_sequences/S1_R1_its.fastq.gz</span></span>
+<span><span class="co">## 2   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/untrimmed_sequences/S1_R2_its.fastq.gz</span></span>
+<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/untrimmed_sequences/S1_R1_rps10.fastq.gz</span></span>
+<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/untrimmed_sequences/S1_R2_rps10.fastq.gz</span></span>
+<span><span class="co">## 5   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/untrimmed_sequences/S2_R1_its.fastq.gz</span></span>
+<span><span class="co">## 6   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/untrimmed_sequences/S2_R2_its.fastq.gz</span></span>
+<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/untrimmed_sequences/S2_R1_rps10.fastq.gz</span></span>
+<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/untrimmed_sequences/S2_R2_rps10.fastq.gz</span></span>
 <span><span class="co">##                                                                                                       filtered_path</span></span>
-<span><span class="co">## 1   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/filtered_sequences/S1_R1_its.fastq.gz</span></span>
-<span><span class="co">## 2   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/filtered_sequences/S1_R2_its.fastq.gz</span></span>
-<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/filtered_sequences/S1_R1_rps10.fastq.gz</span></span>
-<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/filtered_sequences/S1_R2_rps10.fastq.gz</span></span>
-<span><span class="co">## 5   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/filtered_sequences/S2_R1_its.fastq.gz</span></span>
-<span><span class="co">## 6   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/filtered_sequences/S2_R2_its.fastq.gz</span></span>
-<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/filtered_sequences/S2_R1_rps10.fastq.gz</span></span>
-<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/filtered_sequences/S2_R2_rps10.fastq.gz</span></span>
+<span><span class="co">## 1   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/filtered_sequences/S1_R1_its.fastq.gz</span></span>
+<span><span class="co">## 2   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/filtered_sequences/S1_R2_its.fastq.gz</span></span>
+<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/filtered_sequences/S1_R1_rps10.fastq.gz</span></span>
+<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/filtered_sequences/S1_R2_rps10.fastq.gz</span></span>
+<span><span class="co">## 5   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/filtered_sequences/S2_R1_its.fastq.gz</span></span>
+<span><span class="co">## 6   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/filtered_sequences/S2_R2_its.fastq.gz</span></span>
+<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/filtered_sequences/S2_R1_rps10.fastq.gz</span></span>
+<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/filtered_sequences/S2_R2_rps10.fastq.gz</span></span>
 <span><span class="co">##   primer_name                forward                f_compt</span></span>
 <span><span class="co">## 1         its CTTGGTCATTTAGAGGAAGTAA GAACCAGTAAATCTCCTTCATT</span></span>
 <span><span class="co">## 2       rps10   GTTGGTTAGAGYARAAGACT   CAACCAATCTCRTYTTCTGA</span></span>
@@ -355,20 +490,20 @@ reorganized in preparation for running Cutadapt to remove primers.</p>
 <span><span class="co">## 3   S2_R1          S2   Forward</span></span>
 <span><span class="co">## 4   S2_R2          S2   Reverse</span></span>
 <span><span class="co">##                                                                                                                directory_data_path</span></span>
-<span><span class="co">## 1 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 2 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 3 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 4 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c541c49e9/demulticoder/extdata/S2_R2.fastq.gz</span></span>
+<span><span class="co">## 1 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S1_R1.fastq.gz</span></span>
+<span><span class="co">## 2 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S1_R2.fastq.gz</span></span>
+<span><span class="co">## 3 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S2_R1.fastq.gz</span></span>
+<span><span class="co">## 4 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S2_R2.fastq.gz</span></span>
 <span><span class="co">##                                                                             temp_data_path</span></span>
-<span><span class="co">## 1 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 2 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/S2_R2.fastq.gz</span></span>
+<span><span class="co">## 1 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S1_R1.fastq.gz</span></span>
+<span><span class="co">## 2 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S1_R2.fastq.gz</span></span>
+<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S2_R1.fastq.gz</span></span>
+<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S2_R2.fastq.gz</span></span>
 <span><span class="co">##                                                                                                 prefiltered_path</span></span>
-<span><span class="co">## 1 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 2 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/prefiltered_sequences/S2_R2.fastq.gz</span></span>
+<span><span class="co">## 1 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S1_R1.fastq.gz</span></span>
+<span><span class="co">## 2 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S1_R2.fastq.gz</span></span>
+<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S2_R1.fastq.gz</span></span>
+<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S2_R2.fastq.gz</span></span>
 <span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 20</span></span></span>
 <span><span class="co">##   primer_name already_trimmed minCutadaptlength multithread verbose  maxN</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>                       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -412,7 +547,7 @@ it.</p>
 <span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Running Cutadapt 4.1 for its sequence data </span></span>
 <span><span class="co">## Running Cutadapt 4.1 for rps10 sequence data</span></span></code></pre>
-<p><img src="example_files/figure-html/remove%20primers%20with%20cut_trim%20function-1.png" width="700"></p>
+<p><img src="Package_Workflow_files/figure-html/remove%20primers%20with%20cut_trim%20function-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="asv-inference-step">ASV inference step<a class="anchor" aria-label="anchor" href="#asv-inference-step"></a>
@@ -443,7 +578,7 @@ it.</p>
 <span><span class="co">## Error rate plot for the Reverse read of primer pair its</span></span></code></pre>
 <pre><code><span><span class="co">## Sample 1 - 3285 reads in 2157 unique sequences.</span></span>
 <span><span class="co">## Sample 2 - 3009 reads in 1915 unique sequences.</span></span></code></pre>
-<p><img src="example_files/figure-html/ASV%20inference-1.png" width="700"></p>
+<p><img src="Package_Workflow_files/figure-html/ASV%20inference-1.png" width="700"></p>
 <pre><code><span><span class="co">## 1918751 total bases in 6828 reads from 2 samples will be used for learning the error rates.</span></span>
 <span><span class="co">## Initializing error rates to maximum possible estimate.</span></span>
 <span><span class="co">## selfConsist step 1 ..</span></span>
@@ -465,12 +600,12 @@ it.</p>
 <span><span class="co">## infinite values.</span></span></code></pre>
 <pre><code><span><span class="co">## Sample 1 - 3245 reads in 2254 unique sequences.</span></span>
 <span><span class="co">## Sample 2 - 3583 reads in 2951 unique sequences.</span></span></code></pre>
-<p><img src="example_files/figure-html/ASV%20inference-2.png" width="700"><img src="example_files/figure-html/ASV%20inference-3.png" width="700"><img src="example_files/figure-html/ASV%20inference-4.png" width="700"></p>
+<p><img src="Package_Workflow_files/figure-html/ASV%20inference-2.png" width="700"><img src="Package_Workflow_files/figure-html/ASV%20inference-3.png" width="700"><img src="Package_Workflow_files/figure-html/ASV%20inference-4.png" width="700"></p>
 <pre><code><span><span class="co">## $its</span></span>
-<span><span class="co">## [1] "/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/asvabund_matrixDADA2_its.RData"</span></span>
+<span><span class="co">## [1] "/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/asvabund_matrixDADA2_its.RData"</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $rps10</span></span>
-<span><span class="co">## [1] "/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpkA5o7p/test_dataset/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
+<span><span class="co">## [1] "/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="taxonomic-assignment-step">Taxonomic assignment step<a class="anchor" aria-label="anchor" href="#taxonomic-assignment-step"></a>
@@ -519,44 +654,35 @@ we make a heat tree for our ITS-barcoded samples<a class="anchor" aria-label="an
 we make a heat tree for our ITS-barcoded samples<a class="anchor" aria-label="anchor" href="#now-we-demonstrate-how-to-make-a-heattree-using-taxmap-object--first-we-make-a-heat-tree-for-our-its-barcoded-samples-1"></a>
 </h3>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="st">"~/output_test_dataset/obj_dada_its.RData"</span><span class="op">)</span> </span>
-<span><span class="va">obj_dada_its</span><span class="op">&lt;-</span><span class="va">obj_dada</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/metacoder/man/heat_tree.html" class="external-link">heat_tree</a></span><span class="op">(</span><span class="va">obj_dada_its</span>,</span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/metacoder/man/heat_tree.html" class="external-link">heat_tree</a></span><span class="op">(</span><span class="va">obj_dada_its</span>,</span>
 <span>          node_label <span class="op">=</span> <span class="va">taxon_names</span>,</span>
 <span>          node_size <span class="op">=</span> <span class="va">n_obs</span>,</span>
 <span>          node_color <span class="op">=</span> <span class="va">n_obs</span>,</span>
 <span>          node_color_axis_label <span class="op">=</span> <span class="st">"ASV count"</span>,</span>
 <span>          node_size_axis_label <span class="op">=</span> <span class="st">"Total Abundance of Taxa"</span>,</span>
 <span>          layout <span class="op">=</span> <span class="st">"da"</span>, initial_layout <span class="op">=</span> <span class="st">"re"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="example_files/figure-html/Heatree%20demonstration%20its-1.png" width="700"></p>
+<p><img src="Package_Workflow_files/figure-html/Heatree%20demonstration%20its-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="now-we-demonstrate-how-to-make-a-heattree-using-taxmap-object--first-we-make-a-heat-tree-for-our-its-barcoded-sample">Now we demonstrate how to make a heattree using taxmap object. First
 we make a heat tree for our ITS-barcoded sample<a class="anchor" aria-label="anchor" href="#now-we-demonstrate-how-to-make-a-heattree-using-taxmap-object--first-we-make-a-heat-tree-for-our-its-barcoded-sample"></a>
 </h3>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="st">"~/output_test_dataset/obj_dada_rps10.RData"</span><span class="op">)</span> </span>
-<span><span class="va">obj_dada_rps10</span><span class="op">&lt;-</span><span class="va">obj_dada</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/metacoder/man/heat_tree.html" class="external-link">heat_tree</a></span><span class="op">(</span><span class="va">obj_dada_rps10</span>,</span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/metacoder/man/heat_tree.html" class="external-link">heat_tree</a></span><span class="op">(</span><span class="va">obj_dada_rps10</span>,</span>
 <span>          node_label <span class="op">=</span> <span class="va">taxon_names</span>,</span>
 <span>          node_size <span class="op">=</span> <span class="va">n_obs</span>,</span>
 <span>          node_color <span class="op">=</span> <span class="va">n_obs</span>,</span>
 <span>          node_color_axis_label <span class="op">=</span> <span class="st">"ASV count"</span>,</span>
 <span>          node_size_axis_label <span class="op">=</span> <span class="st">"Total Abundance of Taxa"</span>,</span>
 <span>          layout <span class="op">=</span> <span class="st">"da"</span>, initial_layout <span class="op">=</span> <span class="st">"re"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="example_files/figure-html/Heatree%20demonstration%20rps10-1.png" width="700"></p>
+<p><img src="Package_Workflow_files/figure-html/Heatree%20demonstration%20rps10-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="we-can-also-do-a-variety-of-analyses-if-we-convert-to-phyloseq-object">We can also do a variety of analyses, if we convert to phyloseq
 object<a class="anchor" aria-label="anchor" href="#we-can-also-do-a-variety-of-analyses-if-we-convert-to-phyloseq-object"></a>
 </h3>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="st">"~/output_test_dataset/phylo_obj_its.RData"</span><span class="op">)</span> </span>
-<span><span class="va">phylo_data_its</span><span class="op">&lt;-</span><span class="va">phylo_obj</span></span>
-<span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">phylo_data_its</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">phylo_obj_its</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_glom.html" class="external-link">tax_glom</a></span><span class="op">(</span>taxrank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>                     </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="va">x</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">}</span> <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/psmelt.html" class="external-link">psmelt</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>                                        </span>
@@ -601,12 +727,9 @@ object<a class="anchor" aria-label="anchor" href="#we-can-also-do-a-variety-of-a
 <span><span class="co">## <span style="color: #555555;">generated.</span></span></span></code></pre>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">abund_plot</span><span class="op">)</span></span></code></pre></div>
-<p><img src="example_files/figure-html/Phyloseq%20demonstration%20ITS-1.png" width="700"></p>
+<p><img src="Package_Workflow_files/figure-html/Phyloseq%20demonstration%20ITS-1.png" width="700"></p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="st">"~/output_test_dataset/phylo_obj_rps10.RData"</span><span class="op">)</span> </span>
-<span><span class="va">phylo_data_rps10</span> <span class="op">&lt;-</span> <span class="va">phylo_obj</span></span>
-<span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">phylo_data_rps10</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">phylo_obj_rps10</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="co">#tax_glom(taxrank = "Genus") %&gt;%                     </span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="va">x</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">}</span> <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/psmelt.html" class="external-link">psmelt</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>                                        </span>
@@ -646,7 +769,7 @@ object<a class="anchor" aria-label="anchor" href="#we-can-also-do-a-variety-of-a
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">abund_plot</span><span class="op">)</span></span></code></pre></div>
-<p><img src="example_files/figure-html/Phyloseq%20demonstration%20rps10-1.png" width="700"></p>
+<p><img src="Package_Workflow_files/figure-html/Phyloseq%20demonstration%20rps10-1.png" width="700"></p>
 </div>
   </div>
 

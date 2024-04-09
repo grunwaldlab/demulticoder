@@ -6,13 +6,7 @@
 #' reads is less than this value across all samples-todo check on this
 #' @param minimum_bootstrap Threshold for bootstrap support value
 #' for taxonomic assignments. Below designated minimum bootstrap
-#' threshold, taxnomoic assignments will be set to N/A.
-#' @param pid_species If percent identity is below this value, at the species
-#' level, taxonomic assignment will be set to N/A
-#' @param pid_genus If percent identity is below this value, at the genus
-#' level, taxonomic assignment will be set to N/A
-#' @param pid_family If percent identity is below this value, at the family
-#' level, taxonomic assignment will be set to N/A
+#' threshold, taxnomoic assignments will be set to N/A
 #' @param save_outputs Logical, indicating whether to save the taxmap object. Default is FALSE.
 #' @return ASV matrix converted to taxmap object
 #' @export
@@ -24,7 +18,7 @@
 #' assign_tax(analysis_setup,asv_abund_matrix, retrieve_files=TRUE, overwrite_existing=TRUE
 #' convert_asv_matrix_to_objs(save_outputs=TRUE)
 
-convert_asv_matrix_to_objs <- function(min_read_depth = 0, minimum_bootstrap = 0, pid_species = 0, pid_genus = 0, pid_family = 0, save_outputs = FALSE, overwrite = FALSE) {
+convert_asv_matrix_to_objs <- function(min_read_depth = 0, minimum_bootstrap = 0, save_outputs = FALSE, overwrite = FALSE) {
   dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
   directory_path <- dir_paths$output_directory
@@ -46,7 +40,7 @@ convert_asv_matrix_to_objs <- function(min_read_depth = 0, minimum_bootstrap = 0
       cat("To overwrite, set overwrite = TRUE\n")
       cat("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
     } else {
-      abundance <- read_csv(file.path(directory_path, paste0('final_asv_abundance_matrix_', suffix, '.csv')), col_types = cols("asv_id" = col_skip()))
+      abundance <- read_csv(file.path(directory_path, paste0('final_asv_abundance_matrix_', suffix, '.csv')))
       is_low_abund <- rowSums(abundance[, grepl(paste0("_", suffix, "$"), colnames(abundance))]) < min_read_depth
       abundance <- filter(abundance, !is_low_abund)
       abundance$dada2_tax <- map_chr(strsplit(abundance$dada2_tax, ';'), function(x) {
@@ -62,14 +56,15 @@ convert_asv_matrix_to_objs <- function(min_read_depth = 0, minimum_bootstrap = 0
                                             class_key = c(taxon = 'taxon_name', boot = 'info', rank = 'taxon_rank'))
       names(obj_dada$data) <- c('abund', 'score')
       
-      obj_dada$data$otu_table = obj_dada$data$abund[, -2:-4]
-      obj_dada$data$otu_table$otu_id = paste0('ASV', 1:nrow(obj_dada$data$otu_table))
+      obj_dada$data$otu_table = obj_dada$data$abund[, -3:-4]
+      #obj_dada$data$otu_table$otu_id = paste0('ASV', 1:nrow(obj_dada$data$otu_table))
       obj_dada$data$sample_data = data_tables$metadata
       
       phylo_obj <- metacoder::as_phyloseq(
         obj_dada,
         sample_data = obj_dada$data$sample_data,
-        sample_id_col = "samplename_barcode"
+        sample_id_col = "samplename_barcode", 
+        otu_id_col = "asv_id"
       )
       
       assign(taxmap_name, obj_dada, envir = .GlobalEnv)
