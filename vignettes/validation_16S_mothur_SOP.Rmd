@@ -1,9 +1,13 @@
 ---
-title: "mothur_SOP_16S_validation"
-output: html_document
-date: "2024-02-12"
+title: "Validation using mothur 16S dataset"
+output:
+  rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{validation_16S_mothur_SOP}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+We will first load the necessary dataset outlined in the DADA2 xx tutorial, [here]https://benjjneb.github.io/dada2/tutorial.html. 
+
+

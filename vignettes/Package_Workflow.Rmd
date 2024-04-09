@@ -8,25 +8,32 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-### Introduction
+## Introduction
 
-The *demulticoder* package is a Cutadapt and DADA2 wrapper package for metabarcoding analyses. The package is designed for users with varying experience doing metabarcoding analysis and a strength is the ability to to analyses on multiple datasets at once, when amplicons have been pooled and contain different barcodes, or when samples are already demultiplexed.
+The *demulticoder* package is a Cutadapt and DADA2 wrapper package for metabarcoding analyses. The package is designed for users with varying experience doing metabarcoding analysis. Outputs are intuitive and comprehensive to account for the iterative nature of metabarcodeing analyses. 
 
-The package is capable of streamlined analysis of ITS or 16S metabarcoding data, as well as oomycete rps10 amplicons. There is also the option to input up to two custom databases, so long as databases are formatted according to DADA2 specifications (https://benjjneb.github.io/dada2/training.html), and has no more than 7 taxonomic levels from kingdom down to species.
+### Key features
+- The ability to do analysis either demultiplexed or pooled amplicons within sample  
+- Multiple datasets can be trimmed of primers, filtered, denoised, merged, and assigned taxonomy in one go  
+- The package handles not just 16S or ITS datasets when using default UNITE fungal or Silva 16S databases but also oomycete rps10 analyses using oomycetedb (oomycetedb.org), or up to two custom databases (provided they are formatted as described here: https://benjjneb.github.io/dada2/training.html).
 
 The package was developed by Martha Sudermann, Zachary Foster, Niklaus Grunwald, Jeff Chang.
 
 ### Before You Start
 
-You will need to prepare your raw read files and fill in the 'metadata.csv' and 'primerinfo_params.csv' templates.
+In the following example, we demonstrate key package functionality using a subset of reads from two samples containing pooled ITS1 fungal and rps10 oomycete amplicons.
 
-A strength of the package is that you can run multiple different datasets at once, which is shown in test dataset below. If samples contain pooled barcodes, you can also use the package to demultiplex and run analyses in tandem. S1 and S2 samples below illustrate this. Both samples contain rps10 and ITS pooled barcodes.
+You can follow along because all test data and associated CSV input files are loaded with the package. Additional examples are also available on the website. 
+
+*Please note, for speed, the test dataset is comprised of randomly subset reads for the samples (S1 and S2), and due to database size, the full UNITE database is included in the package, but is also a smaller subset of the larger database.* 
+
+You will need to prepare your raw read files and fill in the [**metadata.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv) and [**primerinfo_params.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv) templates.
 
 ### Format of the Raw Read Files
 
 The package takes foward and reverse Illumina short read sequence data.
 
-To avoid errors, the only characters that are acceptable in sample names are letters and numbers. Characters can be separated by underscores, but no other symbols. The final characters before the '.fastq.gz' suffix MUST be '_R1' or '_R2'. 
+To avoid errors, the only characters that are acceptable in sample names are letters and numbers. Characters can be separated by underscores, but no other symbols. The final characters before the **.fastq.gz** suffix MUST be **_R1** or **_R2**. 
 
 Examples are permissible sample names are as follows:
 
@@ -59,7 +66,6 @@ S1 and S2 are come from a rhododendron rhizobiome dataset and are a random subse
 You will notice S1 and S2 are included twice in the 'metadata.csv' sheet. This is because these two samples contain pooled reads (ITS and rps10). To demultiplex and run both analyses in tandem, include the same sample twice under sample_name, and then change the primer_name.
 
 Example using test dataset:
-
 ```{r, echo=FALSE}
 knitr::kable(data.frame(
   sample_name = c("S1", "S2", "S1", "S2"),
@@ -68,6 +74,7 @@ knitr::kable(data.frame(
   organism = c("Cry", "Cin", "Cry", "Cin")
 ), row.names = FALSE)
 ```
+
 
 ### Primer sequence information and user-defined parameters are placed in *primerinfo_params.csv*
 

@@ -56,7 +56,7 @@
       <a href="../articles/example_large_dataset.html">Example workflow and proof of concept analysis of pooled RPS10 and ITS amplicons rhodendron rhizobiome dataset </a>
     </li>
     <li>
-      <a href="../articles/validation_16S_mothur_SOP.html">mothur_SOP_16S_validation</a>
+      <a href="../articles/validation_16S_mothur_SOP.html">Validation using mothur 16S dataset</a>
     </li>
   </ul>
 </li>
@@ -84,33 +84,48 @@
 
     
     
-<div class="section level3">
-<h3 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h3>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
 <p>The <em>demulticoder</em> package is a Cutadapt and DADA2 wrapper
 package for metabarcoding analyses. The package is designed for users
-with varying experience doing metabarcoding analysis and a strength is
-the ability to to analyses on multiple datasets at once, when amplicons
-have been pooled and contain different barcodes, or when samples are
-already demultiplexed.</p>
-<p>The package is capable of streamlined analysis of ITS or 16S
-metabarcoding data, as well as oomycete rps10 amplicons. There is also
-the option to input up to two custom databases, so long as databases are
-formatted according to DADA2 specifications (<a href="https://benjjneb.github.io/dada2/training.html" class="external-link uri">https://benjjneb.github.io/dada2/training.html</a>), and has
-no more than 7 taxonomic levels from kingdom down to species.</p>
+with varying experience doing metabarcoding analysis. Outputs are
+intuitive and comprehensive to account for the iterative nature of
+metabarcodeing analyses.</p>
+<div class="section level3">
+<h3 id="key-features">Key features<a class="anchor" aria-label="anchor" href="#key-features"></a>
+</h3>
+<ul>
+<li>The ability to do analysis either demultiplexed or pooled amplicons
+within sample<br>
+</li>
+<li>Multiple datasets can be trimmed of primers, filtered, denoised,
+merged, and assigned taxonomy in one go<br>
+</li>
+<li>The package handles not just 16S or ITS datasets when using default
+UNITE fungal or Silva 16S databases but also oomycete rps10 analyses
+using oomycetedb (oomycetedb.org), or up to two custom databases
+(provided they are formatted as described here: <a href="https://benjjneb.github.io/dada2/training.html" class="external-link uri">https://benjjneb.github.io/dada2/training.html</a>).</li>
+</ul>
 <p>The package was developed by Martha Sudermann, Zachary Foster,
 Niklaus Grunwald, Jeff Chang.</p>
 </div>
 <div class="section level3">
 <h3 id="before-you-start">Before You Start<a class="anchor" aria-label="anchor" href="#before-you-start"></a>
 </h3>
-<p>You will need to prepare your raw read files and fill in the
-‘metadata.csv’ and ‘primerinfo_params.csv’ templates.</p>
-<p>A strength of the package is that you can run multiple different
-datasets at once, which is shown in test dataset below. If samples
-contain pooled barcodes, you can also use the package to demultiplex and
-run analyses in tandem. S1 and S2 samples below illustrate this. Both
-samples contain rps10 and ITS pooled barcodes.</p>
+<p>In the following example, we demonstrate key package functionality
+using a subset of reads from two samples containing pooled ITS1 fungal
+and rps10 oomycete amplicons.</p>
+<p>You can follow along because all test data and associated CSV input
+files are loaded with the package. Additional examples are also
+available on the website.</p>
+<p><em>Please note, for speed, the test dataset is comprised of randomly
+subset reads for the samples (S1 and S2), and due to database size, the
+full UNITE database is included in the package, but is also a smaller
+subset of the larger database.</em></p>
+<p>You will need to prepare your raw read files and fill in the <a href="https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv" class="external-link"><strong>metadata.csv</strong></a>
+and <a href="https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv" class="external-link"><strong>primerinfo_params.csv</strong></a>
+templates.</p>
 </div>
 <div class="section level3">
 <h3 id="format-of-the-raw-read-files">Format of the Raw Read Files<a class="anchor" aria-label="anchor" href="#format-of-the-raw-read-files"></a>
@@ -120,7 +135,7 @@ data.</p>
 <p>To avoid errors, the only characters that are acceptable in sample
 names are letters and numbers. Characters can be separated by
 underscores, but no other symbols. The final characters before the
-‘.fastq.gz’ suffix MUST be ’_R1’ or ’_R2’.</p>
+<strong>.fastq.gz</strong> suffix MUST be **_R1** or **_R2**.</p>
 <p>Examples are permissible sample names are as follows:</p>
 <ul>
 <li>Sample1_R1.fastq.gz</li>
@@ -361,9 +376,9 @@ Eventually, the package will be uploaded to CRAN or Bioconductor.</p>
 <span><span class="co">## crul  (1.4.0 -&gt; 1.4.2) [CRAN]</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## The downloaded binary packages are in</span></span>
-<span><span class="co">##  /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/downloaded_packages</span></span>
+<span><span class="co">##  /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpVhFKDr/downloaded_packages</span></span>
 <span><span class="co">## <span style="color: #00BBBB;">──</span> <span style="color: #00BBBB;">R CMD build</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">## * checking for file ‘/private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpEDjTAY/remotes7b126979f636/grunwaldlab-demulticoder-2684e6b/DESCRIPTION’ ... OK</span></span>
+<span><span class="co">## * checking for file ‘/private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpVhFKDr/remotes8ba237a2f04b/grunwaldlab-demulticoder-d73acbc/DESCRIPTION’ ... OK</span></span>
 <span><span class="co">## * preparing ‘demulticoder’:</span></span>
 <span><span class="co">## * checking DESCRIPTION meta-information ... OK</span></span>
 <span><span class="co">## * checking for LF line-endings in source and make files and shell scripts</span></span>
@@ -385,162 +400,13 @@ reorganized in preparation for running Cutadapt to remove primers.</p>
 <span>  tempdir_id <span class="op">=</span> <span class="st">"test_dataset"</span>,</span>
 <span>  overwrite_existing<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Package_Workflow_files/figure-html/prepare_reads%20function-1.png" width="700"></p>
-<pre><code><span><span class="co">##   sample_name samplename_barcode primer_name well organism</span></span>
-<span><span class="co">## 1          S1             S1_its         its  A01      Cry</span></span>
-<span><span class="co">## 2          S1             S1_its         its  A01      Cry</span></span>
-<span><span class="co">## 3          S1           S1_rps10       rps10  A01      Cry</span></span>
-<span><span class="co">## 4          S1           S1_rps10       rps10  A01      Cry</span></span>
-<span><span class="co">## 5          S2             S2_its         its  B01      Cin</span></span>
-<span><span class="co">## 6          S2             S2_its         its  B01      Cin</span></span>
-<span><span class="co">## 7          S2           S2_rps10       rps10  B01      Cin</span></span>
-<span><span class="co">## 8          S2           S2_rps10       rps10  B01      Cin</span></span>
-<span><span class="co">##                  forward                f_compt                  f_rev</span></span>
-<span><span class="co">## 1 CTTGGTCATTTAGAGGAAGTAA GAACCAGTAAATCTCCTTCATT AATGAAGGAGATTTACTGGTTC</span></span>
-<span><span class="co">## 2 CTTGGTCATTTAGAGGAAGTAA GAACCAGTAAATCTCCTTCATT AATGAAGGAGATTTACTGGTTC</span></span>
-<span><span class="co">## 3   GTTGGTTAGAGYARAAGACT   CAACCAATCTCRTYTTCTGA   TCAGAARAYGAGATTGGTTG</span></span>
-<span><span class="co">## 4   GTTGGTTAGAGYARAAGACT   CAACCAATCTCRTYTTCTGA   TCAGAARAYGAGATTGGTTG</span></span>
-<span><span class="co">## 5 CTTGGTCATTTAGAGGAAGTAA GAACCAGTAAATCTCCTTCATT AATGAAGGAGATTTACTGGTTC</span></span>
-<span><span class="co">## 6 CTTGGTCATTTAGAGGAAGTAA GAACCAGTAAATCTCCTTCATT AATGAAGGAGATTTACTGGTTC</span></span>
-<span><span class="co">## 7   GTTGGTTAGAGYARAAGACT   CAACCAATCTCRTYTTCTGA   TCAGAARAYGAGATTGGTTG</span></span>
-<span><span class="co">## 8   GTTGGTTAGAGYARAAGACT   CAACCAATCTCRTYTTCTGA   TCAGAARAYGAGATTGGTTG</span></span>
-<span><span class="co">##                     f_rc               reverse               r_compt</span></span>
-<span><span class="co">## 1 TTACTTCCTCTAAATGACCAAG  GCTGCGTTCTTCATCGATGC  CGACGCAAGAAGTAGCTACG</span></span>
-<span><span class="co">## 2 TTACTTCCTCTAAATGACCAAG  GCTGCGTTCTTCATCGATGC  CGACGCAAGAAGTAGCTACG</span></span>
-<span><span class="co">## 3   AGTCTTYTRCTCTAACCAAC ATRYYTAGAAAGAYTYGAACT TAYRRATCTTTCTRARCTTGA</span></span>
-<span><span class="co">## 4   AGTCTTYTRCTCTAACCAAC ATRYYTAGAAAGAYTYGAACT TAYRRATCTTTCTRARCTTGA</span></span>
-<span><span class="co">## 5 TTACTTCCTCTAAATGACCAAG  GCTGCGTTCTTCATCGATGC  CGACGCAAGAAGTAGCTACG</span></span>
-<span><span class="co">## 6 TTACTTCCTCTAAATGACCAAG  GCTGCGTTCTTCATCGATGC  CGACGCAAGAAGTAGCTACG</span></span>
-<span><span class="co">## 7   AGTCTTYTRCTCTAACCAAC ATRYYTAGAAAGAYTYGAACT TAYRRATCTTTCTRARCTTGA</span></span>
-<span><span class="co">## 8   AGTCTTYTRCTCTAACCAAC ATRYYTAGAAAGAYTYGAACT TAYRRATCTTTCTRARCTTGA</span></span>
-<span><span class="co">##                   r_rev                  r_rc file_id direction</span></span>
-<span><span class="co">## 1  CGTAGCTACTTCTTGCGTCG  GCATCGATGAAGAACGCAGC   S1_R1   Forward</span></span>
-<span><span class="co">## 2  CGTAGCTACTTCTTGCGTCG  GCATCGATGAAGAACGCAGC   S1_R2   Reverse</span></span>
-<span><span class="co">## 3 TCAAGYTYAGAAAGATYYRTA AGTTCRARTCTTTCTARRYAT   S1_R1   Forward</span></span>
-<span><span class="co">## 4 TCAAGYTYAGAAAGATYYRTA AGTTCRARTCTTTCTARRYAT   S1_R2   Reverse</span></span>
-<span><span class="co">## 5  CGTAGCTACTTCTTGCGTCG  GCATCGATGAAGAACGCAGC   S2_R1   Forward</span></span>
-<span><span class="co">## 6  CGTAGCTACTTCTTGCGTCG  GCATCGATGAAGAACGCAGC   S2_R2   Reverse</span></span>
-<span><span class="co">## 7 TCAAGYTYAGAAAGATYYRTA AGTTCRARTCTTTCTARRYAT   S2_R1   Forward</span></span>
-<span><span class="co">## 8 TCAAGYTYAGAAAGATYYRTA AGTTCRARTCTTTCTARRYAT   S2_R2   Reverse</span></span>
-<span><span class="co">##                                                                                                                directory_data_path</span></span>
-<span><span class="co">## 1 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 2 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 3 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 4 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 5 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 6 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S2_R2.fastq.gz</span></span>
-<span><span class="co">## 7 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 8 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S2_R2.fastq.gz</span></span>
-<span><span class="co">##                                                                             temp_data_path</span></span>
-<span><span class="co">## 1 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 2 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 5 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 6 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S2_R2.fastq.gz</span></span>
-<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S2_R2.fastq.gz</span></span>
-<span><span class="co">##                                                                                                 prefiltered_path</span></span>
-<span><span class="co">## 1 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 2 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 5 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 6 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S2_R2.fastq.gz</span></span>
-<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S2_R2.fastq.gz</span></span>
-<span><span class="co">##                                                                                                       trimmed_path</span></span>
-<span><span class="co">## 1   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/trimmed_sequences/S1_R1_its.fastq.gz</span></span>
-<span><span class="co">## 2   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/trimmed_sequences/S1_R2_its.fastq.gz</span></span>
-<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/trimmed_sequences/S1_R1_rps10.fastq.gz</span></span>
-<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/trimmed_sequences/S1_R2_rps10.fastq.gz</span></span>
-<span><span class="co">## 5   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/trimmed_sequences/S2_R1_its.fastq.gz</span></span>
-<span><span class="co">## 6   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/trimmed_sequences/S2_R2_its.fastq.gz</span></span>
-<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/trimmed_sequences/S2_R1_rps10.fastq.gz</span></span>
-<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/trimmed_sequences/S2_R2_rps10.fastq.gz</span></span>
-<span><span class="co">##                                                                                                       untrimmed_path</span></span>
-<span><span class="co">## 1   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/untrimmed_sequences/S1_R1_its.fastq.gz</span></span>
-<span><span class="co">## 2   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/untrimmed_sequences/S1_R2_its.fastq.gz</span></span>
-<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/untrimmed_sequences/S1_R1_rps10.fastq.gz</span></span>
-<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/untrimmed_sequences/S1_R2_rps10.fastq.gz</span></span>
-<span><span class="co">## 5   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/untrimmed_sequences/S2_R1_its.fastq.gz</span></span>
-<span><span class="co">## 6   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/untrimmed_sequences/S2_R2_its.fastq.gz</span></span>
-<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/untrimmed_sequences/S2_R1_rps10.fastq.gz</span></span>
-<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/untrimmed_sequences/S2_R2_rps10.fastq.gz</span></span>
-<span><span class="co">##                                                                                                       filtered_path</span></span>
-<span><span class="co">## 1   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/filtered_sequences/S1_R1_its.fastq.gz</span></span>
-<span><span class="co">## 2   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/filtered_sequences/S1_R2_its.fastq.gz</span></span>
-<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/filtered_sequences/S1_R1_rps10.fastq.gz</span></span>
-<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/filtered_sequences/S1_R2_rps10.fastq.gz</span></span>
-<span><span class="co">## 5   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/filtered_sequences/S2_R1_its.fastq.gz</span></span>
-<span><span class="co">## 6   /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/filtered_sequences/S2_R2_its.fastq.gz</span></span>
-<span><span class="co">## 7 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/filtered_sequences/S2_R1_rps10.fastq.gz</span></span>
-<span><span class="co">## 8 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/filtered_sequences/S2_R2_rps10.fastq.gz</span></span>
-<span><span class="co">##   primer_name                forward                f_compt</span></span>
-<span><span class="co">## 1         its CTTGGTCATTTAGAGGAAGTAA GAACCAGTAAATCTCCTTCATT</span></span>
-<span><span class="co">## 2       rps10   GTTGGTTAGAGYARAAGACT   CAACCAATCTCRTYTTCTGA</span></span>
-<span><span class="co">##                    f_rev                   f_rc               reverse</span></span>
-<span><span class="co">## 1 AATGAAGGAGATTTACTGGTTC TTACTTCCTCTAAATGACCAAG  GCTGCGTTCTTCATCGATGC</span></span>
-<span><span class="co">## 2   TCAGAARAYGAGATTGGTTG   AGTCTTYTRCTCTAACCAAC ATRYYTAGAAAGAYTYGAACT</span></span>
-<span><span class="co">##                 r_compt                 r_rev                  r_rc</span></span>
-<span><span class="co">## 1  CGACGCAAGAAGTAGCTACG  CGTAGCTACTTCTTGCGTCG  GCATCGATGAAGAACGCAGC</span></span>
-<span><span class="co">## 2 TAYRRATCTTTCTRARCTTGA TCAAGYTYAGAAAGATYYRTA AGTTCRARTCTTTCTARRYAT</span></span>
-<span><span class="co">##   file_id sample_name direction</span></span>
-<span><span class="co">## 1   S1_R1          S1   Forward</span></span>
-<span><span class="co">## 2   S1_R2          S1   Reverse</span></span>
-<span><span class="co">## 3   S2_R1          S2   Forward</span></span>
-<span><span class="co">## 4   S2_R2          S2   Reverse</span></span>
-<span><span class="co">##                                                                                                                directory_data_path</span></span>
-<span><span class="co">## 1 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 2 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 3 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 4 /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpinwAIg/temp_libpathdd3c11e47307/demulticoder/extdata/S2_R2.fastq.gz</span></span>
-<span><span class="co">##                                                                             temp_data_path</span></span>
-<span><span class="co">## 1 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 2 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/S2_R2.fastq.gz</span></span>
-<span><span class="co">##                                                                                                 prefiltered_path</span></span>
-<span><span class="co">## 1 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S1_R1.fastq.gz</span></span>
-<span><span class="co">## 2 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S1_R2.fastq.gz</span></span>
-<span><span class="co">## 3 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S2_R1.fastq.gz</span></span>
-<span><span class="co">## 4 /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/prefiltered_sequences/S2_R2.fastq.gz</span></span>
-<span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 20</span></span></span>
-<span><span class="co">##   primer_name already_trimmed minCutadaptlength multithread verbose  maxN</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>                       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> rps10       FALSE                         150 TRUE        TRUE        0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> its         FALSE                          50 TRUE        TRUE        0</span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 14 more variables: maxEE_forward &lt;dbl&gt;, maxEE_reverse &lt;dbl&gt;,</span></span></span>
-<span><span class="co">## <span style="color: #949494;">#   truncLen_forward &lt;dbl&gt;, truncLen_reverse &lt;dbl&gt;, truncQ &lt;dbl&gt;, minLen &lt;dbl&gt;,</span></span></span>
-<span><span class="co">## <span style="color: #949494;">#   maxLen &lt;dbl&gt;, minQ &lt;dbl&gt;, trimLeft &lt;dbl&gt;, trimRight &lt;dbl&gt;,</span></span></span>
-<span><span class="co">## <span style="color: #949494;">#   rm.lowcomplex &lt;dbl&gt;, minOverlap &lt;dbl&gt;, maxMismatch &lt;dbl&gt;,</span></span></span>
-<span><span class="co">## <span style="color: #949494;">#   min_asv_length &lt;dbl&gt;</span></span></span>
-<span><span class="co">##   samplename_barcode primer_name sample_name well organism</span></span>
-<span><span class="co">## 1             S1_its         its          S1  A01      Cry</span></span>
-<span><span class="co">## 3           S1_rps10       rps10          S1  A01      Cry</span></span>
-<span><span class="co">## 2             S2_its         its          S2  B01      Cin</span></span>
-<span><span class="co">## 4           S2_rps10       rps10          S2  B01      Cin</span></span>
-<span><span class="co">##                  forward                f_compt                  f_rev</span></span>
-<span><span class="co">## 1 CTTGGTCATTTAGAGGAAGTAA GAACCAGTAAATCTCCTTCATT AATGAAGGAGATTTACTGGTTC</span></span>
-<span><span class="co">## 3   GTTGGTTAGAGYARAAGACT   CAACCAATCTCRTYTTCTGA   TCAGAARAYGAGATTGGTTG</span></span>
-<span><span class="co">## 2 CTTGGTCATTTAGAGGAAGTAA GAACCAGTAAATCTCCTTCATT AATGAAGGAGATTTACTGGTTC</span></span>
-<span><span class="co">## 4   GTTGGTTAGAGYARAAGACT   CAACCAATCTCRTYTTCTGA   TCAGAARAYGAGATTGGTTG</span></span>
-<span><span class="co">##                     f_rc               reverse               r_compt</span></span>
-<span><span class="co">## 1 TTACTTCCTCTAAATGACCAAG  GCTGCGTTCTTCATCGATGC  CGACGCAAGAAGTAGCTACG</span></span>
-<span><span class="co">## 3   AGTCTTYTRCTCTAACCAAC ATRYYTAGAAAGAYTYGAACT TAYRRATCTTTCTRARCTTGA</span></span>
-<span><span class="co">## 2 TTACTTCCTCTAAATGACCAAG  GCTGCGTTCTTCATCGATGC  CGACGCAAGAAGTAGCTACG</span></span>
-<span><span class="co">## 4   AGTCTTYTRCTCTAACCAAC ATRYYTAGAAAGAYTYGAACT TAYRRATCTTTCTRARCTTGA</span></span>
-<span><span class="co">##                   r_rev                  r_rc</span></span>
-<span><span class="co">## 1  CGTAGCTACTTCTTGCGTCG  GCATCGATGAAGAACGCAGC</span></span>
-<span><span class="co">## 3 TCAAGYTYAGAAAGATYYRTA AGTTCRARTCTTTCTARRYAT</span></span>
-<span><span class="co">## 2  CGTAGCTACTTCTTGCGTCG  GCATCGATGAAGAACGCAGC</span></span>
-<span><span class="co">## 4 TCAAGYTYAGAAAGATYYRTA AGTTCRARTCTTTCTARRYAT</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="remove-primers-with-cutadapt">Remove Primers with Cutadapt<a class="anchor" aria-label="anchor" href="#remove-primers-with-cutadapt"></a>
 </h3>
 <p>Before running Cutadapt, please ensure that you have installed
 it.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">demulticoder</span><span class="fu">::</span><span class="fu"><a href="../reference/cut_trim.html">cut_trim</a></span><span class="op">(</span></span>
 <span>  <span class="va">analysis_setup</span>,</span>
 <span>  cutadapt_path<span class="op">=</span><span class="st">"/opt/homebrew/bin/cutadapt"</span>,</span>
@@ -553,48 +419,28 @@ it.</p>
 <h3 id="asv-inference-step">ASV inference step<a class="anchor" aria-label="anchor" href="#asv-inference-step"></a>
 </h3>
 <p>Raw reads will be merged and ASVs will be inferred</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make_asv_abund_matrix.html">make_asv_abund_matrix</a></span><span class="op">(</span></span>
 <span>  <span class="va">analysis_setup</span>,</span>
 <span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 1658423 total bases in 6294 reads from 2 samples will be used for learning the error rates.</span></span>
-<span><span class="co">## Initializing error rates to maximum possible estimate.</span></span>
-<span><span class="co">## selfConsist step 1 ..</span></span>
-<span><span class="co">##    selfConsist step 2</span></span>
-<span><span class="co">##    selfConsist step 3</span></span>
-<span><span class="co">## Convergence after  3  rounds.</span></span>
 <span><span class="co">## Error rate plot for the Forward read of primer pair its</span></span></code></pre>
 <pre><code><span><span class="co">## Warning in scale_y_log10(): <span style="color: #00BB00;">log-10</span> transformation introduced</span></span>
 <span><span class="co">## infinite values.</span></span></code></pre>
 <pre><code><span><span class="co">## Sample 1 - 3285 reads in 1348 unique sequences.</span></span>
 <span><span class="co">## Sample 2 - 3009 reads in 1363 unique sequences.</span></span>
 <span><span class="co">## 1689445 total bases in 6294 reads from 2 samples will be used for learning the error rates.</span></span>
-<span><span class="co">## Initializing error rates to maximum possible estimate.</span></span>
-<span><span class="co">## selfConsist step 1 ..</span></span>
-<span><span class="co">##    selfConsist step 2</span></span>
-<span><span class="co">##    selfConsist step 3</span></span>
-<span><span class="co">##    selfConsist step 4</span></span>
-<span><span class="co">## Convergence after  4  rounds.</span></span>
 <span><span class="co">## Error rate plot for the Reverse read of primer pair its</span></span></code></pre>
 <pre><code><span><span class="co">## Sample 1 - 3285 reads in 2157 unique sequences.</span></span>
 <span><span class="co">## Sample 2 - 3009 reads in 1915 unique sequences.</span></span></code></pre>
 <p><img src="Package_Workflow_files/figure-html/ASV%20inference-1.png" width="700"></p>
 <pre><code><span><span class="co">## 1918751 total bases in 6828 reads from 2 samples will be used for learning the error rates.</span></span>
-<span><span class="co">## Initializing error rates to maximum possible estimate.</span></span>
-<span><span class="co">## selfConsist step 1 ..</span></span>
-<span><span class="co">##    selfConsist step 2</span></span>
-<span><span class="co">## Convergence after  2  rounds.</span></span>
 <span><span class="co">## Error rate plot for the Forward read of primer pair rps10</span></span></code></pre>
 <pre><code><span><span class="co">## Warning in scale_y_log10(): <span style="color: #00BB00;">log-10</span> transformation introduced</span></span>
 <span><span class="co">## infinite values.</span></span></code></pre>
 <pre><code><span><span class="co">## Sample 1 - 3245 reads in 1996 unique sequences.</span></span>
 <span><span class="co">## Sample 2 - 3583 reads in 2250 unique sequences.</span></span>
 <span><span class="co">## 1911983 total bases in 6828 reads from 2 samples will be used for learning the error rates.</span></span>
-<span><span class="co">## Initializing error rates to maximum possible estimate.</span></span>
-<span><span class="co">## selfConsist step 1 ..</span></span>
-<span><span class="co">##    selfConsist step 2</span></span>
-<span><span class="co">##    selfConsist step 3</span></span>
-<span><span class="co">## Convergence after  3  rounds.</span></span>
 <span><span class="co">## Error rate plot for the Reverse read of primer pair rps10</span></span></code></pre>
 <pre><code><span><span class="co">## Warning in scale_y_log10(): <span style="color: #00BB00;">log-10</span> transformation introduced</span></span>
 <span><span class="co">## infinite values.</span></span></code></pre>
@@ -602,17 +448,17 @@ it.</p>
 <span><span class="co">## Sample 2 - 3583 reads in 2951 unique sequences.</span></span></code></pre>
 <p><img src="Package_Workflow_files/figure-html/ASV%20inference-2.png" width="700"><img src="Package_Workflow_files/figure-html/ASV%20inference-3.png" width="700"><img src="Package_Workflow_files/figure-html/ASV%20inference-4.png" width="700"></p>
 <pre><code><span><span class="co">## $its</span></span>
-<span><span class="co">## [1] "/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/asvabund_matrixDADA2_its.RData"</span></span>
+<span><span class="co">## [1] "/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpVhFKDr/test_dataset/asvabund_matrixDADA2_its.RData"</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $rps10</span></span>
-<span><span class="co">## [1] "/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpEDjTAY/test_dataset/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
+<span><span class="co">## [1] "/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpVhFKDr/test_dataset/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="taxonomic-assignment-step">Taxonomic assignment step<a class="anchor" aria-label="anchor" href="#taxonomic-assignment-step"></a>
 </h3>
 <p>Using the core assignTaxonomy function from DADA2, taxonomic
 assignments will be given to ASVs.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/assign_tax.html">assign_tax</a></span><span class="op">(</span></span>
 <span>  <span class="va">analysis_setup</span>,</span>
 <span>  <span class="va">asv_abund_matrix</span>,</span>
@@ -629,7 +475,7 @@ assignments will be given to ASVs.</p>
 <h3 id="reformat-asv-matrix-as-taxmap-and-phyloseq-objects-after-optional-filtering-of-low-abundance-asvs">Reformat ASV matrix as taxmap and phyloseq objects after optional
 filtering of low abundance ASVs<a class="anchor" aria-label="anchor" href="#reformat-asv-matrix-as-taxmap-and-phyloseq-objects-after-optional-filtering-of-low-abundance-asvs"></a>
 </h3>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/convert_asv_matrix_to_objs.html">convert_asv_matrix_to_objs</a></span><span class="op">(</span>save_outputs<span class="op">=</span><span class="cn">TRUE</span>, overwrite<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## For its dataset </span></span>
 <span><span class="co">## Taxmap object saved in: ~/output_test_dataset/obj_dada_its.RData </span></span>
@@ -653,7 +499,7 @@ we make a heat tree for our ITS-barcoded samples<a class="anchor" aria-label="an
 <h3 id="now-we-demonstrate-how-to-make-a-heattree-using-taxmap-object--first-we-make-a-heat-tree-for-our-its-barcoded-samples-1">Now we demonstrate how to make a heattree using taxmap object. First
 we make a heat tree for our ITS-barcoded samples<a class="anchor" aria-label="anchor" href="#now-we-demonstrate-how-to-make-a-heattree-using-taxmap-object--first-we-make-a-heat-tree-for-our-its-barcoded-samples-1"></a>
 </h3>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/metacoder/man/heat_tree.html" class="external-link">heat_tree</a></span><span class="op">(</span><span class="va">obj_dada_its</span>,</span>
 <span>          node_label <span class="op">=</span> <span class="va">taxon_names</span>,</span>
 <span>          node_size <span class="op">=</span> <span class="va">n_obs</span>,</span>
@@ -667,7 +513,7 @@ we make a heat tree for our ITS-barcoded samples<a class="anchor" aria-label="an
 <h3 id="now-we-demonstrate-how-to-make-a-heattree-using-taxmap-object--first-we-make-a-heat-tree-for-our-its-barcoded-sample">Now we demonstrate how to make a heattree using taxmap object. First
 we make a heat tree for our ITS-barcoded sample<a class="anchor" aria-label="anchor" href="#now-we-demonstrate-how-to-make-a-heattree-using-taxmap-object--first-we-make-a-heat-tree-for-our-its-barcoded-sample"></a>
 </h3>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/metacoder/man/heat_tree.html" class="external-link">heat_tree</a></span><span class="op">(</span><span class="va">obj_dada_rps10</span>,</span>
 <span>          node_label <span class="op">=</span> <span class="va">taxon_names</span>,</span>
 <span>          node_size <span class="op">=</span> <span class="va">n_obs</span>,</span>
@@ -681,7 +527,7 @@ we make a heat tree for our ITS-barcoded sample<a class="anchor" aria-label="anc
 <h3 id="we-can-also-do-a-variety-of-analyses-if-we-convert-to-phyloseq-object">We can also do a variety of analyses, if we convert to phyloseq
 object<a class="anchor" aria-label="anchor" href="#we-can-also-do-a-variety-of-analyses-if-we-convert-to-phyloseq-object"></a>
 </h3>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">phylo_obj_its</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_glom.html" class="external-link">tax_glom</a></span><span class="op">(</span>taxrank <span class="op">=</span> <span class="st">"Genus"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>                     </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="va">x</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">}</span> <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
@@ -725,10 +571,10 @@ object<a class="anchor" aria-label="anchor" href="#we-can-also-do-a-variety-of-a
 <span><span class="co">## <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
 <span><span class="co">## <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
 <span><span class="co">## <span style="color: #555555;">generated.</span></span></span></code></pre>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">abund_plot</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Package_Workflow_files/figure-html/Phyloseq%20demonstration%20ITS-1.png" width="700"></p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">phylo_obj_rps10</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="co">#tax_glom(taxrank = "Genus") %&gt;%                     </span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="va">x</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">}</span> <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
@@ -771,11 +617,14 @@ object<a class="anchor" aria-label="anchor" href="#we-can-also-do-a-variety-of-a
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">abund_plot</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Package_Workflow_files/figure-html/Phyloseq%20demonstration%20rps10-1.png" width="700"></p>
 </div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 
