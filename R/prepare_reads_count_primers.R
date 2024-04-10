@@ -1,15 +1,16 @@
 #' Prepare reads for primer trimming using Cutadapt
 #'
-#' This function organizes user-defined directories, metadata and parameter inputs in preparation for Cutadapt to remove primers from short read metabarcoding sequence data. Afterwards, subsequent functions can be used to simplify core DADA2 ASV and taxonomic assignment steps.
-#'
-#' @inheritParams dada2::filterAndTrim
-#' @param overwrite_existing Logical, indicating whether to remove or overwrite existing files and directories from previous runs.
-#' @param data_directory User-specified directory path where user has placed raw FASTQ (forward and reverse reads), metadata.csv, and primerinfo_params.csv files. Default is "data".
+#' @param data_directory User-specified directory path where the user has placed raw FASTQ (forward and reverse reads), metadata.csv, and primerinfo_params.csv files. Default is "data".
 #' @param output_directory User-specified directory for outputs. Default is "output".
-#' @param tempdir_path Path to a temporary directory. If NULL, a temporary directory path will be identified using tempdir() command. 
-#' @param tempdir_id ID for temporary directories. Default is "demulticoder_run". User can provide any helpful ID, whether it be a date or specific name for the run. 
-#' @return A list containing data tables, including metadata, primer sequences, paths for trimming reads, and user-defined parameters.
-#' @export  
+#' @param tempdir_path Path to a temporary directory. If `NULL`, a temporary directory path will be identified using the `tempdir()` command.
+#' @param tempdir_id ID for temporary directories. Default is "demulticoder_run". The user can provide any helpful ID, whether it be a date or specific name for the run.
+#' @param multithread Logical, indicating whether to use multithreading for certain operations. Default is `FALSE`.
+#' @param overwrite_existing Logical, indicating whether to remove or overwrite existing files and directories from previous runs.
+#'
+#' @return A list containing data tables, including metadata, primer sequences to search for based on orientation, paths for trimming reads, and user-defined parameters for all subsequent steps.
+#' 
+#' @export 
+#'  
 #' @examples
 #' Pre-filter raw reads and parse metadata and primer_information to prepare for primer trimming and filter
 #' prepare_reads(data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "demulticoder_run", overwrite_existing = TRUE)
@@ -21,12 +22,12 @@ prepare_reads <- function(data_directory = "data",
                           multithread = FALSE, 
                           overwrite_existing = FALSE) {
   
-  dir_paths <- setup_directories(data_directory, output_directory, tempdir_path, tempdir_id)
-  directory_path <- dir_paths$output_directory
-  data_path <- dir_paths$data_directory
-  directory_path_temp <- dir_paths$temp_directory
-  primers_params_path <- dir_paths$primers_params_path
-  metadata_path <- dir_paths$metadata_path
+  directory_paths <- setup_directories(data_directory, output_directory, tempdir_path, tempdir_id)
+  directory_path <- directory_paths$output_directory
+  data_directory_path <- directory_paths$data_directory
+  directory_path_temp <- directory_paths$temp_directory
+  primers_params_path <- directory_paths$primers_params_path
+  metadata_path <- directory_paths$metadata_path
   
   existing_files <- list.files(directory_path)
   
@@ -34,9 +35,9 @@ prepare_reads <- function(data_directory = "data",
     existing_analysis_table <- file.path(directory_path_temp, "analysis_setup_tables.RData")
     if (file.exists(existing_analysis_table)) {
       load(existing_analysis_table)
-      message("Existing data detected: Primer counts and N's may have been removed from previous runs. Loading existing output. To perform a  new analysis, specify overwrite_existing = TRUE.")
+      message("Existing data detected: Primer counts and N's may have been removed from previous runs. Loading existing output. To perform a new analysis, specify overwrite_existing = TRUE.")
     } else {
-      warning("Existing analysis output table not found. The 'prepare_reads' function was rerun")
+      warning("Existing analysis setup tables are not found. The 'prepare_reads' function was rerun")
     }
   } else {
     if (dir.exists(directory_path)) {
@@ -69,7 +70,7 @@ prepare_reads <- function(data_directory = "data",
     metadata = metadata
   )
   
-  analysis_setup <- list(data_tables = data_tables, dir_paths = dir_paths)
+  analysis_setup <- list(data_tables = data_tables, directory_paths = directory_paths)
   assign("analysis_setup", analysis_setup, envir = .GlobalEnv)
   analysis_setup_path <-
     file.path(directory_path_temp, paste0("analysis_setup_tables", ".RData"))
@@ -81,11 +82,11 @@ prepare_reads <- function(data_directory = "data",
 #' It checks whether the specified output directories exist or creates them if they don't. 
 #' The function also provides paths to primer and metadata files within the data directory.
 #'
-#' @param data_directory User-specified directory path where user has placed raw FASTQ (forward and reverse reads), metadata.csv, and primerinfo_params.csv files. Default is "data".
+#' @param data_directory User-specified directory path where the user has placed raw FASTQ (forward and reverse reads), metadata.csv, and primerinfo_params.csv files. Default is "data".
 #' @param output_directory User-specified directory for outputs. Default is "output".
-#' @param tempdir_path Path to a temporary directory. If NULL, a temporary directory path will be identified using tempdir() command. 
-#' @param tempdir_id ID for temporary directories. Default is "demulticoder_run". User can provide any helpful ID, whether it be a date or specific name for the run. 
-#' 
+#' @param tempdir_path Path to a temporary directory. If `NULL`, a temporary directory path will be identified using the `tempdir()` command.
+#' @param tempdir_id ID for temporary directories. Default is "demulticoder_run". The user can provide any helpful ID, whether it be a date or specific name for the run.
+#'
 #' @return A list with paths for data, output, temporary directories, primer, and metadata files.
 #' 
 #' @keywords internal
@@ -96,7 +97,7 @@ setup_directories <- function(data_directory = "data",
                               tempdir_id = "demulticoder_run") {
   
   data_primers_params_path <- file.path(data_directory, "primerinfo_params.csv")
-  data_metadata_path <- file.path(data_directory, "metadata.csv")
+  metadata_path <- file.path(data_directory, "metadata.csv")
   
   if (!dir.exists(output_directory)) {
     dir.create(output_directory, recursive = TRUE)
@@ -121,18 +122,18 @@ setup_directories <- function(data_directory = "data",
                    output_directory = output_directory, 
                    temp_directory = temp_path, 
                    primers_params_path = data_primers_params_path, 
-                   metadata_path = data_metadata_path))
+                   metadata_path = metadata_path))
 }
 
 #' Read metadata file from user and combine and reformat it, given primer data.
 #' Included in a larger function prepare_reads.
 #' 
-#' @param primers_params_path a path to the csv file that holds the primer
-#' information
-#' @param metadata_path The path to the metadata file
-#' @return A dataframe containing the merged metadata and primer data
-#' @keywords internal
+#' @param primers_params_path A path to the CSV file that holds the primer
+#' information.
+#' @param metadata_path The path to the metadata file.
 #'
+#' @return A dataframe containing the merged metadata and primer data.
+#' 
 prepare_metadata_table <- function(metadata_path, primer_data) {
   metadata <- read_csv(metadata_path)
   metadata <- merge(metadata, primer_data, by = "primer_name")
@@ -151,9 +152,12 @@ prepare_metadata_table <- function(metadata_path, primer_data) {
 
 #' Take in user's forward and reverse sequences and creates the complement, reverse,
 #' reverse complement of primers in one tibble
-#' @param primers_params_path a path to the csv file that holds the primer
-#' information
-#' @return A data frame with oriented primer information
+#' 
+#' @param primers_params_path A path to the CSV file that holds the primer
+#' information.
+#'
+#' @return A data frame with oriented primer information.
+#' 
 #' @keywords internal
 orient_primers <- function(primers_params_path) {
   primer_data_path <- file.path(primers_params_path)
@@ -183,9 +187,12 @@ orient_primers <- function(primers_params_path) {
 }
 
 #' Take in user's DADA2 parameters and make a dataframe for downstream steps
-#' @param primers_params_path a path to the csv file that holds the primer
-#' information
-#' @return A data frame with information on the DADA2 parameters
+#' 
+#' @param primers_params_path A path to the CSV file that holds the primer
+#' information.
+#'
+#' @return A data frame with information on the DADA2 parameters.
+#' 
 #' @keywords internal
 #' 
 read_parameters <- function(primers_params_path){
@@ -195,14 +202,14 @@ read_parameters <- function(primers_params_path){
   return(parameters)
 }
 
-#' Takes in the fastq files from the user and creates a tibble with
+#' Takes in the FASTQ files from the user and creates a tibble with
 #' the paths to files that will be created and used in the future.
 #' Included in a larger 'read_prefilt_fastq' function
 #'
-#' @param directory_path The path to the directory containing the fastq,
-#' metadata, and primer_info files
+#' @param directory_path The path to the directory containing the FASTQ, metadata, and primer_info files
 #' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow. 
-#' @return A tibble with the fastq file paths, the direction of the
+#' @return A tibble with the FASTQ file paths, primer orientations and sequences, and parsed sample names
+#' 
 #' @keywords internal
 #' sequences, and names of sequences
 
@@ -215,7 +222,7 @@ read_fastq <- function(data_path, directory_path_temp) {
   
   direction <- ifelse(grepl("_R1", fastq_paths), "Forward", "Reverse")
   
-  directory_data_path <- file.path(data_path, fastq_paths)
+  directory_data_directory_path <- file.path(data_directory_path, fastq_paths)
   temp_data_path <- file.path(directory_path_temp, fastq_paths)
   
   fastq_data <- data.frame(file_id, sample_name, direction, directory_data_path, temp_data_path)
@@ -224,9 +231,12 @@ read_fastq <- function(data_path, directory_path_temp) {
 }
 
 #' Matching Order Primer Check
-#' @param fastq_data A tibble with the fastq file paths, the direction of
+#' 
+#' @param fastq_data A tibble with the FASTQ file paths, the direction of
 #' the sequences, and names of sequences
+#' 
 #' @return None
+#' 
 #' @keywords internal
 
 primer_check <- function(fastq_data) {
@@ -247,14 +257,17 @@ primer_check <- function(fastq_data) {
 #' A function for calling read_fastq, primer_check, and remove_ns functions. This will process and edit the FASTQ and make them ready for the trimming of primers with Cutadapt. Part of a larger 'prepare_reads' function.
 #'
 #' @inheritParams dada2::filterAndTrim
-#' @param directory_path The path to the directory containing the fastq,
-#' metadata, and primer_info files
-#' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow
+#' 
+#' @param directory_path The path to the directory containing the FASTQ,
+#' metadata.csv, and primerinfo_params.csv files
+#' @param directory_path_temp User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow
+#' 
 #' @return Returns filtered reads that have no Ns
+#' 
 #' @keywords internal
 
-read_prefilt_fastq <- function(data_path, multithread = FALSE, directory_path_temp) {
-  fastq_data <- read_fastq(data_path, directory_path_temp)
+read_prefilt_fastq <- function(data_directory_path, multithread = FALSE, directory_path_temp) {
+  fastq_data <- read_fastq(data_directory_path, directory_path_temp)
   primer_check(fastq_data)
   fastq_data <- remove_ns(fastq_data, multithread = multithread, directory_path_temp)
   return(fastq_data)
@@ -263,11 +276,14 @@ read_prefilt_fastq <- function(data_path, multithread = FALSE, directory_path_te
 #' Wrapper function for core DADA2 filter and trim function for first filtering step
 #'
 #' @inheritParams dada2::filterAndTrim
+#' 
 #' @param fastq_data A tibble with the fastq file paths, the direction of the sequences, and names of sequences
 #' metadata, and primer_info files
+#' 
 #' @param metadata A metadata containing the concatenated metadata and primer data
-#' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow
+#' @param directory_path_temp User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow
 #' @return Return prefiltered reads with no Ns
+#' 
 #' @keywords internal
 
 remove_ns <-
@@ -294,11 +310,14 @@ remove_ns <-
   }
 
 #' Get primer counts for reach sample before primer removal and trimming steps
-#' @param directory_path The path to the directory containing the fastq,
+#' 
+#' @param directory_path The path to the directory containing the FASTQ,
 #' metadata, and primer_info files
 #' @param primer_data The primer data tibble created in orient_primers function
-#' @param fastq_data A tibble with the fastq file paths, the direction of the sequences, and names of sequences
+#' @param fastq_data A tibble with the FASTQ file paths, the direction of the sequences, and names of sequences
+#' 
 #' @return The number of reads in which the primer is found
+#' 
 #' @keywords internal
 
 get_pre_primer_hits <-
@@ -372,11 +391,14 @@ get_pre_primer_hits <-
 
 #' Prepare for primmer trimming with Cutaapt. Make new sub-directories
 #' and specify paths for the trimmed and untrimmed reads
+#' 
 #' @param fastq_data A path to FASTQ files for analysis
 #' metadata, and primer_info files
-#' @param metadata A metadata containing the concatenated metadata and primer data
-#' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow.
-#' @return Returns a tibble that is used as input when running Cutadapt
+#' @param metadata Loaded metadata pairing the user's metadata file with the primer data
+#' @param directory_path_temp User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow
+#' 
+#' @return Returns a larger tibble containing paths to temporary read directories, which is used as input when running Cutadapt
+#' 
 #' @keywords internal
 make_cutadapt_tibble <-
   function(fastq_data, metadata, directory_path_temp) {
