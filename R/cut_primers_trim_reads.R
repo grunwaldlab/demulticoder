@@ -1,10 +1,12 @@
 #' Main command to trim primers using Cutadapt and core DADA2 functions. If samples contain pooled barcodes, reads will also be demultiplexed. 
 #'
-#' @param analysis_setup A list containing directory paths and data tables, produced by the `prepare_reads` function.
+#' @param analysis_setup An object containing directory paths and data tables, produced by the `prepare_reads` function.
 #' @param cutadapt_path Path to the Cutadapt program.
 #' @param overwrite_existing Logical, indicating whether to remove or overwrite existing files and directories from previous runs.
 #' @return Trimmed reads, primer counts, quality plots, and ASV matrix.
+#' 
 #' @export
+#' 
 #' @examples
 #' Remove remaining primers from raw reads, demultiplex pooled barcoded samples, and then trim reads based on specific DADA2 parameters
 #' prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "run1", overwrite_existing = TRUE)
