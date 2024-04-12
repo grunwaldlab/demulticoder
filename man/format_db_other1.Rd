@@ -2,7 +2,7 @@
 % Please edit documentation in R/format_databases.R
 \name{format_db_other1}
 \alias{format_db_other1}
-\title{An other, user-specified database that is initially in UNITE fungal db format}
+\title{An other, user-specified database that is initially in the format specified by DADA2 with header simply taxonomic levels (kingdom down to species, separated by semi-colons, ;)}
 \usage{
 format_db_other1(analysis_setup, db_other1)
 }
@@ -19,6 +19,6 @@ metadata, and primer_info files}
 An other1 database that has modified headers and is output in the reference_databases folder.
 }
 \description{
-An other, user-specified database that is initially in UNITE fungal db format
+An other, user-specified database that is initially in the format specified by DADA2 with header simply taxonomic levels (kingdom down to species, separated by semi-colons, ;)
 }
 \keyword{internal}

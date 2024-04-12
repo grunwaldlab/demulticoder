@@ -12,8 +12,8 @@ convert_asv_matrix_to_objs(
 )
 }
 \arguments{
-\item{min_read_depth}{Threshold for ASVs to remove if number of
-reads is less than this value across all samples-todo check on this}
+\item{min_read_depth}{ASV filter parameter. If mean read depth of across all samples is less than this threshold, ASV will be filtered.
+reads is less than this value across all samples}
 
 \item{minimum_bootstrap}{Threshold for bootstrap support value
 for taxonomic assignments. Below designated minimum bootstrap

@@ -4,15 +4,14 @@
 \alias{get_pre_primer_hits}
 \title{Get primer counts for reach sample before primer removal and trimming steps}
 \usage{
-get_pre_primer_hits(primer_data, fastq_data, directory_path)
+get_pre_primer_hits(primer_data, fastq_data, output_directory_path)
 }
 \arguments{
-\item{primer_data}{The primer data tibble created in orient_primers function}
+\item{primer_data}{The primer data data frame created in orient_primers function}
 
-\item{fastq_data}{A tibble with the fastq file paths, the direction of the sequences, and names of sequences}
+\item{fastq_data}{A data frame with the FASTQ file paths, the direction of the sequences, and names of sequences}
 
-\item{directory_path}{The path to the directory containing the fastq,
-metadata, and primer_info files}
+\item{output_directory_path}{The directory path to output the resulting files}
 }
 \value{
 The number of reads in which the primer is found

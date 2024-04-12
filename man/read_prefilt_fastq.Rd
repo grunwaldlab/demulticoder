@@ -4,9 +4,16 @@
 \alias{read_prefilt_fastq}
 \title{A function for calling read_fastq, primer_check, and remove_ns functions. This will process and edit the FASTQ and make them ready for the trimming of primers with Cutadapt. Part of a larger 'prepare_reads' function.}
 \usage{
-read_prefilt_fastq(data_path, multithread = FALSE, directory_path_temp)
+read_prefilt_fastq(
+  data_directory_path = data_directory_path,
+  multithread = FALSE,
+  temp_directory_path
+)
 }
 \arguments{
+\item{data_directory_path}{The path to the directory containing the FASTQ,
+metadata.csv, and primerinfo_params.csv files}
+
 \item{multithread}{(Optional). Default is FALSE.
  If TRUE, input files are filtered in parallel via \code{\link[parallel]{mclapply}}.
  If an integer is provided, it is passed to the \code{mc.cores} argument of \code{\link[parallel]{mclapply}}.
@@ -15,10 +22,7 @@ read_prefilt_fastq(data_path, multithread = FALSE, directory_path_temp)
 If memory is an issue, execute in a clean environment and reduce the chunk size \code{n} and/or
  the number of threads.}
 
-\item{directory_path_temp}{User-defined temporary directory to place reads throughout the workflow}
-
-\item{directory_path}{The path to the directory containing the fastq,
-metadata, and primer_info files}
+\item{temp_directory_path}{User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow}
 }
 \value{
 Returns filtered reads that have no Ns

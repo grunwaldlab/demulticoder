@@ -3,19 +3,19 @@
 \name{orient_primers}
 \alias{orient_primers}
 \title{Take in user's forward and reverse sequences and creates the complement, reverse,
-reverse complement of primers in one tibble}
+reverse complement of primers in one data frame}
 \usage{
 orient_primers(primers_params_path)
 }
 \arguments{
-\item{primers_params_path}{a path to the csv file that holds the primer
-information}
+\item{primers_params_path}{A path to the CSV file that holds the primer
+information.}
 }
 \value{
-A data frame with oriented primer information
+A data frame with oriented primer information.
 }
 \description{
 Take in user's forward and reverse sequences and creates the complement, reverse,
-reverse complement of primers in one tibble
+reverse complement of primers in one data frame
 }
 \keyword{internal}

@@ -7,11 +7,11 @@
 read_parameters(primers_params_path)
 }
 \arguments{
-\item{primers_params_path}{a path to the csv file that holds the primer
-information}
+\item{primers_params_path}{A path to the CSV file that holds the primer
+information.}
 }
 \value{
-A data frame with information on the DADA2 parameters
+A data frame with information on the DADA2 parameters.
 }
 \description{
 Take in user's DADA2 parameters and make a dataframe for downstream steps

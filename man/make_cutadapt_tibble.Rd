@@ -5,18 +5,18 @@
 \title{Prepare for primmer trimming with Cutaapt. Make new sub-directories
 and specify paths for the trimmed and untrimmed reads}
 \usage{
-make_cutadapt_tibble(fastq_data, metadata, directory_path_temp)
+make_cutadapt_tibble(fastq_data, metadata, temp_directory_path)
 }
 \arguments{
 \item{fastq_data}{A path to FASTQ files for analysis
 metadata, and primer_info files}
 
-\item{metadata}{A metadata containing the concatenated metadata and primer data}
+\item{metadata}{Loaded metadata pairing the user's metadata file with the primer data}
 
-\item{directory_path_temp}{User-defined temporary directory to place reads throughout the workflow.}
+\item{temp_directory_path}{User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow}
 }
 \value{
-Returns a tibble that is used as input when running Cutadapt
+Returns a larger data frame containing paths to temporary read directories, which is used as input when running Cutadapt
 }
 \description{
 Prepare for primmer trimming with Cutaapt. Make new sub-directories

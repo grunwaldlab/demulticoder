@@ -7,7 +7,7 @@
 cut_trim(analysis_setup, cutadapt_path, overwrite_existing = FALSE)
 }
 \arguments{
-\item{analysis_setup}{A list containing directory paths and data tables, produced by the \code{prepare_reads} function.}
+\item{analysis_setup}{An object containing directory paths and data tables, produced by the \code{prepare_reads} function.}
 
 \item{cutadapt_path}{Path to the Cutadapt program.}
 

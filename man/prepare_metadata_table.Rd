@@ -5,19 +5,17 @@
 \title{Read metadata file from user and combine and reformat it, given primer data.
 Included in a larger function prepare_reads.}
 \usage{
-prepare_metadata_table(metadata_path, primer_data)
+prepare_metadata_table(metadata_file_path, primer_data)
 }
 \arguments{
-\item{metadata_path}{The path to the metadata file}
+\item{primer_data}{A data frame of oriented primer information returned from the orient_primers function.}
 
-\item{primers_params_path}{a path to the csv file that holds the primer
-information}
+\item{metadata_path}{The path to the metadata file.}
 }
 \value{
-A dataframe containing the merged metadata and primer data
+A dataframe containing the merged metadata and primer data.
 }
 \description{
 Read metadata file from user and combine and reformat it, given primer data.
 Included in a larger function prepare_reads.
 }
-\keyword{internal}

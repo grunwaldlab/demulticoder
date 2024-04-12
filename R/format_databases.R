@@ -1,4 +1,4 @@
-#' General function to format the database based on barcode type
+#' General functions to format user-specified databasees
 #'
 #' @param analysis_setup A list containing directory paths and data tables, produced by the `prepare_reads` function.
 #' @param barcode The barcode for which the database should be formatted
@@ -174,7 +174,7 @@ format_db_16s <- function(analysis_setup, db_16s) {
   return(data_16s)
 }
 
-#' An other, user-specified database that is initially in UNITE fungal db format
+#' An other, user-specified database that is initially in the format specified by DADA2 with header simply taxonomic levels (kingdom down to species, separated by semi-colons, ;)
 #'
 #' @param directory_path The path to the directory containing the fastq,
 #' metadata, and primer_info files
@@ -226,7 +226,7 @@ format_db_other1 <-function(analysis_setup, db_other1){
   return(data_other1)
 }
 
-#' An other, user-specified database that is initially in UNITE fungal db format
+#' An other, user-specified database that is initially in the format specificied by DADA2 with header simply taxonomic levels (kingdom down to species, separated by semi-colons, ;)
 #'
 #' @param directory_path The path to the directory containing the fastq,
 #' metadata, and primer_info files

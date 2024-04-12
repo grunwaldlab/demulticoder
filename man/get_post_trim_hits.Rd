@@ -9,7 +9,7 @@ get_post_trim_hits(primer_data, cutadapt_data, directory_path)
 get_post_trim_hits(primer_data, cutadapt_data, directory_path)
 }
 \arguments{
-\item{primer_data}{The primer data tibble created in orient_primers function}
+\item{primer_data}{The primer data frame created in orient_primers function}
 
 \item{cutadapt_data}{directory_data folder with trimmed and filtered reads for each sample}
 

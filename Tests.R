@@ -6,7 +6,8 @@ devtools::document()
 prepare_reads(
   data_directory = "~/demulticoder/inst/extdata", 
   output_directory = "~/testing_package11", 
-  tempdir_id = "tempdir",
+  tempdir_id = "temp",
+  tempdir_path = "~/",
   overwrite_existing = TRUE)
 
 cut_trim(

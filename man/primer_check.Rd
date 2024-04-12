@@ -7,7 +7,7 @@
 primer_check(fastq_data)
 }
 \arguments{
-\item{fastq_data}{A tibble with the fastq file paths, the direction of
+\item{fastq_data}{A data frame with the FASTQ file paths, the direction of
 the sequences, and names of sequences}
 }
 \value{

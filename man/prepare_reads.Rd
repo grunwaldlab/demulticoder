@@ -14,31 +14,25 @@ prepare_reads(
 )
 }
 \arguments{
-\item{data_directory}{User-specified directory path where user has placed raw FASTQ (forward and reverse reads), metadata.csv, and primerinfo_params.csv files. Default is "data".}
+\item{data_directory}{User-specified directory path where the user has placed raw FASTQ (forward and reverse reads), metadata.csv, and primerinfo_params.csv files. Default is "data".}
 
 \item{output_directory}{User-specified directory for outputs. Default is "output".}
 
-\item{tempdir_path}{Path to a temporary directory. If NULL, a temporary directory path will be identified using tempdir() command.}
+\item{tempdir_path}{Path to a temporary directory. If \code{NULL}, a temporary directory path will be identified using the \code{tempdir()} command.}
 
-\item{tempdir_id}{ID for temporary directories. Default is "demulticoder_run". User can provide any helpful ID, whether it be a date or specific name for the run.}
+\item{tempdir_id}{ID for temporary directories. Default is "demulticoder_run". The user can provide any helpful ID, whether it be a date or specific name for the run.}
 
-\item{multithread}{(Optional). Default is FALSE.
- If TRUE, input files are filtered in parallel via \code{\link[parallel]{mclapply}}.
- If an integer is provided, it is passed to the \code{mc.cores} argument of \code{\link[parallel]{mclapply}}.
- Note that the parallelization here is by forking, and each process is loading another fastq file into
- memory. This option is ignored in Windows, as Windows does not support forking, with \code{mc.cores} set to 1.
-If memory is an issue, execute in a clean environment and reduce the chunk size \code{n} and/or
- the number of threads.}
+\item{multithread}{Logical, indicating whether to use multithreading for certain operations. Default is \code{FALSE}.}
 
 \item{overwrite_existing}{Logical, indicating whether to remove or overwrite existing files and directories from previous runs.}
 }
 \value{
-A list containing data tables, including metadata, primer sequences, paths for trimming reads, and user-defined parameters.
+A list containing data tables, including metadata, primer sequences to search for based on orientation, paths for trimming reads, and user-defined parameters for all subsequent steps.
 }
 \description{
-This function organizes user-defined directories, metadata and parameter inputs in preparation for Cutadapt to remove primers from short read metabarcoding sequence data. Afterwards, subsequent functions can be used to simplify core DADA2 ASV and taxonomic assignment steps.
+Prepare reads for primer trimming using Cutadapt
 }
 \examples{
 Pre-filter raw reads and parse metadata and primer_information to prepare for primer trimming and filter
-prepare_reads(data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "demulticoder_run", overwrite_existing = TRUE)
+prepare_reads(data_directory = "inst/extdata", output_directory = "test_data", tempdir_id = "demulticoder_run", overwrite_existing = TRUE)
 }

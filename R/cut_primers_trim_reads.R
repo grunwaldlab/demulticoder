@@ -320,7 +320,7 @@ filter_and_trim <- function(directory_path,
 }
 #' Get primer counts for reach sample after primer removal and trimming steps
 #'
-#' @param primer_data The primer data tibble created in orient_primers function
+#' @param primer_data The primer data frame created in orient_primers function
 #' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
 #' @param directory_path 
 #' @return Table of read counts across each sample
@@ -390,7 +390,7 @@ get_post_trim_hits <- function(primer_data, cutadapt_data, directory_path) {
 
 #' Get primer counts for reach sample after primer removal and trimming steps
 #'
-#' @param primer_data The primer data tibble created in orient_primers function
+#' @param primer_data The primer data frame created in orient_primers function
 #' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
 #' @param directory_path 
 #' @return Table of read counts across each sample
