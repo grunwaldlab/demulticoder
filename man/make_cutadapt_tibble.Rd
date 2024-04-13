@@ -2,8 +2,7 @@
 % Please edit documentation in R/prepare_reads_count_primers.R
 \name{make_cutadapt_tibble}
 \alias{make_cutadapt_tibble}
-\title{Prepare for primmer trimming with Cutaapt. Make new sub-directories
-and specify paths for the trimmed and untrimmed reads}
+\title{Prepare for primmer trimming with Cutaapt. Make new sub-directories and specify paths for the trimmed and untrimmed reads}
 \usage{
 make_cutadapt_tibble(fastq_data, metadata, temp_directory_path)
 }
@@ -19,7 +18,6 @@ metadata, and primer_info files}
 Returns a larger data frame containing paths to temporary read directories, which is used as input when running Cutadapt
 }
 \description{
-Prepare for primmer trimming with Cutaapt. Make new sub-directories
-and specify paths for the trimmed and untrimmed reads
+Prepare for primmer trimming with Cutaapt. Make new sub-directories and specify paths for the trimmed and untrimmed reads
 }
 \keyword{internal}

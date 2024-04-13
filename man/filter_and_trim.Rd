@@ -2,19 +2,18 @@
 % Please edit documentation in R/cut_primers_trim_reads.R
 \name{filter_and_trim}
 \alias{filter_and_trim}
-\title{Wrapper function for filterAndTrim function from DADA2 after primer removal}
+\title{Wrapper function for filterAndTrim function from DADA2, to be used after primer trimming}
 \usage{
 filter_and_trim(
-  directory_path,
-  directory_path_temp,
+  output_directory_path,
+  temp_directory_path,
   cutadapt_data_barcode,
   barcode_params,
   barcode
 )
 }
 \arguments{
-\item{directory_path}{The path to the directory containing the fastq,
-metadata, and primersinfo_params files}
+\item{output_directory_path}{The path to the directory where resulting files are output}
 
 \item{cutadapt_data_barcode}{directory_data folder with trimmed and filtered reads for each sample}
 }
@@ -22,6 +21,6 @@ metadata, and primersinfo_params files}
 Filtered and trimmed reads
 }
 \description{
-Wrapper function for filterAndTrim function from DADA2 after primer removal
+Wrapper function for filterAndTrim function from DADA2, to be used after primer trimming
 }
 \keyword{internal}

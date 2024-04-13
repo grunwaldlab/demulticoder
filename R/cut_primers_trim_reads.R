@@ -11,16 +11,14 @@
 #' Remove remaining primers from raw reads, demultiplex pooled barcoded samples, and then trim reads based on specific DADA2 parameters
 #' prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "run1", overwrite_existing = TRUE)
 #' cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = TRUE)
-
 cut_trim <- function(analysis_setup,
                      cutadapt_path,
                      overwrite_existing = FALSE) {
-  
-  dir_paths <- analysis_setup$dir_paths
+
   data_tables <- analysis_setup$data_tables
-  directory_path <- dir_paths$output_directory
-  directory_path_temp <- dir_paths$temp_directory
-  
+  output_directory_path <- analysis_setup$directory_paths$output_directory
+  temp_directory_path <- analysis_setup$directory_paths$temp_directory
+ 
   patterns_to_check <- c(
     "primer_hit_data_posttrim.csv", 
     "posttrim_primer_plot.pdf",
@@ -28,8 +26,8 @@ cut_trim <- function(analysis_setup,
   )
   
   files_exist <- sapply(patterns_to_check, function(pattern) {
-    full_pattern <- file.path(directory_path, pattern)
-    any(file.exists(list.files(path = directory_path, pattern = pattern, full.names = TRUE, recursive = TRUE)))
+    full_pattern <- file.path(output_directory_path, pattern)
+    any(file.exists(list.files(path = output_directory_path, pattern = pattern, full.names = TRUE, recursive = TRUE)))
   })
   
   if (any(files_exist) && all(files_exist) && !overwrite_existing) {
@@ -46,8 +44,8 @@ cut_trim <- function(analysis_setup,
     )
     
     for (pattern in patterns_to_remove) {
-      full_pattern <- file.path(directory_path, pattern)
-      files_to_remove <- list.files(path = directory_path, pattern = pattern, full.names = TRUE)
+      full_pattern <- file.path(output_directory_path, pattern)
+      files_to_remove <- list.files(path = output_directory_path, pattern = pattern, full.names = TRUE)
       
       if (length(files_to_remove) > 0) {
         file.remove(files_to_remove)
@@ -59,17 +57,17 @@ cut_trim <- function(analysis_setup,
     )
     
     for (pattern in patterns_to_remove_temp) {
-      full_pattern <- file.path(directory_path_temp, pattern)
-      files_to_remove <- list.files(path = directory_path_temp, pattern = pattern, full.names = TRUE)
+      full_pattern <- file.path(temp_directory_path, pattern)
+      files_to_remove <- list.files(path = temp_directory_path, pattern = pattern, full.names = TRUE)
       
       if (length(files_to_remove) > 0) {
         file.remove(files_to_remove)
       }
     }
     
-    temp_untrimmed <- file.path(directory_path_temp, "untrimmed_sequenced")
-    temp_trimmed <- file.path(directory_path_temp, "trimmed_sequences")
-    temp_filtered <- file.path(directory_path_temp, "filtered_sequences")
+    temp_untrimmed <- file.path(temp_directory_path, "untrimmed_sequenced")
+    temp_trimmed <- file.path(temp_directory_path, "trimmed_sequences")
+    temp_filtered <- file.path(temp_directory_path, "filtered_sequences")
     
     if (dir.exists(temp_untrimmed)) {
       unlink(list.files(temp_untrimmed, full.names = TRUE), recursive = TRUE)
@@ -84,7 +82,7 @@ cut_trim <- function(analysis_setup,
     subdirectory_names <- c("filtered_sequences", "trimmed_sequences", "untrimmed_sequences")
     
     for (seqdir_name in subdirectory_names) {
-      seqdir_path <- file.path(directory_path_temp, seqdir_name)
+      seqdir_path <- file.path(temp_directory_path, seqdir_name)
       
       if (dir.exists(seqdir_path)) {
         unlink(list.files(seqdir_path, full.names = TRUE), recursive = TRUE)
@@ -139,8 +137,8 @@ cut_trim <- function(analysis_setup,
         if (length(barcode_params) > 0) {
           barcode_params <- as.list(barcode_params)
           filter_and_trim(
-            directory_path,
-            directory_path_temp,
+            output_directory_path,
+            temp_directory_path,
             cutadapt_data_barcode,
             barcode_params, 
             barcode)
@@ -148,21 +146,20 @@ cut_trim <- function(analysis_setup,
       }
     }
   }
-  quality_plots <- plot_qc(data_tables$cutadapt_data, directory_path)
-  post_primer_hit_data <- get_post_trim_hits(data_tables$primer_data, data_tables$cutadapt_data, directory_path)
-  quality_plots2 <- plot_post_trim_qc(data_tables$cutadapt_data, directory_path)
+  quality_plots <- plot_qc(data_tables$cutadapt_data, output_directory_path)
+  post_primer_hit_data <- get_post_trim_hits(data_tables$primer_data, data_tables$cutadapt_data, output_directory_path)
+  quality_plots2 <- plot_post_trim_qc(data_tables$cutadapt_data, output_directory_path)
 }
 
 #' Core function for running cutadapt
-
+#'
 #' @param cutadapt_path A path to the cutadapt program.
 #' @param cutadapt_data Directory_data folder with trimmed and filtered reads for each sample.
 #' @param minCutadaptlength Read lengths that are lower than this threshold will be discarded. Default is 50.
+#' 
 #' @return Trimmed read.
+#' 
 #' @keywords internal
-#' Core function for running cutadapt
-#' Core function for running cutadapt
-#'
 run_cutadapt <- function(cutadapt_path,
                          cutadapt_data_barcode,
                          barcode_params,
@@ -229,27 +226,29 @@ run_cutadapt <- function(cutadapt_path,
     }
   }
 }
+
 #' Wrapper function for plotQualityProfile function
 #'
 #' @inheritParams dada2::plotQualityProfile
+#' 
 #' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
-#' @param directory_path The path to the directory containing the fastq,
-#' metadata, and primers and params files
+#' @param output_directory_path The path to the directory where resulting files are output
+#' 
 #' @return Dada2 wrapper function for making quality profiles for each sample
+#' 
 #' @keywords internal
-
-plot_qc <- function(cutadapt_data, directory_path, n = 500000) {
+plot_qc <- function(cutadapt_data, output_directory_path, n = 500000) {
   #just retrieve all plots for first sample
   for (i in unique(cutadapt_data$sample_name)) {
     name1 = paste0('readqual_pretrim_plot_', i, '.pdf')
-    pdf_path = file.path(directory_path, name1)
+    pdf_path = file.path(output_directory_path, name1)
     if (!file.exists(pdf_path)) {
       sample_info = cutadapt_data$trimmed_path[cutadapt_data$sample_name == i]
       quality_plots <- dada2::plotQualityProfile(sample_info, n)
       ggplot2::ggsave(
         quality_plots,
         filename = name1,
-        path = directory_path,
+        path = output_directory_path,
         width = 8,
         height = 8
       )
@@ -257,22 +256,22 @@ plot_qc <- function(cutadapt_data, directory_path, n = 500000) {
   }
 }
 
-#' Wrapper function for filterAndTrim function from DADA2 after primer removal
+#' Wrapper function for filterAndTrim function from DADA2, to be used after primer trimming
 #'
 #' @inheritParams dada2::filterAndTrim
-#' @param directory_path The path to the directory containing the fastq,
-#' metadata, and primersinfo_params files
+#' @param output_directory_path The path to the directory where resulting files are output
 #' @param cutadapt_data_barcode directory_data folder with trimmed and filtered reads for each sample
+#' 
 #' @return Filtered and trimmed reads
+#' 
 #' @keywords internal
 #'
-
-filter_and_trim <- function(directory_path,
-                            directory_path_temp,
+filter_and_trim <- function(output_directory_path,
+                            temp_directory_path,
                             cutadapt_data_barcode,
                             barcode_params,
                             barcode) {
-  filtered_read_dir <- file.path(directory_path_temp, "filtered_sequences")
+  filtered_read_dir <- file.path(temp_directory_path, "filtered_sequences")
   cutadapt_data_barcode$filtered_path <-
     file.path(
       filtered_read_dir,
@@ -314,20 +313,21 @@ filter_and_trim <- function(directory_path,
       )
     filter_results <- as_tibble(filter_results)
     filter_results_path <-
-      file.path(directory_path_temp, paste0("Filter_results_", barcode, ".RData"))
+      file.path(temp_directory_path, paste0("Filter_results_", barcode, ".RData"))
     save(filter_results, file = filter_results_path)
   }
 }
+
 #' Get primer counts for reach sample after primer removal and trimming steps
 #'
 #' @param primer_data The primer data frame created in orient_primers function
 #' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
-#' @param directory_path 
+#' @param output_directory_path The path to the directory where resulting files are output
+#' 
 #' @return Table of read counts across each sample
+#' 
 #' @keywords internal
-#'
-
-get_post_trim_hits <- function(primer_data, cutadapt_data, directory_path) {
+get_post_trim_hits <- function(primer_data, cutadapt_data, output_directory_path) {
   post_trim_hit_data <- gather(
     primer_data,
     key = "orientation",
@@ -348,77 +348,7 @@ get_post_trim_hits <- function(primer_data, cutadapt_data, directory_path) {
     return(sum(nhits > 0))
   }
   
-  post_primer_hit_data_csv_path <- file.path(directory_path, "primer_hit_data_posttrim.csv")
-  post_primer_hit_counts <- future_map(cutadapt_data$trimmed_path,
-                                       function(a_path)
-                                         map_dbl(post_trim_hit_data$sequence, post_trim_hits, path = a_path))
-  
-  names(post_primer_hit_counts) <- paste0(cutadapt_data$file_id, "_", cutadapt_data$primer_name)
-  post_trim_hit_data <- bind_cols(post_trim_hit_data, as_tibble(post_primer_hit_counts))
-  write_csv(post_trim_hit_data, post_primer_hit_data_csv_path)
-  
-  
-  make_posttrim_primer_plot <- function(post_trim_hits,
-                                        directory_path) {
-    post_trim_hits <- post_trim_hits[-(3)]
-    post_trim_hits$primer_type <- paste(post_trim_hits$primer_name, post_trim_hits$orientation)
-    new_primer_hits <- post_trim_hits[-(1:2)]
-    new_primer_hits <- new_primer_hits[, c("primer_type", setdiff(colnames(new_primer_hits), "primer_type"))]
-    only_counts <- new_primer_hits[-(1)]
-    colnames(only_counts) <- paste("Col", colnames(only_counts), sep = "-")
-    total_nums <- apply(only_counts, 1, function(row) sum(as.numeric(row), na.rm = TRUE))
-    new_primer_hits$Total <- paste(total_nums)
-    total_primers <- new_primer_hits[, c("primer_type", "Total")]
-    total_primers$Total <- as.numeric(total_primers$Total)
-    plot <- ggplot(data = total_primers, aes(x = primer_type, y = Total)) +
-      geom_bar(stat = "identity", width = 0.8, fill = "seagreen3") +
-      geom_text(aes(label = Total), vjust = -0.5, color = "black", size = 3) +
-      coord_flip() +
-      labs(title = "Number of primers found by barcode and orientation", x = "Primer Type", y = "Total")+
-      theme_minimal()
-    
-    print(plot)
-    ggsave(plot, filename = file.path(directory_path, "posttrim_primer_plot.pdf"), width = 8, height = 8)
-    return(invisible(plot))
-  }
-  
-  make_posttrim_primer_plot(post_trim_hit_data, directory_path)
-}
-# Assuming check_primer_counts is not needed anymore
-# You can directly call the function with post_primer_hit_data
-
-
-#' Get primer counts for reach sample after primer removal and trimming steps
-#'
-#' @param primer_data The primer data frame created in orient_primers function
-#' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
-#' @param directory_path 
-#' @return Table of read counts across each sample
-#' @keywords internal
-#'
-
-get_post_trim_hits <- function(primer_data, cutadapt_data, directory_path) {
-  post_trim_hit_data <- gather(
-    primer_data,
-    key = "orientation",
-    value = "sequence",
-    forward,
-    f_compt,
-    f_rev,
-    f_rc,
-    reverse,
-    r_compt,
-    r_rev,
-    r_rc
-  )
-  
-  # Function to count the number of reads in which the primer is found
-  post_trim_hits <- function(primer, path) {
-    nhits <- vcountPattern(primer, sread(readFastq(path)), fixed = FALSE)
-    return(sum(nhits > 0))
-  }
-  
-  post_primer_hit_data_csv_path <- file.path(directory_path, "primer_hit_data_posttrim.csv")
+  post_primer_hit_data_csv_path <- file.path(output_directory_path, "primer_hit_data_posttrim.csv")
   post_primer_hit_counts <- future_map(cutadapt_data$filtered_path,
                                        function(a_path)
                                          map_dbl(post_trim_hit_data$sequence, post_trim_hits, path = a_path))
@@ -429,7 +359,7 @@ get_post_trim_hits <- function(primer_data, cutadapt_data, directory_path) {
   
   
   make_posttrim_primer_plot <- function(post_trim_hits,
-                                        directory_path) {
+                                        output_directory_path) {
     post_trim_hits <- post_trim_hits[-(3)]
     post_trim_hits$primer_type <- paste(post_trim_hits$primer_name, post_trim_hits$orientation)
     new_primer_hits <- post_trim_hits[-(1:2)]
@@ -448,35 +378,33 @@ get_post_trim_hits <- function(primer_data, cutadapt_data, directory_path) {
       theme_minimal()
     
     print(plot)
-    ggsave(plot, filename = file.path(directory_path, "posttrim_primer_plot.pdf"), width = 8, height = 8)
+    ggsave(plot, filename = file.path(output_directory_path, "posttrim_primer_plot.pdf"), width = 8, height = 8)
     return(invisible(plot))
   }
   
-  make_posttrim_primer_plot(post_trim_hit_data, directory_path)
+  make_posttrim_primer_plot(post_trim_hit_data, output_directory_path)
 }
-# Assuming check_primer_counts is not needed anymore
-# You can directly call the function with post_primer_hit_data
-
 
 #' Wrapper script for plotQualityProfile after trim steps and primer removal.
 #'
 #' @inheritParams dada2::plotQualityProfile
 #' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
-#' @param directory_path The path to the directory containing the fastq,
-#' metadata, and primersinfo_params files
+#' @param output_directory_path The path to the directory where resulting files are output
+#' 
 #' @return Quality profiles of reads after primer trimming
+#' 
 #' @keywords internal
-plot_post_trim_qc <- function(cutadapt_data, directory_path, n = 500000) {
+plot_post_trim_qc <- function(cutadapt_data, output_directory_path, n = 500000) {
   for (i in unique(cutadapt_data$sample_name)) {
     name2 = paste0('readqual_posttrim_plot_', i, '.pdf')
-    pdf_path = file.path(directory_path, name2)
+    pdf_path = file.path(output_directory_path, name2)
     if (!file.exists(pdf_path)) {
       sample_info2 = cutadapt_data$filtered_path[cutadapt_data$sample_name == i]
       quality_plots2 <- dada2::plotQualityProfile(sample_info2, n)
       ggplot2::ggsave(
         quality_plots2,
         filename = name2,
-        path = directory_path,
+        path = output_directory_path,
         width = 8,
         height = 8
       )

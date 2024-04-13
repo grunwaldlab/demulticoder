@@ -19,3 +19,4 @@ A dataframe containing the merged metadata and primer data.
 Read metadata file from user and combine and reformat it, given primer data.
 Included in a larger function prepare_reads.
 }
+\keyword{internal}

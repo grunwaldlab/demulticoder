@@ -8,8 +8,7 @@ reverse complement of primers in one data frame}
 orient_primers(primers_params_path)
 }
 \arguments{
-\item{primers_params_path}{A path to the CSV file that holds the primer
-information.}
+\item{primers_params_path}{A path to the CSV file that holds the primer information.}
 }
 \value{
 A data frame with oriented primer information.

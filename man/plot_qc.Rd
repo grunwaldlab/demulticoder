@@ -4,13 +4,12 @@
 \alias{plot_qc}
 \title{Wrapper function for plotQualityProfile function}
 \usage{
-plot_qc(cutadapt_data, directory_path, n = 5e+05)
+plot_qc(cutadapt_data, output_directory_path, n = 5e+05)
 }
 \arguments{
 \item{cutadapt_data}{directory_data folder with trimmed and filtered reads for each sample}
 
-\item{directory_path}{The path to the directory containing the fastq,
-metadata, and primers and params files}
+\item{output_directory_path}{The path to the directory where resulting files are output}
 
 \item{n}{(Optional). Default 500,000.
 The number of records to sample from the fastq file.}

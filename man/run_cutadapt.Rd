@@ -24,9 +24,4 @@ Trimmed read.
 \description{
 Core function for running cutadapt
 }
-\keyword{Core}
-\keyword{cutadapt}
-\keyword{for}
-\keyword{function}
 \keyword{internal}
-\keyword{running}

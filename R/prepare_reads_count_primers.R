@@ -14,7 +14,6 @@
 #' @examples
 #' Pre-filter raw reads and parse metadata and primer_information to prepare for primer trimming and filter
 #' prepare_reads(data_directory = "inst/extdata", output_directory = "test_data", tempdir_id = "demulticoder_run", overwrite_existing = TRUE)
-#' @importFrom dada2 filterAndTrim
 prepare_reads <- function(data_directory = "data", 
                           output_directory = "output", 
                           tempdir_path = NULL, 
@@ -90,7 +89,6 @@ prepare_reads <- function(data_directory = "data",
 #' @return A list with paths for data, output, temporary directories, primer, and metadata files.
 #' 
 #' @keywords internal
-
 setup_directories <- function(data_directory = "data", 
                               output_directory = "output",
                               tempdir_path=NULL,
@@ -133,6 +131,7 @@ setup_directories <- function(data_directory = "data",
 #'
 #' @return A dataframe containing the merged metadata and primer data.
 #' 
+#' @keywords internal
 prepare_metadata_table <- function(metadata_file_path, primer_data) {
   metadata <- read_csv(metadata_file_path)
   metadata <- merge(metadata, primer_data, by = "primer_name")
@@ -152,8 +151,7 @@ prepare_metadata_table <- function(metadata_file_path, primer_data) {
 #' Take in user's forward and reverse sequences and creates the complement, reverse,
 #' reverse complement of primers in one data frame
 #' 
-#' @param primers_params_path A path to the CSV file that holds the primer
-#' information.
+#' @param primers_params_path A path to the CSV file that holds the primer information.
 #'
 #' @return A data frame with oriented primer information.
 #' 
@@ -206,6 +204,7 @@ read_parameters <- function(primers_params_path){
 #'
 #' @param data_directory_path The path to the directory containing the FASTQ, metadata, and primer_info files
 #' @param temp_directory_path User-defined temporary directory to place reads throughout the workflow. 
+#' 
 #' @return A data frame with the FASTQ file paths, primer orientations and sequences, and parsed sample names
 #' 
 #' @keywords internal
@@ -309,7 +308,7 @@ remove_ns <-
 
 #' Get primer counts for reach sample before primer removal and trimming steps
 #' 
-#' @param output_directory_path The directory path to output the resulting files
+#' @param output_directory_path The path to the directory where resulting files are output
 #' @param primer_data The primer data data frame created in orient_primers function
 #' @param fastq_data A data frame with the FASTQ file paths, the direction of the sequences, and names of sequences
 #' 
@@ -386,8 +385,7 @@ get_pre_primer_hits <-
     make_primer_hit_plot(primer_hit_data, output_directory_path)
   }
 
-#' Prepare for primmer trimming with Cutaapt. Make new sub-directories
-#' and specify paths for the trimmed and untrimmed reads
+#' Prepare for primmer trimming with Cutaapt. Make new sub-directories and specify paths for the trimmed and untrimmed reads
 #' 
 #' @param fastq_data A path to FASTQ files for analysis
 #' metadata, and primer_info files
