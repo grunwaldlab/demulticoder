@@ -2,6 +2,7 @@
 
 #' Filter ASV abundance matrix and convert to taxmap object
 #'
+#' @param 
 #' @param min_read_depth ASV filter parameter. If mean read depth of across all samples is less than this threshold, ASV will be filtered.
 #' reads is less than this value across all samples
 #' @param minimum_bootstrap Threshold for bootstrap support value
@@ -17,13 +18,11 @@
 #' make_asv_abund_matrix(analysis_setup, overwrite_existing = TRUE)
 #' assign_tax(analysis_setup,asv_abund_matrix, retrieve_files=TRUE, overwrite_existing=TRUE
 #' convert_asv_matrix_to_objs(save_outputs=TRUE)
-
-convert_asv_matrix_to_objs <- function(min_read_depth = 0, minimum_bootstrap = 0, save_outputs = FALSE, overwrite = FALSE) {
-  dir_paths <- analysis_setup$dir_paths
+convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minimum_bootstrap = 0, save_outputs = FALSE, overwrite = FALSE) {
   data_tables <- analysis_setup$data_tables
-  directory_path <- dir_paths$output_directory
-  
-  files <- list.files(path = directory_path, pattern = "^final_asv_abundance_matrix_.*\\.csv$", full.names = TRUE)
+  output_directory_path <- analysis_setup$directory_paths$output_directory
+
+  files <- list.files(path = output_directory_path, pattern = "^final_asv_abundance_matrix_.*\\.csv$", full.names = TRUE)
   suffixes <- gsub("^final_asv_abundance_matrix_(.*)\\.csv$", "\\1", basename(files))
   unique_suffixes <- unique(suffixes)
   
@@ -31,8 +30,8 @@ convert_asv_matrix_to_objs <- function(min_read_depth = 0, minimum_bootstrap = 0
     taxmap_name <- paste0("obj_dada_", suffix)
     phyloseq_name <- paste0("phylo_obj_", suffix)
     
-    taxmap_path <- file.path(directory_path, paste0(taxmap_name, ".RData"))
-    phyloseq_path <- file.path(directory_path, paste0(phyloseq_name, ".RData"))
+    taxmap_path <- file.path(output_directory_path, paste0(taxmap_name, ".RData"))
+    phyloseq_path <- file.path(output_directory_path, paste0(phyloseq_name, ".RData"))
     
     if (file.exists(taxmap_path) && file.exists(phyloseq_path) && !overwrite) {
       cat("For", suffix, "dataset", "\n")
@@ -40,7 +39,7 @@ convert_asv_matrix_to_objs <- function(min_read_depth = 0, minimum_bootstrap = 0
       cat("To overwrite, set overwrite = TRUE\n")
       cat("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
     } else {
-      abundance <- read_csv(file.path(directory_path, paste0('final_asv_abundance_matrix_', suffix, '.csv')))
+      abundance <- read_csv(file.path(output_directory_path, paste0('final_asv_abundance_matrix_', suffix, '.csv')))
       is_low_abund <- rowSums(abundance[, grepl(paste0("_", suffix, "$"), colnames(abundance))]) < min_read_depth
       abundance <- filter(abundance, !is_low_abund)
       abundance$dada2_tax <- map_chr(strsplit(abundance$dada2_tax, ';'), function(x) {

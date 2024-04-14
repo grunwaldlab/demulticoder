@@ -4,7 +4,7 @@
 \alias{assignTax_as_char}
 \title{Combine taxonomic assignments and bootstrap values for each locus into single falsification vector}
 \usage{
-assignTax_as_char(tax_results, directory_path_temp, locus)
+assignTax_as_char(tax_results, temp_directory_path, locus)
 }
 \arguments{
 \item{tax_results}{The dataframe containing taxonomic assignments}

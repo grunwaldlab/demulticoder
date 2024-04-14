@@ -1,12 +1,15 @@
 #' Make an amplified sequence variant (ASV) abundance matrix
-#' This function generates an ASV abundance matrix using raw reads processed during previous steps, including read preparation, removing primers, and using DADA2 core denoising alogrithm to infer ASVs. 
+#' This function generates an ASV abundance matrix using raw reads processed during previous steps, including read preparation, removing primers, and using DADA2 core denoising alogrithm to infer ASVs.
+#' 
 #' @param analysis_setup A list containing directory paths and data tables, produced by the 
 #' `prepare_reads` function.
 #' @param overwrite_existing Logical, indicating whether to overwrite existing results.
 #' @details The function processes data for each unique barcode separately, inferring
-#' ASVs, merging reads, and creating an ASV abundance matrix.
-#' @return The ASV abundance matrix (`asv_abund_matrix`).
+#' ASVs, merging reads, and creating an ASV abundance matrix
+#' .
+#' @return The ASV abundance matrix (`asv_abund_matrix`)
 #' @export make_asv_abund_matrix
+#' 
 #' @examples
 #' The primary wrapper function for DADA2 ASV inference steps
 #' prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "run1", overwrite_existing = TRUE)
@@ -15,11 +18,9 @@
 
 make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {
   
-  dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
-  data_path <- dir_paths$data_directory
-  directory_path <- dir_paths$output_directory
-  directory_path_temp <- dir_paths$temp_directory
+  output_directory_path <- analysis_setup$directory_paths$output_directory
+  temp_directory_path <- analysis_setup$directory_paths$temp_directory
   
   asv_abund_matrix_list <- list()  
   
@@ -44,7 +45,7 @@ make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {
     min_asv_length = 50)
   
   files_to_check <- c("asvabund_matrixDADA2_*")
-  existing_files <- list.files(directory_path_temp, pattern = files_to_check, full.names = TRUE)
+  existing_files <- list.files(temp_directory_path, pattern = files_to_check, full.names = TRUE)
   
   if (!overwrite_existing && length(existing_files) > 0) {
     message("Existing files found. The following ASV abundance matrices are saved in the tempdir path:")
@@ -61,8 +62,8 @@ make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {
     )
     
     for (pattern in patterns_to_remove) {
-      full_pattern <- file.path(directory_path, pattern)
-      files_to_remove <- list.files(path = directory_path, pattern = pattern, full.names = TRUE)
+      full_pattern <- file.path(output_directory_path, pattern)
+      files_to_remove <- list.files(path = output_directory_path, pattern = pattern, full.names = TRUE)
       
       if (length(files_to_remove) > 0) {
         file.remove(files_to_remove)
@@ -72,8 +73,8 @@ make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {
     patterns_to_remove_temp <- "asvabund_matrixDADA2_*"
     
     for (pattern in patterns_to_remove_temp) {
-      full_pattern <- file.path(directory_path_temp, pattern)
-      files_to_remove <- list.files(path = directory_path_temp, pattern = pattern, full.names = TRUE)
+      full_pattern <- file.path(temp_directory_path, pattern)
+      files_to_remove <- list.files(path = temp_directory_path, pattern = pattern, full.names = TRUE)
       
       if (length(files_to_remove) > 0) {
         file.remove(files_to_remove)
@@ -95,16 +96,10 @@ make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {
         
         barcode_params <- modifyList(default_params, params)
         
-        dir_paths <- analysis_setup$dir_paths
-        data_tables <- analysis_setup$data_tables
-        directory_path <- dir_paths$output_directory
-        data_path <- dir_paths$data_directory
-        directory_path_temp <- dir_paths$temp_directory
-        
-        if (overwrite_existing || !file.exists(file.path(directory_path_temp, paste0("asvabund_matrixDADA2_", barcode, ".RData")))) {
+        if (overwrite_existing || !file.exists(file.path(temp_directory_path, paste0("asvabund_matrixDADA2_", barcode, ".RData")))) {
           infer_asv_command(
-            directory_path = directory_path,
-            directory_path_temp = directory_path_temp,
+            output_directory_path = output_directory_path,
+            temp_directory_path = temp_directory_path,
             data_tables = data_tables,
             barcode_params = barcode_params,
             barcode = barcode
@@ -112,22 +107,22 @@ make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {
           
           # Merge reads with barcode-specific parameters
           merged_reads <- merge_reads_command(
-            directory_path = directory_path,
-            directory_path_temp = directory_path_temp,
+            output_directory_path = output_directory_path,
+            temp_directory_path = temp_directory_path,
             barcode_params = barcode_params,
             barcode = barcode
           )
           
-          countOverlap(merged_reads, data_tables, directory_path, barcode)
+          countOverlap(merged_reads, data_tables, output_directory_path, barcode)
           
           raw_seqtab <- createASVSequenceTable(merged_reads, orderBy = "abundance")
           
-          asv_abund_matrix <- make_abund_matrix(raw_seqtab, directory_path_temp = directory_path_temp, barcode_params, barcode)
+          asv_abund_matrix <- make_abund_matrix(raw_seqtab, temp_directory_path = temp_directory_path, barcode_params, barcode)
           
-          make_seqhist(asv_abund_matrix, directory_path)
+          make_seqhist(asv_abund_matrix, output_directory_path)
           #assign("asv_abund_matrix", asv_abund_matrix, envir = .GlobalEnv) # Decide if necessary to retain-maybe just confusing
           
-          asv_abund_matrix_list[[barcode]] <- file.path(directory_path_temp, paste0("asvabund_matrixDADA2_", barcode, ".RData"))
+          asv_abund_matrix_list[[barcode]] <- file.path(temp_directory_path, paste0("asvabund_matrixDADA2_", barcode, ".RData"))
         }
       }
     }
@@ -156,13 +151,13 @@ get_fastq_paths <- function(analysis_setup, my_direction, my_primer_pair_id) {
   filtered_paths
 }
 #' Core DADA2 function to learn errors and infer ASVs
-#' @param directory_path The path to the directory containing the fastq,
+#' @param output_directory_path The path to the directory containing the fastq,
 #' metadata, and primerinfo_params files
 #' @param my_primer_pair_id The the specific barcode id 
 #' @param my_direction Location of read files and metadata file
 #' @return asv_data
 #' @keywords internal
-infer_asvs <- function(my_direction, my_primer_pair_id, barcode_params, directory_path) {
+infer_asvs <- function(my_direction, my_primer_pair_id, barcode_params, output_directory_path) {
   set.seed(1)
   fastq_paths <- get_fastq_paths(analysis_setup, my_direction, my_primer_pair_id)
   
@@ -201,7 +196,7 @@ infer_asvs <- function(my_direction, my_primer_pair_id, barcode_params, director
   ggsave(
     plot_errors,
     filename = error_plot_filename,
-    path = directory_path,
+    path = output_directory_path,
     width = 8,
     height = 8
   )
@@ -217,11 +212,10 @@ infer_asvs <- function(my_direction, my_primer_pair_id, barcode_params, director
 
 #' Function to infer ASVs, for multiple loci
 #'
-#' @param directory_path The path to the directory containing the fastq,
-#' metadata, and primerinfo_params files
+#' @param output_directory_path The path to the directory where resulting files are output
 #' @param denoised_data_path Path to saved intermediate denoised data
 #' @keywords internal
-infer_asv_command <- function(directory_path, directory_path_temp, data_tables, barcode_params, barcode) {
+infer_asv_command <- function(output_directory_path, temp_directory_path, data_tables, barcode_params, barcode) {
   
   multithread <- barcode_params$multithread
   nbases <- barcode_params$nbases
@@ -238,7 +232,7 @@ infer_asv_command <- function(directory_path, directory_path_temp, data_tables, 
   selfConsist <- barcode_params$selfConsist
   verbose <- barcode_params$verbose
   
-  denoised_data_path <- file.path(directory_path_temp, paste0("Denoised_data_", barcode, ".RData"))
+  denoised_data_path <- file.path(temp_directory_path, paste0("Denoised_data_", barcode, ".RData"))
   
   run_dada <- function(direction, data_tables, barcode_params, barcode) {
     dada_output <- lapply(barcode, function(primer_name) {
@@ -246,7 +240,7 @@ infer_asv_command <- function(directory_path, directory_path_temp, data_tables, 
         direction,
         primer_name,
         barcode_params, 
-        directory_path
+        output_directory_path
       )
     })
     unlist(dada_output, recursive = FALSE)
@@ -261,21 +255,21 @@ infer_asv_command <- function(directory_path, directory_path_temp, data_tables, 
 #' Merge forward and reverse reads
 #'
 #' @inheritParams dada2::mergePairs
-#' @param directory_path A path to the intermediate folder and directory
+#' @param output_directory_path The path to the directory where resulting files are output
 #' @param merged_read_data_path Path to R data file containing merged read data
 #' @return merged_reads Intermediate merged read R data file
 #' @keywords internal
-merge_reads_command <- function(directory_path, directory_path_temp, barcode_params, barcode) {
-  denoised_data_path <- file.path(directory_path_temp, paste0("Denoised_data_", barcode, ".RData"))
+merge_reads_command <- function(output_directory_path, temp_directory_path, barcode_params, barcode) {
+  denoised_data_path <- file.path(temp_directory_path, paste0("Denoised_data_", barcode, ".RData"))
   load(denoised_data_path)
   
-  merged_read_data_path <- file.path(directory_path_temp, paste0("Merged_reads_", barcode, ".RData"))
+  merged_read_data_path <- file.path(temp_directory_path, paste0("Merged_reads_", barcode, ".RData"))
   
   merged_reads <- dada2::mergePairs(
     dadaF = dada_forward,
-    derepF = file.path(directory_path_temp, 'filtered_sequences', names(dada_forward)),
+    derepF = file.path(temp_directory_path, 'filtered_sequences', names(dada_forward)),
     dadaR = dada_reverse,
-    derepR = file.path(directory_path_temp, 'filtered_sequences', names(dada_reverse)),
+    derepR = file.path(temp_directory_path, 'filtered_sequences', names(dada_reverse)),
     minOverlap = barcode_params$minOverlap,
     maxMismatch = barcode_params$maxMismatch,
     returnRejects = FALSE,
@@ -295,9 +289,9 @@ merge_reads_command <- function(directory_path, directory_path_temp, barcode_par
 #' Count overlap to see how well the reads were merged
 #'
 #' @param merged_reads Intermediate merged read R data file
-#' @param directory_path Directory path to save the plot
+#' @param output_directory_path The path to the directory where resulting files are output
 #' @return A plot describing how well reads merged and information on overlap between reads
-countOverlap <- function(merged_reads, data_tables, directory_path, barcode) {
+countOverlap <- function(merged_reads, data_tables, output_directory_path, barcode) {
   non_empty_merged_reads <- merged_reads[sapply(merged_reads, nrow) > 0]
   merge_data <- do.call(rbind, non_empty_merged_reads)
   merge_data$samplename_barcode <- rep(names(non_empty_merged_reads), sapply(non_empty_merged_reads, nrow))
@@ -335,15 +329,13 @@ countOverlap <- function(merged_reads, data_tables, directory_path, barcode) {
   ggsave(
     merge_plot_output,
     filename = plot_filename,
-    path = directory_path,
+    path = output_directory_path,
     width = 8,
     height = 8
   )
   
   print(merge_plot_output)
 }
-
-
 
 #' Make ASV sequence matrix
 #'
@@ -363,13 +355,13 @@ createASVSequenceTable <- function(merged_reads, orderBy = "abundance") {
 #' @return asv_abund_matrix The returned final ASV abundance matrix
 #' @keywords internal
 make_abund_matrix <- function(raw_seqtab,
-                              directory_path_temp,
+                              temp_directory_path,
                               barcode_params=barcode_params,
                               barcode) {
   seqtab.nochim <- dada2::removeBimeraDenovo(raw_seqtab, method=barcode_params$method, verbose=barcode_params$verbose)
   asv_abund_matrix <- seqtab.nochim[, nchar(colnames(seqtab.nochim)) >= barcode_params$min_asv_length]
   
-  asvabund_matrix_path <- file.path(directory_path_temp, paste0("asvabund_matrixDADA2_", barcode, ".RData"))
+  asvabund_matrix_path <- file.path(temp_directory_path, paste0("asvabund_matrixDADA2_", barcode, ".RData"))
   save(asv_abund_matrix, file = asvabund_matrix_path)
   return(asv_abund_matrix)
 }
@@ -380,7 +372,7 @@ make_abund_matrix <- function(raw_seqtab,
 #' @keywords internal
 #' @return histogram with read length counts of all sequences within ASV matrix
 #' @keywords internal
-make_seqhist <- function(asv_abund_matrix, directory_path) {
+make_seqhist <- function(asv_abund_matrix, output_directory_path) {
   getPrimerLengths <- function(asv_abund_matrix) {
     barcodes <- unique(sub(".*_(.*)", "\\1", rownames(asv_abund_matrix)))
     primer_lengths <- list()
@@ -408,7 +400,7 @@ make_seqhist <- function(asv_abund_matrix, directory_path) {
     ggsave(
       hist_plot,
       filename = paste("asv_seqlength_plot_", barcode, ".pdf", sep = ""),
-      path = directory_path,
+      path = output_directory_path,
       width = 8,
       height = 8
     )

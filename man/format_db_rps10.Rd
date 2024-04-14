@@ -9,10 +9,9 @@ format_db_rps10(analysis_setup, db_rps10)
 \arguments{
 \item{db_rps10}{The name of the database}
 
-\item{directory_path}{The path to the directory containing the fastq,
-metadata, and primer_info files}
+\item{output_directory_path}{The path to the directory where resulting files are output}
 
-\item{directory_path_temp}{User-defined temporary directory to place reads throughout the workflow
+\item{temp_directory_path}{User-defined temporary directory to place reads throughout the workflow
 metadata, and primer_info files}
 }
 \value{

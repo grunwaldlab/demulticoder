@@ -5,6 +5,7 @@
 \title{Filter ASV abundance matrix and convert to taxmap object}
 \usage{
 convert_asv_matrix_to_objs(
+  analysis_setup,
   min_read_depth = 0,
   minimum_bootstrap = 0,
   save_outputs = FALSE,

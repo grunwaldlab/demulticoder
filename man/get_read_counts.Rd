@@ -4,7 +4,12 @@
 \alias{get_read_counts}
 \title{Final inventory of read counts after each step from input to removal of chimeras. This function deals with if you have more than one sample. TODO optimize for one sample}
 \usage{
-get_read_counts(asv_abund_matrix, directory_path_temp, directory_path, locus)
+get_read_counts(
+  asv_abund_matrix,
+  temp_directory_path,
+  output_directory_path,
+  locus
+)
 }
 \arguments{
 \item{asv_abund_matrix}{An abundance matrix containing amplified sequence variants}

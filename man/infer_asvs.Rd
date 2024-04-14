@@ -4,14 +4,19 @@
 \alias{infer_asvs}
 \title{Core DADA2 function to learn errors and infer ASVs}
 \usage{
-infer_asvs(my_direction, my_primer_pair_id, barcode_params, directory_path)
+infer_asvs(
+  my_direction,
+  my_primer_pair_id,
+  barcode_params,
+  output_directory_path
+)
 }
 \arguments{
 \item{my_direction}{Location of read files and metadata file}
 
 \item{my_primer_pair_id}{The the specific barcode id}
 
-\item{directory_path}{The path to the directory containing the fastq,
+\item{output_directory_path}{The path to the directory containing the fastq,
 metadata, and primerinfo_params files}
 }
 \value{

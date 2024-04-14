@@ -6,8 +6,8 @@
 \usage{
 process_single_barcode(
   data_tables,
-  directory_path_temp,
-  directory_path,
+  temp_directory_path,
+  output_directory_path,
   asv_abund_matrix,
   tryRC = FALSE,
   verbose = FALSE,

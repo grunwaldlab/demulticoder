@@ -5,16 +5,15 @@
 \title{Function to infer ASVs, for multiple loci}
 \usage{
 infer_asv_command(
-  directory_path,
-  directory_path_temp,
+  output_directory_path,
+  temp_directory_path,
   data_tables,
   barcode_params,
   barcode
 )
 }
 \arguments{
-\item{directory_path}{The path to the directory containing the fastq,
-metadata, and primerinfo_params files}
+\item{output_directory_path}{The path to the directory where resulting files are output}
 
 \item{denoised_data_path}{Path to saved intermediate denoised data}
 }

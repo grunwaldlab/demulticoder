@@ -5,14 +5,14 @@
 \title{Merge forward and reverse reads}
 \usage{
 merge_reads_command(
-  directory_path,
-  directory_path_temp,
+  output_directory_path,
+  temp_directory_path,
   barcode_params,
   barcode
 )
 }
 \arguments{
-\item{directory_path}{A path to the intermediate folder and directory}
+\item{output_directory_path}{The path to the directory where resulting files are output}
 
 \item{merged_read_data_path}{Path to R data file containing merged read data}
 }

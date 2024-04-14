@@ -2,7 +2,7 @@
 % Please edit documentation in R/format_databases.R
 \name{format_database}
 \alias{format_database}
-\title{General functions to format user-specified databasees}
+\title{General functions to format user-specified databases}
 \usage{
 format_database(
   analysis_setup,
@@ -23,6 +23,6 @@ format_database(
 A formatted database based on the specified barcode type
 }
 \description{
-General functions to format user-specified databasees
+General functions to format user-specified databases
 }
 \keyword{internal}

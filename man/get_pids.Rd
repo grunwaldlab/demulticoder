@@ -4,7 +4,7 @@
 \alias{get_pids}
 \title{Align ASV sequences to reference sequences from database to get percent ID. Get percent identities.}
 \usage{
-get_pids(tax_results, directory_path_temp, directory_path, db, locus)
+get_pids(tax_results, temp_directory_path, output_directory_path, db, locus)
 }
 \arguments{
 \item{tax_results}{The data frame containing taxonomic assignments}

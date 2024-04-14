@@ -1,10 +1,11 @@
-#' General functions to format user-specified databasees
+#' General functions to format user-specified databases
 #'
 #' @param analysis_setup A list containing directory paths and data tables, produced by the `prepare_reads` function.
 #' @param barcode The barcode for which the database should be formatted
+#' 
 #' @return A formatted database based on the specified barcode type
+#' 
 #' @keywords internal
-#'
 format_database <- function(analysis_setup, barcode, db_its, db_rps10, db_16s, db_other1, db_other2) {
   if (barcode == "rps10") {
     return(format_db_rps10(analysis_setup, db_rps10))
@@ -23,22 +24,19 @@ format_database <- function(analysis_setup, barcode, db_its, db_rps10, db_16s, d
 
 #' Create modified reference rps10 database for downstream analysis
 #'
-#' @param directory_path The path to the directory containing the fastq,
-#' metadata, and primer_info files
-#' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow
+#' @param output_directory_path The path to the directory where resulting files are output
+#' @param temp_directory_path User-defined temporary directory to place reads throughout the workflow
 #' metadata, and primer_info files
 #' @param db_rps10 The name of the database
 #' @return A rps10 database that has modified headers and is output in the reference_databases folder.
 #' @keywords internal
-#'
-
 format_db_rps10 <- function(analysis_setup, db_rps10) {
-  dir_paths <- analysis_setup$dir_paths
+  
   data_tables <- analysis_setup$data_tables
-  directory_path <- dir_paths$output_directory
-  data_path <- dir_paths$data_directory
-  directory_path_temp <- dir_paths$temp_directory
-  database_path <- file.path(directory_path_temp, "rps10_reference_db.fa")
+  data_path <- analysis_setup$directory_paths$data_directory
+  output_directory_path <- analysis_setup$directory_paths$output_directory
+  temp_directory_path <- analysis_setup$directory_paths$temp_directory
+  database_path <- file.path(temp_directory_path, "rps10_reference_db.fa")
   
   db_rps10 <- read_fasta(file.path(data_path, db_rps10))
   
@@ -67,7 +65,7 @@ format_db_rps10 <- function(analysis_setup, db_rps10) {
   count_table <- as_tibble(count_table)
   names(count_table) <- c('Species', 'Number of sequences')
   
-  write.csv(count_table, file = file.path(directory_path, "species_count_table_rps10.csv"), row.names = FALSE)
+  write.csv(count_table, file = file.path(output_directory_path, "species_count_table_rps10.csv"), row.names = FALSE)
   write_lines(paste0(">", data_rps10$taxonomy, "\n", db_rps10), file = database_path)
   
   return(data_rps10)
@@ -75,21 +73,18 @@ format_db_rps10 <- function(analysis_setup, db_rps10) {
 
 #' An ITS database that has modified headers and is output in the reference_databases folder.
 #'
-#' @param directory_path The path to the directory containing the fastq,
-#' metadata, and primer_info files
-#' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow
+#' @param output_directory_path The path to the directory where resulting files are output
+#' @param temp_directory_path User-defined temporary directory to place reads throughout the workflow
 #' metadata, and primer_info files
 #' @param db_its The name of the database
 #' @return An ITS database that has modified headers and is output in the reference_databases folder.
 #' @keywords internal
-#'
-
 format_db_its <- function(analysis_setup, db_its) {
-  dir_paths <- analysis_setup$dir_paths
-  directory_path <- dir_paths$output_directory
-  data_path <- dir_paths$data_directory
-  directory_path_temp <- dir_paths$temp_directory
-  database_path <- file.path(directory_path_temp, "its_reference_db.fa")
+  data_tables <- analysis_setup$data_tables
+  data_path <- analysis_setup$directory_paths$data_directory
+  output_directory_path <- analysis_setup$directory_paths$output_directory
+  temp_directory_path <- analysis_setup$directory_paths$temp_directory
+  database_path <- file.path(temp_directory_path, "its_reference_db.fa")
   
   db_its <- read_fasta(file.path(data_path, db_its))
   data_its <- tibble(header = names(db_its), sequence = db_its)
@@ -117,28 +112,27 @@ format_db_its <- function(analysis_setup, db_its) {
   count_table <- as_tibble(count_table)
   names(count_table) <- c('Species', 'Number of sequences')
   
-  write_csv(count_table, file = file.path(directory_path, "species_count_table_its.csv"))
+  write_csv(count_table, file = file.path(output_directory_path, "species_count_table_its.csv"))
   write_lines(paste0(">", data_its$taxonomy, "\n", data_its$sequence), file = database_path)
   return(data_its)
 }
 
 #' An 16s database that has modified headers and is output in the reference_databases folder.
 #'
-#' @param directory_path The path to the directory containing the fastq,
-#' metadata, and primer_info files
-#' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow
+#' @param output_directory_path The path to the directory where resulting files are output
+#' @param temp_directory_path User-defined temporary directory to place reads throughout the workflow
 #' metadata, and primer_info files
 #' @param db_16s The name of the database
-#' @return An 16s database that has modified headers and is output in the reference_databases folder.
+#' 
+#' @return An 16s database that has modified headers and is output in the reference_databases folder
+#' 
 #' @keywords internal
-#'
 format_db_16s <- function(analysis_setup, db_16s) {
-  dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
-  directory_path <- dir_paths$output_directory
-  data_path <- dir_paths$data_directory
-  directory_path_temp <- dir_paths$temp_directory
-  database_path <- file.path(directory_path_temp, "sixteenS_reference_db.fa")
+  data_path <- analysis_setup$directory_paths$data_directory
+  output_directory_path <- analysis_setup$directory_paths$output_directory
+  temp_directory_path <- analysis_setup$directory_paths$temp_directory
+  database_path <- file.path(temp_directory_path, "sixteenS_reference_db.fa")
   
   db_16s <- read_fasta(file.path(data_path, db_16s))
   data_16s <- tibble(taxonomy = names(db_16s), sequence = db_16s)
@@ -168,7 +162,7 @@ format_db_16s <- function(analysis_setup, db_16s) {
   count_table <- as_tibble(count_table)
   names(count_table) <- c('Genus', 'Number of sequences')
   
-  write_csv(count_table, file = file.path(directory_path, "genus_count_table_16s.csv"))
+  write_csv(count_table, file = file.path(output_directory_path, "genus_count_table_16s.csv"))
   write_lines(paste0(">", data_16s$taxonomy, "\n", db_16s), file = database_path)
   
   return(data_16s)
@@ -176,21 +170,21 @@ format_db_16s <- function(analysis_setup, db_16s) {
 
 #' An other, user-specified database that is initially in the format specified by DADA2 with header simply taxonomic levels (kingdom down to species, separated by semi-colons, ;)
 #'
-#' @param directory_path The path to the directory containing the fastq,
-#' metadata, and primer_info files
-#' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow
+#' @param output_directory_path The path to the directory where resulting files are output
+#' @param temp_directory_path User-defined temporary directory to place reads throughout the workflow
 #' metadata, and primer_info files
 #' @param db_other1 The name of the database
-#' @return An other1 database that has modified headers and is output in the reference_databases folder.
+#' 
+#' @return An other database that has modified headers and is output in the reference_databases folder.
+#' 
 #' @keywords internal
-#'
 format_db_other1 <-function(analysis_setup, db_other1){
-  dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
-  directory_path <- dir_paths$output_directory
-  data_path <- dir_paths$data_directory
-  directory_path_temp <- dir_paths$temp_directory
-  database_path <- file.path(directory_path_temp, "other1_reference_db.fa")
+  data_path <- analysis_setup$directory_paths$data_directory
+  output_directory_path <- analysis_setup$directory_paths$output_directory
+  temp_directory_path <- analysis_setup$directory_paths$temp_directory
+  database_path <- file.path(temp_directory_path, "other1_reference_db.fa")
+  
   db_other1 <- read_fasta(file.path(data_path, db_other1))
   data_other1 <- tibble(taxonomy = names(db_other1), sequence = db_other1)
   data_other1$taxonomy <- gsub(data_other1$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
@@ -204,6 +198,7 @@ format_db_other1 <-function(analysis_setup, db_other1){
     paste(tax_parts, collapse = ";")
   })
   
+  #These seems to mess up taxonomic assignments, unfortunately, but is necessary should we want to calculate PID
   #data_other1$taxonomy <- paste0(data_other1$taxonomy, ";refdb_", seq_along(data_other1$taxonomy), ";")
   data_other1$taxonomy <- paste0(data_other1$taxonomy, ";")
   
@@ -221,28 +216,28 @@ format_db_other1 <-function(analysis_setup, db_other1){
   count_table <- as_tibble(count_table)
   names(count_table) <- c('Genus', 'Number of sequences')
 
-  write_csv(count_table, file = file.path(directory_path, "genus_count_table_other1.csv"))
+  write_csv(count_table, file = file.path(output_directory_path, "genus_count_table_other1.csv"))
   write_lines(paste0(">", data_other1$taxonomy, "\n", db_other1), file = database_path)
   return(data_other1)
 }
 
-#' An other, user-specified database that is initially in the format specificied by DADA2 with header simply taxonomic levels (kingdom down to species, separated by semi-colons, ;)
+#' An second user-specified database that is initially in the format specified by DADA2 with header simply taxonomic levels (kingdom down to species, separated by semi-colons, ;)
 #'
-#' @param directory_path The path to the directory containing the fastq,
-#' metadata, and primer_info files
-#' @param directory_path_temp User-defined temporary directory to place reads throughout the workflow
+#' @param output_directory_path The path to the directory where resulting files are output
+#' @param temp_directory_path User-defined temporary directory to place reads throughout the workflow
 #' metadata, and primer_info files
 #' @param db_other2 The name of the database
-#' @return An other database that has modified headers and is output in the reference_databases folder.
+#' 
+#' @return An other database that has modified headers and is output in the reference_databases folder
+#' 
 #' @keywords internal
-#'
 format_db_other2 <-function(analysis_setup, db_other2){
-  dir_paths <- analysis_setup$dir_paths
   data_tables <- analysis_setup$data_tables
-  directory_path <- dir_paths$output_directory
-  data_path <- dir_paths$data_directory
-  directory_path_temp <- dir_paths$temp_directory
-  database_path <- file.path(directory_path_temp, "other2_reference_db.fa")
+  data_path <- analysis_setup$directory_paths$data_directory
+  output_directory_path <- analysis_setup$directory_paths$output_directory
+  temp_directory_path <- analysis_setup$directory_paths$temp_directory
+  database_path <- file.path(temp_directory_path, "other2_reference_db.fa")
+  
   db_other2 <- read_fasta(file.path(data_path, db_other2))
   data_other2 <- tibble(taxonomy = names(db_other2), sequence = db_other2)
   data_other2$taxonomy <- gsub(data_other2$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
@@ -256,6 +251,7 @@ format_db_other2 <-function(analysis_setup, db_other2){
     paste(tax_parts, collapse = ";")
   })
   
+  #These seems to mess up taxonomic assignments, unfortunately, but is necessary should we want to calculate PID
   #data_other2$taxonomy <- paste0(data_other2$taxonomy, ";refdb_", seq_along(data_other2$taxonomy), ";")
   data_other2$taxonomy <- paste0(data_other2$taxonomy, ";")
   
@@ -273,7 +269,7 @@ format_db_other2 <-function(analysis_setup, db_other2){
   count_table <- as_tibble(count_table)
   names(count_table) <- c('Genus', 'Number of sequences')
   
-  write_csv(count_table, file = file.path(directory_path, "genus_count_table_other2.csv"))
+  write_csv(count_table, file = file.path(output_directory_path, "genus_count_table_other2.csv"))
   write_lines(paste0(">", data_other1$taxonomy, "\n", db_other1), file = database_path)
   return(data_other2)
 }

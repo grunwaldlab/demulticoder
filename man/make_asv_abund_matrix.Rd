@@ -14,7 +14,7 @@ make_asv_abund_matrix(analysis_setup, overwrite_existing = FALSE)
 \item{overwrite_existing}{Logical, indicating whether to overwrite existing results.}
 }
 \value{
-The ASV abundance matrix (\code{asv_abund_matrix}).
+The ASV abundance matrix (\code{asv_abund_matrix})
 }
 \description{
 Make an amplified sequence variant (ASV) abundance matrix
@@ -22,7 +22,8 @@ This function generates an ASV abundance matrix using raw reads processed during
 }
 \details{
 The function processes data for each unique barcode separately, inferring
-ASVs, merging reads, and creating an ASV abundance matrix.
+ASVs, merging reads, and creating an ASV abundance matrix
+.
 }
 \examples{
 The primary wrapper function for DADA2 ASV inference steps

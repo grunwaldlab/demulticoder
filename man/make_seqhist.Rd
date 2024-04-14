@@ -4,7 +4,7 @@
 \alias{make_seqhist}
 \title{Plots a histogram of read length counts of all sequences within the ASV matrix}
 \usage{
-make_seqhist(asv_abund_matrix, directory_path)
+make_seqhist(asv_abund_matrix, output_directory_path)
 }
 \arguments{
 \item{asv_abund_matrix}{The returned final ASV abundance matrix}

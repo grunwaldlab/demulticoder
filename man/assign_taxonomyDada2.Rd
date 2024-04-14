@@ -6,7 +6,7 @@
 \usage{
 assign_taxonomyDada2(
   asv_abund_matrix,
-  directory_path_temp,
+  temp_directory_path,
   minBoot = 0,
   tryRC = FALSE,
   verbose = FALSE,

@@ -265,7 +265,6 @@ plot_qc <- function(cutadapt_data, output_directory_path, n = 500000) {
 #' @return Filtered and trimmed reads
 #' 
 #' @keywords internal
-#'
 filter_and_trim <- function(output_directory_path,
                             temp_directory_path,
                             cutadapt_data_barcode,

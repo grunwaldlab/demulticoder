@@ -9,14 +9,13 @@ format_db_16s(analysis_setup, db_16s)
 \arguments{
 \item{db_16s}{The name of the database}
 
-\item{directory_path}{The path to the directory containing the fastq,
-metadata, and primer_info files}
+\item{output_directory_path}{The path to the directory where resulting files are output}
 
-\item{directory_path_temp}{User-defined temporary directory to place reads throughout the workflow
+\item{temp_directory_path}{User-defined temporary directory to place reads throughout the workflow
 metadata, and primer_info files}
 }
 \value{
-An 16s database that has modified headers and is output in the reference_databases folder.
+An 16s database that has modified headers and is output in the reference_databases folder
 }
 \description{
 An 16s database that has modified headers and is output in the reference_databases folder.

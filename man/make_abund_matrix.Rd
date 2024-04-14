@@ -6,7 +6,7 @@
 \usage{
 make_abund_matrix(
   raw_seqtab,
-  directory_path_temp,
+  temp_directory_path,
   barcode_params = barcode_params,
   barcode
 )
