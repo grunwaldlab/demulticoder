@@ -1,6 +1,6 @@
 #' General functions to format user-specified databases
 #'
-#' @param analysis_setup A list containing directory paths and data tables, produced by the `prepare_reads` function.
+#' @param analysis_setup An object containing directory paths and data tables, produced by the `prepare_reads` function
 #' @param barcode The barcode for which the database should be formatted
 #' 
 #' @return A formatted database based on the specified barcode type

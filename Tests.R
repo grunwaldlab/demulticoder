@@ -33,9 +33,21 @@ convert_asv_matrix_to_objs(analysis_setup,save_outputs=TRUE,overwrite=TRUE)
 load("~/demulticoder/inst/extdata/obj_dada_its.RData") 
 obj_dada_its<-obj_dada
 
-
+devtools::check()
 library("pkgdown")
-library(pkgdown)
 
 
 pkgdown::build_site("./")
+
+install.packages("testthat")
+library(testthat)
+
+usethis::use_testthat(3)
+
+library(testthat)
+library(demulticoder)
+
+testthat::use_test()
+devtools::test()
+
+test_check("demulticoder")

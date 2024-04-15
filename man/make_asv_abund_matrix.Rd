@@ -8,8 +8,7 @@ This function generates an ASV abundance matrix using raw reads processed during
 make_asv_abund_matrix(analysis_setup, overwrite_existing = FALSE)
 }
 \arguments{
-\item{analysis_setup}{A list containing directory paths and data tables, produced by the
-\code{prepare_reads} function.}
+\item{analysis_setup}{analysis_setup An object containing directory paths and data tables, produced by the \code{prepare_reads} function}
 
 \item{overwrite_existing}{Logical, indicating whether to overwrite existing results.}
 }
@@ -27,7 +26,7 @@ ASVs, merging reads, and creating an ASV abundance matrix
 }
 \examples{
 The primary wrapper function for DADA2 ASV inference steps
-prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "run1", overwrite_existing = TRUE)
-cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = TRUE)
-make_asv_abund_matrix(analysis_setup, overwrite_existing = TRUE)
+prepare_reads(data_directory = "inst/extdata", output_directory = "test_data", tempdir_id = "demulticoder_run", overwrite_existing = FALSE)
+cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = FALSE)
+make_asv_abund_matrix(analysis_setup, overwrite_existing = FALSE)
 }

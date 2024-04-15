@@ -7,7 +7,7 @@
 cut_trim(analysis_setup, cutadapt_path, overwrite_existing = FALSE)
 }
 \arguments{
-\item{analysis_setup}{An object containing directory paths and data tables, produced by the \code{prepare_reads} function.}
+\item{analysis_setup}{An object containing directory paths and data tables, produced by the \code{prepare_reads} function}
 
 \item{cutadapt_path}{Path to the Cutadapt program.}
 
@@ -21,6 +21,6 @@ Main command to trim primers using Cutadapt and core DADA2 functions. If samples
 }
 \examples{
 Remove remaining primers from raw reads, demultiplex pooled barcoded samples, and then trim reads based on specific DADA2 parameters
-prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "run1", overwrite_existing = TRUE)
-cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = TRUE)
+prepare_reads(data_directory = "inst/extdata", output_directory = "test_data", tempdir_id = "demulticoder_run", overwrite_existing = FALSE)
+cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = FALSE)
 }

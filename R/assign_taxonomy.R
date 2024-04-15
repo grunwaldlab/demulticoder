@@ -1,5 +1,5 @@
 #' Assign taxonomy functions
-#' @param analysis_setup A list containing directory paths and data tables, produced by the `prepare_reads` function
+#' @param analysis_setup An object containing directory paths and data tables, produced by the `prepare_reads` function
 #' @param asv_abund_matrix ASV abundance matrix.
 #' @param tryRC Whether to try reverse complementing sequences during taxonomic assignment
 #' @param verbose Logical, indicating whether to display verbose output
@@ -15,10 +15,10 @@
 #' 
 #' @examples
 #' Assign taxonomies to ASVs on a per barcode basis
-#' prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "run1", overwrite_existing = TRUE)
-#' cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = TRUE)
-#' make_asv_abund_matrix(analysis_setup, overwrite_existing = TRUE)
-#' assign_tax(analysis_setup,asv_abund_matrix, retrieve_files=TRUE, overwrite_existing=TRUE)
+#' prepare_reads(data_directory = "inst/extdata", output_directory = "test_data", tempdir_id = "demulticoder_run", overwrite_existing = FALSE)
+#' cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = FALSE)
+#' make_asv_abund_matrix(analysis_setup, overwrite_existing = FALSE)
+#' assign_tax(analysis_setup,asv_abund_matrix, retrieve_files=FALSE, overwrite_existing=FALSE)
 assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, db_rps10 = "oomycetedb.fasta", db_its = "fungidb.fasta", db_16s = "bacteriadb.fasta", db_other1 = "otherdb1.fasta", db_other2 = "otherdb2.fasta", overwrite_existing = FALSE) {
   data_tables <- analysis_setup$data_tables
   data_path <- analysis_setup$directory_paths$data_directory

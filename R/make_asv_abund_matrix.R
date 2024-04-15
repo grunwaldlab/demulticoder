@@ -1,8 +1,7 @@
 #' Make an amplified sequence variant (ASV) abundance matrix
 #' This function generates an ASV abundance matrix using raw reads processed during previous steps, including read preparation, removing primers, and using DADA2 core denoising alogrithm to infer ASVs.
 #' 
-#' @param analysis_setup A list containing directory paths and data tables, produced by the 
-#' `prepare_reads` function.
+#' @param analysis_setup analysis_setup An object containing directory paths and data tables, produced by the `prepare_reads` function
 #' @param overwrite_existing Logical, indicating whether to overwrite existing results.
 #' @details The function processes data for each unique barcode separately, inferring
 #' ASVs, merging reads, and creating an ASV abundance matrix
@@ -12,9 +11,9 @@
 #' 
 #' @examples
 #' The primary wrapper function for DADA2 ASV inference steps
-#' prepare_reads(maxN = 0, data_directory = "~/demulticoder/inst/extdata", output_directory = "~/testing_package", tempdir_id = "run1", overwrite_existing = TRUE)
-#' cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = TRUE)
-#' make_asv_abund_matrix(analysis_setup, overwrite_existing = TRUE)
+#' prepare_reads(data_directory = "inst/extdata", output_directory = "test_data", tempdir_id = "demulticoder_run", overwrite_existing = FALSE)
+#' cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = FALSE)
+#' make_asv_abund_matrix(analysis_setup, overwrite_existing = FALSE)
 
 make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {
   
