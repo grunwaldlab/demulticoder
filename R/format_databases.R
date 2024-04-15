@@ -1,10 +1,11 @@
 #' General functions to format user-specified databases
 #'
-#' @param analysis_setup An object containing directory paths and data tables, produced by the `prepare_reads` function
+#' @param analysis_setup An object containing directory paths and data tables,
+#'   produced by the `prepare_reads` function
 #' @param barcode The barcode for which the database should be formatted
-#' 
+#'
 #' @return A formatted database based on the specified barcode type
-#' 
+#'
 #' @keywords internal
 format_database <- function(analysis_setup, barcode, db_its, db_rps10, db_16s, db_other1, db_other2) {
   if (barcode == "rps10") {
@@ -24,11 +25,13 @@ format_database <- function(analysis_setup, barcode, db_its, db_rps10, db_16s, d
 
 #' Create modified reference rps10 database for downstream analysis
 #'
-#' @param output_directory_path The path to the directory where resulting files are output
-#' @param temp_directory_path User-defined temporary directory to place reads throughout the workflow
-#' metadata, and primer_info files
+#' @param output_directory_path The path to the directory where resulting files
+#'   are output
+#' @param temp_directory_path User-defined temporary directory to place reads
+#'   throughout the workflow metadata, and primer_info files
 #' @param db_rps10 The name of the database
-#' @return A rps10 database that has modified headers and is output in the reference_databases folder.
+#' @return A rps10 database that has modified headers and is output in the
+#'   reference_databases folder.
 #' @keywords internal
 format_db_rps10 <- function(analysis_setup, db_rps10) {
   
@@ -71,13 +74,16 @@ format_db_rps10 <- function(analysis_setup, db_rps10) {
   return(data_rps10)
 }
 
-#' An ITS database that has modified headers and is output in the reference_databases folder.
+#' An ITS database that has modified headers and is output in the
+#' reference_databases folder.
 #'
-#' @param output_directory_path The path to the directory where resulting files are output
-#' @param temp_directory_path User-defined temporary directory to place reads throughout the workflow
-#' metadata, and primer_info files
+#' @param output_directory_path The path to the directory where resulting files
+#'   are output
+#' @param temp_directory_path User-defined temporary directory to place reads
+#'   throughout the workflow metadata, and primer_info files
 #' @param db_its The name of the database
-#' @return An ITS database that has modified headers and is output in the reference_databases folder.
+#' @return An ITS database that has modified headers and is output in the
+#'   reference_databases folder.
 #' @keywords internal
 format_db_its <- function(analysis_setup, db_its) {
   data_tables <- analysis_setup$data_tables
@@ -117,15 +123,18 @@ format_db_its <- function(analysis_setup, db_its) {
   return(data_its)
 }
 
-#' An 16s database that has modified headers and is output in the reference_databases folder.
+#' An 16s database that has modified headers and is output in the
+#' reference_databases folder.
 #'
-#' @param output_directory_path The path to the directory where resulting files are output
-#' @param temp_directory_path User-defined temporary directory to place reads throughout the workflow
-#' metadata, and primer_info files
+#' @param output_directory_path The path to the directory where resulting files
+#'   are output
+#' @param temp_directory_path User-defined temporary directory to place reads
+#'   throughout the workflow metadata, and primer_info files
 #' @param db_16s The name of the database
-#' 
-#' @return An 16s database that has modified headers and is output in the reference_databases folder
-#' 
+#'
+#' @return An 16s database that has modified headers and is output in the
+#'   reference_databases folder
+#'
 #' @keywords internal
 format_db_16s <- function(analysis_setup, db_16s) {
   data_tables <- analysis_setup$data_tables
@@ -221,15 +230,19 @@ format_db_other1 <-function(analysis_setup, db_other1){
   return(data_other1)
 }
 
-#' An second user-specified database that is initially in the format specified by DADA2 with header simply taxonomic levels (kingdom down to species, separated by semi-colons, ;)
+#' An second user-specified database that is initially in the format specified
+#' by DADA2 with header simply taxonomic levels (kingdom down to species,
+#' separated by semi-colons, ;)
 #'
-#' @param output_directory_path The path to the directory where resulting files are output
-#' @param temp_directory_path User-defined temporary directory to place reads throughout the workflow
-#' metadata, and primer_info files
+#' @param output_directory_path The path to the directory where resulting files
+#'   are output
+#' @param temp_directory_path User-defined temporary directory to place reads
+#'   throughout the workflow metadata, and primer_info files
 #' @param db_other2 The name of the database
-#' 
-#' @return An other database that has modified headers and is output in the reference_databases folder
-#' 
+#'
+#' @return An other database that has modified headers and is output in the
+#'   reference_databases folder
+#'
 #' @keywords internal
 format_db_other2 <-function(analysis_setup, db_other2){
   data_tables <- analysis_setup$data_tables

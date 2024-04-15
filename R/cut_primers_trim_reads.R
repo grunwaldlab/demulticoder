@@ -1,12 +1,15 @@
-#' Main command to trim primers using Cutadapt and core DADA2 functions. If samples contain pooled barcodes, reads will also be demultiplexed. 
+#' Main command to trim primers using Cutadapt and core DADA2 functions. If
+#' samples contain pooled barcodes, reads will also be demultiplexed.
 #'
-#' @param analysis_setup An object containing directory paths and data tables, produced by the `prepare_reads` function
+#' @param analysis_setup An object containing directory paths and data tables,
+#'   produced by the `prepare_reads` function
 #' @param cutadapt_path Path to the Cutadapt program.
-#' @param overwrite_existing Logical, indicating whether to remove or overwrite existing files and directories from previous runs.
+#' @param overwrite_existing Logical, indicating whether to remove or overwrite
+#'   existing files and directories from previous runs.
 #' @return Trimmed reads, primer counts, quality plots, and ASV matrix.
-#' 
+#'
 #' @export
-#' 
+#'
 #' @examples
 #' Remove remaining primers from raw reads, demultiplex pooled barcoded samples, and then trim reads based on specific DADA2 parameters
 #' prepare_reads(data_directory = "inst/extdata", output_directory = "test_data", tempdir_id = "demulticoder_run", overwrite_existing = FALSE)
@@ -154,11 +157,13 @@ cut_trim <- function(analysis_setup,
 #' Core function for running cutadapt
 #'
 #' @param cutadapt_path A path to the cutadapt program.
-#' @param cutadapt_data Directory_data folder with trimmed and filtered reads for each sample.
-#' @param minCutadaptlength Read lengths that are lower than this threshold will be discarded. Default is 50.
-#' 
+#' @param cutadapt_data Directory_data folder with trimmed and filtered reads
+#'   for each sample.
+#' @param minCutadaptlength Read lengths that are lower than this threshold will
+#'   be discarded. Default is 50.
+#'
 #' @return Trimmed read.
-#' 
+#'
 #' @keywords internal
 run_cutadapt <- function(cutadapt_path,
                          cutadapt_data_barcode,
@@ -230,12 +235,14 @@ run_cutadapt <- function(cutadapt_path,
 #' Wrapper function for plotQualityProfile function
 #'
 #' @inheritParams dada2::plotQualityProfile
-#' 
-#' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
-#' @param output_directory_path The path to the directory where resulting files are output
-#' 
+#'
+#' @param cutadapt_data directory_data folder with trimmed and filtered reads
+#'   for each sample
+#' @param output_directory_path The path to the directory where resulting files
+#'   are output
+#'
 #' @return Dada2 wrapper function for making quality profiles for each sample
-#' 
+#'
 #' @keywords internal
 plot_qc <- function(cutadapt_data, output_directory_path, n = 500000) {
   #just retrieve all plots for first sample
@@ -256,14 +263,17 @@ plot_qc <- function(cutadapt_data, output_directory_path, n = 500000) {
   }
 }
 
-#' Wrapper function for filterAndTrim function from DADA2, to be used after primer trimming
+#' Wrapper function for filterAndTrim function from DADA2, to be used after
+#' primer trimming
 #'
 #' @inheritParams dada2::filterAndTrim
-#' @param output_directory_path The path to the directory where resulting files are output
-#' @param cutadapt_data_barcode directory_data folder with trimmed and filtered reads for each sample
-#' 
+#' @param output_directory_path The path to the directory where resulting files
+#'   are output
+#' @param cutadapt_data_barcode directory_data folder with trimmed and filtered
+#'   reads for each sample
+#'
 #' @return Filtered and trimmed reads
-#' 
+#'
 #' @keywords internal
 filter_and_trim <- function(output_directory_path,
                             temp_directory_path,
@@ -320,11 +330,13 @@ filter_and_trim <- function(output_directory_path,
 #' Get primer counts for reach sample after primer removal and trimming steps
 #'
 #' @param primer_data The primer data frame created in orient_primers function
-#' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
-#' @param output_directory_path The path to the directory where resulting files are output
-#' 
+#' @param cutadapt_data directory_data folder with trimmed and filtered reads
+#'   for each sample
+#' @param output_directory_path The path to the directory where resulting files
+#'   are output
+#'
 #' @return Table of read counts across each sample
-#' 
+#'
 #' @keywords internal
 get_post_trim_hits <- function(primer_data, cutadapt_data, output_directory_path) {
   post_trim_hit_data <- gather(
@@ -387,11 +399,13 @@ get_post_trim_hits <- function(primer_data, cutadapt_data, output_directory_path
 #' Wrapper script for plotQualityProfile after trim steps and primer removal.
 #'
 #' @inheritParams dada2::plotQualityProfile
-#' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
-#' @param output_directory_path The path to the directory where resulting files are output
-#' 
+#' @param cutadapt_data directory_data folder with trimmed and filtered reads
+#'   for each sample
+#' @param output_directory_path The path to the directory where resulting files
+#'   are output
+#'
 #' @return Quality profiles of reads after primer trimming
-#' 
+#'
 #' @keywords internal
 plot_post_trim_qc <- function(cutadapt_data, output_directory_path, n = 500000) {
   for (i in unique(cutadapt_data$sample_name)) {

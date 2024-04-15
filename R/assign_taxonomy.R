@@ -1,18 +1,22 @@
 #' Assign taxonomy functions
-#' @param analysis_setup An object containing directory paths and data tables, produced by the `prepare_reads` function
+#' @param analysis_setup An object containing directory paths and data tables,
+#'   produced by the `prepare_reads` function
 #' @param asv_abund_matrix ASV abundance matrix.
-#' @param tryRC Whether to try reverse complementing sequences during taxonomic assignment
+#' @param tryRC Whether to try reverse complementing sequences during taxonomic
+#'   assignment
 #' @param verbose Logical, indicating whether to display verbose output
 #' @param multithread Logical, indicating whether to use multithreading
-#' @param retrieve_files Specify TRUE/FALSE whether to copy files from the temp directory to the output directory
-#' @param overwrite_existing Logical, indicating whether to remove or overwrite existing files and directories from previous runs
+#' @param retrieve_files Specify TRUE/FALSE whether to copy files from the temp
+#'   directory to the output directory
+#' @param overwrite_existing Logical, indicating whether to remove or overwrite
+#'   existing files and directories from previous runs
 #' @inheritParams assign_taxonomyDada2
 #' @inheritParams dada2::assignTaxonomy
-#' 
+#'
 #' @return Taxonomic assignments of each unique ASV sequence
-#' 
+#'
 #' @export assign_tax
-#' 
+#'
 #' @examples
 #' Assign taxonomies to ASVs on a per barcode basis
 #' prepare_reads(data_directory = "inst/extdata", output_directory = "test_data", tempdir_id = "demulticoder_run", overwrite_existing = FALSE)
@@ -92,13 +96,16 @@ assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose 
   return(invisible())
 }
 
-#' Process the information from an ASV abundance matrix to run DADA2 for single barcode
+#' Process the information from an ASV abundance matrix to run DADA2 for single
+#' barcode
 #'
-#' @param data_tables A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data
-#' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
+#' @param data_tables A list containing data modified by cutadapt, primer data,
+#'   FASTQ data, and concatenated metadata and primer data
+#' @param asv_abund_matrix An abundance matrix containing amplified sequence
+#'   variants
 #' @inheritParams assign_taxonomyDada2
 #' @inheritParams dada2::assignTaxonomy
-#' 
+#'
 #' @keywords internal
 process_single_barcode <-
   function(data_tables,
@@ -137,7 +144,7 @@ process_single_barcode <-
 #' @param directory_data folder with trimmed and filtered reads for each sample
 #' @param asv_abund_matrix The returned final ASV abundance matrix
 #' @param locus The barcode selected in the analysis
-#' 
+#'
 #' @keywords internal
 prep_abund_matrix <-function(cutadapt_data, asv_abund_matrix, data_tables, locus){
   data_tables$cutadapt_data$file_id_primer <- paste0(data_tables$cutadapt_data$sample_name, "_", data_tables$cutadapt_data$primer_name)
@@ -165,10 +172,11 @@ assign_taxonomyDada2<-function(asv_abund_matrix, temp_directory_path, minBoot=0,
   return(tax_results)
 }
 
-#' Align ASV sequences to reference sequences from database to get percent ID. Get percent identities.
+#' Align ASV sequences to reference sequences from database to get percent ID.
+#' Get percent identities.
 #'
 #' @param tax_results The data frame containing taxonomic assignments
-#' 
+#'
 #' @keywords internal
 get_pids <- function(tax_results, temp_directory_path, output_directory_path, db, locus) {
   db_seqs <- read_fasta(file.path(temp_directory_path, db))
@@ -200,11 +208,12 @@ get_pids <- function(tax_results, temp_directory_path, output_directory_path, db
   return(asv_pids)
 }
 
-#' Align ASV sequences to reference sequences from database to get percent ID. STart by retrieving reference sequences.
+#' Align ASV sequences to reference sequences from database to get percent ID.
+#' Start by retrieving reference sequences.
 #'
 #' @param tax_results The dataframe containing taxonomic assignments
 #' @param db The reference database
-#' 
+#'
 #' @keywords internal
 get_ref_seq <- function(tax_results, db) {
   ref_i <- as.integer(str_match(tax_results$tax[, 'Reference'], '^.+_([0-9]+)$')[ ,2])
@@ -214,7 +223,8 @@ get_ref_seq <- function(tax_results, db) {
 #' Add PID and bootstrap values to tax result.
 #'
 #' @param tax_results The dataframe containing taxonomic assignments
-#' @param asv_pid Percent identity information for each ASV relative to reference database sequence
+#' @param asv_pid Percent identity information for each ASV relative to
+#'   reference database sequence
 #' @keywords internal
 add_pid_to_tax <- function(tax_results, asv_pid) {
   tax_results$tax <- cbind(tax_results$tax, ASV = rownames(tax_results$tax))
@@ -222,10 +232,11 @@ add_pid_to_tax <- function(tax_results, asv_pid) {
   return(tax_results)
 }
 
-#' Combine taxonomic assignments and bootstrap values for each locus into single falsification vector
+#' Combine taxonomic assignments and bootstrap values for each locus into single
+#' falsification vector
 #'
 #' @param tax_results The dataframe containing taxonomic assignments
-#' 
+#'
 #' @keywords internal
 assignTax_as_char <- function(tax_results, temp_directory_path, locus) {
   tax_matrix_path <- file.path(temp_directory_path, paste0("Final_tax_matrix_", locus, ".RData"))
@@ -245,9 +256,11 @@ assignTax_as_char <- function(tax_results, temp_directory_path, locus) {
 
 #' Format ASV abundance matrix
 #'
-#' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
-#' @param seq_tax_asv An amplified sequence variants matrix with taxonomic information
-#' 
+#' @param asv_abund_matrix An abundance matrix containing amplified sequence
+#'   variants
+#' @param seq_tax_asv An amplified sequence variants matrix with taxonomic
+#'   information
+#'
 #' @keywords internal
 format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv, output_directory_path, locus) {
   formatted_abund_asv <- t(asv_abund_matrix)

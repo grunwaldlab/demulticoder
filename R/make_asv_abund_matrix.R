@@ -1,14 +1,17 @@
-#' Make an amplified sequence variant (ASV) abundance matrix
-#' This function generates an ASV abundance matrix using raw reads processed during previous steps, including read preparation, removing primers, and using DADA2 core denoising alogrithm to infer ASVs.
-#' 
-#' @param analysis_setup analysis_setup An object containing directory paths and data tables, produced by the `prepare_reads` function
-#' @param overwrite_existing Logical, indicating whether to overwrite existing results.
-#' @details The function processes data for each unique barcode separately, inferring
-#' ASVs, merging reads, and creating an ASV abundance matrix
-#' .
+#' Make an amplified sequence variant (ASV) abundance matrix This function
+#' generates an ASV abundance matrix using raw reads processed during previous
+#' steps, including read preparation, removing primers, and using DADA2 core
+#' denoising alogrithm to infer ASVs.
+#'
+#' @param analysis_setup analysis_setup An object containing directory paths and
+#'   data tables, produced by the `prepare_reads` function
+#' @param overwrite_existing Logical, indicating whether to overwrite existing
+#'   results.
+#' @details The function processes data for each unique barcode separately,
+#'   inferring ASVs, merging reads, and creating an ASV abundance matrix .
 #' @return The ASV abundance matrix (`asv_abund_matrix`)
 #' @export make_asv_abund_matrix
-#' 
+#'
 #' @examples
 #' The primary wrapper function for DADA2 ASV inference steps
 #' prepare_reads(data_directory = "inst/extdata", output_directory = "test_data", tempdir_id = "demulticoder_run", overwrite_existing = FALSE)
@@ -133,8 +136,9 @@ make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {
 #' Retrieve the paths of the filtered and trimmed Fastq files
 #'
 #' @param my_direction Whether primer is in forward or reverse direction
-#' @param my_primer_pair_id The the specific barcode id 
-#' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
+#' @param my_primer_pair_id The the specific barcode id
+#' @param cutadapt_data directory_data folder with trimmed and filtered reads
+#'   for each sample
 #' @keywords internal
 get_fastq_paths <- function(analysis_setup, my_direction, my_primer_pair_id) {
   data_tables <- analysis_setup$data_tables
@@ -254,7 +258,8 @@ infer_asv_command <- function(output_directory_path, temp_directory_path, data_t
 #' Merge forward and reverse reads
 #'
 #' @inheritParams dada2::mergePairs
-#' @param output_directory_path The path to the directory where resulting files are output
+#' @param output_directory_path The path to the directory where resulting files
+#'   are output
 #' @param merged_read_data_path Path to R data file containing merged read data
 #' @return merged_reads Intermediate merged read R data file
 #' @keywords internal
@@ -284,12 +289,14 @@ merge_reads_command <- function(output_directory_path, temp_directory_path, barc
 #' Count overlap to see how well the reads were merged
 #'
 #' @param merged_reads Intermediate merged read R data file
-#' @return A plot describing how well reads merged and information on overlap between reads
-#' Count overlap to see how well the reads were merged
+#' @return A plot describing how well reads merged and information on overlap
+#'   between reads Count overlap to see how well the reads were merged
 #'
 #' @param merged_reads Intermediate merged read R data file
-#' @param output_directory_path The path to the directory where resulting files are output
-#' @return A plot describing how well reads merged and information on overlap between reads
+#' @param output_directory_path The path to the directory where resulting files
+#'   are output
+#' @return A plot describing how well reads merged and information on overlap
+#'   between reads
 countOverlap <- function(merged_reads, data_tables, output_directory_path, barcode) {
   non_empty_merged_reads <- merged_reads[sapply(merged_reads, nrow) > 0]
   merge_data <- do.call(rbind, non_empty_merged_reads)
@@ -350,7 +357,8 @@ createASVSequenceTable <- function(merged_reads, orderBy = "abundance") {
 #' Quality filtering to remove chimeras and short sequences
 #'
 #' @inheritParams dada2::removeBimeraDenovo
-#' @param raw_seqtab R data file with raw sequence data prior to removal of chimeras
+#' @param raw_seqtab R data file with raw sequence data prior to removal of
+#'   chimeras
 #' @return asv_abund_matrix The returned final ASV abundance matrix
 #' @keywords internal
 make_abund_matrix <- function(raw_seqtab,
@@ -365,7 +373,8 @@ make_abund_matrix <- function(raw_seqtab,
   return(asv_abund_matrix)
 }
 
-#' Plots a histogram of read length counts of all sequences within the ASV matrix
+#' Plots a histogram of read length counts of all sequences within the ASV
+#' matrix
 #'
 #' @param asv_abund_matrix The returned final ASV abundance matrix
 #' @keywords internal

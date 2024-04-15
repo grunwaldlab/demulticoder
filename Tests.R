@@ -1,5 +1,3 @@
-#TODO fix up documentation 
-
 devtools::load_all("~/demulticoder")
 devtools::document()
 
