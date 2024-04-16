@@ -20,19 +20,23 @@ assign_tax(
 )
 }
 \arguments{
-\item{analysis_setup}{An object containing directory paths and data tables, produced by the \code{prepare_reads} function}
+\item{analysis_setup}{An object containing directory paths and data tables,
+produced by the \code{prepare_reads} function}
 
 \item{asv_abund_matrix}{ASV abundance matrix.}
 
-\item{tryRC}{Whether to try reverse complementing sequences during taxonomic assignment}
+\item{tryRC}{Whether to try reverse complementing sequences during taxonomic
+assignment}
 
 \item{verbose}{Logical, indicating whether to display verbose output}
 
 \item{multithread}{Logical, indicating whether to use multithreading}
 
-\item{retrieve_files}{Specify TRUE/FALSE whether to copy files from the temp directory to the output directory}
+\item{retrieve_files}{Specify TRUE/FALSE whether to copy files from the temp
+directory to the output directory}
 
-\item{overwrite_existing}{Logical, indicating whether to remove or overwrite existing files and directories from previous runs}
+\item{overwrite_existing}{Logical, indicating whether to remove or overwrite
+existing files and directories from previous runs}
 }
 \value{
 Taxonomic assignments of each unique ASV sequence
@@ -41,9 +45,18 @@ Taxonomic assignments of each unique ASV sequence
 Assign taxonomy functions
 }
 \examples{
-Assign taxonomies to ASVs on a per barcode basis
-prepare_reads(data_directory = "inst/extdata", output_directory = "test_data", tempdir_id = "demulticoder_run", overwrite_existing = FALSE)
-cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = FALSE)
-make_asv_abund_matrix(analysis_setup, overwrite_existing = FALSE)
-assign_tax(analysis_setup,asv_abund_matrix, retrieve_files=FALSE, overwrite_existing=FALSE)
+# Assign taxonomies to ASVs on a per barcode basis
+prepare_reads(data_directory = "extdata", 
+output_directory = "test_data", 
+tempdir_id = "demulticoder_run", 
+overwrite_existing = FALSE)
+cut_trim(analysis_setup,
+cutadapt_path="/opt/homebrew/bin/cutadapt", 
+overwrite_existing = FALSE)
+make_asv_abund_matrix(analysis_setup, 
+overwrite_existing = FALSE)
+assign_tax(analysis_setup,
+asv_abund_matrix, 
+retrieve_files=FALSE, 
+overwrite_existing=FALSE)
 }

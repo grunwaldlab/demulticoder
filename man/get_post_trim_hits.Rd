@@ -9,9 +9,11 @@ get_post_trim_hits(primer_data, cutadapt_data, output_directory_path)
 \arguments{
 \item{primer_data}{The primer data frame created in orient_primers function}
 
-\item{cutadapt_data}{directory_data folder with trimmed and filtered reads for each sample}
+\item{cutadapt_data}{directory_data folder with trimmed and filtered reads
+for each sample}
 
-\item{output_directory_path}{The path to the directory where resulting files are output}
+\item{output_directory_path}{The path to the directory where resulting files
+are output}
 }
 \value{
 Table of read counts across each sample

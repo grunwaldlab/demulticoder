@@ -12,20 +12,28 @@ setup_directories(
 )
 }
 \arguments{
-\item{data_directory}{User-specified directory path where the user has placed raw FASTQ (forward and reverse reads), metadata.csv, and primerinfo_params.csv files. Default is "data".}
+\item{data_directory}{User-specified directory path where the user has placed
+raw FASTQ (forward and reverse reads), metadata.csv, and
+primerinfo_params.csv files. Default is "data".}
 
-\item{output_directory}{User-specified directory for outputs. Default is "output".}
+\item{output_directory}{User-specified directory for outputs. Default is
+"output".}
 
-\item{tempdir_path}{Path to a temporary directory. If \code{NULL}, a temporary directory path will be identified using the \code{tempdir()} command.}
+\item{tempdir_path}{Path to a temporary directory. If \code{NULL}, a temporary
+directory path will be identified using the \code{tempdir()} command.}
 
-\item{tempdir_id}{ID for temporary directories. Default is "demulticoder_run". The user can provide any helpful ID, whether it be a date or specific name for the run.}
+\item{tempdir_id}{ID for temporary directories. Default is
+"demulticoder_run". The user can provide any helpful ID, whether it be a
+date or specific name for the run.}
 }
 \value{
-A list with paths for data, output, temporary directories, primer, and metadata files.
+A list with paths for data, output, temporary directories, primer,
+and metadata files.
 }
 \description{
-This function sets up the directory paths for subsequent analyses.
-It checks whether the specified output directories exist or creates them if they don't.
-The function also provides paths to primer and metadata files within the data directory.
+This function sets up the directory paths for subsequent analyses. It checks
+whether the specified output directories exist or creates them if they don't.
+The function also provides paths to primer and metadata files within the data
+directory.
 }
 \keyword{internal}

@@ -2,26 +2,26 @@
 % Please edit documentation in R/prepare_reads_count_primers.R
 \name{read_fastq}
 \alias{read_fastq}
-\title{Takes in the FASTQ files from the user and creates a data frame with the paths to files that will be created and used in the future.
-Included in a larger 'read_prefilt_fastq' function.}
+\title{Takes in the FASTQ files from the user and creates a data frame with the
+paths to files that will be created and used in the future. Included in a
+larger 'read_prefilt_fastq' function.}
 \usage{
 read_fastq(data_directory_path, temp_directory_path)
 }
 \arguments{
-\item{data_directory_path}{The path to the directory containing the FASTQ, metadata, and primer_info files}
+\item{data_directory_path}{The path to the directory containing the FASTQ,
+metadata, and primer_info files}
 
-\item{temp_directory_path}{User-defined temporary directory to place reads throughout the workflow.}
+\item{temp_directory_path}{User-defined temporary directory to place reads
+throughout the workflow.}
 }
 \value{
-A data frame with the FASTQ file paths, primer orientations and sequences, and parsed sample names
+A data frame with the FASTQ file paths, primer orientations and
+sequences, and parsed sample names
 }
 \description{
-Takes in the FASTQ files from the user and creates a data frame with the paths to files that will be created and used in the future.
-Included in a larger 'read_prefilt_fastq' function.
+Takes in the FASTQ files from the user and creates a data frame with the
+paths to files that will be created and used in the future. Included in a
+larger 'read_prefilt_fastq' function.
 }
-\keyword{and}
 \keyword{internal}
-\keyword{names}
-\keyword{of}
-\keyword{sequences}
-\keyword{sequences,}

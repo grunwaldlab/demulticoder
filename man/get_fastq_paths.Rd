@@ -11,7 +11,8 @@ get_fastq_paths(analysis_setup, my_direction, my_primer_pair_id)
 
 \item{my_primer_pair_id}{The the specific barcode id}
 
-\item{cutadapt_data}{directory_data folder with trimmed and filtered reads for each sample}
+\item{cutadapt_data}{directory_data folder with trimmed and filtered reads
+for each sample}
 }
 \description{
 Retrieve the paths of the filtered and trimmed Fastq files

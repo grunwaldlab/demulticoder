@@ -2,31 +2,42 @@
 % Please edit documentation in R/make_asv_abund_matrix.R
 \name{make_asv_abund_matrix}
 \alias{make_asv_abund_matrix}
-\title{Make an amplified sequence variant (ASV) abundance matrix
-This function generates an ASV abundance matrix using raw reads processed during previous steps, including read preparation, removing primers, and using DADA2 core denoising alogrithm to infer ASVs.}
+\title{Make an amplified sequence variant (ASV) abundance matrix This function
+generates an ASV abundance matrix using raw reads processed during previous
+steps, including read preparation, removing primers, and using DADA2 core
+denoising alogrithm to infer ASVs.}
 \usage{
 make_asv_abund_matrix(analysis_setup, overwrite_existing = FALSE)
 }
 \arguments{
-\item{analysis_setup}{analysis_setup An object containing directory paths and data tables, produced by the \code{prepare_reads} function}
+\item{analysis_setup}{analysis_setup An object containing directory paths and
+data tables, produced by the \code{prepare_reads} function}
 
-\item{overwrite_existing}{Logical, indicating whether to overwrite existing results.}
+\item{overwrite_existing}{Logical, indicating whether to overwrite existing
+results.}
 }
 \value{
 The ASV abundance matrix (\code{asv_abund_matrix})
 }
 \description{
-Make an amplified sequence variant (ASV) abundance matrix
-This function generates an ASV abundance matrix using raw reads processed during previous steps, including read preparation, removing primers, and using DADA2 core denoising alogrithm to infer ASVs.
+Make an amplified sequence variant (ASV) abundance matrix This function
+generates an ASV abundance matrix using raw reads processed during previous
+steps, including read preparation, removing primers, and using DADA2 core
+denoising alogrithm to infer ASVs.
 }
 \details{
-The function processes data for each unique barcode separately, inferring
-ASVs, merging reads, and creating an ASV abundance matrix
-.
+The function processes data for each unique barcode separately,
+inferring ASVs, merging reads, and creating an ASV abundance matrix .
 }
 \examples{
-The primary wrapper function for DADA2 ASV inference steps
-prepare_reads(data_directory = "inst/extdata", output_directory = "test_data", tempdir_id = "demulticoder_run", overwrite_existing = FALSE)
-cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = FALSE)
-make_asv_abund_matrix(analysis_setup, overwrite_existing = FALSE)
+# The primary wrapper function for DADA2 ASV inference steps
+prepare_reads(data_directory = "extdata", 
+output_directory = "test_data", 
+tempdir_id = "demulticoder_run", 
+overwrite_existing = FALSE)
+cut_trim(analysis_setup,
+cutadapt_path="/opt/homebrew/bin/cutadapt", 
+overwrite_existing = FALSE)
+make_asv_abund_matrix(analysis_setup, 
+overwrite_existing = FALSE)
 }

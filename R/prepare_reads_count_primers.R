@@ -1,5 +1,4 @@
 #' Prepare reads for primer trimming using Cutadapt
-#'
 #' @param data_directory User-specified directory path where the user has placed
 #'   raw FASTQ (forward and reverse reads), metadata.csv, and
 #'   primerinfo_params.csv files. Default is "data".
@@ -22,8 +21,13 @@
 #' @export
 #'
 #' @examples
-#' Pre-filter raw reads and parse metadata and primer_information to prepare for primer trimming and filter
-#' prepare_reads(data_directory = "extdata", output_directory = "test_data", tempdir_path="extdata", tempdir_id = "demulticoder_run_temp", overwrite_existing = FALSE)
+#' # Pre-filter raw reads and parse metadata and primer_information to prepare 
+#' # for primer trimming and filter
+#' prepare_reads(data_directory = "extdata", 
+#' output_directory = "test_data", 
+#' tempdir_path="extdata", 
+#' tempdir_id = "demulticoder_run_temp", 
+#' overwrite_existing = FALSE)
 prepare_reads <- function(data_directory = "data",
                           output_directory = "output",
                           tempdir_path = NULL,
@@ -167,7 +171,7 @@ setup_directories <- function(data_directory = "data",
 #' @keywords internal
 prepare_metadata_table <-
   function(metadata_file_path, primer_data) {
-    metadata <- read_csv(metadata_file_path)
+    metadata <- readr::read_csv(metadata_file_path)
     metadata <- merge(metadata, primer_data, by = "primer_name")
     metadata <- metadata[order(metadata$sample_name), ]
     if ("primer_name" %in% colnames(metadata)) {
@@ -196,7 +200,7 @@ prepare_metadata_table <-
 #' @keywords internal
 orient_primers <- function(primers_params_path) {
   primer_data_path <- file.path(primers_params_path)
-  primer_data <- read_csv(primer_data_path)
+  primer_data <- readr::read_csv(primer_data_path)
   
   forward_primers <- primer_data[, c(1:2)]
   reverse_primers <- primer_data[, c(1, 3)]
@@ -204,23 +208,23 @@ orient_primers <- function(primers_params_path) {
   
   forward_primers$f_compt <-
     sapply(forward_primers$forward, function(x)
-      toString(Biostrings::complement(DNAString(x))))
+      toString(Biostrings::complement(Biostrings::DNAString(x))))
   forward_primers$f_rev <-
     sapply(forward_primers$forward, function(x)
-      toString(Biostrings::reverse(DNAString(x))))
+      toString(Biostrings::reverse(Biostrings::DNAString(x))))
   forward_primers$f_rc <-
     sapply(forward_primers$forward, function(x)
-      toString(Biostrings::reverseComplement(DNAString(x))))
+      toString(Biostrings::reverseComplement(Biostrings::DNAString(x))))
   
   reverse_primers$r_compt <-
     sapply(reverse_primers$reverse, function(x)
-      toString(Biostrings::complement(DNAString(x))))
+      toString(Biostrings::complement(Biostrings::DNAString(x))))
   reverse_primers$r_rev <-
     sapply(reverse_primers$reverse, function(x)
-      toString(Biostrings::reverse(DNAString(x))))
+      toString(Biostrings::reverse(Biostrings::DNAString(x))))
   reverse_primers$r_rc <-
     sapply(reverse_primers$reverse, function(x)
-      toString(Biostrings::reverseComplement(DNAString(x))))
+      toString(Biostrings::reverseComplement(Biostrings::DNAString(x))))
   
   #add back together
   primer_data <-
@@ -238,7 +242,7 @@ orient_primers <- function(primers_params_path) {
 #' @keywords internal
 read_parameters <- function(primers_params_path) {
   params_data_path <- file.path(primers_params_path)
-  param_data <- read_csv(params_data_path)
+  param_data <- readr::read_csv(params_data_path)
   parameters <- param_data[, c(1, 4:ncol(param_data))]
   return(parameters)
 }
@@ -385,7 +389,7 @@ get_pre_primer_hits <-
            fastq_data,
            output_directory_path) {
     primer_hit_data <-
-      gather(
+      tidyr::gather(
         primer_data,
         key = "orientation",
         value = "sequence",
@@ -400,8 +404,8 @@ get_pre_primer_hits <-
       )
     
     primer_hits <- function(primer, path) {
-      nhits <-
-        vcountPattern(primer, sread(readFastq(path)), fixed = FALSE)
+      fastq_data <- ShortRead::readFastq(path)
+      nhits <- Biostrings::vcountPattern(primer, ShortRead::sread(fastq_data), fixed = FALSE)
       return(sum(nhits > 0))
     }
     
@@ -409,18 +413,18 @@ get_pre_primer_hits <-
       file.path(output_directory_path, "primer_hit_data_pretrim.csv")
     
     if (file.exists(primer_hit_data_csv_path)) {
-      primer_hit_data <- read_csv(primer_hit_data_csv_path)
+      primer_hit_data <- readr::read_csv(primer_hit_data_csv_path)
       
     } else {
-      primer_hit_counts <- future_map(fastq_data$prefiltered_path,
+      primer_hit_counts <- furrr::future_map(fastq_data$prefiltered_path,
                                       function (a_path)
-                                        map_dbl(primer_hit_data$sequence, primer_hits, path = a_path))
+                                        purrr::map_dbl(primer_hit_data$sequence, primer_hits, path = a_path))
       
       names(primer_hit_counts) <- paste0(fastq_data$file_id)
       
       primer_hit_data <-
-        bind_cols(primer_hit_data, as_tibble(primer_hit_counts))
-      write_csv(primer_hit_data, primer_hit_data_csv_path)
+        dplyr::bind_cols(primer_hit_data, dplyr::as_tibble(primer_hit_counts))
+      readr::write_csv(primer_hit_data, primer_hit_data_csv_path)
     }
     
     make_primer_hit_plot <- function(primer_hits,
@@ -441,22 +445,22 @@ get_pre_primer_hits <-
       total_primers <- new_primer_hits[, c("primer_type", "Total")]
       total_primers$Total <- as.numeric(total_primers$Total)
       plot <-
-        ggplot(data = total_primers, aes(x = primer_type, y = Total)) +
-        geom_bar(stat = "identity",
+        ggplot2::ggplot(data = total_primers, ggplot2::aes(x = primer_type, y = Total)) +
+        ggplot2::geom_bar(stat = "identity",
                  width = 0.8,
                  fill = "seagreen3") +
-        geom_text(
-          aes(label = Total),
+        ggplot2::geom_text(
+          ggplot2::aes(label = Total),
           vjust = -0.5,
           color = "black",
           size = 3
         ) +
-        coord_flip() +
-        theme_minimal() +
-        labs(title = "Number of primers found by barcode and orientation", x = "Primer Type", y = "Total")
+        ggplot2::coord_flip() +
+        ggplot2::theme_minimal() +
+        ggplot2::labs(title = "Number of primers found by barcode and orientation", x = "Primer Type", y = "Total")
       
       print(plot)
-      ggsave(
+      ggplot2::ggsave(
         plot,
         filename = file.path(output_directory_path, "pretrim_primer_plot.pdf"),
         width = 8,

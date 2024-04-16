@@ -1,5 +1,5 @@
 #' Filter ASV abundance matrix and convert to taxmap object
-#'
+#' @importFrom stats filter
 #' @param analysis_setup analysis_setup An object containing directory paths and
 #'   data tables, produced by the `prepare_reads` function
 #' @param min_read_depth ASV filter parameter. If mean read depth of across all
@@ -13,12 +13,22 @@
 #' @return ASV matrix converted to taxmap object
 #' @export
 #' @examples
-#' Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
-#' prepare_reads(data_directory = "inst/extdata", output_directory = "test_data", tempdir_id = "demulticoder_run", overwrite_existing = FALSE)
-#' cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = FALSE)
-#' make_asv_abund_matrix(analysis_setup, overwrite_existing = FALSE)
-#' assign_tax(analysis_setup,asv_abund_matrix, retrieve_files=FALSE, overwrite_existing=FALSE)
-#' convert_asv_matrix_to_objs(analysis_setup, save_outputs=FALSE)
+#' # Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
+#' prepare_reads(data_directory = "extdata", 
+#' output_directory = "test_data", 
+#' tempdir_id = "demulticoder_run", 
+#' overwrite_existing = FALSE)
+#' cut_trim(analysis_setup,
+#' cutadapt_path="/opt/homebrew/bin/cutadapt", 
+#' overwrite_existing = FALSE)
+#' make_asv_abund_matrix(analysis_setup, 
+#' overwrite_existing = FALSE)
+#' assign_tax(analysis_setup,
+#' asv_abund_matrix,
+#' retrieve_files=FALSE, 
+#' overwrite_existing=FALSE)
+#' convert_asv_matrix_to_objs(analysis_setup, 
+#' save_outputs=FALSE)
 convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minimum_bootstrap = 0, save_outputs = FALSE, overwrite = FALSE) {
   data_tables <- analysis_setup$data_tables
   output_directory_path <- analysis_setup$directory_paths$output_directory

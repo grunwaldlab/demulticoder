@@ -2,7 +2,8 @@
 % Please edit documentation in R/make_asv_abund_matrix.R
 \name{make_seqhist}
 \alias{make_seqhist}
-\title{Plots a histogram of read length counts of all sequences within the ASV matrix}
+\title{Plots a histogram of read length counts of all sequences within the ASV
+matrix}
 \usage{
 make_seqhist(asv_abund_matrix, output_directory_path)
 }
@@ -13,6 +14,7 @@ make_seqhist(asv_abund_matrix, output_directory_path)
 histogram with read length counts of all sequences within ASV matrix
 }
 \description{
-Plots a histogram of read length counts of all sequences within the ASV matrix
+Plots a histogram of read length counts of all sequences within the ASV
+matrix
 }
 \keyword{internal}

@@ -13,16 +13,19 @@ convert_asv_matrix_to_objs(
 )
 }
 \arguments{
-\item{analysis_setup}{analysis_setup An object containing directory paths and data tables, produced by the \code{prepare_reads} function}
+\item{analysis_setup}{analysis_setup An object containing directory paths and
+data tables, produced by the \code{prepare_reads} function}
 
-\item{min_read_depth}{ASV filter parameter. If mean read depth of across all samples is less than this threshold, ASV will be filtered.
-reads is less than this value across all samples}
+\item{min_read_depth}{ASV filter parameter. If mean read depth of across all
+samples is less than this threshold, ASV will be filtered. reads is less
+than this value across all samples}
 
-\item{minimum_bootstrap}{Threshold for bootstrap support value
-for taxonomic assignments. Below designated minimum bootstrap
-threshold, taxnomoic assignments will be set to N/A}
+\item{minimum_bootstrap}{Threshold for bootstrap support value for taxonomic
+assignments. Below designated minimum bootstrap threshold, taxnomoic
+assignments will be set to N/A}
 
-\item{save_outputs}{Logical, indicating whether to save the taxmap object. Default is FALSE.}
+\item{save_outputs}{Logical, indicating whether to save the taxmap object.
+Default is FALSE.}
 }
 \value{
 ASV matrix converted to taxmap object
@@ -31,10 +34,20 @@ ASV matrix converted to taxmap object
 Filter ASV abundance matrix and convert to taxmap object
 }
 \examples{
-Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
-prepare_reads(data_directory = "inst/extdata", output_directory = "test_data", tempdir_id = "demulticoder_run", overwrite_existing = FALSE)
-cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = FALSE)
-make_asv_abund_matrix(analysis_setup, overwrite_existing = FALSE)
-assign_tax(analysis_setup,asv_abund_matrix, retrieve_files=FALSE, overwrite_existing=FALSE)
-convert_asv_matrix_to_objs(analysis_setpu, save_outputs=FALSE)
+# Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
+prepare_reads(data_directory = "extdata", 
+output_directory = "test_data", 
+tempdir_id = "demulticoder_run", 
+overwrite_existing = FALSE)
+cut_trim(analysis_setup,
+cutadapt_path="/opt/homebrew/bin/cutadapt", 
+overwrite_existing = FALSE)
+make_asv_abund_matrix(analysis_setup, 
+overwrite_existing = FALSE)
+assign_tax(analysis_setup,
+asv_abund_matrix,
+retrieve_files=FALSE, 
+overwrite_existing=FALSE)
+convert_asv_matrix_to_objs(analysis_setup, 
+save_outputs=FALSE)
 }

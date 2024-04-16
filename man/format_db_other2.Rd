@@ -2,22 +2,28 @@
 % Please edit documentation in R/format_databases.R
 \name{format_db_other2}
 \alias{format_db_other2}
-\title{An second user-specified database that is initially in the format specified by DADA2 with header simply taxonomic levels (kingdom down to species, separated by semi-colons, ;)}
+\title{An second user-specified database that is initially in the format specified
+by DADA2 with header simply taxonomic levels (kingdom down to species,
+separated by semi-colons, ;)}
 \usage{
 format_db_other2(analysis_setup, db_other2)
 }
 \arguments{
 \item{db_other2}{The name of the database}
 
-\item{output_directory_path}{The path to the directory where resulting files are output}
+\item{output_directory_path}{The path to the directory where resulting files
+are output}
 
-\item{temp_directory_path}{User-defined temporary directory to place reads throughout the workflow
-metadata, and primer_info files}
+\item{temp_directory_path}{User-defined temporary directory to place reads
+throughout the workflow metadata, and primer_info files}
 }
 \value{
-An other database that has modified headers and is output in the reference_databases folder
+An other database that has modified headers and is output in the
+reference_databases folder
 }
 \description{
-An second user-specified database that is initially in the format specified by DADA2 with header simply taxonomic levels (kingdom down to species, separated by semi-colons, ;)
+An second user-specified database that is initially in the format specified
+by DADA2 with header simply taxonomic levels (kingdom down to species,
+separated by semi-colons, ;)
 }
 \keyword{internal}

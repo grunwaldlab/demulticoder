@@ -2,13 +2,14 @@
 % Please edit documentation in R/prepare_reads_count_primers.R
 \name{remove_ns}
 \alias{remove_ns}
-\title{Wrapper function for core DADA2 filter and trim function for first filtering step}
+\title{Wrapper function for core DADA2 filter and trim function for first filtering
+step}
 \usage{
 remove_ns(fastq_data, multithread = TRUE, temp_directory_path)
 }
 \arguments{
-\item{fastq_data}{A data frame with the fastq file paths, the direction of the sequences, and names of sequences
-metadata, and primer_info files}
+\item{fastq_data}{A data frame with the fastq file paths, the direction of
+the sequences, and names of sequences metadata, and primer_info files}
 
 \item{multithread}{(Optional). Default is FALSE.
  If TRUE, input files are filtered in parallel via \code{\link[parallel]{mclapply}}.
@@ -18,14 +19,17 @@ metadata, and primer_info files}
 If memory is an issue, execute in a clean environment and reduce the chunk size \code{n} and/or
  the number of threads.}
 
-\item{temp_directory_path}{User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow}
+\item{temp_directory_path}{User-defined temporary directory to output
+unfiltered, trimmed, and filtered read directories throughout the workflow}
 
-\item{metadata}{A metadata containing the concatenated metadata and primer data}
+\item{metadata}{A metadata containing the concatenated metadata and primer
+data}
 }
 \value{
 Return prefiltered reads with no Ns
 }
 \description{
-Wrapper function for core DADA2 filter and trim function for first filtering step
+Wrapper function for core DADA2 filter and trim function for first filtering
+step
 }
 \keyword{internal}

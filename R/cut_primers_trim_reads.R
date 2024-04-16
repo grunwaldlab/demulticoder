@@ -1,6 +1,5 @@
 #' Main command to trim primers using Cutadapt and core DADA2 functions. If
-#' samples contain pooled barcodes, reads will also be demultiplexed.
-#'
+#' samples contain pooled barcodes, reads will also be demultiplexed
 #' @param analysis_setup An object containing directory paths and data tables,
 #'   produced by the `prepare_reads` function
 #' @param cutadapt_path Path to the Cutadapt program.
@@ -11,17 +10,23 @@
 #' @export
 #'
 #' @examples
-#' Remove remaining primers from raw reads, demultiplex pooled barcoded samples, and then trim reads based on specific DADA2 parameters
-#' prepare_reads(data_directory = "inst/extdata", output_directory = "test_data", tempdir_id = "demulticoder_run", overwrite_existing = FALSE)
-#' cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = FALSE)
+#' # Remove remaining primers from raw reads, demultiplex pooled barcoded samples, 
+#' # and then trim reads based on specific DADA2 parameters
+#' prepare_reads(data_directory = "inst/extdata", 
+#' output_directory = "test_data", 
+#' tempdir_id = "demulticoder_run", 
+#' overwrite_existing = FALSE)
+#' cut_trim(analysis_setup,
+#' cutadapt_path="/opt/homebrew/bin/cutadapt", 
+#' overwrite_existing = FALSE)
 cut_trim <- function(analysis_setup,
                      cutadapt_path,
                      overwrite_existing = FALSE) {
-
+  
   data_tables <- analysis_setup$data_tables
   output_directory_path <- analysis_setup$directory_paths$output_directory
   temp_directory_path <- analysis_setup$directory_paths$temp_directory
- 
+  
   patterns_to_check <- c(
     "primer_hit_data_posttrim.csv", 
     "posttrim_primer_plot.pdf",
@@ -122,12 +127,12 @@ cut_trim <- function(analysis_setup,
   unique_primers <- unique(data_tables$primer_data$primer_name)
   
   for (barcode in unique_primers) {
-    barcode_params <- filter(data_tables$parameters, primer_name == barcode)
+    barcode_params <- dplyr::filter(data_tables$parameters, primer_name == barcode)
     
     if (nrow(barcode_params) > 0) {
       barcode_params <- as.list(barcode_params)
       
-      barcode_params <- modifyList(default_params, barcode_params)
+      barcode_params <- utils::modifyList(default_params, barcode_params)
       
       cutadapt_data_barcode <- subset(data_tables$cutadapt_data, primer_name == barcode)
       if (nrow(cutadapt_data_barcode) > 0 && !all(file.exists(c(cutadapt_data_barcode$trimmed_path)))) {
@@ -222,8 +227,8 @@ run_cutadapt <- function(cutadapt_path,
     cutadapt_output <- furrr::future_map(command_args, ~ system2(cutadapt, args = .x))
     
     for (i in seq_along(fwd_untrim)) {
-      fwd_untrim_reads <- readFastq(fwd_untrim[i])
-      rev_untrim_reads <- readFastq(rev_untrim[i])
+      fwd_untrim_reads <- ShortRead::readFastq(fwd_untrim[i])
+      rev_untrim_reads <- ShortRead::readFastq(rev_untrim[i])
       writeFastq(fwd_untrim_reads, fwd_trim[i], mode = 'a')
       cat("Already trimmed forward reads were appended to trimmed read directory, and they are located here:", fwd_trim[i], "\n")
       writeFastq(rev_untrim_reads, rev_trim[i], mode = 'a')
@@ -320,7 +325,7 @@ filter_and_trim <- function(output_directory_path,
         qualityType = "Auto",
         id.field = NULL
       )
-    filter_results <- as_tibble(filter_results)
+    filter_results <- dplyr::as_tibble(filter_results)
     filter_results_path <-
       file.path(temp_directory_path, paste0("Filter_results_", barcode, ".RData"))
     save(filter_results, file = filter_results_path)
@@ -339,7 +344,7 @@ filter_and_trim <- function(output_directory_path,
 #'
 #' @keywords internal
 get_post_trim_hits <- function(primer_data, cutadapt_data, output_directory_path) {
-  post_trim_hit_data <- gather(
+  post_trim_hit_data <- tidyr::gather(
     primer_data,
     key = "orientation",
     value = "sequence",
@@ -355,18 +360,18 @@ get_post_trim_hits <- function(primer_data, cutadapt_data, output_directory_path
   
   # Function to count the number of reads in which the primer is found
   post_trim_hits <- function(primer, path) {
-    nhits <- vcountPattern(primer, sread(readFastq(path)), fixed = FALSE)
+    nhits <- Biostrings::vcountPattern(primer, ShortRead::sread(ShortRead::readFastq(path), pattern = function(x) x), fixed = FALSE)
     return(sum(nhits > 0))
   }
   
   post_primer_hit_data_csv_path <- file.path(output_directory_path, "primer_hit_data_posttrim.csv")
-  post_primer_hit_counts <- future_map(cutadapt_data$filtered_path,
-                                       function(a_path)
-                                         map_dbl(post_trim_hit_data$sequence, post_trim_hits, path = a_path))
+  post_primer_hit_counts <- furrr::future_map(cutadapt_data$filtered_path,
+                                              function(a_path)
+                                                purrr::map_dbl(post_trim_hit_data$sequence, post_trim_hits, path = a_path))
   
   names(post_primer_hit_counts) <- paste0(cutadapt_data$file_id, "_", cutadapt_data$primer_name)
-  post_trim_hit_data <- bind_cols(post_trim_hit_data, as_tibble(post_primer_hit_counts))
-  write_csv(post_trim_hit_data, post_primer_hit_data_csv_path)
+  post_trim_hit_data <- dplyr::bind_cols(post_trim_hit_data, dplyr::as_tibble(post_primer_hit_counts))
+  readr::write_csv(post_trim_hit_data, post_primer_hit_data_csv_path)
   
   
   make_posttrim_primer_plot <- function(post_trim_hits,
@@ -381,15 +386,15 @@ get_post_trim_hits <- function(primer_data, cutadapt_data, output_directory_path
     new_primer_hits$Total <- paste(total_nums)
     total_primers <- new_primer_hits[, c("primer_type", "Total")]
     total_primers$Total <- as.numeric(total_primers$Total)
-    plot <- ggplot(data = total_primers, aes(x = primer_type, y = Total)) +
-      geom_bar(stat = "identity", width = 0.8, fill = "seagreen3") +
-      geom_text(aes(label = Total), vjust = -0.5, color = "black", size = 3) +
-      coord_flip() +
-      labs(title = "Number of primers found by barcode and orientation", x = "Primer Type", y = "Total")+
-      theme_minimal()
+    plot <- ggplot2::ggplot(data = total_primers, ggplot2::aes(x = primer_type, y = Total)) +
+      ggplot2::geom_bar(stat = "identity", width = 0.8, fill = "seagreen3") +
+      ggplot2::geom_text(ggplot2::aes(label = Total), vjust = -0.5, color = "black", size = 3) +
+      ggplot2::coord_flip() +
+      ggplot2::labs(title = "Number of primers found by barcode and orientation", x = "Primer Type", y = "Total")+
+      ggplot2::theme_minimal()
     
     print(plot)
-    ggsave(plot, filename = file.path(output_directory_path, "posttrim_primer_plot.pdf"), width = 8, height = 8)
+    ggplot2::ggsave(plot, filename = file.path(output_directory_path, "posttrim_primer_plot.pdf"), width = 8, height = 8)
     return(invisible(plot))
   }
   

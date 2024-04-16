@@ -12,7 +12,8 @@ make_abund_matrix(
 )
 }
 \arguments{
-\item{raw_seqtab}{R data file with raw sequence data prior to removal of chimeras}
+\item{raw_seqtab}{R data file with raw sequence data prior to removal of
+chimeras}
 }
 \value{
 asv_abund_matrix The returned final ASV abundance matrix

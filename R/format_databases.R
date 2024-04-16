@@ -45,7 +45,7 @@ format_db_rps10 <- function(analysis_setup, db_rps10) {
   
   data_rps10 <- str_match(names(db_rps10), pattern = "name=(.+)\\|strain=(.+)\\|ncbi_acc=(.+)\\|ncbi_taxid=(.+)\\|oodb_id=(.+)\\|taxonomy=(.+)$")
   colnames(data_rps10) <- c("header", "name", "strain", "ncbi_acc", "ncbi_taxid", "oodb_id", "taxonomy")
-  data_rps10 <- as_tibble(data_rps10)
+  data_rps10 <- dplyr::as_tibble(data_rps10)
   
   data_rps10$taxonomy <- gsub(data_rps10$taxonomy, pattern = 'cellular_organisms;', replacement = '', fixed = TRUE)
   data_rps10$taxonomy <- gsub(data_rps10$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
@@ -65,10 +65,10 @@ format_db_rps10 <- function(analysis_setup, db_rps10) {
   
   species_count <- table(binomial)
   count_table <- as.data.frame(species_count, stringsAsFactors = FALSE)
-  count_table <- as_tibble(count_table)
+  count_table <- dplyr::as_tibble(count_table)
   names(count_table) <- c('Species', 'Number of sequences')
   
-  write.csv(count_table, file = file.path(output_directory_path, "species_count_table_rps10.csv"), row.names = FALSE)
+  readr::write_csv(count_table, file = file.path(output_directory_path, "species_count_table_rps10.csv"), row.names = FALSE)
   write_lines(paste0(">", data_rps10$taxonomy, "\n", db_rps10), file = database_path)
   
   return(data_rps10)
@@ -115,10 +115,10 @@ format_db_its <- function(analysis_setup, db_its) {
   data_its$name <- sub("^([^|]+)\\|.*$", "\\1", data_its$header)
   species_count <- table(data_its$name)
   count_table <- as.data.frame(species_count, stringsAsFactors = FALSE)
-  count_table <- as_tibble(count_table)
+  count_table <- dplyr::as_tibble(count_table)
   names(count_table) <- c('Species', 'Number of sequences')
   
-  write_csv(count_table, file = file.path(output_directory_path, "species_count_table_its.csv"))
+  readr::write_csv(count_table, file = file.path(output_directory_path, "species_count_table_its.csv"))
   write_lines(paste0(">", data_its$taxonomy, "\n", data_its$sequence), file = database_path)
   return(data_its)
 }
@@ -168,10 +168,10 @@ format_db_16s <- function(analysis_setup, db_16s) {
   
   genus_count <- table(data_16s$genus)
   count_table <- as.data.frame(genus_count, stringsAsFactors = FALSE)
-  count_table <- as_tibble(count_table)
+  count_table <- dplyr::as_tibble(count_table)
   names(count_table) <- c('Genus', 'Number of sequences')
   
-  write_csv(count_table, file = file.path(output_directory_path, "genus_count_table_16s.csv"))
+  readr::write_csv(count_table, file = file.path(output_directory_path, "genus_count_table_16s.csv"))
   write_lines(paste0(">", data_16s$taxonomy, "\n", db_16s), file = database_path)
   
   return(data_16s)
@@ -222,10 +222,10 @@ format_db_other1 <-function(analysis_setup, db_other1){
   )
   genus_count <- table(data_other1$genus)
   count_table <- as.data.frame(genus_count, stringsAsFactors = FALSE)
-  count_table <- as_tibble(count_table)
+  count_table <- dplyr::as_tibble(count_table)
   names(count_table) <- c('Genus', 'Number of sequences')
 
-  write_csv(count_table, file = file.path(output_directory_path, "genus_count_table_other1.csv"))
+  readr::write_csv(count_table, file = file.path(output_directory_path, "genus_count_table_other1.csv"))
   write_lines(paste0(">", data_other1$taxonomy, "\n", db_other1), file = database_path)
   return(data_other1)
 }
@@ -279,10 +279,10 @@ format_db_other2 <-function(analysis_setup, db_other2){
   )
   genus_count <- table(data_other2$genus)
   count_table <- as.data.frame(genus_count, stringsAsFactors = FALSE)
-  count_table <- as_tibble(count_table)
+  count_table <- dplyr::as_tibble(count_table)
   names(count_table) <- c('Genus', 'Number of sequences')
   
-  write_csv(count_table, file = file.path(output_directory_path, "genus_count_table_other2.csv"))
+  readr::write_csv(count_table, file = file.path(output_directory_path, "genus_count_table_other2.csv"))
   write_lines(paste0(">", data_other1$taxonomy, "\n", db_other1), file = database_path)
   return(data_other2)
 }

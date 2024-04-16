@@ -7,9 +7,11 @@
 plot_post_trim_qc(cutadapt_data, output_directory_path, n = 5e+05)
 }
 \arguments{
-\item{cutadapt_data}{directory_data folder with trimmed and filtered reads for each sample}
+\item{cutadapt_data}{directory_data folder with trimmed and filtered reads
+for each sample}
 
-\item{output_directory_path}{The path to the directory where resulting files are output}
+\item{output_directory_path}{The path to the directory where resulting files
+are output}
 
 \item{n}{(Optional). Default 500,000.
 The number of records to sample from the fastq file.}

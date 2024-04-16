@@ -14,9 +14,11 @@ run_cutadapt(
 \arguments{
 \item{cutadapt_path}{A path to the cutadapt program.}
 
-\item{minCutadaptlength}{Read lengths that are lower than this threshold will be discarded. Default is 50.}
+\item{minCutadaptlength}{Read lengths that are lower than this threshold will
+be discarded. Default is 50.}
 
-\item{cutadapt_data}{Directory_data folder with trimmed and filtered reads for each sample.}
+\item{cutadapt_data}{Directory_data folder with trimmed and filtered reads
+for each sample.}
 }
 \value{
 Trimmed read.

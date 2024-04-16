@@ -10,7 +10,6 @@
 #'   directory to the output directory
 #' @param overwrite_existing Logical, indicating whether to remove or overwrite
 #'   existing files and directories from previous runs
-#' @inheritParams assign_taxonomyDada2
 #' @inheritParams dada2::assignTaxonomy
 #'
 #' @return Taxonomic assignments of each unique ASV sequence
@@ -18,11 +17,20 @@
 #' @export assign_tax
 #'
 #' @examples
-#' Assign taxonomies to ASVs on a per barcode basis
-#' prepare_reads(data_directory = "inst/extdata", output_directory = "test_data", tempdir_id = "demulticoder_run", overwrite_existing = FALSE)
-#' cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = FALSE)
-#' make_asv_abund_matrix(analysis_setup, overwrite_existing = FALSE)
-#' assign_tax(analysis_setup,asv_abund_matrix, retrieve_files=FALSE, overwrite_existing=FALSE)
+#' # Assign taxonomies to ASVs on a per barcode basis
+#' prepare_reads(data_directory = "extdata", 
+#' output_directory = "test_data", 
+#' tempdir_id = "demulticoder_run", 
+#' overwrite_existing = FALSE)
+#' cut_trim(analysis_setup,
+#' cutadapt_path="/opt/homebrew/bin/cutadapt", 
+#' overwrite_existing = FALSE)
+#' make_asv_abund_matrix(analysis_setup, 
+#' overwrite_existing = FALSE)
+#' assign_tax(analysis_setup,
+#' asv_abund_matrix, 
+#' retrieve_files=FALSE, 
+#' overwrite_existing=FALSE)
 assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, db_rps10 = "oomycetedb.fasta", db_its = "fungidb.fasta", db_16s = "bacteriadb.fasta", db_other1 = "otherdb1.fasta", db_other2 = "otherdb2.fasta", overwrite_existing = FALSE) {
   data_tables <- analysis_setup$data_tables
   data_path <- analysis_setup$directory_paths$data_directory
@@ -271,7 +279,7 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv, output_directory_
     dada2_tax = str_match(seq_tax_asv[rownames(formatted_abund_asv)], pattern = "^(.+)--Species")[,1],
     #dada2_pid = as.numeric(str_match(seq_tax_asv[rownames(formatted_abund_asv)], '--([0-9.]+)--ASV$')[, 2]),
     formatted_abund_asv)
-  formatted_abund_asv <- as_tibble(formatted_abund_asv)
+  formatted_abund_asv <- dplyr::as_tibble(formatted_abund_asv)
   
   primer_seqs <- apply(analysis_setup$data_tables$primer_data[, 2:ncol(analysis_setup$data_tables$primer_data)], 2, paste, collapse = "|")
   
@@ -316,7 +324,7 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv, output_directory_
   
   # Return the filtered abundance matrix
   
-  write_csv(filtered_abund_matrix, file = file.path(output_directory_path, paste0('final_asv_abundance_matrix_', locus, '.csv')))
+  readr::write_csv(filtered_abund_matrix, file = file.path(output_directory_path, paste0('final_asv_abundance_matrix_', locus, '.csv')))
   return(filtered_abund_matrix)
 }
 
@@ -342,5 +350,5 @@ get_read_counts <- function(asv_abund_matrix, temp_directory_path, output_direct
   output_format <- knitr::opts_knit$get("rmarkdown.pandoc.to")
   print(track)
   track_read_counts_path <- file.path(output_directory_path, paste0("track_reads_", locus, ".csv"))
-  write_csv(track, track_read_counts_path)
+  readr::write_csv(track, track_read_counts_path)
 }

@@ -1,38 +1,42 @@
 Package: demulticoder
-Title: An R package for the integrated analyis of multiplex metabarcodes 
+Title: An R Package for the Integrated Analysis of Multiplex Metabarcodes
 Version: 0.0.0.9000
 Authors@R: 
-    person("Martha", "Sudermann", , "sudermam@oregonstate.edu", role = c("aut", "cre"))
-Description: A wrapper package to filter, trim primers, and denoise metabarcoding data using Cutadapt and the dada2 R package. The package can handle datasets that contain pooled amplicons, or simpler experimental designs
+   person("Martha", "Sudermann", , "sudermam@oregonstate.edu", role = c("aut", "cre"))
+Description: The demulticoder package provides a workflow for analyzing 
+   multiplex metabarcoding data. It includes functions for filtering, 
+   trimming primers, and denoising data using Cutadapt and the dada2 package.
+   The package can handle datasets with pooled amplicons and simple 
+   experimental designs.
 License: GPL-2 | GPL-3
 Encoding: UTF-8
 Depends:
-        ShortRead,
-        dplyr,
-        purrr,
-        furrr,
-        tidyr,
-        stringr,
-        metacoder,
-        phyloseq,
-        readr,
-        ggplot2,
-        gridExtra,
-        Biostrings,
-        dada2,
-        gdata,
-        BiocGenerics,
-        knitr,
-        kableExtra
+   R (>= 3.0.2)  
+Imports:
+   dplyr,
+   ggplot2,
+   ShortRead,
+   stringr,
+   tibble,
+   utils,
+   stats
+Suggests:
+   gdata,
+   gridExtra,
+   kableExtra,
+   knitr,
+   metacoder,
+   phyloseq,
+   testthat (>= 3.0.0)
 Remotes:
-        bioc::Biostrings,
-        bioc::dada2,
-        bioc::ShortRead,
-        bioc::phyloseq
+   Bioc::Generics,
+   bioc::Biostrings,
+   bioc::dada2,
+   bioc::ShortRead,
+   bioc::phyloseq
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
-Suggests: 
-    testthat (>= 3.0.0)
 Config/testthat/edition: 3
 LazyData: true
 URL: https://grunwaldlab.github.io/demulticoder/
+BugReports: https://github.com/grunwaldlab/demulticoder/issues
+RoxygenNote: 7.3.1   

@@ -12,7 +12,8 @@ merge_reads_command(
 )
 }
 \arguments{
-\item{output_directory_path}{The path to the directory where resulting files are output}
+\item{output_directory_path}{The path to the directory where resulting files
+are output}
 
 \item{merged_read_data_path}{Path to R data file containing merged read data}
 }

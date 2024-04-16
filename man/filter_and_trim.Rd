@@ -2,7 +2,8 @@
 % Please edit documentation in R/cut_primers_trim_reads.R
 \name{filter_and_trim}
 \alias{filter_and_trim}
-\title{Wrapper function for filterAndTrim function from DADA2, to be used after primer trimming}
+\title{Wrapper function for filterAndTrim function from DADA2, to be used after
+primer trimming}
 \usage{
 filter_and_trim(
   output_directory_path,
@@ -13,14 +14,17 @@ filter_and_trim(
 )
 }
 \arguments{
-\item{output_directory_path}{The path to the directory where resulting files are output}
+\item{output_directory_path}{The path to the directory where resulting files
+are output}
 
-\item{cutadapt_data_barcode}{directory_data folder with trimmed and filtered reads for each sample}
+\item{cutadapt_data_barcode}{directory_data folder with trimmed and filtered
+reads for each sample}
 }
 \value{
 Filtered and trimmed reads
 }
 \description{
-Wrapper function for filterAndTrim function from DADA2, to be used after primer trimming
+Wrapper function for filterAndTrim function from DADA2, to be used after
+primer trimming
 }
 \keyword{internal}

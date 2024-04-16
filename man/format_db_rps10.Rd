@@ -9,13 +9,15 @@ format_db_rps10(analysis_setup, db_rps10)
 \arguments{
 \item{db_rps10}{The name of the database}
 
-\item{output_directory_path}{The path to the directory where resulting files are output}
+\item{output_directory_path}{The path to the directory where resulting files
+are output}
 
-\item{temp_directory_path}{User-defined temporary directory to place reads throughout the workflow
-metadata, and primer_info files}
+\item{temp_directory_path}{User-defined temporary directory to place reads
+throughout the workflow metadata, and primer_info files}
 }
 \value{
-A rps10 database that has modified headers and is output in the reference_databases folder.
+A rps10 database that has modified headers and is output in the
+reference_databases folder.
 }
 \description{
 Create modified reference rps10 database for downstream analysis

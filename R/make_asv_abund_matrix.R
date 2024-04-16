@@ -3,6 +3,7 @@
 #' steps, including read preparation, removing primers, and using DADA2 core
 #' denoising alogrithm to infer ASVs.
 #'
+#' @importFrom utils modifyList stack
 #' @param analysis_setup analysis_setup An object containing directory paths and
 #'   data tables, produced by the `prepare_reads` function
 #' @param overwrite_existing Logical, indicating whether to overwrite existing
@@ -13,10 +14,16 @@
 #' @export make_asv_abund_matrix
 #'
 #' @examples
-#' The primary wrapper function for DADA2 ASV inference steps
-#' prepare_reads(data_directory = "inst/extdata", output_directory = "test_data", tempdir_id = "demulticoder_run", overwrite_existing = FALSE)
-#' cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = FALSE)
-#' make_asv_abund_matrix(analysis_setup, overwrite_existing = FALSE)
+#' # The primary wrapper function for DADA2 ASV inference steps
+#' prepare_reads(data_directory = "extdata", 
+#' output_directory = "test_data", 
+#' tempdir_id = "demulticoder_run", 
+#' overwrite_existing = FALSE)
+#' cut_trim(analysis_setup,
+#' cutadapt_path="/opt/homebrew/bin/cutadapt", 
+#' overwrite_existing = FALSE)
+#' make_asv_abund_matrix(analysis_setup, 
+#' overwrite_existing = FALSE)
 
 make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {
   
@@ -319,7 +326,7 @@ countOverlap <- function(merged_reads, data_tables, output_directory_path, barco
   merge_plot <- cbind(merge_plot[,"barcode"], merge_plot[,"Merged"], long_df)
   names(merge_plot) <- c("barcode", "Merged", "value", "stat")
   
-  merge_plot_output <- ggplot(merge_plot, aes(x = value, fill = Merged)) +
+  merge_plot_output <- ggplot2::ggplot(merge_plot, ggplot2::aes(x = value, fill = Merged)) +
     facet_grid(barcode ~ stat, scales = 'free') +
     geom_histogram(bins = 50) +
     scale_fill_viridis_d(begin = 0.8, end = 0.2) +
@@ -399,7 +406,7 @@ make_seqhist <- function(asv_abund_matrix, output_directory_path) {
   for (barcode in names(primer_lengths)) {
     data <- data.frame(Length = unlist(primer_lengths[[barcode]]))
     
-    hist_plot <- ggplot(data, aes(x = Length)) +
+    hist_plot <- ggplot2::ggplot(data, ggplot2::aes(x = Length)) +
       geom_histogram(binwidth = 10, fill = "blue", color = "black", alpha = 0.7, ) +
       labs(x = 'Length of sequence (bp)', y = 'Counts', title = paste("ASV lengths for", barcode, "locus")) +
       theme_minimal()+

@@ -7,11 +7,14 @@
 get_pre_primer_hits(primer_data, fastq_data, output_directory_path)
 }
 \arguments{
-\item{primer_data}{The primer data data frame created in orient_primers function}
+\item{primer_data}{The primer data data frame created in orient_primers
+function}
 
-\item{fastq_data}{A data frame with the FASTQ file paths, the direction of the sequences, and names of sequences}
+\item{fastq_data}{A data frame with the FASTQ file paths, the direction of
+the sequences, and names of sequences}
 
-\item{output_directory_path}{The path to the directory where resulting files are output}
+\item{output_directory_path}{The path to the directory where resulting files
+are output}
 }
 \value{
 The number of reads in which the primer is found

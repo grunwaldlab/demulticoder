@@ -2,7 +2,8 @@
 % Please edit documentation in R/assign_taxonomy.R
 \name{process_single_barcode}
 \alias{process_single_barcode}
-\title{Process the information from an ASV abundance matrix to run DADA2 for single barcode}
+\title{Process the information from an ASV abundance matrix to run DADA2 for single
+barcode}
 \usage{
 process_single_barcode(
   data_tables,
@@ -16,9 +17,11 @@ process_single_barcode(
 )
 }
 \arguments{
-\item{data_tables}{A list containing data modified by cutadapt, primer data, FASTQ data, and concatenated metadata and primer data}
+\item{data_tables}{A list containing data modified by cutadapt, primer data,
+FASTQ data, and concatenated metadata and primer data}
 
-\item{asv_abund_matrix}{An abundance matrix containing amplified sequence variants}
+\item{asv_abund_matrix}{An abundance matrix containing amplified sequence
+variants}
 
 \item{tryRC}{(Optional). Default FALSE. 
 If TRUE, the reverse-complement of each sequences will be used for classification if it is a better match to the reference
@@ -33,6 +36,7 @@ If an integer is provided, the number of threads to use is set by passing the ar
 \code{\link{setThreadOptions}}.}
 }
 \description{
-Process the information from an ASV abundance matrix to run DADA2 for single barcode
+Process the information from an ASV abundance matrix to run DADA2 for single
+barcode
 }
 \keyword{internal}

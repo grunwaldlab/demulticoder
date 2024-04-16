@@ -2,25 +2,35 @@
 % Please edit documentation in R/cut_primers_trim_reads.R
 \name{cut_trim}
 \alias{cut_trim}
-\title{Main command to trim primers using Cutadapt and core DADA2 functions. If samples contain pooled barcodes, reads will also be demultiplexed.}
+\title{Main command to trim primers using Cutadapt and core DADA2 functions. If
+samples contain pooled barcodes, reads will also be demultiplexed}
 \usage{
 cut_trim(analysis_setup, cutadapt_path, overwrite_existing = FALSE)
 }
 \arguments{
-\item{analysis_setup}{An object containing directory paths and data tables, produced by the \code{prepare_reads} function}
+\item{analysis_setup}{An object containing directory paths and data tables,
+produced by the \code{prepare_reads} function}
 
 \item{cutadapt_path}{Path to the Cutadapt program.}
 
-\item{overwrite_existing}{Logical, indicating whether to remove or overwrite existing files and directories from previous runs.}
+\item{overwrite_existing}{Logical, indicating whether to remove or overwrite
+existing files and directories from previous runs.}
 }
 \value{
 Trimmed reads, primer counts, quality plots, and ASV matrix.
 }
 \description{
-Main command to trim primers using Cutadapt and core DADA2 functions. If samples contain pooled barcodes, reads will also be demultiplexed.
+Main command to trim primers using Cutadapt and core DADA2 functions. If
+samples contain pooled barcodes, reads will also be demultiplexed
 }
 \examples{
-Remove remaining primers from raw reads, demultiplex pooled barcoded samples, and then trim reads based on specific DADA2 parameters
-prepare_reads(data_directory = "inst/extdata", output_directory = "test_data", tempdir_id = "demulticoder_run", overwrite_existing = FALSE)
-cut_trim(analysis_setup,cutadapt_path="/opt/homebrew/bin/cutadapt", overwrite_existing = FALSE)
+# Remove remaining primers from raw reads, demultiplex pooled barcoded samples, 
+# and then trim reads based on specific DADA2 parameters
+prepare_reads(data_directory = "inst/extdata", 
+output_directory = "test_data", 
+tempdir_id = "demulticoder_run", 
+overwrite_existing = FALSE)
+cut_trim(analysis_setup,
+cutadapt_path="/opt/homebrew/bin/cutadapt", 
+overwrite_existing = FALSE)
 }

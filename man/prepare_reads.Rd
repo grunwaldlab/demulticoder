@@ -14,25 +14,40 @@ prepare_reads(
 )
 }
 \arguments{
-\item{data_directory}{User-specified directory path where the user has placed raw FASTQ (forward and reverse reads), metadata.csv, and primerinfo_params.csv files. Default is "data".}
+\item{data_directory}{User-specified directory path where the user has placed
+raw FASTQ (forward and reverse reads), metadata.csv, and
+primerinfo_params.csv files. Default is "data".}
 
-\item{output_directory}{User-specified directory for outputs. Default is "output".}
+\item{output_directory}{User-specified directory for outputs. Default is
+"output".}
 
-\item{tempdir_path}{Path to a temporary directory. If \code{NULL}, a temporary directory path will be identified using the \code{tempdir()} command.}
+\item{tempdir_path}{Path to a temporary directory. If \code{NULL}, a temporary
+directory path will be identified using the \code{tempdir()} command.}
 
-\item{tempdir_id}{ID for temporary directories. Default is "demulticoder_run". The user can provide any helpful ID, whether it be a date or specific name for the run.}
+\item{tempdir_id}{ID for temporary directories. Default is
+"demulticoder_run". The user can provide any helpful ID, whether it be a
+date or specific name for the run.}
 
-\item{multithread}{Logical, indicating whether to use multithreading for certain operations. Default is \code{FALSE}.}
+\item{multithread}{Logical, indicating whether to use multithreading for
+certain operations. Default is \code{FALSE}.}
 
-\item{overwrite_existing}{Logical, indicating whether to remove or overwrite existing files and directories from previous runs.}
+\item{overwrite_existing}{Logical, indicating whether to remove or overwrite
+existing files and directories from previous runs.}
 }
 \value{
-A list containing data tables, including metadata, primer sequences to search for based on orientation, paths for trimming reads, and user-defined parameters for all subsequent steps.
+A list containing data tables, including metadata, primer sequences
+to search for based on orientation, paths for trimming reads, and
+user-defined parameters for all subsequent steps.
 }
 \description{
 Prepare reads for primer trimming using Cutadapt
 }
 \examples{
-Pre-filter raw reads and parse metadata and primer_information to prepare for primer trimming and filter
-prepare_reads(data_directory = "extdata", output_directory = "test_data", tempdir_path="extdata", tempdir_id = "demulticoder_run_temp", overwrite_existing = FALSE)
+# Pre-filter raw reads and parse metadata and primer_information to prepare 
+# for primer trimming and filter
+prepare_reads(data_directory = "extdata", 
+output_directory = "test_data", 
+tempdir_path="extdata", 
+tempdir_id = "demulticoder_run_temp", 
+overwrite_existing = FALSE)
 }

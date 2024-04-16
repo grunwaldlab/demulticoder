@@ -1,9 +1,10 @@
 devtools::load_all("~/demulticoder")
+devtools::build()
 devtools::document()
 
 prepare_reads(
   data_directory = "~/demulticoder/inst/extdata", 
-  output_directory = "~/testing_package11", 
+  output_directory = "~/testing_package12", 
   tempdir_id = "temp",
   tempdir_path = "~/",
   overwrite_existing = TRUE)
@@ -33,7 +34,6 @@ obj_dada_its<-obj_dada
 
 devtools::check()
 library("pkgdown")
-
 
 pkgdown::build_site("./")
 

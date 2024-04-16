@@ -2,7 +2,8 @@
 % Please edit documentation in R/assign_taxonomy.R
 \name{assignTax_as_char}
 \alias{assignTax_as_char}
-\title{Combine taxonomic assignments and bootstrap values for each locus into single falsification vector}
+\title{Combine taxonomic assignments and bootstrap values for each locus into single
+falsification vector}
 \usage{
 assignTax_as_char(tax_results, temp_directory_path, locus)
 }
@@ -10,6 +11,7 @@ assignTax_as_char(tax_results, temp_directory_path, locus)
 \item{tax_results}{The dataframe containing taxonomic assignments}
 }
 \description{
-Combine taxonomic assignments and bootstrap values for each locus into single falsification vector
+Combine taxonomic assignments and bootstrap values for each locus into single
+falsification vector
 }
 \keyword{internal}

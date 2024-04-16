@@ -2,7 +2,8 @@
 % Please edit documentation in R/assign_taxonomy.R
 \name{get_ref_seq}
 \alias{get_ref_seq}
-\title{Align ASV sequences to reference sequences from database to get percent ID. STart by retrieving reference sequences.}
+\title{Align ASV sequences to reference sequences from database to get percent ID.
+Start by retrieving reference sequences.}
 \usage{
 get_ref_seq(tax_results, db)
 }
@@ -12,6 +13,7 @@ get_ref_seq(tax_results, db)
 \item{db}{The reference database}
 }
 \description{
-Align ASV sequences to reference sequences from database to get percent ID. STart by retrieving reference sequences.
+Align ASV sequences to reference sequences from database to get percent ID.
+Start by retrieving reference sequences.
 }
 \keyword{internal}

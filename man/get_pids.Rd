@@ -2,7 +2,8 @@
 % Please edit documentation in R/assign_taxonomy.R
 \name{get_pids}
 \alias{get_pids}
-\title{Align ASV sequences to reference sequences from database to get percent ID. Get percent identities.}
+\title{Align ASV sequences to reference sequences from database to get percent ID.
+Get percent identities.}
 \usage{
 get_pids(tax_results, temp_directory_path, output_directory_path, db, locus)
 }
@@ -10,6 +11,7 @@ get_pids(tax_results, temp_directory_path, output_directory_path, db, locus)
 \item{tax_results}{The data frame containing taxonomic assignments}
 }
 \description{
-Align ASV sequences to reference sequences from database to get percent ID. Get percent identities.
+Align ASV sequences to reference sequences from database to get percent ID.
+Get percent identities.
 }
 \keyword{internal}

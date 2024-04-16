@@ -12,9 +12,11 @@ format_abund_matrix(
 )
 }
 \arguments{
-\item{asv_abund_matrix}{An abundance matrix containing amplified sequence variants}
+\item{asv_abund_matrix}{An abundance matrix containing amplified sequence
+variants}
 
-\item{seq_tax_asv}{An amplified sequence variants matrix with taxonomic information}
+\item{seq_tax_asv}{An amplified sequence variants matrix with taxonomic
+information}
 }
 \description{
 Format ASV abundance matrix
