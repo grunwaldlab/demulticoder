@@ -18,7 +18,6 @@ make_asv_abund_matrix(
   analysis_setup,
   overwrite_existing = TRUE)
 
-#still need to fix align file
 assign_tax(
   analysis_setup,
   asv_abund_matrix,

@@ -14,7 +14,9 @@ make_asv_abund_matrix(analysis_setup, overwrite_existing = FALSE)
 data tables, produced by the \code{prepare_reads} function}
 
 \item{overwrite_existing}{Logical, indicating whether to overwrite existing
-results.}
+results}
+
+\item{...}{Additional parameters to pass to dada function}
 }
 \value{
 The ASV abundance matrix (\code{asv_abund_matrix})
@@ -27,7 +29,7 @@ denoising alogrithm to infer ASVs.
 }
 \details{
 The function processes data for each unique barcode separately,
-inferring ASVs, merging reads, and creating an ASV abundance matrix .
+inferring ASVs, merging reads, and creating an ASV abundance matrix
 }
 \examples{
 # The primary wrapper function for DADA2 ASV inference steps

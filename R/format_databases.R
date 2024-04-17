@@ -41,35 +41,35 @@ format_db_rps10 <- function(analysis_setup, db_rps10) {
   temp_directory_path <- analysis_setup$directory_paths$temp_directory
   database_path <- file.path(temp_directory_path, "rps10_reference_db.fa")
   
-  db_rps10 <- read_fasta(file.path(data_path, db_rps10))
+  db_rps10 <- metacoder::read_fasta(file.path(data_path, db_rps10))
   
-  data_rps10 <- str_match(names(db_rps10), pattern = "name=(.+)\\|strain=(.+)\\|ncbi_acc=(.+)\\|ncbi_taxid=(.+)\\|oodb_id=(.+)\\|taxonomy=(.+)$")
+  data_rps10 <- stringr::str_match(names(db_rps10), pattern = "name=(.+)\\|strain=(.+)\\|ncbi_acc=(.+)\\|ncbi_taxid=(.+)\\|oodb_id=(.+)\\|taxonomy=(.+)$")
   colnames(data_rps10) <- c("header", "name", "strain", "ncbi_acc", "ncbi_taxid", "oodb_id", "taxonomy")
-  data_rps10 <- dplyr::as_tibble(data_rps10)
+  data_rps10 <- tibble::as_tibble(data_rps10)
   
   data_rps10$taxonomy <- gsub(data_rps10$taxonomy, pattern = 'cellular_organisms;', replacement = '', fixed = TRUE)
   data_rps10$taxonomy <- gsub(data_rps10$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
   data_rps10$taxonomy <- gsub(data_rps10$taxonomy, pattern = 'Eukaryota;Stramenopiles', replacement = 'Stramenopila;Oomycota', fixed = TRUE)
   
-  binomial <- map_chr(str_split(data_rps10$taxonomy, pattern = ';'), `[`, 6)
-  species <- map_chr(str_split(binomial, pattern = '_'), `[`, 1)
+  binomial <- purrr::map_chr(stringr::str_split(data_rps10$taxonomy, pattern = ';'), `[`, 6)
+  species <- purrr::map_chr(stringr::str_split(binomial, pattern = '_'), `[`, 1)
   
-  data_rps10$taxonomy <- map_chr(seq_along(data_rps10$taxonomy), function(index) {
+  data_rps10$taxonomy <- purrr::map_chr(seq_along(data_rps10$taxonomy), function(index) {
     sub(data_rps10$taxonomy[index], pattern = binomial[index], replacement = paste0(species[index], ';', binomial[index]))
   })
   
   data_rps10$taxonomy <- trimws(data_rps10$taxonomy)
   data_rps10$taxonomy <- paste0(data_rps10$taxonomy, ';')
   
-  write_lines(paste0(">", data_rps10$taxonomy, "\n", db_rps10), file = database_path)
+  readr::write_lines(paste0(">", data_rps10$taxonomy, "\n", db_rps10), file = database_path)
   
   species_count <- table(binomial)
   count_table <- as.data.frame(species_count, stringsAsFactors = FALSE)
-  count_table <- dplyr::as_tibble(count_table)
+  count_table <- tibble::tibble(count_table)
   names(count_table) <- c('Species', 'Number of sequences')
   
-  readr::write_csv(count_table, file = file.path(output_directory_path, "species_count_table_rps10.csv"), row.names = FALSE)
-  write_lines(paste0(">", data_rps10$taxonomy, "\n", db_rps10), file = database_path)
+  readr::write_csv(count_table, file = file.path(output_directory_path, "species_count_table_rps10.csv"))
+  readr::write_lines(paste0(">", data_rps10$taxonomy, "\n", db_rps10), file = database_path)
   
   return(data_rps10)
 }
@@ -92,10 +92,10 @@ format_db_its <- function(analysis_setup, db_its) {
   temp_directory_path <- analysis_setup$directory_paths$temp_directory
   database_path <- file.path(temp_directory_path, "its_reference_db.fa")
   
-  db_its <- read_fasta(file.path(data_path, db_its))
-  data_its <- tibble(header = names(db_its), sequence = db_its)
+  db_its <- metacoder::read_fasta(file.path(data_path, db_its))
+  data_its <- tibble::tibble(header = names(db_its), sequence = db_its)
   
-  data_its$taxonomy <- str_extract(data_its$header, "(?<=\\|)[^|]+$")
+  data_its$taxonomy <- stringr::str_extract(data_its$header, "(?<=\\|)[^|]+$")
   data_its$taxonomy <- gsub("[A-Za-z]__", "", data_its$taxonomy)
   data_its$taxonomy <- gsub(" ", "_", data_its$taxonomy)
   data_its$taxonomy <- paste0(data_its$taxonomy, ";")
@@ -115,11 +115,11 @@ format_db_its <- function(analysis_setup, db_its) {
   data_its$name <- sub("^([^|]+)\\|.*$", "\\1", data_its$header)
   species_count <- table(data_its$name)
   count_table <- as.data.frame(species_count, stringsAsFactors = FALSE)
-  count_table <- dplyr::as_tibble(count_table)
+  count_table <- tibble::tibble(count_table)
   names(count_table) <- c('Species', 'Number of sequences')
   
   readr::write_csv(count_table, file = file.path(output_directory_path, "species_count_table_its.csv"))
-  write_lines(paste0(">", data_its$taxonomy, "\n", data_its$sequence), file = database_path)
+  readr::write_lines(paste0(">", data_its$taxonomy, "\n", data_its$sequence), file = database_path)
   return(data_its)
 }
 
@@ -143,8 +143,8 @@ format_db_16s <- function(analysis_setup, db_16s) {
   temp_directory_path <- analysis_setup$directory_paths$temp_directory
   database_path <- file.path(temp_directory_path, "sixteenS_reference_db.fa")
   
-  db_16s <- read_fasta(file.path(data_path, db_16s))
-  data_16s <- tibble(taxonomy = names(db_16s), sequence = db_16s)
+  db_16s <- metacoder::read_fasta(file.path(data_path, db_16s))
+  data_16s <- tibble::tibble(taxonomy = names(db_16s), sequence = db_16s)
   data_16s$taxonomy <- gsub(data_16s$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
   data_16s$taxonomy <- trimws(data_16s$taxonomy)
   data_16s$taxonomy <- str_replace(data_16s$taxonomy, "^((?:[^;]*;){5})([^;]+);([^;]+);$", "\\1\\2;\\2_\\3;")
@@ -168,11 +168,11 @@ format_db_16s <- function(analysis_setup, db_16s) {
   
   genus_count <- table(data_16s$genus)
   count_table <- as.data.frame(genus_count, stringsAsFactors = FALSE)
-  count_table <- dplyr::as_tibble(count_table)
+  count_table <- tibble::tibble(count_table)
   names(count_table) <- c('Genus', 'Number of sequences')
   
   readr::write_csv(count_table, file = file.path(output_directory_path, "genus_count_table_16s.csv"))
-  write_lines(paste0(">", data_16s$taxonomy, "\n", db_16s), file = database_path)
+  readr::write_lines(paste0(">", data_16s$taxonomy, "\n", db_16s), file = database_path)
   
   return(data_16s)
 }
@@ -194,8 +194,8 @@ format_db_other1 <-function(analysis_setup, db_other1){
   temp_directory_path <- analysis_setup$directory_paths$temp_directory
   database_path <- file.path(temp_directory_path, "other1_reference_db.fa")
   
-  db_other1 <- read_fasta(file.path(data_path, db_other1))
-  data_other1 <- tibble(taxonomy = names(db_other1), sequence = db_other1)
+  db_other1 <- metacoder::read_fasta(file.path(data_path, db_other1))
+  data_other1 <- tibble::tibble(taxonomy = names(db_other1), sequence = db_other1)
   data_other1$taxonomy <- gsub(data_other1$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
   data_other1$taxonomy <- trimws(data_other1$taxonomy)
   
@@ -222,11 +222,11 @@ format_db_other1 <-function(analysis_setup, db_other1){
   )
   genus_count <- table(data_other1$genus)
   count_table <- as.data.frame(genus_count, stringsAsFactors = FALSE)
-  count_table <- dplyr::as_tibble(count_table)
+  count_table <- tibble::tibble(count_table)
   names(count_table) <- c('Genus', 'Number of sequences')
 
   readr::write_csv(count_table, file = file.path(output_directory_path, "genus_count_table_other1.csv"))
-  write_lines(paste0(">", data_other1$taxonomy, "\n", db_other1), file = database_path)
+  readr::write_lines(paste0(">", data_other1$taxonomy, "\n", db_other1), file = database_path)
   return(data_other1)
 }
 
@@ -251,8 +251,8 @@ format_db_other2 <-function(analysis_setup, db_other2){
   temp_directory_path <- analysis_setup$directory_paths$temp_directory
   database_path <- file.path(temp_directory_path, "other2_reference_db.fa")
   
-  db_other2 <- read_fasta(file.path(data_path, db_other2))
-  data_other2 <- tibble(taxonomy = names(db_other2), sequence = db_other2)
+  db_other2 <- metacoder::read_fasta(file.path(data_path, db_other2))
+  data_other2 <- tibble::tibble(taxonomy = names(db_other2), sequence = db_other2)
   data_other2$taxonomy <- gsub(data_other2$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
   data_other2$taxonomy <- trimws(data_other2$taxonomy)
   
@@ -279,10 +279,10 @@ format_db_other2 <-function(analysis_setup, db_other2){
   )
   genus_count <- table(data_other2$genus)
   count_table <- as.data.frame(genus_count, stringsAsFactors = FALSE)
-  count_table <- dplyr::as_tibble(count_table)
+  count_table <- tibble::tibble(count_table)
   names(count_table) <- c('Genus', 'Number of sequences')
   
   readr::write_csv(count_table, file = file.path(output_directory_path, "genus_count_table_other2.csv"))
-  write_lines(paste0(">", data_other1$taxonomy, "\n", db_other1), file = database_path)
+  readr::write_lines(paste0(">", data_other1$taxonomy, "\n", db_other1), file = database_path)
   return(data_other2)
 }

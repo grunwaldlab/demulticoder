@@ -187,7 +187,7 @@ assign_taxonomyDada2<-function(asv_abund_matrix, temp_directory_path, minBoot=0,
 #'
 #' @keywords internal
 get_pids <- function(tax_results, temp_directory_path, output_directory_path, db, locus) {
-  db_seqs <- read_fasta(file.path(temp_directory_path, db))
+  db_seqs <- metacoder::read_fasta(file.path(temp_directory_path, db))
   ref_seqs <- get_ref_seq(tax_results, db_seqs)
   asv_seqs <- rownames(tax_results$tax)
   # Calculate pids for normal alignment
@@ -212,7 +212,7 @@ get_pids <- function(tax_results, temp_directory_path, output_directory_path, db
   }), 
   collapse = '==================================================\n')
   # Write the alignment results to a text file
-  write_lines(alignment_text, file = file.path(output_directory_path, paste0("dada2_asv_alignments_", locus, ".txt")))
+  readr::write_lines(alignment_text, file = file.path(output_directory_path, paste0("dada2_asv_alignments_", locus, ".txt")))
   return(asv_pids)
 }
 
@@ -224,7 +224,7 @@ get_pids <- function(tax_results, temp_directory_path, output_directory_path, db
 #'
 #' @keywords internal
 get_ref_seq <- function(tax_results, db) {
-  ref_i <- as.integer(str_match(tax_results$tax[, 'Reference'], '^.+_([0-9]+)$')[ ,2])
+  ref_i <- as.integer(stringr_str_match(tax_results$tax[, 'Reference'], '^.+_([0-9]+)$')[ ,2])
   db[ref_i]
 }
 
@@ -276,10 +276,10 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv, output_directory_
   formatted_abund_asv <- cbind(
     asv_id = asv_id_column,
     sequence = rownames(formatted_abund_asv),
-    dada2_tax = str_match(seq_tax_asv[rownames(formatted_abund_asv)], pattern = "^(.+)--Species")[,1],
-    #dada2_pid = as.numeric(str_match(seq_tax_asv[rownames(formatted_abund_asv)], '--([0-9.]+)--ASV$')[, 2]),
+    dada2_tax = stringr::str_match(seq_tax_asv[rownames(formatted_abund_asv)], pattern = "^(.+)--Species")[,1],
+    #dada2_pid = as.numeric(stringr_str_match(seq_tax_asv[rownames(formatted_abund_asv)], '--([0-9.]+)--ASV$')[, 2]),
     formatted_abund_asv)
-  formatted_abund_asv <- dplyr::as_tibble(formatted_abund_asv)
+  formatted_abund_asv <- tibble::as_tibble(formatted_abund_asv)
   
   primer_seqs <- apply(analysis_setup$data_tables$primer_data[, 2:ncol(analysis_setup$data_tables$primer_data)], 2, paste, collapse = "|")
   

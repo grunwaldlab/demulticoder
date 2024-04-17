@@ -3,13 +3,13 @@
 #' steps, including read preparation, removing primers, and using DADA2 core
 #' denoising alogrithm to infer ASVs.
 #'
-#' @importFrom utils modifyList stack
 #' @param analysis_setup analysis_setup An object containing directory paths and
 #'   data tables, produced by the `prepare_reads` function
 #' @param overwrite_existing Logical, indicating whether to overwrite existing
-#'   results.
+#'   results
+#' @param ... Additional parameters to pass to dada function
 #' @details The function processes data for each unique barcode separately,
-#'   inferring ASVs, merging reads, and creating an ASV abundance matrix .
+#'   inferring ASVs, merging reads, and creating an ASV abundance matrix 
 #' @return The ASV abundance matrix (`asv_abund_matrix`)
 #' @export make_asv_abund_matrix
 #'
@@ -36,7 +36,6 @@ make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {
   default_params <- list(
     multithread = FALSE,
     nbases = 1e+08,
-    errorEstimationFunction = loessErrfun,
     randomize = FALSE,
     MAX_CONSIST = 10,
     OMEGA_C = 0,
@@ -99,7 +98,7 @@ make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {
     
     for (barcode in unique_barcodes) {
       # Get barcode-specific parameters
-      params <- filter(data_tables$parameters, primer_name == barcode)
+      params <- dplyr::filter(data_tables$parameters, primer_name == barcode)
       if (nrow(params) > 0) {
         params <- as.list(params)
         
@@ -123,14 +122,9 @@ make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {
           )
           
           countOverlap(merged_reads, data_tables, output_directory_path, barcode)
-          
           raw_seqtab <- createASVSequenceTable(merged_reads, orderBy = "abundance")
-          
           asv_abund_matrix <- make_abund_matrix(raw_seqtab, temp_directory_path = temp_directory_path, barcode_params, barcode)
-          
           make_seqhist(asv_abund_matrix, output_directory_path)
-          #assign("asv_abund_matrix", asv_abund_matrix, envir = .GlobalEnv) # Decide if necessary to retain-maybe just confusing
-          
           asv_abund_matrix_list[[barcode]] <- file.path(temp_directory_path, paste0("asvabund_matrixDADA2_", barcode, ".RData"))
         }
       }
@@ -170,14 +164,11 @@ get_fastq_paths <- function(analysis_setup, my_direction, my_primer_pair_id) {
 infer_asvs <- function(my_direction, my_primer_pair_id, barcode_params, output_directory_path) {
   set.seed(1)
   fastq_paths <- get_fastq_paths(analysis_setup, my_direction, my_primer_pair_id)
-  
   error_plot_filename <- paste0("error_plot_", my_primer_pair_id, ".pdf")
-  
   error_profile <- dada2::learnErrors(
     fastq_paths,
     multithread = barcode_params$multithread,
     nbases = barcode_params$nbases,
-    errorEstimationFunction = barcode_params$errorEstimationFunction,
     randomize = barcode_params$randomize,
     MAX_CONSIST = barcode_params$MAX_CONSIST,
     OMEGA_C = barcode_params$OMEGA_C,
@@ -203,7 +194,7 @@ infer_asvs <- function(my_direction, my_primer_pair_id, barcode_params, output_d
     err_in = barcode_params$err_in
   )
   
-  ggsave(
+  ggplot2::ggsave(
     plot_errors,
     filename = error_plot_filename,
     path = output_directory_path,
@@ -229,7 +220,6 @@ infer_asv_command <- function(output_directory_path, temp_directory_path, data_t
   
   multithread <- barcode_params$multithread
   nbases <- barcode_params$nbases
-  errorEstimationFunction <- barcode_params$errorEstimationFunction
   randomize <- barcode_params$randomize
   MAX_CONSIST <- barcode_params$MAX_CONSIST
   OMEGA_C <- barcode_params$OMEGA_C
@@ -327,19 +317,19 @@ countOverlap <- function(merged_reads, data_tables, output_directory_path, barco
   names(merge_plot) <- c("barcode", "Merged", "value", "stat")
   
   merge_plot_output <- ggplot2::ggplot(merge_plot, ggplot2::aes(x = value, fill = Merged)) +
-    facet_grid(barcode ~ stat, scales = 'free') +
-    geom_histogram(bins = 50) +
-    scale_fill_viridis_d(begin = 0.8, end = 0.2) +
-    labs(x = '', y = 'ASV count', fill = 'Merged') +
-    theme(
-      panel.grid.major.x = element_blank(),
-      panel.grid.minor = element_blank(),
+    ggplot2::facet_grid(barcode ~ stat, scales = 'free') +
+    ggplot2::geom_histogram(bins = 50) +
+    ggplot2::scale_fill_viridis_d(begin = 0.8, end = 0.2) +
+    ggplot2::labs(x = '', y = 'ASV count', fill = 'Merged') +
+    ggplot2::theme(
+      panel.grid.major.x = ggplot2::element_blank(),
+      panel.grid.minor = ggplot2::element_blank(),
       legend.position = "bottom"
     )
   
   plot_filename <- paste0("read_merging_info_", barcode, ".pdf")
   
-  ggsave(
+  ggplot2::ggsave(
     merge_plot_output,
     filename = plot_filename,
     path = output_directory_path,
@@ -357,7 +347,7 @@ countOverlap <- function(merged_reads, data_tables, output_directory_path, barco
 #' @return raw_seqtab
 #' @keywords internal
 createASVSequenceTable <- function(merged_reads, orderBy = "abundance") {
-  raw_seqtab <- makeSequenceTable(merged_reads, orderBy = orderBy)
+  raw_seqtab <- dada2::makeSequenceTable(merged_reads, orderBy = orderBy)
   return(raw_seqtab)
 }
 
@@ -395,7 +385,7 @@ make_seqhist <- function(asv_abund_matrix, output_directory_path) {
     for (barcode in barcodes) {
       indices <- grepl(paste0("_", barcode), rownames(asv_abund_matrix))
       primer_seqs <- colnames(asv_abund_matrix)[apply(asv_abund_matrix[indices, , drop = FALSE] > 0, 2, any)]
-      seq_lengths <- nchar(getSequences(asv_abund_matrix[indices, primer_seqs, drop = FALSE]))
+      seq_lengths <- nchar(dada2::getSequences(asv_abund_matrix[indices, primer_seqs, drop = FALSE]))
       primer_lengths[[barcode]] <- seq_lengths
     }
     return(primer_lengths)
@@ -407,12 +397,12 @@ make_seqhist <- function(asv_abund_matrix, output_directory_path) {
     data <- data.frame(Length = unlist(primer_lengths[[barcode]]))
     
     hist_plot <- ggplot2::ggplot(data, ggplot2::aes(x = Length)) +
-      geom_histogram(binwidth = 10, fill = "blue", color = "black", alpha = 0.7, ) +
-      labs(x = 'Length of sequence (bp)', y = 'Counts', title = paste("ASV lengths for", barcode, "locus")) +
-      theme_minimal()+
-      theme(panel.grid = element_blank())
+      ggplot2::geom_histogram(binwidth = 10, fill = "blue", color = "black", alpha = 0.7, ) +
+      ggplot2::labs(x = 'Length of sequence (bp)', y = 'Counts', title = paste("ASV lengths for", barcode, "locus")) +
+      ggplot2::theme_minimal()+
+      ggplot2::theme(panel.grid = ggplot2::element_blank())
     
-    ggsave(
+    ggplot2::ggsave(
       hist_plot,
       filename = paste("asv_seqlength_plot_", barcode, ".pdf", sep = ""),
       path = output_directory_path,
