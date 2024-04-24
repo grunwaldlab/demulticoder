@@ -23,11 +23,13 @@
 #' @examples
 #' # Pre-filter raw reads and parse metadata and primer_information to prepare 
 #' # for primer trimming and filter
-#' prepare_reads(data_directory = "extdata", 
-#' output_directory = "test_data", 
-#' tempdir_path="extdata", 
-#' tempdir_id = "demulticoder_run_temp", 
-#' overwrite_existing = FALSE)
+#' prepare_reads(
+#'   data_directory = system.file("extdata", package = "demulticoder"), 
+#'   output_directory = tempdir(),
+#'   tempdir_path = tempdir(),
+#'   tempdir_id = "demulticoder_run_temp", 
+#'   overwrite_existing = FALSE
+#' )
 prepare_reads <- function(data_directory = "data",
                           output_directory = "output",
                           tempdir_path = NULL,
@@ -46,7 +48,7 @@ prepare_reads <- function(data_directory = "data",
   
   if (!overwrite_existing && length(existing_files) > 0) {
     existing_analysis_table <-
-      file.path(temp_directory_path, "analysis_setup_tables.RData")
+      file.path(temp_directory_path, "analysis_setup_obj.RData")
     if (file.exists(existing_analysis_table)) {
       load(existing_analysis_table)
       message(
@@ -93,11 +95,11 @@ prepare_reads <- function(data_directory = "data",
   
   analysis_setup <-
     list(data_tables = data_tables, directory_paths = directory_paths)
-  assign("analysis_setup", analysis_setup, envir = .GlobalEnv)
   analysis_setup_path <-
     file.path(temp_directory_path,
-              paste0("analysis_setup_tables", ".RData"))
+              paste0("analysis_setup_obj", ".RData"))
   save(analysis_setup, file = analysis_setup_path)
+  return(analysis_setup)
 }
 #' Set up directory paths for subsequent analyses
 #'

@@ -46,17 +46,26 @@ Assign taxonomy functions
 }
 \examples{
 # Assign taxonomies to ASVs on a per barcode basis
-prepare_reads(data_directory = "extdata", 
-output_directory = "test_data", 
-tempdir_id = "demulticoder_run", 
-overwrite_existing = FALSE)
-cut_trim(analysis_setup,
+prepare_reads(
+  data_directory = system.file("extdata", package = "demulticoder"), 
+  output_directory = tempdir(),
+  tempdir_path = tempdir(),
+  tempdir_id = "demulticoder_run_temp", 
+  overwrite_existing = FALSE
+)
+cut_trim(
+analysis_setup,
 cutadapt_path="/opt/homebrew/bin/cutadapt", 
-overwrite_existing = FALSE)
-make_asv_abund_matrix(analysis_setup, 
-overwrite_existing = FALSE)
-assign_tax(analysis_setup,
+overwrite_existing = FALSE
+)
+make_asv_abund_matrix(
+analysis_setup, 
+overwrite_existing = FALSE
+)
+assign_tax(
+analysis_setup,
 asv_abund_matrix, 
 retrieve_files=FALSE, 
-overwrite_existing=FALSE)
+overwrite_existing=FALSE
+)
 }

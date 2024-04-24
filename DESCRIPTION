@@ -15,24 +15,20 @@ Depends:
 Imports:
    tidyverse,
    ggplot2,
-   ShortRead,
    tibble,
    utils,
-   stats
-Suggests:
-   gdata,
-   gridExtra,
-   kableExtra,
-   knitr,
+   stats, 
    metacoder,
+   gdata,
+   knitr
+Suggests:
+   BiocManager,
+   Generics,
+   Biostrings,
+   dada2,
+   ShortRead,
    phyloseq,
    testthat (>= 3.0.0)
-Remotes:
-   Bioc::Generics,
-   bioc::Biostrings,
-   bioc::dada2,
-   bioc::ShortRead,
-   bioc::phyloseq
 Roxygen: list(markdown = TRUE)
 Config/testthat/edition: 3
 LazyData: true

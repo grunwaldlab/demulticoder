@@ -7,7 +7,6 @@
 #'   data tables, produced by the `prepare_reads` function
 #' @param overwrite_existing Logical, indicating whether to overwrite existing
 #'   results
-#' @param ... Additional parameters to pass to dada function
 #' @details The function processes data for each unique barcode separately,
 #'   inferring ASVs, merging reads, and creating an ASV abundance matrix 
 #' @return The ASV abundance matrix (`asv_abund_matrix`)
@@ -15,15 +14,22 @@
 #'
 #' @examples
 #' # The primary wrapper function for DADA2 ASV inference steps
-#' prepare_reads(data_directory = "extdata", 
-#' output_directory = "test_data", 
-#' tempdir_id = "demulticoder_run", 
-#' overwrite_existing = FALSE)
-#' cut_trim(analysis_setup,
+#' prepare_reads(
+#'   data_directory = system.file("extdata", package = "demulticoder"), 
+#'   output_directory = tempdir(),
+#'   tempdir_path = tempdir(),
+#'   tempdir_id = "demulticoder_run_temp", 
+#'   overwrite_existing = FALSE
+#' )
+#' cut_trim(
+#' analysis_setup,
 #' cutadapt_path="/opt/homebrew/bin/cutadapt", 
-#' overwrite_existing = FALSE)
-#' make_asv_abund_matrix(analysis_setup, 
-#' overwrite_existing = FALSE)
+#' overwrite_existing = FALSE
+#' )
+#' make_asv_abund_matrix(
+#' analysis_setup, 
+#' overwrite_existing = FALSE
+#' )
 
 make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {
   

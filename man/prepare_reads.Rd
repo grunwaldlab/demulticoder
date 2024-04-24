@@ -45,9 +45,11 @@ Prepare reads for primer trimming using Cutadapt
 \examples{
 # Pre-filter raw reads and parse metadata and primer_information to prepare 
 # for primer trimming and filter
-prepare_reads(data_directory = "extdata", 
-output_directory = "test_data", 
-tempdir_path="extdata", 
-tempdir_id = "demulticoder_run_temp", 
-overwrite_existing = FALSE)
+prepare_reads(
+  data_directory = system.file("extdata", package = "demulticoder"), 
+  output_directory = tempdir(),
+  tempdir_path = tempdir(),
+  tempdir_id = "demulticoder_run_temp", 
+  overwrite_existing = FALSE
+)
 }
