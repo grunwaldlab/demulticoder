@@ -18,7 +18,7 @@
 #'
 #' @examples
 #' # Assign taxonomies to ASVs on a per barcode basis
-#' prepare_reads(
+#' analysis_setup<-prepare_reads(
 #'   data_directory = system.file("extdata", package = "demulticoder"), 
 #'   output_directory = tempdir(),
 #'   tempdir_path = tempdir(),

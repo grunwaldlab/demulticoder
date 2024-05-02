@@ -12,7 +12,7 @@
 #' @examples
 #' # Remove remaining primers from raw reads, demultiplex pooled barcoded samples, 
 #' # and then trim reads based on specific DADA2 parameters
-#' prepare_reads(
+#' analysis_setup<-prepare_reads(
 #'   data_directory = system.file("extdata", package = "demulticoder"), 
 #'   output_directory = tempdir(),
 #'   tempdir_path = tempdir(),

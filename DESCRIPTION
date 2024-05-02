@@ -23,7 +23,6 @@ Imports:
    knitr
 Suggests:
    BiocManager,
-   Generics,
    Biostrings,
    dada2,
    ShortRead,

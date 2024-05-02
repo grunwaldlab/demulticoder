@@ -31,7 +31,7 @@ inferring ASVs, merging reads, and creating an ASV abundance matrix
 }
 \examples{
 # The primary wrapper function for DADA2 ASV inference steps
-prepare_reads(
+analysis_setup<-prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"), 
   output_directory = tempdir(),
   tempdir_path = tempdir(),

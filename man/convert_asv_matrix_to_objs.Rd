@@ -35,7 +35,7 @@ Filter ASV abundance matrix and convert to taxmap object
 }
 \examples{
 # Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
-prepare_reads(
+analysis_setup<-prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"), 
   output_directory = tempdir(),
   tempdir_path = tempdir(),
@@ -57,7 +57,7 @@ asv_abund_matrix,
 retrieve_files=FALSE, 
 overwrite_existing=FALSE
 )
-convert_asv_matrix_to_objs(
+objs<-convert_asv_matrix_to_objs(
 analysis_setup, 
 save_outputs=FALSE
 )

@@ -13,7 +13,7 @@
 #' @export
 #' @examples
 #' # Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
-#' prepare_reads(
+#' analysis_setup<-prepare_reads(
 #'   data_directory = system.file("extdata", package = "demulticoder"), 
 #'   output_directory = tempdir(),
 #'   tempdir_path = tempdir(),
@@ -35,17 +35,19 @@
 #' retrieve_files=FALSE, 
 #' overwrite_existing=FALSE
 #' )
-#' convert_asv_matrix_to_objs(
+#' objs<-convert_asv_matrix_to_objs(
 #' analysis_setup, 
 #' save_outputs=FALSE
 #' )
 convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minimum_bootstrap = 0, save_outputs = FALSE, overwrite = FALSE) {
   data_tables <- analysis_setup$data_tables
   output_directory_path <- analysis_setup$directory_paths$output_directory
-
+  
   files <- list.files(path = output_directory_path, pattern = "^final_asv_abundance_matrix_.*\\.csv$", full.names = TRUE)
   suffixes <- gsub("^final_asv_abundance_matrix_(.*)\\.csv$", "\\1", basename(files))
   unique_suffixes <- unique(suffixes)
+  
+  result_list <- list()
   
   for (suffix in unique_suffixes) {
     taxmap_name <- paste0("obj_dada_", suffix)
@@ -83,7 +85,6 @@ convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minim
       names(obj_dada$data) <- c('abund', 'score')
       
       obj_dada$data$otu_table = obj_dada$data$abund[, -3:-4]
-      #obj_dada$data$otu_table$otu_id = paste0('ASV', 1:nrow(obj_dada$data$otu_table))
       obj_dada$data$sample_data = data_tables$metadata
       
       phylo_obj <- metacoder::as_phyloseq(
@@ -93,8 +94,8 @@ convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minim
         otu_id_col = "asv_id"
       )
       
-      assign(taxmap_name, obj_dada, envir = .GlobalEnv)
-      assign(phyloseq_name, phylo_obj, envir = .GlobalEnv)
+      result_list[[paste0("taxmap_", suffix)]] <- obj_dada
+      result_list[[paste0("phyloseq_", suffix)]] <- phylo_obj
       
       if (save_outputs == TRUE) {
         save(obj_dada, file = taxmap_path)
@@ -113,4 +114,6 @@ convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minim
       }
     }
   }
+  
+  return(result_list)
 }
