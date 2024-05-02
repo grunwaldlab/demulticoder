@@ -148,7 +148,6 @@ Please also ensure that you have enough storage to save intermediate files in a 
 
 For now, the package will be loaded by retrieving it from GitHub. Eventually, the package will be uploaded to CRAN or Bioconductor.
 ```{r installation, warning=FALSE, message=FALSE}
-library("devtools")
 devtools::install_github("grunwaldlab/demulticoder")
 library(demulticoder)
 ```
@@ -192,13 +191,13 @@ assign_tax(
 
 ### Reformat ASV matrix as taxmap and phyloseq objects after optional filtering of low abundance ASVs
 ```{r Reformat final matrix, message=FALSE}
-convert_asv_matrix_to_objs(analysis_setup, save_outputs=TRUE, overwrite=TRUE)
+objs<-convert_asv_matrix_to_objs(analysis_setup, save_outputs=TRUE, overwrite=TRUE)
 ```
 
 ### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded samples 
 ### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded samples
 ```{r Heatree demonstration its, message=FALSE}
-metacoder::heat_tree(obj_dada_its,
+metacoder::heat_tree(objs$taxmap_its,
           node_label = taxon_names,
           node_size = n_obs,
           node_color = n_obs,
@@ -210,7 +209,7 @@ metacoder::heat_tree(obj_dada_its,
 
 ### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded sample
 ```{r Heatree demonstration rps10, message=FALSE}
-metacoder::heat_tree(obj_dada_rps10,
+metacoder::heat_tree(objs$taxmap_rps10,
           node_label = taxon_names,
           node_size = n_obs,
           node_color = n_obs,
@@ -221,7 +220,7 @@ metacoder::heat_tree(obj_dada_rps10,
 
 ### We can also do a variety of analyses, if we convert to phyloseq object
 ```{r Phyloseq demonstration ITS, message=FALSE}
-data <- phylo_obj_its %>%
+data <- objs$phyloseq_its %>%
   phyloseq::transform_sample_counts(function(x) {x/sum(x)} ) %>% 
   phyloseq::psmelt() %>%                                        
   dplyr::filter(Abundance > 0.02) %>%                      
@@ -262,7 +261,7 @@ print(abund_plot)
 ```
 
 ```{r Phyloseq demonstration rps10, message=FALSE}
-data <- phylo_obj_rps10 %>%
+data <- objs$phyloseq_rps10 %>%
   phyloseq::transform_sample_counts(function(x) {x/sum(x)} ) %>% 
   phyloseq::psmelt() %>%                                        
   dplyr::filter(Abundance > 0.02) %>%                      
