@@ -1,8 +1,4 @@
+url: ~
 template:
-  params:
-    bootswatch: sandstone
-    
-
-    
-    
+  bootstrap: 5
 
