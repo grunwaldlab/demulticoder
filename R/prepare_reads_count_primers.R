@@ -1,106 +1,3 @@
-#' Prepare reads for primer trimming using Cutadapt
-#' @param data_directory User-specified directory path where the user has placed
-#'   raw FASTQ (forward and reverse reads), metadata.csv, and
-#'   primerinfo_params.csv files. Default is "data".
-#' @param output_directory User-specified directory for outputs. Default is
-#'   "output".
-#' @param tempdir_path Path to a temporary directory. If `NULL`, a temporary
-#'   directory path will be identified using the `tempdir()` command.
-#' @param tempdir_id ID for temporary directories. Default is
-#'   "demulticoder_run". The user can provide any helpful ID, whether it be a
-#'   date or specific name for the run.
-#' @param multithread Logical, indicating whether to use multithreading for
-#'   certain operations. Default is `FALSE`.
-#' @param overwrite_existing Logical, indicating whether to remove or overwrite
-#'   existing files and directories from previous runs.
-#'
-#' @return A list containing data tables, including metadata, primer sequences
-#'   to search for based on orientation, paths for trimming reads, and
-#'   user-defined parameters for all subsequent steps.
-#'
-#' @export
-#'
-#' @examples
-#' # Pre-filter raw reads and parse metadata and primer_information to prepare 
-#' # for primer trimming and filter
-#' analysis_setup<-prepare_reads(
-#'   data_directory = system.file("extdata", package = "demulticoder"), 
-#'   output_directory = tempdir(),
-#'   tempdir_path = tempdir(),
-#'   tempdir_id = "demulticoder_run_temp", 
-#'   overwrite_existing = FALSE
-#' )
-prepare_reads <- function(data_directory = "data",
-                          output_directory = "output",
-                          tempdir_path = NULL,
-                          tempdir_id = "demulticoder_run",
-                          multithread = FALSE,
-                          overwrite_existing = FALSE) {
-  directory_paths <-
-    setup_directories(data_directory, output_directory, tempdir_path, tempdir_id)
-  output_directory_path <- directory_paths$output_directory
-  data_directory_path <- directory_paths$data_directory
-  temp_directory_path <- directory_paths$temp_directory
-  primers_params_path <- directory_paths$primers_params_path
-  metadata_path <- directory_paths$metadata_path
-  
-  existing_files <- list.files(output_directory_path)
-  
-  if (!overwrite_existing && length(existing_files) > 0) {
-    existing_analysis_table <-
-      file.path(temp_directory_path, "analysis_setup_obj.RData")
-    if (file.exists(existing_analysis_table)) {
-      load(existing_analysis_table)
-      message(
-        "Existing data detected: Primer counts and N's may have been removed from previous runs. Loading existing output. To perform a new analysis, specify overwrite_existing = TRUE."
-      )
-    } else {
-      warning(
-        "Existing analysis setup tables are not found. The 'prepare_reads' function was rerun"
-      )
-    }
-  } else {
-    if (dir.exists(output_directory_path)) {
-      unlink(output_directory_path, recursive = TRUE)
-    }
-    if (dir.exists(temp_directory_path)) {
-      unlink(temp_directory_path, recursive = TRUE)
-    }
-  }
-  
-  if (!dir.exists(output_directory_path)) {
-    dir.create(output_directory_path, recursive = TRUE)
-  }
-  
-  if (!dir.exists(temp_directory_path)) {
-    dir.create(temp_directory_path, recursive = TRUE)
-  }
-  
-  primer_data <- orient_primers(primers_params_path)
-  parameters <- read_parameters(primers_params_path)
-  metadata <- prepare_metadata_table(metadata_path, primer_data)
-  fastq_data <-
-    read_prefilt_fastq(data_directory_path, multithread, temp_directory_path)
-  pre_primer_hit_data <-
-    get_pre_primer_hits(primer_data, fastq_data, output_directory_path)
-  cutadapt_data <-
-    make_cutadapt_tibble(fastq_data, metadata, temp_directory_path)
-  data_tables <- list(
-    cutadapt_data = cutadapt_data,
-    primer_data = primer_data,
-    fastq_data = fastq_data,
-    parameters = parameters,
-    metadata = metadata
-  )
-  
-  analysis_setup <-
-    list(data_tables = data_tables, directory_paths = directory_paths)
-  analysis_setup_path <-
-    file.path(temp_directory_path,
-              paste0("analysis_setup_obj", ".RData"))
-  save(analysis_setup, file = analysis_setup_path)
-  return(analysis_setup)
-}
 #' Set up directory paths for subsequent analyses
 #'
 #' This function sets up the directory paths for subsequent analyses. It checks
@@ -228,7 +125,6 @@ orient_primers <- function(primers_params_path) {
     sapply(reverse_primers$reverse, function(x)
       toString(Biostrings::reverseComplement(Biostrings::DNAString(x))))
   
-  #add back together
   primer_data <-
     merge(forward_primers, reverse_primers, by = "primer_name")
   return(primer_data)
@@ -544,3 +440,109 @@ make_cutadapt_tibble <-
       )
     return(cutadapt_data)
   }
+
+#' Prepare reads for primer trimming using Cutadapt
+#' 
+#' @importFrom utils modifyList read.table stack
+#' @param data_directory User-specified directory path where the user has placed
+#'   raw FASTQ (forward and reverse reads), metadata.csv, and
+#'   primerinfo_params.csv files. Default is "data".
+#' @param output_directory User-specified directory for outputs. Default is
+#'   "output".
+#' @param tempdir_path Path to a temporary directory. If `NULL`, a temporary
+#'   directory path will be identified using the `tempdir()` command.
+#' @param tempdir_id ID for temporary directories. Default is
+#'   "demulticoder_run". The user can provide any helpful ID, whether it be a
+#'   date or specific name for the run.
+#' @param multithread Logical, indicating whether to use multithreading for
+#'   certain operations. Default is `FALSE`.
+#' @param overwrite_existing Logical, indicating whether to remove or overwrite
+#'   existing files and directories from previous runs. Default is `FALSE`.
+#'
+#' @return A list containing data tables, including metadata, primer sequences
+#'   to search for based on orientation, paths for trimming reads, and
+#'   user-defined parameters for all subsequent steps.
+#'
+#' @export
+#'
+#' @examples
+#' # Pre-filter raw reads and parse metadata and primer_information to prepare 
+#' # for primer trimming and filter
+#' analysis_setup<-prepare_reads(
+#'   data_directory = system.file("extdata", package = "demulticoder"), 
+#'   output_directory = tempdir(),
+#'   tempdir_path = tempdir(),
+#'   tempdir_id = "demulticoder_run_temp", 
+#'   overwrite_existing = FALSE
+#' )
+prepare_reads <- function(data_directory = "data",
+                          output_directory = "output",
+                          tempdir_path = NULL,
+                          tempdir_id = "demulticoder_run",
+                          multithread = FALSE,
+                          overwrite_existing = FALSE) {
+  directory_paths <-
+    setup_directories(data_directory, output_directory, tempdir_path, tempdir_id)
+  output_directory_path <- directory_paths$output_directory
+  data_directory_path <- directory_paths$data_directory
+  temp_directory_path <- directory_paths$temp_directory
+  primers_params_path <- directory_paths$primers_params_path
+  metadata_path <- directory_paths$metadata_path
+  
+  existing_files <- list.files(output_directory_path)
+  
+  if (!overwrite_existing && length(existing_files) > 0) {
+    existing_analysis_table <-
+      file.path(temp_directory_path, "analysis_setup_obj.RData")
+    if (file.exists(existing_analysis_table)) {
+      load(existing_analysis_table)
+      message(
+        "Existing data detected: Primer counts and N's may have been removed from previous runs. Loading existing output. To perform a new analysis, specify overwrite_existing = TRUE."
+      )
+    } else {
+      warning(
+        "Existing analysis setup tables are not found. The 'prepare_reads' function was rerun"
+      )
+    }
+  } else {
+    if (dir.exists(output_directory_path)) {
+      unlink(output_directory_path, recursive = TRUE)
+    }
+    if (dir.exists(temp_directory_path)) {
+      unlink(temp_directory_path, recursive = TRUE)
+    }
+  }
+  
+  if (!dir.exists(output_directory_path)) {
+    dir.create(output_directory_path, recursive = TRUE)
+  }
+  
+  if (!dir.exists(temp_directory_path)) {
+    dir.create(temp_directory_path, recursive = TRUE)
+  }
+  
+  primer_data <- orient_primers(primers_params_path)
+  parameters <- read_parameters(primers_params_path)
+  metadata <- prepare_metadata_table(metadata_path, primer_data)
+  fastq_data <-
+    read_prefilt_fastq(data_directory_path, multithread, temp_directory_path)
+  pre_primer_hit_data <-
+    get_pre_primer_hits(primer_data, fastq_data, output_directory_path)
+  cutadapt_data <-
+    make_cutadapt_tibble(fastq_data, metadata, temp_directory_path)
+  data_tables <- list(
+    cutadapt_data = cutadapt_data,
+    primer_data = primer_data,
+    fastq_data = fastq_data,
+    parameters = parameters,
+    metadata = metadata
+  )
+  
+  analysis_setup <-
+    list(data_tables = data_tables, directory_paths = directory_paths)
+  analysis_setup_path <-
+    file.path(temp_directory_path,
+              paste0("analysis_setup_obj", ".RData"))
+  save(analysis_setup, file = analysis_setup_path)
+  return(analysis_setup)
+}

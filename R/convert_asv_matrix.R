@@ -1,4 +1,6 @@
 #' Filter ASV abundance matrix and convert to taxmap object
+#' @importFrom utils modifyList read.table stack
+#' 
 #' @param analysis_setup analysis_setup An object containing directory paths and
 #'   data tables, produced by the `prepare_reads` function
 #' @param min_read_depth ASV filter parameter. If mean read depth of across all
@@ -9,8 +11,13 @@
 #'   assignments will be set to N/A
 #' @param save_outputs Logical, indicating whether to save the taxmap object.
 #'   Default is FALSE.
+#' @param overwrite_existing Logical, indicating whether to overwrite existing
+#'   results. Default is FALSE.
+#' 
 #' @return ASV matrix converted to taxmap object
+#' 
 #' @export
+#' 
 #' @examples
 #' # Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
 #' analysis_setup<-prepare_reads(
@@ -39,7 +46,7 @@
 #' analysis_setup, 
 #' save_outputs=FALSE
 #' )
-convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minimum_bootstrap = 0, save_outputs = FALSE, overwrite = FALSE) {
+convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minimum_bootstrap = 0, save_outputs = FALSE, overwrite_existing = FALSE) {
   data_tables <- analysis_setup$data_tables
   output_directory_path <- analysis_setup$directory_paths$output_directory
   

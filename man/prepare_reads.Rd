@@ -32,7 +32,7 @@ date or specific name for the run.}
 certain operations. Default is \code{FALSE}.}
 
 \item{overwrite_existing}{Logical, indicating whether to remove or overwrite
-existing files and directories from previous runs.}
+existing files and directories from previous runs. Default is \code{FALSE}.}
 }
 \value{
 A list containing data tables, including metadata, primer sequences

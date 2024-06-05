@@ -14,7 +14,7 @@ make_asv_abund_matrix(analysis_setup, overwrite_existing = FALSE)
 data tables, produced by the \code{prepare_reads} function}
 
 \item{overwrite_existing}{Logical, indicating whether to overwrite existing
-results}
+results. Default is FALSE.}
 }
 \value{
 The ASV abundance matrix (\code{asv_abund_matrix})

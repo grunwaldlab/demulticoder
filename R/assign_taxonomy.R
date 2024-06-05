@@ -1,118 +1,3 @@
-#' Assign taxonomy functions
-#' @param analysis_setup An object containing directory paths and data tables,
-#'   produced by the `prepare_reads` function
-#' @param asv_abund_matrix ASV abundance matrix.
-#' @param tryRC Whether to try reverse complementing sequences during taxonomic
-#'   assignment
-#' @param verbose Logical, indicating whether to display verbose output
-#' @param multithread Logical, indicating whether to use multithreading
-#' @param retrieve_files Specify TRUE/FALSE whether to copy files from the temp
-#'   directory to the output directory
-#' @param overwrite_existing Logical, indicating whether to remove or overwrite
-#'   existing files and directories from previous runs
-#' @inheritParams dada2::assignTaxonomy
-#'
-#' @return Taxonomic assignments of each unique ASV sequence
-#'
-#' @export assign_tax
-#'
-#' @examples
-#' # Assign taxonomies to ASVs on a per barcode basis
-#' analysis_setup<-prepare_reads(
-#'   data_directory = system.file("extdata", package = "demulticoder"), 
-#'   output_directory = tempdir(),
-#'   tempdir_path = tempdir(),
-#'   tempdir_id = "demulticoder_run_temp", 
-#'   overwrite_existing = FALSE
-#' )
-#' cut_trim(
-#' analysis_setup,
-#' cutadapt_path="/opt/homebrew/bin/cutadapt", 
-#' overwrite_existing = FALSE
-#' )
-#' make_asv_abund_matrix(
-#' analysis_setup, 
-#' overwrite_existing = FALSE
-#' )
-#' assign_tax(
-#' analysis_setup,
-#' asv_abund_matrix, 
-#' retrieve_files=FALSE, 
-#' overwrite_existing=FALSE
-#' )
-assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, db_rps10 = "oomycetedb.fasta", db_its = "fungidb.fasta", db_16s = "bacteriadb.fasta", db_other1 = "otherdb1.fasta", db_other2 = "otherdb2.fasta", overwrite_existing = FALSE) {
-  data_tables <- analysis_setup$data_tables
-  data_path <- analysis_setup$directory_paths$data_directory
-  output_directory_path <- analysis_setup$directory_paths$output_directory
-  temp_directory_path <- analysis_setup$directory_paths$temp_directory
-  unique_barcodes <- unique(data_tables$cutadapt_data$primer_name)
-  
-  files_to_check <- c("*_reference_db.fa", "TaxMatrix_*", "Final_tax_matrix_*")
-  existing_files <- list.files(temp_directory_path, pattern = files_to_check, full.names = TRUE)
-  
-  if (!overwrite_existing && length(existing_files) > 0) {
-    message("Existing files found. Specify overwrite=TRUE, to rerun analysis")
-    return(invisible())
-    
-  } else {
-    patterns_to_remove <- c(
-      "*_species_count_table.csv",
-      "dada2_asv_alignments_*",
-      "final_asv_abundance_matrix_*",
-      "track_reads_*"
-    )
-    
-    for (pattern in patterns_to_remove) {
-      full_pattern <- file.path(output_directory_path, pattern)
-      files_to_remove <- list.files(path = output_directory_path, pattern = pattern, full.names = TRUE)
-      
-      if (length(files_to_remove) > 0) {
-        file.remove(files_to_remove)
-      }
-    }
-    
-    patterns_to_remove_temp <- c(
-      "*_reference_db.fa",
-      "TaxMatrix_*",
-      "Final_tax_matrix_*.RData"
-    )
-    
-    for (pattern in patterns_to_remove_temp) {
-      full_pattern <- file.path(temp_directory_path, pattern)
-      files_to_remove <- list.files(path = temp_directory_path, pattern = pattern, full.names = TRUE)
-      
-      if (length(files_to_remove) > 0) {
-        file.remove(files_to_remove)
-      }
-    }
-    
-    if (length(existing_files) == 0 && !overwrite_existing) {
-      warning("No existing files found. The analysis will be run.")
-    }
-    
-    for (barcode in unique_barcodes) {
-      # Load merged reads for the current barcode
-      load(file.path(temp_directory_path, paste0("asvabund_matrixDADA2_", barcode, ".RData")))
-      
-      format_database(analysis_setup, barcode, db_its, db_rps10, db_16s, db_other1, db_other2)
-      
-      # Run taxonomy assignment for the current barcode
-      process_single_barcode(
-        data_tables = data_tables,
-        temp_directory_path = temp_directory_path,
-        output_directory_path = output_directory_path,
-        asv_abund_matrix = asv_abund_matrix,
-        locus = barcode
-      )
-    }
-    
-    if (retrieve_files) {
-      file.copy(temp_directory_path, output_directory_path, recursive = TRUE)
-    }
-  }
-  return(invisible())
-}
-
 #' Process the information from an ASV abundance matrix to run DADA2 for single
 #' barcode
 #'
@@ -122,6 +7,7 @@ assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose 
 #'   variants
 #' @inheritParams assign_taxonomyDada2
 #' @inheritParams dada2::assignTaxonomy
+#' @inheritParams RcppParallel::setThreadOptions
 #'
 #' @keywords internal
 process_single_barcode <-
@@ -171,6 +57,7 @@ prep_abund_matrix <-function(cutadapt_data, asv_abund_matrix, data_tables, locus
 #' Assign taxonomy
 #'
 #' @inheritParams dada2::assignTaxonomy
+#' @inheritParams RcppParallel::setThreadOptions
 #' @param asv_abund_matrix The ASV abundance matrix
 #' @param ref_database The reference database used for taxonomic inference steps
 #' 
@@ -360,4 +247,125 @@ get_read_counts <- function(asv_abund_matrix, temp_directory_path, output_direct
   print(track)
   track_read_counts_path <- file.path(output_directory_path, paste0("track_reads_", locus, ".csv"))
   readr::write_csv(track, track_read_counts_path)
+}
+
+#' Assign taxonomy functions
+#' @importFrom utils modifyList read.table stack
+#' @param analysis_setup An object containing directory paths and data tables,
+#'   produced by the `prepare_reads` function
+#' @param asv_abund_matrix ASV abundance matrix.
+#' @param tryRC Whether to try reverse complementing sequences during taxonomic
+#'   assignment
+#' @param verbose Logical, indicating whether to display verbose output
+#' @param multithread Logical, indicating whether to use multithreading
+#' @param retrieve_files Specify TRUE/FALSE whether to copy files from the temp
+#'   directory to the output directory
+#' @param overwrite_existing Logical, indicating whether to remove or overwrite
+#'   existing files and directories from previous runs. Default is `FALSE`.
+#'
+#' @return Taxonomic assignments of each unique ASV sequence
+#'
+#' @export assign_tax
+#'
+#' @examples
+#' # Assign taxonomies to ASVs on a per barcode basis
+#' analysis_setup<-prepare_reads(
+#'   data_directory = system.file("extdata", package = "demulticoder"), 
+#'   output_directory = tempdir(),
+#'   tempdir_path = tempdir(),
+#'   tempdir_id = "demulticoder_run_temp", 
+#'   overwrite_existing = FALSE
+#' )
+#' cut_trim(
+#' analysis_setup,
+#' cutadapt_path="/opt/homebrew/bin/cutadapt", 
+#' overwrite_existing = FALSE
+#' )
+#' make_asv_abund_matrix(
+#' analysis_setup, 
+#' overwrite_existing = FALSE
+#' )
+#' assign_tax(
+#' analysis_setup,
+#' asv_abund_matrix, 
+#' retrieve_files=FALSE, 
+#' overwrite_existing=FALSE
+#' )
+assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, overwrite_existing = FALSE) {
+  data_tables <- analysis_setup$data_tables
+  data_path <- analysis_setup$directory_paths$data_directory
+  output_directory_path <- analysis_setup$directory_paths$output_directory
+  temp_directory_path <- analysis_setup$directory_paths$temp_directory
+  unique_barcodes <- unique(data_tables$cutadapt_data$primer_name)
+  
+  files_to_check <- c("*_reference_db.fa", "TaxMatrix_*", "Final_tax_matrix_*")
+  existing_files <- list.files(temp_directory_path, pattern = files_to_check, full.names = TRUE)
+  
+  if (!overwrite_existing && length(existing_files) > 0) {
+    message("Existing files found. Specify overwrite=TRUE, to rerun analysis")
+    return(invisible())
+    
+  } else {
+    patterns_to_remove <- c(
+      "*_species_count_table.csv",
+      "dada2_asv_alignments_*",
+      "final_asv_abundance_matrix_*",
+      "track_reads_*"
+    )
+    
+    for (pattern in patterns_to_remove) {
+      full_pattern <- file.path(output_directory_path, pattern)
+      files_to_remove <- list.files(path = output_directory_path, pattern = pattern, full.names = TRUE)
+      
+      if (length(files_to_remove) > 0) {
+        file.remove(files_to_remove)
+      }
+    }
+    
+    patterns_to_remove_temp <- c(
+      "*_reference_db.fa",
+      "TaxMatrix_*",
+      "Final_tax_matrix_*.RData"
+    )
+    
+    for (pattern in patterns_to_remove_temp) {
+      full_pattern <- file.path(temp_directory_path, pattern)
+      files_to_remove <- list.files(path = temp_directory_path, pattern = pattern, full.names = TRUE)
+      
+      if (length(files_to_remove) > 0) {
+        file.remove(files_to_remove)
+      }
+    }
+    
+    if (length(existing_files) == 0 && !overwrite_existing) {
+      warning("No existing files found. The analysis will be run.")
+    }
+    
+    for (barcode in unique_barcodes) {
+      # Load merged reads for the current barcode
+      load(file.path(temp_directory_path, paste0("asvabund_matrixDADA2_", barcode, ".RData")))
+      
+      db_rps10 <- "oomycetedb.fasta" 
+      db_its <- "fungidb.fasta"
+      db_16s <- "bacteriadb.fasta" 
+      db_other1 <- "otherdb1.fasta" 
+      db_other2 <- "otherdb2.fasta"
+      
+      format_database(analysis_setup, barcode, db_its, db_rps10, db_16s, db_other1, db_other2)
+      
+      # Run taxonomy assignment for the current barcode
+      process_single_barcode(
+        data_tables = data_tables,
+        temp_directory_path = temp_directory_path,
+        output_directory_path = output_directory_path,
+        asv_abund_matrix = asv_abund_matrix,
+        locus = barcode
+      )
+    }
+    
+    if (retrieve_files) {
+      file.copy(temp_directory_path, output_directory_path, recursive = TRUE)
+    }
+  }
+  return(invisible())
 }

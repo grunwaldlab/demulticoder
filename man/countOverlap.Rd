@@ -4,21 +4,21 @@
 \alias{countOverlap}
 \title{Count overlap to see how well the reads were merged}
 \usage{
-countOverlap(merged_reads, data_tables, output_directory_path, barcode)
+countOverlap(merged_reads, barcode, output_directory_path)
 }
 \arguments{
 \item{merged_reads}{Intermediate merged read R data file}
+
+\item{barcode}{The barcode used for the analysis}
 
 \item{output_directory_path}{The path to the directory where resulting files
 are output}
 }
 \value{
 A plot describing how well reads merged and information on overlap
-between reads Count overlap to see how well the reads were merged
-
-A plot describing how well reads merged and information on overlap
 between reads
 }
 \description{
 Count overlap to see how well the reads were merged
 }
+\keyword{internal}

@@ -1,28 +1,3 @@
-#' General functions to format user-specified databases
-#'
-#' @param analysis_setup An object containing directory paths and data tables,
-#'   produced by the `prepare_reads` function
-#' @param barcode The barcode for which the database should be formatted
-#'
-#' @return A formatted database based on the specified barcode type
-#'
-#' @keywords internal
-format_database <- function(analysis_setup, barcode, db_its, db_rps10, db_16s, db_other1, db_other2) {
-  if (barcode == "rps10") {
-    return(format_db_rps10(analysis_setup, db_rps10))
-  } else if (barcode == "its") {
-    return(format_db_its(analysis_setup, db_its))
-  } else if (barcode == "sixteenS") {
-    return(format_db_16s(analysis_setup, db_16s))
-  } else if (barcode == "other1") {
-    return(format_db_other(analysis_setup, db_other1))
-  } else if (barcode == "other2") {
-    return(format_db_other(analysis_setup, db_other2))
-  } else {
-    stop("Barcode not recognized: ", barcode)
-  }
-}
-
 #' Create modified reference rps10 database for downstream analysis
 #'
 #' @param output_directory_path The path to the directory where resulting files
@@ -285,4 +260,30 @@ format_db_other2 <-function(analysis_setup, db_other2){
   readr::write_csv(count_table, file = file.path(output_directory_path, "genus_count_table_other2.csv"))
   readr::write_lines(paste0(">", data_other1$taxonomy, "\n", db_other1), file = database_path)
   return(data_other2)
+}
+
+#' General functions to format user-specified databases
+#' @importFrom utils modifyList read.table stack
+#' 
+#' @param analysis_setup An object containing directory paths and data tables,
+#'   produced by the `prepare_reads` function
+#' @param barcode The barcode for which the database should be formatted
+#'
+#' @return A formatted database based on the specified barcode type
+#'
+#' @keywords internal
+format_database <- function(analysis_setup, barcode, db_its, db_rps10, db_16s, db_other1, db_other2) {
+  if (barcode == "rps10") {
+    return(format_db_rps10(analysis_setup, db_rps10))
+  } else if (barcode == "its") {
+    return(format_db_its(analysis_setup, db_its))
+  } else if (barcode == "sixteenS") {
+    return(format_db_16s(analysis_setup, db_16s))
+  } else if (barcode == "other1") {
+    return(format_db_other(analysis_setup, db_other1))
+  } else if (barcode == "other2") {
+    return(format_db_other(analysis_setup, db_other2))
+  } else {
+    stop("Barcode not recognized: ", barcode)
+  }
 }

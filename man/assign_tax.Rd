@@ -11,11 +11,6 @@ assign_tax(
   verbose = FALSE,
   multithread = FALSE,
   retrieve_files = FALSE,
-  db_rps10 = "oomycetedb.fasta",
-  db_its = "fungidb.fasta",
-  db_16s = "bacteriadb.fasta",
-  db_other1 = "otherdb1.fasta",
-  db_other2 = "otherdb2.fasta",
   overwrite_existing = FALSE
 )
 }
@@ -36,7 +31,7 @@ assignment}
 directory to the output directory}
 
 \item{overwrite_existing}{Logical, indicating whether to remove or overwrite
-existing files and directories from previous runs}
+existing files and directories from previous runs. Default is \code{FALSE}.}
 }
 \value{
 Taxonomic assignments of each unique ASV sequence

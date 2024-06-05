@@ -14,7 +14,7 @@ produced by the \code{prepare_reads} function}
 \item{cutadapt_path}{Path to the Cutadapt program.}
 
 \item{overwrite_existing}{Logical, indicating whether to remove or overwrite
-existing files and directories from previous runs.}
+existing files and directories from previous runs. Default is \code{FALSE}.}
 }
 \value{
 Trimmed reads, primer counts, quality plots, and ASV matrix.

@@ -9,7 +9,7 @@ convert_asv_matrix_to_objs(
   min_read_depth = 0,
   minimum_bootstrap = 0,
   save_outputs = FALSE,
-  overwrite = FALSE
+  overwrite_existing = FALSE
 )
 }
 \arguments{
@@ -26,6 +26,9 @@ assignments will be set to N/A}
 
 \item{save_outputs}{Logical, indicating whether to save the taxmap object.
 Default is FALSE.}
+
+\item{overwrite_existing}{Logical, indicating whether to overwrite existing
+results. Default is FALSE.}
 }
 \value{
 ASV matrix converted to taxmap object

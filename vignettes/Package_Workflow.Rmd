@@ -1,12 +1,18 @@
 ---
-title: "Package Workflow and Quick Start"
-output:
-  rmarkdown::html_vignette
+title: "Package Workflow"
+output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Package_Workflow}
+  %\VignetteIndexEntry{package_workflow}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
 
 ## Introduction
 
@@ -148,7 +154,8 @@ Please also ensure that you have enough storage to save intermediate files in a 
 
 For now, the package will be loaded by retrieving it from GitHub. Eventually, the package will be uploaded to CRAN or Bioconductor.
 ```{r installation, warning=FALSE, message=FALSE}
-devtools::install_github("grunwaldlab/demulticoder")
+#devtools::install_github("grunwaldlab/demulticoder")
+
 library(demulticoder)
 ```
 

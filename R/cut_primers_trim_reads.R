@@ -1,169 +1,3 @@
-#' Main command to trim primers using Cutadapt and core DADA2 functions. If
-#' samples contain pooled barcodes, reads will also be demultiplexed
-#' @param analysis_setup An object containing directory paths and data tables,
-#'   produced by the `prepare_reads` function
-#' @param cutadapt_path Path to the Cutadapt program.
-#' @param overwrite_existing Logical, indicating whether to remove or overwrite
-#'   existing files and directories from previous runs.
-#' @return Trimmed reads, primer counts, quality plots, and ASV matrix.
-#'
-#' @export
-#'
-#' @examples
-#' # Remove remaining primers from raw reads, demultiplex pooled barcoded samples, 
-#' # and then trim reads based on specific DADA2 parameters
-#' analysis_setup<-prepare_reads(
-#'   data_directory = system.file("extdata", package = "demulticoder"), 
-#'   output_directory = tempdir(),
-#'   tempdir_path = tempdir(),
-#'   tempdir_id = "demulticoder_run_temp", 
-#'   overwrite_existing = FALSE
-#' )
-#' cut_trim(
-#' analysis_setup,
-#' cutadapt_path="/opt/homebrew/bin/cutadapt", 
-#' overwrite_existing = FALSE
-#' )
-cut_trim <- function(analysis_setup,
-                     cutadapt_path,
-                     overwrite_existing = FALSE) {
-  
-  data_tables <- analysis_setup$data_tables
-  output_directory_path <- analysis_setup$directory_paths$output_directory
-  temp_directory_path <- analysis_setup$directory_paths$temp_directory
-  
-  patterns_to_check <- c(
-    "primer_hit_data_posttrim.csv", 
-    "posttrim_primer_plot.pdf",
-    "readqual*"
-  )
-  
-  files_exist <- sapply(patterns_to_check, function(pattern) {
-    full_pattern <- file.path(output_directory_path, pattern)
-    any(file.exists(list.files(path = output_directory_path, pattern = pattern, full.names = TRUE, recursive = TRUE)))
-  })
-  
-  if (any(files_exist) && all(files_exist) && !overwrite_existing) {
-    message("Existing data detected: Primer counts and N's may have been removed from previous runs. Loading existing output. To perform a new analysis, specify overwrite_existing = TRUE.")
-    return(invisible())
-  } else if (!overwrite_existing) {
-    warning("Existing analysis files not found. The 'cut_trim' function was rerun.")
-    
-    # Your existing code to remove files and directories
-    patterns_to_remove <- c(
-      "primer_hit_data_posttrim.csv", 
-      "posttrim_primer_plot.pdf",
-      "readqual*"
-    )
-    
-    for (pattern in patterns_to_remove) {
-      full_pattern <- file.path(output_directory_path, pattern)
-      files_to_remove <- list.files(path = output_directory_path, pattern = pattern, full.names = TRUE)
-      
-      if (length(files_to_remove) > 0) {
-        file.remove(files_to_remove)
-      }
-    }
-    
-    patterns_to_remove_temp <- c(
-      "Filter_results_*"
-    )
-    
-    for (pattern in patterns_to_remove_temp) {
-      full_pattern <- file.path(temp_directory_path, pattern)
-      files_to_remove <- list.files(path = temp_directory_path, pattern = pattern, full.names = TRUE)
-      
-      if (length(files_to_remove) > 0) {
-        file.remove(files_to_remove)
-      }
-    }
-    
-    temp_untrimmed <- file.path(temp_directory_path, "untrimmed_sequenced")
-    temp_trimmed <- file.path(temp_directory_path, "trimmed_sequences")
-    temp_filtered <- file.path(temp_directory_path, "filtered_sequences")
-    
-    if (dir.exists(temp_untrimmed)) {
-      unlink(list.files(temp_untrimmed, full.names = TRUE), recursive = TRUE)
-    }
-    if (dir.exists(temp_trimmed)) {
-      unlink(list.files(temp_trimmed, full.names = TRUE), recursive = TRUE)
-    }
-    if (dir.exists(temp_filtered)) {
-      unlink(list.files(temp_filtered, full.names = TRUE), recursive = TRUE)
-    }
-    
-    subdirectory_names <- c("filtered_sequences", "trimmed_sequences", "untrimmed_sequences")
-    
-    for (seqdir_name in subdirectory_names) {
-      seqdir_path <- file.path(temp_directory_path, seqdir_name)
-      
-      if (dir.exists(seqdir_path)) {
-        unlink(list.files(seqdir_path, full.names = TRUE), recursive = TRUE)
-      }
-    }
-  }
-  
-  default_params <- list(
-    minCutadaptlength=50,
-    maxEE_forward = Inf,
-    maxEE_reverse = Inf,
-    truncQ = 2,
-    minLen = 20,
-    maxLen = Inf,
-    truncLen_forward = 0,
-    truncLen_reverse = 0,
-    maxN = 0,
-    minQ = 0,
-    trimLeft = 0,
-    trimRight = 0,
-    rm.phix = TRUE,
-    multithread = FALSE,
-    verbose = FALSE,
-    qualityType = "Auto",
-    OMP = TRUE,
-    n = 1e+05,
-    id.sep = "\\s",
-    rm.lowcomplex = 0,
-    orient.fwd = NULL,
-    id.field = NULL,
-    overwrite_existing = FALSE
-  )
-  
-  unique_primers <- unique(data_tables$primer_data$primer_name)
-  
-  for (barcode in unique_primers) {
-    barcode_params <- dplyr::filter(data_tables$parameters, primer_name == barcode)
-    
-    if (nrow(barcode_params) > 0) {
-      barcode_params <- as.list(barcode_params)
-      
-      barcode_params <- utils::modifyList(default_params, barcode_params)
-      
-      cutadapt_data_barcode <- subset(data_tables$cutadapt_data, primer_name == barcode)
-      if (nrow(cutadapt_data_barcode) > 0 && !all(file.exists(c(cutadapt_data_barcode$trimmed_path)))) {
-        run_cutadapt(
-          cutadapt_path,
-          cutadapt_data_barcode,
-          barcode_params,
-          minCutadaptlength = barcode_params$minCutadaptlength)
-        
-        if (length(barcode_params) > 0) {
-          barcode_params <- as.list(barcode_params)
-          filter_and_trim(
-            output_directory_path,
-            temp_directory_path,
-            cutadapt_data_barcode,
-            barcode_params, 
-            barcode)
-        }
-      }
-    }
-  }
-  quality_plots <- plot_qc(data_tables$cutadapt_data, output_directory_path)
-  post_primer_hit_data <- get_post_trim_hits(data_tables$primer_data, data_tables$cutadapt_data, output_directory_path)
-  quality_plots2 <- plot_post_trim_qc(data_tables$cutadapt_data, output_directory_path)
-}
-
 #' Core function for running cutadapt
 #'
 #' @param cutadapt_path A path to the cutadapt program.
@@ -433,4 +267,174 @@ plot_post_trim_qc <- function(cutadapt_data, output_directory_path, n = 500000) 
       )
     }
   }
+}
+
+#' Main command to trim primers using Cutadapt and core DADA2 functions. If
+#' samples contain pooled barcodes, reads will also be demultiplexed
+#' 
+#' @importFrom utils modifyList read.table stack
+#' 
+#' @param analysis_setup An object containing directory paths and data tables,
+#'   produced by the `prepare_reads` function
+#' @param cutadapt_path Path to the Cutadapt program.
+#' @param overwrite_existing Logical, indicating whether to remove or overwrite
+#'   existing files and directories from previous runs. Default is `FALSE`.
+#'   
+#' @return Trimmed reads, primer counts, quality plots, and ASV matrix.
+#'
+#' @export
+#'
+#' @examples
+#' # Remove remaining primers from raw reads, demultiplex pooled barcoded samples, 
+#' # and then trim reads based on specific DADA2 parameters
+#' analysis_setup<-prepare_reads(
+#'   data_directory = system.file("extdata", package = "demulticoder"), 
+#'   output_directory = tempdir(),
+#'   tempdir_path = tempdir(),
+#'   tempdir_id = "demulticoder_run_temp", 
+#'   overwrite_existing = FALSE
+#' )
+#' cut_trim(
+#' analysis_setup,
+#' cutadapt_path="/opt/homebrew/bin/cutadapt", 
+#' overwrite_existing = FALSE
+#' )
+cut_trim <- function(analysis_setup,
+                     cutadapt_path,
+                     overwrite_existing = FALSE) {
+  
+  data_tables <- analysis_setup$data_tables
+  output_directory_path <- analysis_setup$directory_paths$output_directory
+  temp_directory_path <- analysis_setup$directory_paths$temp_directory
+  
+  patterns_to_check <- c(
+    "primer_hit_data_posttrim.csv", 
+    "posttrim_primer_plot.pdf",
+    "readqual*"
+  )
+  
+  files_exist <- sapply(patterns_to_check, function(pattern) {
+    full_pattern <- file.path(output_directory_path, pattern)
+    any(file.exists(list.files(path = output_directory_path, pattern = pattern, full.names = TRUE, recursive = TRUE)))
+  })
+  
+  if (any(files_exist) && all(files_exist) && !overwrite_existing) {
+    message("Existing data detected: Primer counts and N's may have been removed from previous runs. Loading existing output. To perform a new analysis, specify overwrite_existing = TRUE.")
+    return(invisible())
+  } else if (!overwrite_existing) {
+    warning("Existing analysis files not found. The 'cut_trim' function was rerun.")
+    
+    # Your existing code to remove files and directories
+    patterns_to_remove <- c(
+      "primer_hit_data_posttrim.csv", 
+      "posttrim_primer_plot.pdf",
+      "readqual*"
+    )
+    
+    for (pattern in patterns_to_remove) {
+      full_pattern <- file.path(output_directory_path, pattern)
+      files_to_remove <- list.files(path = output_directory_path, pattern = pattern, full.names = TRUE)
+      
+      if (length(files_to_remove) > 0) {
+        file.remove(files_to_remove)
+      }
+    }
+    
+    patterns_to_remove_temp <- c(
+      "Filter_results_*"
+    )
+    
+    for (pattern in patterns_to_remove_temp) {
+      full_pattern <- file.path(temp_directory_path, pattern)
+      files_to_remove <- list.files(path = temp_directory_path, pattern = pattern, full.names = TRUE)
+      
+      if (length(files_to_remove) > 0) {
+        file.remove(files_to_remove)
+      }
+    }
+    
+    temp_untrimmed <- file.path(temp_directory_path, "untrimmed_sequenced")
+    temp_trimmed <- file.path(temp_directory_path, "trimmed_sequences")
+    temp_filtered <- file.path(temp_directory_path, "filtered_sequences")
+    
+    if (dir.exists(temp_untrimmed)) {
+      unlink(list.files(temp_untrimmed, full.names = TRUE), recursive = TRUE)
+    }
+    if (dir.exists(temp_trimmed)) {
+      unlink(list.files(temp_trimmed, full.names = TRUE), recursive = TRUE)
+    }
+    if (dir.exists(temp_filtered)) {
+      unlink(list.files(temp_filtered, full.names = TRUE), recursive = TRUE)
+    }
+    
+    subdirectory_names <- c("filtered_sequences", "trimmed_sequences", "untrimmed_sequences")
+    
+    for (seqdir_name in subdirectory_names) {
+      seqdir_path <- file.path(temp_directory_path, seqdir_name)
+      
+      if (dir.exists(seqdir_path)) {
+        unlink(list.files(seqdir_path, full.names = TRUE), recursive = TRUE)
+      }
+    }
+  }
+  
+  default_params <- list(
+    minCutadaptlength=50,
+    maxEE_forward = Inf,
+    maxEE_reverse = Inf,
+    truncQ = 2,
+    minLen = 20,
+    maxLen = Inf,
+    truncLen_forward = 0,
+    truncLen_reverse = 0,
+    maxN = 0,
+    minQ = 0,
+    trimLeft = 0,
+    trimRight = 0,
+    rm.phix = TRUE,
+    multithread = FALSE,
+    verbose = FALSE,
+    qualityType = "Auto",
+    OMP = TRUE,
+    n = 1e+05,
+    id.sep = "\\s",
+    rm.lowcomplex = 0,
+    orient.fwd = NULL,
+    id.field = NULL,
+    overwrite_existing = FALSE
+  )
+  
+  unique_primers <- unique(data_tables$primer_data$primer_name)
+  
+  for (barcode in unique_primers) {
+    barcode_params <- dplyr::filter(data_tables$parameters, primer_name == barcode)
+    
+    if (nrow(barcode_params) > 0) {
+      barcode_params <- as.list(barcode_params)
+      
+      barcode_params <- utils::modifyList(default_params, barcode_params)
+      
+      cutadapt_data_barcode <- subset(data_tables$cutadapt_data, primer_name == barcode)
+      if (nrow(cutadapt_data_barcode) > 0 && !all(file.exists(c(cutadapt_data_barcode$trimmed_path)))) {
+        run_cutadapt(
+          cutadapt_path,
+          cutadapt_data_barcode,
+          barcode_params,
+          minCutadaptlength = barcode_params$minCutadaptlength)
+        
+        if (length(barcode_params) > 0) {
+          barcode_params <- as.list(barcode_params)
+          filter_and_trim(
+            output_directory_path,
+            temp_directory_path,
+            cutadapt_data_barcode,
+            barcode_params, 
+            barcode)
+        }
+      }
+    }
+  }
+  quality_plots <- plot_qc(data_tables$cutadapt_data, output_directory_path)
+  post_primer_hit_data <- get_post_trim_hits(data_tables$primer_data, data_tables$cutadapt_data, output_directory_path)
+  quality_plots2 <- plot_post_trim_qc(data_tables$cutadapt_data, output_directory_path)
 }
