@@ -11,7 +11,12 @@ assign_tax(
   verbose = FALSE,
   multithread = FALSE,
   retrieve_files = FALSE,
-  overwrite_existing = FALSE
+  overwrite_existing = FALSE,
+  db_rps10 = "oomycetedb.fasta",
+  db_its = "fungidb.fasta",
+  db_16s = "bacteriadb.fasta",
+  db_other1 = "otherdb1.fasta",
+  db_other2 = "otherdb2.fasta"
 )
 }
 \arguments{
@@ -32,6 +37,16 @@ directory to the output directory}
 
 \item{overwrite_existing}{Logical, indicating whether to remove or overwrite
 existing files and directories from previous runs. Default is \code{FALSE}.}
+
+\item{db_rps10}{The reference database for the rps10 locus}
+
+\item{db_its}{The reference database for the ITS locus}
+
+\item{db_16s}{The reference database for the 16S locus}
+
+\item{db_other1}{The reference database for different locus 1 (assumes format is like SILVA DB entries)}
+
+\item{db_other2}{The reference database for a different locus 2 (assumes format is like SILVA DB entries)}
 }
 \value{
 Taxonomic assignments of each unique ASV sequence
