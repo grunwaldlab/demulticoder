@@ -4,9 +4,11 @@
 \alias{get_fastq_paths}
 \title{Retrieve the paths of the filtered and trimmed Fastq files}
 \usage{
-get_fastq_paths(analysis_setup, my_direction, my_primer_pair_id)
+get_fastq_paths(data_tables, my_direction, my_primer_pair_id)
 }
 \arguments{
+\item{data_tables}{The data tables containing the paths to read files, metadata, primer sequences}
+
 \item{my_direction}{Whether primer is in forward or reverse direction}
 
 \item{my_primer_pair_id}{The the specific barcode id}

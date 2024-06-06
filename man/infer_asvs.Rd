@@ -5,6 +5,7 @@
 \title{Core DADA2 function to learn errors and infer ASVs}
 \usage{
 infer_asvs(
+  data_tables,
   my_direction,
   my_primer_pair_id,
   barcode_params,
@@ -12,6 +13,8 @@ infer_asvs(
 )
 }
 \arguments{
+\item{data_tables}{The data tables containing the paths to read files, metadata, primer sequences}
+
 \item{my_direction}{Location of read files and metadata file}
 
 \item{my_primer_pair_id}{The the specific barcode id}

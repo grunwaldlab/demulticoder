@@ -5,6 +5,7 @@
 \title{Format ASV abundance matrix}
 \usage{
 format_abund_matrix(
+  data_tables,
   asv_abund_matrix,
   seq_tax_asv,
   output_directory_path,
@@ -12,6 +13,8 @@ format_abund_matrix(
 )
 }
 \arguments{
+\item{data_tables}{The data tables containing the paths to read files, metadata, primer sequences}
+
 \item{asv_abund_matrix}{An abundance matrix containing amplified sequence
 variants}
 

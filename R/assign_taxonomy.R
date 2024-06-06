@@ -1,47 +1,3 @@
-#' Process the information from an ASV abundance matrix to run DADA2 for single
-#' barcode
-#'
-#' @param data_tables A list containing data modified by cutadapt, primer data,
-#'   FASTQ data, and concatenated metadata and primer data
-#' @param asv_abund_matrix An abundance matrix containing amplified sequence
-#'   variants
-#' @inheritParams assign_taxonomyDada2
-#' @inheritParams dada2::assignTaxonomy
-#' @inheritParams RcppParallel::setThreadOptions
-#'
-#' @keywords internal
-process_single_barcode <-
-  function(data_tables,
-           temp_directory_path,
-           output_directory_path,
-           asv_abund_matrix,
-           tryRC = FALSE,
-           verbose = FALSE,
-           multithread = FALSE,
-           locus = barcode)
-  {
-    abund_asv_single <-
-      prep_abund_matrix(data_tables$cutadapt_data, asv_abund_matrix, data_tables, locus)
-    refdb = paste0(locus, "_reference_db.fa")
-    taxmat = paste0(locus, "_taxmatrix.RData")
-    tax_results_single_asv <-
-      assign_taxonomyDada2(
-        abund_asv_single,
-        temp_directory_path,
-        tryRC = tryRC,
-        verbose = verbose,
-        multithread = multithread,
-        locus=locus
-      )
-    #single_pids_asv <- get_pids(tax_results_single_asv, temp_directory_path, output_directory_path, refdb, locus)
-    #tax_results_single_asv_pid <-
-      #add_pid_to_tax(tax_results_single_asv, single_pids_asv)
-    seq_tax_asv <- assignTax_as_char(tax_results_single_asv, temp_directory_path, locus)
-    formatted_abund_asv <-
-      format_abund_matrix(asv_abund_matrix, seq_tax_asv, output_directory_path, locus)
-    get_read_counts(asv_abund_matrix, temp_directory_path, output_directory_path, locus)
-}
-
 #' Prepare final ASV abundance matrix
 #'
 #' @param directory_data folder with trimmed and filtered reads for each sample
@@ -159,14 +115,14 @@ assignTax_as_char <- function(tax_results, temp_directory_path, locus) {
 }
 
 #' Format ASV abundance matrix
-#'
+#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
 #' @param asv_abund_matrix An abundance matrix containing amplified sequence
 #'   variants
 #' @param seq_tax_asv An amplified sequence variants matrix with taxonomic
 #'   information
 #'
 #' @keywords internal
-format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv, output_directory_path, locus) {
+format_abund_matrix <- function(data_tables, asv_abund_matrix, seq_tax_asv, output_directory_path, locus) {
   formatted_abund_asv <- t(asv_abund_matrix)
   asv_id_column <- paste("asv_", seq_along(rownames(formatted_abund_asv)), sep = "")
   formatted_abund_asv <- cbind(
@@ -177,7 +133,7 @@ format_abund_matrix <- function(asv_abund_matrix, seq_tax_asv, output_directory_
     formatted_abund_asv)
   formatted_abund_asv <- tibble::as_tibble(formatted_abund_asv)
   
-  primer_seqs <- apply(analysis_setup$data_tables$primer_data[, 2:ncol(analysis_setup$data_tables$primer_data)], 2, paste, collapse = "|")
+  primer_seqs <- apply(data_tables$primer_data[, 2:ncol(data_tables$primer_data)], 2, paste, collapse = "|")
   
   # Function to create a regular expression pattern for a primer with ambiguity codes
   # Function to create a regular expression pattern for a primer with ambiguity codes
@@ -248,6 +204,50 @@ get_read_counts <- function(asv_abund_matrix, temp_directory_path, output_direct
   track_read_counts_path <- file.path(output_directory_path, paste0("track_reads_", locus, ".csv"))
   readr::write_csv(track, track_read_counts_path)
 }
+
+#' Process the information from an ASV abundance matrix to run DADA2 for single
+#' barcode
+#'
+#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
+#' @param asv_abund_matrix An abundance matrix containing amplified sequence
+#'   variants
+#' @inheritParams assign_taxonomyDada2
+#' @inheritParams dada2::assignTaxonomy
+#' @inheritParams RcppParallel::setThreadOptions
+#'
+#' @keywords internal
+process_single_barcode <-
+  function(data_tables,
+           temp_directory_path,
+           output_directory_path,
+           asv_abund_matrix,
+           tryRC = FALSE,
+           verbose = FALSE,
+           multithread = FALSE,
+           locus = barcode)
+  {
+    abund_asv_single <-
+      prep_abund_matrix(data_tables$cutadapt_data, asv_abund_matrix, data_tables, locus)
+    refdb = paste0(locus, "_reference_db.fa")
+    taxmat = paste0(locus, "_taxmatrix.RData")
+    tax_results_single_asv <-
+      assign_taxonomyDada2(
+        abund_asv_single,
+        temp_directory_path,
+        tryRC = tryRC,
+        verbose = verbose,
+        multithread = multithread,
+        locus=locus
+      )
+    #single_pids_asv <- get_pids(tax_results_single_asv, temp_directory_path, output_directory_path, refdb, locus)
+    #tax_results_single_asv_pid <-
+    #add_pid_to_tax(tax_results_single_asv, single_pids_asv)
+    seq_tax_asv <- assignTax_as_char(tax_results_single_asv, temp_directory_path, locus)
+    formatted_abund_asv <-
+      format_abund_matrix(data_tables, asv_abund_matrix, seq_tax_asv, output_directory_path, locus)
+    get_read_counts(asv_abund_matrix, temp_directory_path, output_directory_path, locus)
+  }
+
 
 #' Assign taxonomy functions
 #' @importFrom utils modifyList read.table stack
@@ -351,7 +351,7 @@ assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose 
       db_other1 <- "otherdb1.fasta" 
       db_other2 <- "otherdb2.fasta"
       
-      format_database(analysis_setup, barcode, db_its, db_rps10, db_16s, db_other1, db_other2)
+      format_database(data_tables, data_path, output_directory_path, temp_directory_path, barcode, db_its, db_rps10, db_16s, db_other1, db_other2)
       
       # Run taxonomy assignment for the current barcode
       process_single_barcode(
@@ -364,7 +364,7 @@ assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose 
     }
     
     if (retrieve_files) {
-      file.copy(temp_directory_path, output_directory_path, recursive = TRUE)
+      file.copy(temp_directory_path, output_directory_path,  recursive = TRUE)
     }
   }
   return(invisible())

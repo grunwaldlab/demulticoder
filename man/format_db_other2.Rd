@@ -6,16 +6,26 @@
 by DADA2 with header simply taxonomic levels (kingdom down to species,
 separated by semi-colons, ;)}
 \usage{
-format_db_other2(analysis_setup, db_other2)
+format_db_other2(
+  data_tables,
+  data_path,
+  output_directory_path,
+  temp_directory_path,
+  db_other2
+)
 }
 \arguments{
-\item{db_other2}{The name of the database}
+\item{data_tables}{The data tables containing the paths to read files, metadata, primer sequences}
+
+\item{data_path}{Path to the data directory}
 
 \item{output_directory_path}{The path to the directory where resulting files
 are output}
 
 \item{temp_directory_path}{User-defined temporary directory to place reads
 throughout the workflow metadata, and primer_info files}
+
+\item{db_other2}{The name of the database}
 }
 \value{
 An other database that has modified headers and is output in the

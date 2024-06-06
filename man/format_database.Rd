@@ -5,7 +5,10 @@
 \title{General functions to format user-specified databases}
 \usage{
 format_database(
-  analysis_setup,
+  data_tables,
+  data_path,
+  output_directory_path,
+  temp_directory_path,
   barcode,
   db_its,
   db_rps10,
@@ -15,8 +18,15 @@ format_database(
 )
 }
 \arguments{
-\item{analysis_setup}{An object containing directory paths and data tables,
-produced by the \code{prepare_reads} function}
+\item{data_tables}{The data tables containing the paths to read files, metadata, primer sequences}
+
+\item{data_path}{Path to the data directory}
+
+\item{output_directory_path}{The path to the directory where resulting files
+are output}
+
+\item{temp_directory_path}{User-defined temporary directory to place reads
+throughout the workflow metadata, and primer_info files}
 
 \item{barcode}{The barcode for which the database should be formatted}
 }

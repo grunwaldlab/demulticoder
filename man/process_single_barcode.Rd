@@ -17,8 +17,7 @@ process_single_barcode(
 )
 }
 \arguments{
-\item{data_tables}{A list containing data modified by cutadapt, primer data,
-FASTQ data, and concatenated metadata and primer data}
+\item{data_tables}{The data tables containing the paths to read files, metadata, primer sequences}
 
 \item{asv_abund_matrix}{An abundance matrix containing amplified sequence
 variants}

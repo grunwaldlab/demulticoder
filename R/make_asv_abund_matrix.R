@@ -1,12 +1,11 @@
 #' Retrieve the paths of the filtered and trimmed Fastq files
-#'
+#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
 #' @param my_direction Whether primer is in forward or reverse direction
 #' @param my_primer_pair_id The the specific barcode id
 #' @param cutadapt_data directory_data folder with trimmed and filtered reads
 #'   for each sample
 #' @keywords internal
-get_fastq_paths <- function(analysis_setup, my_direction, my_primer_pair_id) {
-  data_tables <- analysis_setup$data_tables
+get_fastq_paths <- function(data_tables, my_direction, my_primer_pair_id) {
   filtered_paths <- character()
   for (i in seq_along(data_tables$cutadapt_data$direction)) {
     if (data_tables$cutadapt_data$direction[i] == my_direction &&
@@ -19,15 +18,16 @@ get_fastq_paths <- function(analysis_setup, my_direction, my_primer_pair_id) {
   filtered_paths
 }
 #' Core DADA2 function to learn errors and infer ASVs
+#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
 #' @param output_directory_path The path to the directory containing the fastq,
 #' metadata, and primerinfo_params files
 #' @param my_primer_pair_id The the specific barcode id 
 #' @param my_direction Location of read files and metadata file
 #' @return asv_data
 #' @keywords internal
-infer_asvs <- function(my_direction, my_primer_pair_id, barcode_params, output_directory_path) {
+infer_asvs <- function(data_tables,my_direction, my_primer_pair_id, barcode_params, output_directory_path) {
   set.seed(1)
-  fastq_paths <- get_fastq_paths(analysis_setup, my_direction, my_primer_pair_id)
+  fastq_paths <- get_fastq_paths(data_tables,my_direction, my_primer_pair_id)
   error_plot_filename <- paste0("error_plot_", my_primer_pair_id, ".pdf")
   error_profile <- dada2::learnErrors(
     fastq_paths,
@@ -76,7 +76,7 @@ infer_asvs <- function(my_direction, my_primer_pair_id, barcode_params, output_d
 }
 
 #' Function to infer ASVs, for multiple loci
-#'
+#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
 #' @param output_directory_path The path to the directory where resulting files are output
 #' @param denoised_data_path Path to saved intermediate denoised data
 #' @keywords internal
@@ -101,6 +101,7 @@ infer_asv_command <- function(output_directory_path, temp_directory_path, data_t
   run_dada <- function(direction, data_tables, barcode_params, barcode) {
     dada_output <- lapply(barcode, function(primer_name) {
       infer_asvs(
+        data_tables,
         direction,
         primer_name,
         barcode_params, 
@@ -148,7 +149,7 @@ merge_reads_command <- function(output_directory_path, temp_directory_path, barc
 }
 
 #' Count overlap to see how well the reads were merged
-#'
+#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
 #' @param merged_reads Intermediate merged read R data file
 #' @param barcode The barcode used for the analysis
 #' @param output_directory_path The path to the directory where resulting files
@@ -156,10 +157,9 @@ merge_reads_command <- function(output_directory_path, temp_directory_path, barc
 #' @keywords internal
 #' @return A plot describing how well reads merged and information on overlap
 #'   between reads
-countOverlap <- function(merged_reads, barcode, output_directory_path) {
+countOverlap <- function(data_tables, merged_reads, barcode, output_directory_path) {
   non_empty_merged_reads <- merged_reads[sapply(merged_reads, nrow) > 0]
   merge_data <- do.call(rbind, non_empty_merged_reads)
-  data_tables <- analysis_setup$data_tables
   merge_data$samplename_barcode <- rep(names(non_empty_merged_reads), sapply(non_empty_merged_reads, nrow))
   merge_data2 <- merge_data[merge_data$samplename_barcode %in% data_tables$cutadapt_data$samplename_barcode, ]
   merge_data2 <- merge(merge_data2, data_tables$cutadapt_data, by = "samplename_barcode")
@@ -410,7 +410,7 @@ make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {
             barcode = barcode
           )
           
-          countOverlap(merged_reads, barcode, output_directory_path)
+          countOverlap(data_tables, merged_reads, barcode, output_directory_path)
           raw_seqtab <- createASVSequenceTable(merged_reads, orderBy = "abundance")
           asv_abund_matrix <- make_abund_matrix(raw_seqtab, temp_directory_path = temp_directory_path, barcode_params, barcode)
           make_seqhist(asv_abund_matrix, output_directory_path)

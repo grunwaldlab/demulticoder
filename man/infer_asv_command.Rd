@@ -15,6 +15,8 @@ infer_asv_command(
 \arguments{
 \item{output_directory_path}{The path to the directory where resulting files are output}
 
+\item{data_tables}{The data tables containing the paths to read files, metadata, primer sequences}
+
 \item{denoised_data_path}{Path to saved intermediate denoised data}
 }
 \description{

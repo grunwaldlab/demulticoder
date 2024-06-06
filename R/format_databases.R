@@ -1,5 +1,6 @@
 #' Create modified reference rps10 database for downstream analysis
-#'
+#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
+#' @param data_path Path to the data directory
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
 #' @param temp_directory_path User-defined temporary directory to place reads
@@ -8,12 +9,8 @@
 #' @return A rps10 database that has modified headers and is output in the
 #'   reference_databases folder.
 #' @keywords internal
-format_db_rps10 <- function(analysis_setup, db_rps10) {
+format_db_rps10 <- function(data_tables, data_path, output_directory_path, temp_directory_path, db_rps10) {
   
-  data_tables <- analysis_setup$data_tables
-  data_path <- analysis_setup$directory_paths$data_directory
-  output_directory_path <- analysis_setup$directory_paths$output_directory
-  temp_directory_path <- analysis_setup$directory_paths$temp_directory
   database_path <- file.path(temp_directory_path, "rps10_reference_db.fa")
   
   db_rps10 <- metacoder::read_fasta(file.path(data_path, db_rps10))
@@ -50,8 +47,9 @@ format_db_rps10 <- function(analysis_setup, db_rps10) {
 }
 
 #' An ITS database that has modified headers and is output in the
-#' reference_databases folder.
-#'
+#' reference_databases folder
+#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
+#' @param data_path Path to the data directory
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
 #' @param temp_directory_path User-defined temporary directory to place reads
@@ -60,11 +58,7 @@ format_db_rps10 <- function(analysis_setup, db_rps10) {
 #' @return An ITS database that has modified headers and is output in the
 #'   reference_databases folder.
 #' @keywords internal
-format_db_its <- function(analysis_setup, db_its) {
-  data_tables <- analysis_setup$data_tables
-  data_path <- analysis_setup$directory_paths$data_directory
-  output_directory_path <- analysis_setup$directory_paths$output_directory
-  temp_directory_path <- analysis_setup$directory_paths$temp_directory
+format_db_its <- function(data_tables, data_path, output_directory_path, temp_directory_path, db_its) {
   database_path <- file.path(temp_directory_path, "its_reference_db.fa")
   
   db_its <- metacoder::read_fasta(file.path(data_path, db_its))
@@ -99,8 +93,9 @@ format_db_its <- function(analysis_setup, db_its) {
 }
 
 #' An 16s database that has modified headers and is output in the
-#' reference_databases folder.
-#'
+#' reference_databases folder
+#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
+#' @param data_path Path to the data directory
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
 #' @param temp_directory_path User-defined temporary directory to place reads
@@ -111,11 +106,8 @@ format_db_its <- function(analysis_setup, db_its) {
 #'   reference_databases folder
 #'
 #' @keywords internal
-format_db_16s <- function(analysis_setup, db_16s) {
-  data_tables <- analysis_setup$data_tables
-  data_path <- analysis_setup$directory_paths$data_directory
-  output_directory_path <- analysis_setup$directory_paths$output_directory
-  temp_directory_path <- analysis_setup$directory_paths$temp_directory
+format_db_16s <- function(data_tables, data_path, output_directory_path, temp_directory_path, db_16s) {
+
   database_path <- file.path(temp_directory_path, "sixteenS_reference_db.fa")
   
   db_16s <- metacoder::read_fasta(file.path(data_path, db_16s))
@@ -153,7 +145,8 @@ format_db_16s <- function(analysis_setup, db_16s) {
 }
 
 #' An other, user-specified database that is initially in the format specified by DADA2 with header simply taxonomic levels (kingdom down to species, separated by semi-colons, ;)
-#'
+#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
+#' @param data_path Path to the data directory
 #' @param output_directory_path The path to the directory where resulting files are output
 #' @param temp_directory_path User-defined temporary directory to place reads throughout the workflow
 #' metadata, and primer_info files
@@ -162,11 +155,8 @@ format_db_16s <- function(analysis_setup, db_16s) {
 #' @return An other database that has modified headers and is output in the reference_databases folder.
 #' 
 #' @keywords internal
-format_db_other1 <-function(analysis_setup, db_other1){
-  data_tables <- analysis_setup$data_tables
-  data_path <- analysis_setup$directory_paths$data_directory
-  output_directory_path <- analysis_setup$directory_paths$output_directory
-  temp_directory_path <- analysis_setup$directory_paths$temp_directory
+format_db_other1 <-function(data_tables, data_path, output_directory_path, temp_directory_path, db_other1){
+  
   database_path <- file.path(temp_directory_path, "other1_reference_db.fa")
   
   db_other1 <- metacoder::read_fasta(file.path(data_path, db_other1))
@@ -208,7 +198,9 @@ format_db_other1 <-function(analysis_setup, db_other1){
 #' An second user-specified database that is initially in the format specified
 #' by DADA2 with header simply taxonomic levels (kingdom down to species,
 #' separated by semi-colons, ;)
-#'
+#' 
+#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
+#' @param data_path Path to the data directory
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
 #' @param temp_directory_path User-defined temporary directory to place reads
@@ -219,11 +211,8 @@ format_db_other1 <-function(analysis_setup, db_other1){
 #'   reference_databases folder
 #'
 #' @keywords internal
-format_db_other2 <-function(analysis_setup, db_other2){
-  data_tables <- analysis_setup$data_tables
-  data_path <- analysis_setup$directory_paths$data_directory
-  output_directory_path <- analysis_setup$directory_paths$output_directory
-  temp_directory_path <- analysis_setup$directory_paths$temp_directory
+format_db_other2 <-function(data_tables, data_path, output_directory_path, temp_directory_path, db_other2){
+  
   database_path <- file.path(temp_directory_path, "other2_reference_db.fa")
   
   db_other2 <- metacoder::read_fasta(file.path(data_path, db_other2))
@@ -264,25 +253,28 @@ format_db_other2 <-function(analysis_setup, db_other2){
 
 #' General functions to format user-specified databases
 #' @importFrom utils modifyList read.table stack
-#' 
-#' @param analysis_setup An object containing directory paths and data tables,
-#'   produced by the `prepare_reads` function
+#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
+#' @param data_path Path to the data directory
+#' @param output_directory_path The path to the directory where resulting files
+#'   are output
+#' @param temp_directory_path User-defined temporary directory to place reads
+#'   throughout the workflow metadata, and primer_info files
 #' @param barcode The barcode for which the database should be formatted
 #'
 #' @return A formatted database based on the specified barcode type
 #'
 #' @keywords internal
-format_database <- function(analysis_setup, barcode, db_its, db_rps10, db_16s, db_other1, db_other2) {
+format_database <- function(data_tables, data_path, output_directory_path, temp_directory_path, barcode, db_its, db_rps10, db_16s, db_other1, db_other2) {
   if (barcode == "rps10") {
-    return(format_db_rps10(analysis_setup, db_rps10))
+    return(format_db_rps10(data_tables, data_path, output_directory_path, temp_directory_path, db_rps10))
   } else if (barcode == "its") {
-    return(format_db_its(analysis_setup, db_its))
+    return(format_db_its(data_tables, data_path, output_directory_path, temp_directory_path, db_its))
   } else if (barcode == "sixteenS") {
-    return(format_db_16s(analysis_setup, db_16s))
+    return(format_db_16s(data_tables, data_path, output_directory_path, temp_directory_path, db_16s))
   } else if (barcode == "other1") {
-    return(format_db_other(analysis_setup, db_other1))
+    return(format_db_other(data_tables, data_path, output_directory_path, temp_directory_path, db_other1))
   } else if (barcode == "other2") {
-    return(format_db_other(analysis_setup, db_other2))
+    return(format_db_other(data_tables, data_path, output_directory_path, temp_directory_path, db_other2))
   } else {
     stop("Barcode not recognized: ", barcode)
   }
