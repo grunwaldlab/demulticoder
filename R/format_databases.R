@@ -114,7 +114,7 @@ format_db_16s <- function(data_tables, data_path, output_directory_path, temp_di
   data_16s <- tibble::tibble(taxonomy = names(db_16s), sequence = db_16s)
   data_16s$taxonomy <- gsub(data_16s$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
   data_16s$taxonomy <- trimws(data_16s$taxonomy)
-  data_16s$taxonomy <- str_replace(data_16s$taxonomy, "^((?:[^;]*;){5})([^;]+);([^;]+);$", "\\1\\2;\\2_\\3;")
+  data_16s$taxonomy <- stringr::str_replace(data_16s$taxonomy, "^((?:[^;]*;){5})([^;]+);([^;]+);$", "\\1\\2;\\2_\\3;")
   
   data_16s$taxonomy <- sapply(data_16s$taxonomy, function(tax) {
     tax_parts <- strsplit(tax, ";")[[1]]
