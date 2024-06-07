@@ -68,9 +68,9 @@ run_cutadapt <- function(cutadapt_path,
     for (i in seq_along(fwd_untrim)) {
       fwd_untrim_reads <- ShortRead::readFastq(fwd_untrim[i])
       rev_untrim_reads <- ShortRead::readFastq(rev_untrim[i])
-      writeFastq(fwd_untrim_reads, fwd_trim[i], mode = 'a')
+      ShortRead::writeFastq(fwd_untrim_reads, fwd_trim[i], mode = 'a')
       cat("Already trimmed forward reads were appended to trimmed read directory, and they are located here:", fwd_trim[i], "\n")
-      writeFastq(rev_untrim_reads, rev_trim[i], mode = 'a')
+      ShortRead::writeFastq(rev_untrim_reads, rev_trim[i], mode = 'a')
       cat("Already trimmed reverse reads were appended to trimmed read directory, and they are located here:", rev_trim[i], "\n")
     }
   }
