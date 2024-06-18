@@ -1,10 +1,9 @@
 pandoc: 3.1.1
 pkgdown: 2.0.9
 pkgdown_sha: ~
-home: index.html
 articles:
   mixed_barcode_example: mixed_barcode_example.html
   package_workflow: package_workflow.html
   pooled_barcode_example: pooled_barcode_example.html
-last_built: 2024-06-18T02:01Z
+last_built: 2024-06-18T19:30Z
 

@@ -15,11 +15,6 @@ To install the development version of package:
 devtools::install_github("grunwaldlab/demulticoder")
 ```
 
-## Website
-
-For more information, key functions, and example vignettes, check out
-the documentation at: <https://grunwaldlab.github.io/demulticoder/>
-
 ## Dependencies
 
 ## Citation
