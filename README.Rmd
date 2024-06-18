@@ -35,6 +35,7 @@ For more information, key functions, and example vignettes, check out the docume
 ## Dependencies
 
 ## Citation
+
 Stay tuned
 
 ## Future development

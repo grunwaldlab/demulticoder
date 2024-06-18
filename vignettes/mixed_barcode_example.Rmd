@@ -2,7 +2,7 @@
 title: "Mixed barcode example"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{package_workflow}
+  %\VignetteIndexEntry{Mixed barcode example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
