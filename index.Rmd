@@ -39,9 +39,10 @@ In one directory, add the following components:
 
 * Paired-end read files (package tested on Illumina short-read data)
 
-* Your **metadata.csv** file (download template here) (TODO)
+* Your **metadata.csv** file -> 
+[download template here](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv)
 
-* Your **primerinfo_params.csv** file (download template here) (TODO)
+* Your **primerinfo_params.csv** file -> [download template here](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv)
 
 ### Information on user-defined parameters that can be added to metadata file
 

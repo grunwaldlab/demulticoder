@@ -7,10 +7,10 @@ been removed, use with caution.*
 
 ### Introduction
 
-The *demulticoder* package is a Cutadapt and DADA2 wrapper package for
-metabarcoding analyses. The main commands and outputs are intuitive and
-comprehensive to account for the iterative nature of metabarcoding
-analyses.
+The ***demulticoder*** package is a Cutadapt and DADA2 wrapper package
+for metabarcodng analyses. The main commands and outputs are intuitive
+and comprehensive, which helps to account for the complex and iterative
+nature of metabarcoding analyses.
 
 ### Key features
 
@@ -41,9 +41,11 @@ In one directory, add the following components:
 
 - Paired-end read files (package tested on Illumina short-read data)
 
-- Your **metadata.csv** file (download template here) (TODO)
+- Your **metadata.csv** file -\> [download template
+  here](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv)
 
-- Your **primerinfo_params.csv** file (download template here) (TODO)
+- Your **primerinfo_params.csv** file -\> [download template
+  here](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv)
 
 ### Information on user-defined parameters that can be added to metadata file
 
