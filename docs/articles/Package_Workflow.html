@@ -41,7 +41,9 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/mixed_barcode_example.html">Mixed barcode example</a>
     <a class="dropdown-item" href="../articles/package_workflow.html">Package Workflow</a>
+    <a class="dropdown-item" href="../articles/pooled_barcode_example.html">Pooled barcode example</a>
   </div>
 </li>
       </ul>
@@ -391,7 +393,20 @@ it.</p>
 <span>  cutadapt_path<span class="op">=</span><span class="st">"/opt/homebrew/bin/cutadapt"</span>,</span>
 <span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running Cutadapt 4.1 for its sequence data </span></span>
-<span><span class="co">#&gt; Running Cutadapt 4.1 for rps10 sequence data</span></span></code></pre></div>
+<span><span class="co">#&gt; Running Cutadapt 4.1 for rps10 sequence data </span></span>
+<span><span class="co">#&gt; Running Cutadapt 4.1 for sixteenS sequence data </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpNbdI4X/test_dataset/trimmed_sequences/1_1_R1_sixteenS.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpNbdI4X/test_dataset/trimmed_sequences/1_1_R2_sixteenS.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpNbdI4X/test_dataset/trimmed_sequences/1_2_R1_sixteenS.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpNbdI4X/test_dataset/trimmed_sequences/1_2_R2_sixteenS.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpNbdI4X/test_dataset/trimmed_sequences/1_3_R1_sixteenS.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpNbdI4X/test_dataset/trimmed_sequences/1_3_R2_sixteenS.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpNbdI4X/test_dataset/trimmed_sequences/2_1_R1_sixteenS.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpNbdI4X/test_dataset/trimmed_sequences/2_1_R2_sixteenS.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpNbdI4X/test_dataset/trimmed_sequences/2_2_R1_sixteenS.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpNbdI4X/test_dataset/trimmed_sequences/2_2_R2_sixteenS.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpNbdI4X/test_dataset/trimmed_sequences/2_3_R1_sixteenS.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpNbdI4X/test_dataset/trimmed_sequences/2_3_R2_sixteenS.fastq.gz</span></span></code></pre></div>
 <p><img src="package_workflow_files/figure-html/remove%20primers%20with%20cut_trim%20function-1.png" width="700"></p>
 </div>
 <div class="section level3">
@@ -402,19 +417,57 @@ it.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make_asv_abund_matrix.html">make_asv_abund_matrix</a></span><span class="op">(</span></span>
 <span>  <span class="va">analysis_setup</span>,</span>
 <span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 710847 total bases in 2694 reads from 2 samples will be used for learning the error rates.</span></span>
+<span><span class="co">#&gt; 48620525 total bases in 193819 reads from 6 samples will be used for learning the error rates.</span></span>
+<span><span class="co">#&gt; Initializing error rates to maximum possible estimate.</span></span>
+<span><span class="co">#&gt; selfConsist step 1 ......</span></span>
+<span><span class="co">#&gt;    selfConsist step 2</span></span>
+<span><span class="co">#&gt;    selfConsist step 3</span></span>
+<span><span class="co">#&gt;    selfConsist step 4</span></span>
+<span><span class="co">#&gt;    selfConsist step 5</span></span>
+<span><span class="co">#&gt;    selfConsist step 6</span></span>
+<span><span class="co">#&gt;    selfConsist step 7</span></span>
+<span><span class="co">#&gt;    selfConsist step 8</span></span>
+<span><span class="co">#&gt;    selfConsist step 9</span></span>
+<span><span class="co">#&gt; Convergence after  9  rounds.</span></span>
+<span><span class="co">#&gt; Error rate plot for the Forward read of primer pair sixteenS</span></span>
+<span><span class="co">#&gt; Warning in scale_y_log10(): <span style="color: #00BB00;">log-10</span> transformation introduced</span></span>
+<span><span class="co">#&gt; infinite values.</span></span>
+<span><span class="co">#&gt; Sample 1 - 31044 reads in 16523 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 2 - 33424 reads in 17777 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 3 - 31303 reads in 17153 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 4 - 32148 reads in 15953 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 5 - 33116 reads in 17060 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 6 - 32784 reads in 17064 unique sequences.</span></span>
+<span><span class="co">#&gt; 48621032 total bases in 193819 reads from 6 samples will be used for learning the error rates.</span></span>
+<span><span class="co">#&gt; Initializing error rates to maximum possible estimate.</span></span>
+<span><span class="co">#&gt; selfConsist step 1 ......</span></span>
+<span><span class="co">#&gt;    selfConsist step 2</span></span>
+<span><span class="co">#&gt;    selfConsist step 3</span></span>
+<span><span class="co">#&gt;    selfConsist step 4</span></span>
+<span><span class="co">#&gt;    selfConsist step 5</span></span>
+<span><span class="co">#&gt;    selfConsist step 6</span></span>
+<span><span class="co">#&gt; Convergence after  6  rounds.</span></span>
+<span><span class="co">#&gt; Error rate plot for the Reverse read of primer pair sixteenS</span></span>
+<span><span class="co">#&gt; Sample 1 - 31044 reads in 20471 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 2 - 33424 reads in 22029 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 3 - 31303 reads in 21177 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 4 - 32148 reads in 20174 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 5 - 33116 reads in 21307 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 6 - 32784 reads in 21009 unique sequences.</span></span></code></pre></div>
+<p><img src="package_workflow_files/figure-html/ASV%20inference-1.png" width="700"></p>
+<pre><code><span><span class="co">#&gt; 713433 total bases in 2703 reads from 2 samples will be used for learning the error rates.</span></span>
 <span><span class="co">#&gt; Error rate plot for the Forward read of primer pair its</span></span>
 <span><span class="co">#&gt; Warning in scale_y_log10(): <span style="color: #00BB00;">log-10</span> transformation introduced</span></span>
 <span><span class="co">#&gt; infinite values.</span></span>
-<span><span class="co">#&gt; Sample 1 - 1479 reads in 654 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 2 - 1215 reads in 610 unique sequences.</span></span>
-<span><span class="co">#&gt; 724232 total bases in 2694 reads from 2 samples will be used for learning the error rates.</span></span>
+<span><span class="co">#&gt; Sample 1 - 1486 reads in 659 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 2 - 1217 reads in 611 unique sequences.</span></span>
+<span><span class="co">#&gt; 726880 total bases in 2703 reads from 2 samples will be used for learning the error rates.</span></span>
 <span><span class="co">#&gt; Error rate plot for the Reverse read of primer pair its</span></span>
 <span><span class="co">#&gt; Warning in scale_y_log10(): <span style="color: #00BB00;">log-10</span> transformation introduced</span></span>
 <span><span class="co">#&gt; infinite values.</span></span>
-<span><span class="co">#&gt; Sample 1 - 1479 reads in 1019 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 2 - 1215 reads in 814 unique sequences.</span></span></code></pre></div>
-<p><img src="package_workflow_files/figure-html/ASV%20inference-1.png" width="700"></p>
+<span><span class="co">#&gt; Sample 1 - 1486 reads in 1026 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 2 - 1217 reads in 815 unique sequences.</span></span></code></pre>
+<p><img src="package_workflow_files/figure-html/ASV%20inference-2.png" width="700"><img src="package_workflow_files/figure-html/ASV%20inference-3.png" width="700"></p>
 <pre><code><span><span class="co">#&gt; 824778 total bases in 2935 reads from 2 samples will be used for learning the error rates.</span></span>
 <span><span class="co">#&gt; Error rate plot for the Forward read of primer pair rps10</span></span>
 <span><span class="co">#&gt; Warning in scale_y_log10(): <span style="color: #00BB00;">log-10</span> transformation introduced</span></span>
@@ -427,36 +480,46 @@ it.</p>
 <span><span class="co">#&gt; infinite values.</span></span>
 <span><span class="co">#&gt; Sample 1 - 1429 reads in 1044 unique sequences.</span></span>
 <span><span class="co">#&gt; Sample 2 - 1506 reads in 1284 unique sequences.</span></span></code></pre>
-<p><img src="package_workflow_files/figure-html/ASV%20inference-2.png" width="700"><img src="package_workflow_files/figure-html/ASV%20inference-3.png" width="700"><img src="package_workflow_files/figure-html/ASV%20inference-4.png" width="700"></p>
-<pre><code><span><span class="co">#&gt; $its</span></span>
-<span><span class="co">#&gt; [1] "/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//Rtmpw3urBK/test_dataset/asvabund_matrixDADA2_its.RData"</span></span>
+<p><img src="package_workflow_files/figure-html/ASV%20inference-4.png" width="700"><img src="package_workflow_files/figure-html/ASV%20inference-5.png" width="700"><img src="package_workflow_files/figure-html/ASV%20inference-6.png" width="700"></p>
+<pre><code><span><span class="co">#&gt; $sixteenS</span></span>
+<span><span class="co">#&gt; [1] "/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpNbdI4X/test_dataset/asvabund_matrixDADA2_sixteenS.RData"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $its</span></span>
+<span><span class="co">#&gt; [1] "/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpNbdI4X/test_dataset/asvabund_matrixDADA2_its.RData"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $rps10</span></span>
-<span><span class="co">#&gt; [1] "/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//Rtmpw3urBK/test_dataset/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
+<span><span class="co">#&gt; [1] "/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpNbdI4X/test_dataset/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="taxonomic-assignment-step">Taxonomic assignment step<a class="anchor" aria-label="anchor" href="#taxonomic-assignment-step"></a>
 </h3>
 <p>Using the core assignTaxonomy function from DADA2, taxonomic
 assignments will be given to ASVs.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/assign_tax.html">assign_tax</a></span><span class="op">(</span></span>
 <span>  <span class="va">analysis_setup</span>,</span>
 <span>  <span class="va">asv_abund_matrix</span>,</span>
 <span>  retrieve_files<span class="op">=</span><span class="cn">TRUE</span>,</span>
 <span>  overwrite_existing<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   samplename_barcode input filtered denoisedF denoisedR merged nonchim</span></span>
-<span><span class="co">#&gt; 1             S1_its  2564     1479      1425      1431   1311    1311</span></span>
-<span><span class="co">#&gt; 2             S2_its  1996     1215      1143      1122   1023    1023</span></span>
+<span><span class="co">#&gt; 1       1_1_sixteenS 40437    31044     28831     28737  24286   23913</span></span>
+<span><span class="co">#&gt; 2       1_2_sixteenS 44735    33424     31246     30900  25900   25448</span></span>
+<span><span class="co">#&gt; 3       1_3_sixteenS 40114    31303     28922     29133  24504   24172</span></span>
+<span><span class="co">#&gt; 4       2_1_sixteenS 39984    32148     29659     29631  25377   24748</span></span>
+<span><span class="co">#&gt; 5       2_2_sixteenS 43128    33116     30536     30410  25790   25130</span></span>
+<span><span class="co">#&gt; 6       2_3_sixteenS 43158    32784     30300     30131  25743   25121</span></span>
+<span><span class="co">#&gt;   samplename_barcode input filtered denoisedF denoisedR merged nonchim</span></span>
+<span><span class="co">#&gt; 1             S1_its  2564     1486      1427      1433   1316    1316</span></span>
+<span><span class="co">#&gt; 2             S2_its  1996     1217      1145      1124   1065    1065</span></span>
 <span><span class="co">#&gt;   samplename_barcode input filtered denoisedF denoisedR merged nonchim</span></span>
 <span><span class="co">#&gt; 1           S1_rps10  1830     1429      1429      1422   1420    1420</span></span>
-<span><span class="co">#&gt; 2           S2_rps10  2090     1506      1505      1505    753     753</span></span></code></pre></div>
+<span><span class="co">#&gt; 2           S2_rps10  2090     1506      1505      1505   1503    1503</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="reformat-asv-matrix-as-taxmap-and-phyloseq-objects-after-optional-filtering-of-low-abundance-asvs">Reformat ASV matrix as taxmap and phyloseq objects after optional
 filtering of low abundance ASVs<a class="anchor" aria-label="anchor" href="#reformat-asv-matrix-as-taxmap-and-phyloseq-objects-after-optional-filtering-of-low-abundance-asvs"></a>
 </h3>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/convert_asv_matrix_to_objs.html">convert_asv_matrix_to_objs</a></span><span class="op">(</span><span class="va">analysis_setup</span>, save_outputs<span class="op">=</span><span class="cn">TRUE</span>, overwrite<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; For its dataset </span></span>
 <span><span class="co">#&gt; Taxmap object saved in: ~/output_test_dataset/obj_dada_its.RData </span></span>
@@ -467,6 +530,12 @@ filtering of low abundance ASVs<a class="anchor" aria-label="anchor" href="#refo
 <span><span class="co">#&gt; For rps10 dataset </span></span>
 <span><span class="co">#&gt; Taxmap object saved in: ~/output_test_dataset/obj_dada_rps10.RData </span></span>
 <span><span class="co">#&gt; Phyloseq object saved in: ~/output_test_dataset/phylo_obj_rps10.RData </span></span>
+<span><span class="co">#&gt; ASVs filtered by minimum read depth: 0 </span></span>
+<span><span class="co">#&gt; For taxonomic assignments, if minimum bootstrap was set to: 0 assignments were set to NA </span></span>
+<span><span class="co">#&gt; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span>
+<span><span class="co">#&gt; For sixteenS dataset </span></span>
+<span><span class="co">#&gt; Taxmap object saved in: ~/output_test_dataset/obj_dada_sixteenS.RData </span></span>
+<span><span class="co">#&gt; Phyloseq object saved in: ~/output_test_dataset/phylo_obj_sixteenS.RData </span></span>
 <span><span class="co">#&gt; ASVs filtered by minimum read depth: 0 </span></span>
 <span><span class="co">#&gt; For taxonomic assignments, if minimum bootstrap was set to: 0 assignments were set to NA </span></span>
 <span><span class="co">#&gt; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span></code></pre></div>
@@ -480,7 +549,7 @@ we make a heat tree for our ITS-barcoded samples<a class="anchor" aria-label="an
 <h3 id="now-we-demonstrate-how-to-make-a-heattree-using-taxmap-object--first-we-make-a-heat-tree-for-our-its-barcoded-samples-1">Now we demonstrate how to make a heattree using taxmap object. First
 we make a heat tree for our ITS-barcoded samples<a class="anchor" aria-label="anchor" href="#now-we-demonstrate-how-to-make-a-heattree-using-taxmap-object--first-we-make-a-heat-tree-for-our-its-barcoded-samples-1"></a>
 </h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">metacoder</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/metacoder/man/heat_tree.html" class="external-link">heat_tree</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">taxmap_its</span>,</span>
 <span>          node_label <span class="op">=</span> <span class="va">taxon_names</span>,</span>
 <span>          node_size <span class="op">=</span> <span class="va">n_obs</span>,</span>
@@ -494,7 +563,7 @@ we make a heat tree for our ITS-barcoded samples<a class="anchor" aria-label="an
 <h3 id="now-we-demonstrate-how-to-make-a-heattree-using-taxmap-object--first-we-make-a-heat-tree-for-our-its-barcoded-sample">Now we demonstrate how to make a heattree using taxmap object. First
 we make a heat tree for our ITS-barcoded sample<a class="anchor" aria-label="anchor" href="#now-we-demonstrate-how-to-make-a-heattree-using-taxmap-object--first-we-make-a-heat-tree-for-our-its-barcoded-sample"></a>
 </h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">metacoder</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/metacoder/man/heat_tree.html" class="external-link">heat_tree</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">taxmap_rps10</span>,</span>
 <span>          node_label <span class="op">=</span> <span class="va">taxon_names</span>,</span>
 <span>          node_size <span class="op">=</span> <span class="va">n_obs</span>,</span>
@@ -508,7 +577,7 @@ we make a heat tree for our ITS-barcoded sample<a class="anchor" aria-label="anc
 <h3 id="we-can-also-do-a-variety-of-analyses-if-we-convert-to-phyloseq-object">We can also do a variety of analyses, if we convert to phyloseq
 object<a class="anchor" aria-label="anchor" href="#we-can-also-do-a-variety-of-analyses-if-we-convert-to-phyloseq-object"></a>
 </h3>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_its</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="va">x</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">}</span> <span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/psmelt.html" class="external-link">psmelt</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>                                        </span>
@@ -552,7 +621,7 @@ object<a class="anchor" aria-label="anchor" href="#we-can-also-do-a-variety-of-a
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">abund_plot</span><span class="op">)</span></span></code></pre></div>
 <p><img src="package_workflow_files/figure-html/Phyloseq%20demonstration%20ITS-1.png" width="700"></p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_rps10</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="va">x</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">}</span> <span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/psmelt.html" class="external-link">psmelt</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>                                        </span>

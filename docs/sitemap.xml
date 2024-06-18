@@ -7,7 +7,13 @@
     <loc>/articles/index.html</loc>
   </url>
   <url>
+    <loc>/articles/mixed_barcode_example.html</loc>
+  </url>
+  <url>
     <loc>/articles/package_workflow.html</loc>
+  </url>
+  <url>
+    <loc>/articles/pooled_barcode_example.html</loc>
   </url>
   <url>
     <loc>/authors.html</loc>
