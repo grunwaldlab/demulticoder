@@ -24,7 +24,9 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/mixed_barcode_example.html">Mixed barcode example</a>
     <a class="dropdown-item" href="../articles/package_workflow.html">Package Workflow</a>
+    <a class="dropdown-item" href="../articles/pooled_barcode_example.html">Pooled barcode example</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -54,12 +56,16 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_fastq_paths</span><span class="op">(</span><span class="va">analysis_setup</span>, <span class="va">my_direction</span>, <span class="va">my_primer_pair_id</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_fastq_paths</span><span class="op">(</span><span class="va">data_tables</span>, <span class="va">my_direction</span>, <span class="va">my_primer_pair_id</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>my_direction</dt>
+    <dl><dt>data_tables</dt>
+<dd><p>The data tables containing the paths to read files, metadata, primer sequences</p></dd>
+
+
+<dt>my_direction</dt>
 <dd><p>Whether primer is in forward or reverse direction</p></dd>
 
 
