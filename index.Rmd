@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 ### Introduction
 
-The *demulticoder* package is a Cutadapt and DADA2 wrapper package for metabarcoding analyses. The main commands and outputs are intuitive and comprehensive to account for the iterative nature of metabarcoding analyses. 
+The ***demulticoder*** package is a Cutadapt and DADA2 wrapper package for metabarcodng analyses. The main commands and outputs are intuitive and comprehensive, which helps to account for the complex and iterative nature of metabarcoding analyses. 
 
 ### Key features
 - The ability to do analysis on either demultiplexed or pooled amplicons a within sample  
