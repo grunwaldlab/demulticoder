@@ -1,8 +1,8 @@
 ---
-title: "Package Workflow"
+title: "Custom database Workflow"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Package Workflow}
+  %\VignetteIndexEntry{Custom database Workflow}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -203,7 +203,6 @@ metacoder::heat_tree(objs$taxmap_its,
           node_size_axis_label = "Total Abundance of Taxa",
           layout = "da", initial_layout = "re")
 ```
-
 
 ### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded sample
 ```{r Heatree demonstration rps10, message=FALSE}

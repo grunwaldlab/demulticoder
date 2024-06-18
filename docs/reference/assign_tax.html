@@ -24,9 +24,10 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/mixed_barcode_example.html">Mixed barcode example</a>
-    <a class="dropdown-item" href="../articles/package_workflow.html">Package Workflow</a>
-    <a class="dropdown-item" href="../articles/pooled_barcode_example.html">Pooled barcode example</a>
+    <a class="dropdown-item" href="../articles/01_getting_started.html">Getting Started</a>
+    <a class="dropdown-item" href="../articles/02_mixed_barcode_example.html">Mixed barcode example</a>
+    <a class="dropdown-item" href="../articles/03_pooled_barcode_example.html">Pooled barcode example</a>
+    <a class="dropdown-item" href="../articles/04_custom_database_workflow.html">Custom database Workflow</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -144,7 +145,7 @@ existing files and directories from previous runs. Default is <code>FALSE</code>
 <span class="r-in"><span>  overwrite_existing <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Existing analysis setup tables are not found. The 'prepare_reads' function was rerun</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">3</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">22</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">2</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">22</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Delimiter:</span> ","</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">chr</span>  (3): primer_name, forward, reverse</span>
@@ -153,7 +154,7 @@ existing files and directories from previous runs. Default is <code>FALSE</code>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">3</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">22</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">2</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">22</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Delimiter:</span> ","</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">chr</span>  (3): primer_name, forward, reverse</span>
@@ -162,14 +163,14 @@ existing files and directories from previous runs. Default is <code>FALSE</code>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">10</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">4</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">4</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">4</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Delimiter:</span> ","</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">chr</span> (4): sample_name, primer_name, well, organism</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Creating output directory: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpdStLQJ/demulticoder_run_temp/prefiltered_sequences</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Creating output directory: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpuPGpQ9/demulticoder_run_temp/prefiltered_sequences</span>
 <span class="r-plt img"><img src="assign_tax-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="cut_trim.html">cut_trim</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span><span class="va">analysis_setup</span>,</span></span>
@@ -179,81 +180,12 @@ existing files and directories from previous runs. Default is <code>FALSE</code>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Existing analysis files not found. The 'cut_trim' function was rerun.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Running Cutadapt 4.1 for its sequence data </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Running Cutadapt 4.1 for rps10 sequence data </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Running Cutadapt 4.1 for sixteenS sequence data </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Already trimmed forward reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpdStLQJ/demulticoder_run_temp/trimmed_sequences/1_1_R1_sixteenS.fastq.gz </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpdStLQJ/demulticoder_run_temp/trimmed_sequences/1_1_R2_sixteenS.fastq.gz </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Already trimmed forward reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpdStLQJ/demulticoder_run_temp/trimmed_sequences/1_2_R1_sixteenS.fastq.gz </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpdStLQJ/demulticoder_run_temp/trimmed_sequences/1_2_R2_sixteenS.fastq.gz </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Already trimmed forward reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpdStLQJ/demulticoder_run_temp/trimmed_sequences/1_3_R1_sixteenS.fastq.gz </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpdStLQJ/demulticoder_run_temp/trimmed_sequences/1_3_R2_sixteenS.fastq.gz </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Already trimmed forward reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpdStLQJ/demulticoder_run_temp/trimmed_sequences/2_1_R1_sixteenS.fastq.gz </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpdStLQJ/demulticoder_run_temp/trimmed_sequences/2_1_R2_sixteenS.fastq.gz </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Already trimmed forward reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpdStLQJ/demulticoder_run_temp/trimmed_sequences/2_2_R1_sixteenS.fastq.gz </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpdStLQJ/demulticoder_run_temp/trimmed_sequences/2_2_R2_sixteenS.fastq.gz </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Already trimmed forward reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpdStLQJ/demulticoder_run_temp/trimmed_sequences/2_3_R1_sixteenS.fastq.gz </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpdStLQJ/demulticoder_run_temp/trimmed_sequences/2_3_R2_sixteenS.fastq.gz </span>
 <span class="r-plt img"><img src="assign_tax-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="make_asv_abund_matrix.html">make_asv_abund_matrix</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span><span class="va">analysis_setup</span>, </span></span>
 <span class="r-in"><span>overwrite_existing <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No existing files found. The 'make_asv_abund_matrix' function will run.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48620525 total bases in 193819 reads from 6 samples will be used for learning the error rates.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Initializing error rates to maximum possible estimate.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> selfConsist step 1 ......</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    selfConsist step 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    selfConsist step 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    selfConsist step 4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    selfConsist step 5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    selfConsist step 6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    selfConsist step 7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    selfConsist step 8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    selfConsist step 9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Convergence after  9  rounds.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error rate plot for the Forward read of primer pair sixteenS </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #00BB00;">log-10</span> transformation introduced infinite values.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample 1 - 31044 reads in 16523 unique sequences.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample 2 - 33424 reads in 17777 unique sequences.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample 3 - 31303 reads in 17153 unique sequences.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample 4 - 32148 reads in 15953 unique sequences.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample 5 - 33116 reads in 17060 unique sequences.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample 6 - 32784 reads in 17064 unique sequences.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48621032 total bases in 193819 reads from 6 samples will be used for learning the error rates.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Initializing error rates to maximum possible estimate.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> selfConsist step 1 ......</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    selfConsist step 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    selfConsist step 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    selfConsist step 4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    selfConsist step 5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    selfConsist step 6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Convergence after  6  rounds.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error rate plot for the Reverse read of primer pair sixteenS </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample 1 - 31044 reads in 20471 unique sequences.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample 2 - 33424 reads in 22029 unique sequences.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample 3 - 31303 reads in 21177 unique sequences.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample 4 - 32148 reads in 20174 unique sequences.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample 5 - 33116 reads in 21307 unique sequences.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample 6 - 32784 reads in 21009 unique sequences.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 24286 paired-reads (in 566 unique pairings) successfully merged out of 27574 (in 1193 pairings) input.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences in merged output.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 25900 paired-reads (in 606 unique pairings) successfully merged out of 29773 (in 1318 pairings) input.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences in merged output.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 24504 paired-reads (in 552 unique pairings) successfully merged out of 27849 (in 1153 pairings) input.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences in merged output.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 25377 paired-reads (in 603 unique pairings) successfully merged out of 28485 (in 1194 pairings) input.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences in merged output.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 25790 paired-reads (in 584 unique pairings) successfully merged out of 29255 (in 1193 pairings) input.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences in merged output.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 25743 paired-reads (in 587 unique pairings) successfully merged out of 28998 (in 1175 pairings) input.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences in merged output.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences detected and merged.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences detected and merged.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences detected and merged.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences detected and merged.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences detected and merged.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences detected and merged.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Identified 44 bimeras out of 2008 input sequences.</span>
-<span class="r-plt img"><img src="assign_tax-3.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 713433 total bases in 2703 reads from 2 samples will be used for learning the error rates.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error rate plot for the Forward read of primer pair its </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #00BB00;">log-10</span> transformation introduced infinite values.</span>
@@ -265,9 +197,8 @@ existing files and directories from previous runs. Default is <code>FALSE</code>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sample 1 - 1486 reads in 1026 unique sequences.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sample 2 - 1217 reads in 815 unique sequences.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences in merged output.</span>
-<span class="r-plt img"><img src="assign_tax-4.png" alt="" width="700" height="433"></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences detected and merged.</span>
-<span class="r-plt img"><img src="assign_tax-5.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="assign_tax-3.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 824778 total bases in 2935 reads from 2 samples will be used for learning the error rates.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error rate plot for the Forward read of primer pair rps10 </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #00BB00;">log-10</span> transformation introduced infinite values.</span>
@@ -278,17 +209,14 @@ existing files and directories from previous runs. Default is <code>FALSE</code>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #00BB00;">log-10</span> transformation introduced infinite values.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sample 1 - 1429 reads in 1044 unique sequences.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sample 2 - 1506 reads in 1284 unique sequences.</span>
+<span class="r-plt img"><img src="assign_tax-4.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="assign_tax-5.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="assign_tax-6.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="assign_tax-7.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="assign_tax-8.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $sixteenS</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpdStLQJ/demulticoder_run_temp/asvabund_matrixDADA2_sixteenS.RData"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $its</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpdStLQJ/demulticoder_run_temp/asvabund_matrixDADA2_its.RData"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpuPGpQ9/demulticoder_run_temp/asvabund_matrixDADA2_its.RData"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $rps10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpdStLQJ/demulticoder_run_temp/asvabund_matrixDADA2_rps10.RData"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T//RtmpuPGpQ9/demulticoder_run_temp/asvabund_matrixDADA2_rps10.RData"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">assign_tax</span><span class="op">(</span></span></span>
 <span class="r-in"><span><span class="va">analysis_setup</span>,</span></span>
@@ -297,19 +225,6 @@ existing files and directories from previous runs. Default is <code>FALSE</code>
 <span class="r-in"><span>overwrite_existing<span class="op">=</span><span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No existing files found. The analysis will be run.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences detected and merged.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences detected and merged.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences detected and merged.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences detected and merged.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences detected and merged.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences detected and merged.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   samplename_barcode input filtered denoisedF denoisedR merged nonchim</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       1_1_sixteenS 40437    31044     28831     28737  24286   23913</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       1_2_sixteenS 44735    33424     31246     30900  25900   25448</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3       1_3_sixteenS 40114    31303     28922     29133  24504   24172</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       2_1_sixteenS 39984    32148     29659     29631  25377   24748</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       2_2_sixteenS 43128    33116     30536     30410  25790   25130</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       2_3_sixteenS 43158    32784     30300     30131  25743   25121</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences detected and merged.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   samplename_barcode input filtered denoisedF denoisedR merged nonchim</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1             S1_its  2564     1486      1427      1433   1316    1316</span>

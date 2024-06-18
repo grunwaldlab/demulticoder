@@ -1,0 +1,298 @@
+---
+title: "Getting Started"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+### Before You Start
+
+In the following example, we demonstrate key package functionality using a subset of reads from two samples containing pooled ITS1 fungal and rps10 oomycete amplicons.
+
+You can follow along because all test data and associated CSV input files are loaded with the package. Additional examples are also available on the website. 
+
+*Please note, for speed, the test dataset is comprised of randomly subset reads for the samples (S1 and S2), and due to database size, the full UNITE database is included in the package, but is also a smaller subset of the larger database.* 
+
+You will need to prepare your raw read files and fill in the [**metadata.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv) and [**primerinfo_params.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv) templates.
+
+### Format of the Raw Read Files
+
+The package takes foward and reverse Illumina short read sequence data.
+
+To avoid errors, the only characters that are acceptable in sample names are letters and numbers. Characters can be separated by underscores, but no other symbols. The final characters before the **.fastq.gz** suffix MUST be **_R1** or **_R2**. 
+
+Examples are permissible sample names are as follows:
+
+* Sample1_R1.fastq.gz
+* Sample1_R2.fastq.gz
+
+Other permissible names are:
+
+* Sample1_001_R1.fastq.gz
+* Sample1_001_R2.fastq.gz
+
+What is not permissible and will have to be renamed is:
+
+* Sample1_001_R1_001.fastq.gz
+* Sample1_001_R2_001.fastq.gz
+
+The parsing functions will error out because the R1 and R2 are not directly preceeding the '.fastq.gz' suffix.
+
+### Format of metadata file (*metadata.csv*)
+
+The format of the CSV file is simple. The only two necessary columns (with these names) are:
+
+1. sample_name column
+2. primer_info column
+
+Any additional metadata should then be pasted after these two columns. They can be referenced later during the analysis steps and save a step of loading metadata later.
+
+S1 and S2 are come from a rhododendron rhizobiome dataset and are a random subset of reads. 
+
+You will notice S1 and S2 are included twice in the 'metadata.csv' sheet. This is because these two samples contain pooled reads (ITS and rps10). To demultiplex and run both analyses in tandem, include the same sample twice under sample_name, and then change the primer_name.
+
+Example using test dataset:
+```{r, echo=FALSE}
+knitr::kable(data.frame(
+  sample_name = c("S1", "S2", "S1", "S2"),
+  primer_name = c("rps10", "rps10", "its", "its"),
+  well = c("A01", "B01", "A01", "B01"),
+  organism = c("Cry", "Cin", "Cry", "Cin")
+), row.names = FALSE)
+```
+
+
+### Make a new CSV file with primer sequence information and user-defined parameters
+
+DADA2Primer sequence information and user-defined parameters are placed in *primerinfo_params.csv*
+
+To simplify how functions are called, user will provide parameters within this input file. We recommend using the template linked on within the homepage (TODO). 
+The only required columns user must fill in are:
+1.primer_name (rps10, its, or other for another barcode)
+2.forward-forward sequence
+3.reverse-reverse sequence
+4.already_trimmed (TRUE/FALSE)   
+
+(Most datasets will require that primers first be removed from reads. However, for some 16S datasets, if protocols like the Earth Microbiome Project were followed, primers are mostly removed during the demultiplexing for barcoded samples following an Illumina run).  It may be that a few primers still remain.  If already_trimmed flag is specified, remaining primers will be removed and then reads for which no primers were located will be copied to the trimmed folder for subsequent analyses.  
+
+If a user doesn't add any info to the subsequent columns, the default DADA2 parameters will be used. 
+
+TODO-provide info on the different parameter descriptions and which functions they are associated with. 
+
+Example template for 'primerinfo_params.csv'
+
+```{r, echo=FALSE}
+knitr::kable(data.frame(
+  primer_name = c("rps10", "its"),
+  forward = c("GTTGGTTAGAGYARAAGACT", "CTTGGTCATTTAGAGGAAGTAA"),
+  reverse = c("ATRYYTAGAAAGAYTYGAACT", "GCTGCGTTCTTCATCGATGC"),
+  already_trimmed = c("FALSE", "FALSE"),
+  minCutadaptlength = c(100, 50),
+  multithread = c("TRUE", "TRUE"),
+  verbose = c("FALSE", "FALSE"),
+  maxN = c("1.00E+05", "1.00E+05"),
+  maxEE_forward = c(5, 5),
+  maxEE_reverse = c(5, 5),
+  truncLen_forward = c(0, 0),
+  truncLen_reverse = c(0, 0),
+  truncQ = c(5, 5),
+  minLen = c(150, 50),
+  maxLen = c("Inf", "Inf"),
+  minQ = c(0, 0),
+  trimLeft = c(0, 0),
+  trimRight = c(0, 0),
+  rm.lowcomplex = c(0, 0),
+  minOverlap = c(15, 15),
+  maxMismatch = c(0, 0),
+  min_asv_length = c(50, 50)
+), row.names = FALSE)
+```
+
+
+### Reference Database Format
+
+For now, the package is compatible with the following databases:
+
+* oomycetedb from: [http://www.oomycetedb.org/](http://www.oomycetedb.org/)
+
+* SILVA 16S database with species assignments: [https://zenodo.org/records/4587955/files/silva_nr99_v138.1_wSpecies_train_set.fa.gz?download=1](https://zenodo.org/records/4587955/files/silva_nr99_v138.1_wSpecies_train_set.fa.gz?download=1)
+
+* UNITE fungal database from [https://unite.ut.ee/repository.php](https://unite.ut.ee/repository.php)
+
+A user can select up to one other database (for now), but will first need to reformat headers exactly like the UNITE fungal database specifications. 
+
+Databases will be copied into the user-specified data folder where raw data files and csv files are located. The names will be parameters in the *assignTax* function
+
+### Additional Notes
+
+Computer specifications may be a limiting factor-- If you are using the SILVA or UNITE databases for taxonomic assignment steps, an ordinary personal computer (unless it has sufficient RAM) may not have enough memory for the taxonomic assignment steps, even with few samples. The test databases in the package are randomly subsetted for demonstration purposes. 
+
+Users need to upload their own databases to their input data folder. If computer crashes during the taxonomic assignment step, please switch to a computing cluster.
+
+Please also ensure that you have enough storage to save intermediate files in a temporary directory (default) or user-specified directory before proceeding.
+
+### Loading the Package
+
+For now, the package will be loaded by retrieving it from GitHub. Eventually, the package will be uploaded to CRAN or Bioconductor.
+```{r installation, warning=FALSE, message=FALSE}
+#devtools::install_github("grunwaldlab/demulticoder")
+
+library(demulticoder)
+```
+
+### Reorganize Data Tables
+The sample names, primer sequences, and other metadata are reorganized in preparation for running Cutadapt to remove primers.
+```{r prepare_reads function, warning=FALSE, message=FALSE}
+analysis_setup<-demulticoder::prepare_reads(
+  data_directory = system.file("extdata", package = "demulticoder"),
+  output_directory = "~/output_test_dataset", 
+  tempdir_id = "test_dataset",
+  overwrite_existing=TRUE)
+```
+
+### Remove Primers with Cutadapt
+Before running Cutadapt, please ensure that you have installed it. 
+```{r remove primers with cut_trim function, message=FALSE}
+demulticoder::cut_trim(
+  analysis_setup,
+  cutadapt_path="/opt/homebrew/bin/cutadapt",
+  overwrite_existing = TRUE)
+```
+
+### ASV inference step
+Raw reads will be merged and ASVs will be inferred
+```{r ASV inference, message=FALSE}
+make_asv_abund_matrix(
+  analysis_setup,
+  overwrite_existing = TRUE)
+```
+
+### Taxonomic assignment step
+Using the core assignTaxonomy function from DADA2, taxonomic assignments will be given to ASVs. 
+```{r Assign taxonomy, message=FALSE}
+assign_tax(
+  analysis_setup,
+  asv_abund_matrix,
+  retrieve_files=TRUE,
+  overwrite_existing=TRUE)
+```
+
+### Reformat ASV matrix as taxmap and phyloseq objects after optional filtering of low abundance ASVs
+```{r Reformat final matrix, message=FALSE}
+objs<-convert_asv_matrix_to_objs(analysis_setup, save_outputs=TRUE, overwrite=TRUE)
+```
+
+### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded samples 
+### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded samples
+```{r Heatree demonstration its, message=FALSE}
+metacoder::heat_tree(objs$taxmap_its,
+          node_label = taxon_names,
+          node_size = n_obs,
+          node_color = n_obs,
+          node_color_axis_label = "ASV count",
+          node_size_axis_label = "Total Abundance of Taxa",
+          layout = "da", initial_layout = "re")
+```
+
+### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded sample
+```{r Heatree demonstration rps10, message=FALSE}
+metacoder::heat_tree(objs$taxmap_rps10,
+          node_label = taxon_names,
+          node_size = n_obs,
+          node_color = n_obs,
+          node_color_axis_label = "ASV count",
+          node_size_axis_label = "Total Abundance of Taxa",
+          layout = "da", initial_layout = "re")
+```
+
+### We can also do a variety of analyses, if we convert to phyloseq object
+```{r Phyloseq demonstration ITS, message=FALSE}
+data <- objs$phyloseq_its %>%
+  phyloseq::transform_sample_counts(function(x) {x/sum(x)} ) %>% 
+  phyloseq::psmelt() %>%                                        
+  dplyr::filter(Abundance > 0.02) %>%                      
+  dplyr::arrange(Genus)                                      
+
+abund_plot <- ggplot2::ggplot(data, ggplot2::aes(x = Sample, y = Abundance, fill = Genus)) + 
+  ggplot2::geom_bar(stat = "identity", position = "stack", color = "black", size = 0.2) +
+  ggplot2::scale_fill_viridis_d() +
+  ggplot2::theme_minimal() +
+  ggplot2::labs(
+    y = "Relative Abundance",
+    title = "Relative abundance of taxa by sample",
+    fill = "Genus"
+  ) +
+  ggplot2::theme(
+    axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, vjust = 0.5, size = 14),
+    panel.grid.major = ggplot2::element_blank(),
+    panel.grid.minor = ggplot2::element_blank(),
+    legend.position = "top",
+    legend.text = ggplot2::element_text(size = 14),
+    legend.title = ggplot2::element_text(size = 14),  # Adjust legend title size
+    strip.text = ggplot2::element_text(size = 14),
+    strip.background = ggplot2::element_blank()
+  ) +
+  ggplot2::guides(
+    fill = ggplot2::guide_legend(
+      reverse = TRUE,
+      keywidth = 1,
+      keyheight = 1,
+      title.position = "top",
+      title.hjust = 0.5,  # Center the legend title
+      label.theme = ggplot2::element_text(size = 10)  # Adjust the size of the legend labels
+    )
+  )
+
+print(abund_plot)
+
+```
+
+```{r Phyloseq demonstration rps10, message=FALSE}
+data <- objs$phyloseq_rps10 %>%
+  phyloseq::transform_sample_counts(function(x) {x/sum(x)} ) %>% 
+  phyloseq::psmelt() %>%                                        
+  dplyr::filter(Abundance > 0.02) %>%                      
+  dplyr::arrange(Genus)                                      
+
+abund_plot <- ggplot2::ggplot(data, ggplot2::aes(x = Sample, y = Abundance, fill = Genus)) + 
+  ggplot2::geom_bar(stat = "identity", position = "stack", color = "black", size = 0.2) +
+  ggplot2::scale_fill_viridis_d() +
+  ggplot2::theme_minimal() +
+  ggplot2::labs(
+    y = "Relative Abundance",
+    title = "Relative abundance of taxa by sample",
+    fill = "Genus"
+  ) +
+  ggplot2::theme(
+    axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, vjust = 0.5, size = 14),
+    panel.grid.major = ggplot2::element_blank(),
+    panel.grid.minor = ggplot2::element_blank(),
+    legend.position = "top",
+    legend.text = ggplot2::element_text(size = 14),
+    legend.title = ggplot2::element_text(size = 14),  # Adjust legend title size
+    strip.text = ggplot2::element_text(size = 14),
+    strip.background = ggplot2::element_blank()
+  ) +
+  ggplot2::guides(
+    fill = ggplot2::guide_legend(
+      reverse = TRUE,
+      keywidth = 1,
+      keyheight = 1,
+      title.position = "top",
+      title.hjust = 0.5,  # Center the legend title
+      label.theme = ggplot2::element_text(size = 10)  # Adjust the size of the legend labels
+    )
+  )
+
+print(abund_plot)
+```
