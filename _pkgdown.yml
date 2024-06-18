@@ -1,0 +1,10 @@
+url: "https://grunwaldlab.github.io/demulticoder/"
+template:
+  bootstrap: 5
+home: index.html
+nav:
+  - Home: index.html
+  - Articles:
+    - Mixed Barcode Example: articles/mixed_barcode_example.html
+    - Package Workflow: articles/package_workflow.html
+    - Pooled Barcode Example: articles/pooled_barcode_example.html
