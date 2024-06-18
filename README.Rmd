@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-This package is actively under development. Use with care.  Additional testing, documentation, website, and examples forthcoming.
+This package is actively under development.  Additional testing, documentation, website, and examples forthcoming. Until this message has been removed, use with caution. 
 
 ## Installation
 
@@ -27,8 +27,15 @@ To install the development version of package:
 devtools::install_github("grunwaldlab/demulticoder")
 ```
 
+## Website
+
+For more information, key functions, and example vignettes, check out the documentation
+here: 
+
+
 ## Dependencies
 
 ## Citation
+Stay tuned
 
 ## Future development
