@@ -1,13 +1,31 @@
 
 # Demulticoder R package
 
-## Introduction
-
-This package is actively under development. Additional testing,
+*This package is actively under development. Additional testing,
 documentation, website, and examples forthcoming. Until this message has
-been removed, use with caution.
+been removed, use with caution.*
 
-## Installation
+### Introduction
+
+The *demulticoder* package is a Cutadapt and DADA2 wrapper package for
+metabarcoding analyses. The main commands and outputs are intuitive and
+comprehensive to account for the iterative nature of metabarcoding
+analyses.
+
+### Key features
+
+- The ability to do analysis on either demultiplexed or pooled amplicons
+  a within sample  
+- Multiple datasets can be trimmed of primers, filtered, denoised,
+  merged, and assigned taxonomy in one go (with different parameters for
+  each dataset if desired)  
+- The package handles not just 16S or ITS datasets when using default
+  UNITE fungal or Silva 16S databases but also oomycete rps10 analyses
+  using oomycetedb (<https://oomycetedb.org>), or up to two custom
+  databases (provided they are formatted as described here:
+  <https://benjjneb.github.io/dada2/training.html>).
+
+### Installation
 
 To install the development version of package:
 
@@ -15,10 +33,25 @@ To install the development version of package:
 devtools::install_github("grunwaldlab/demulticoder")
 ```
 
-## Dependencies
+### Dependencies
 
-## Citation
+### Required inputs
+
+In one directory, add the following components:
+
+- Paired-end read files (package tested on Illumina short-read data)
+
+- Your **metadata.csv** file (download template here) (TODO)
+
+- Your **primerinfo_params.csv** file (download template here) (TODO)
+
+### Information on user-defined parameters that can be added to metadata file
+
+TODO
+
+### Citation
 
 Stay tuned
 
-## Future development
+The package was developed by Martha Sudermann, Zachary Foster, Samantha
+Dawson, Hung Phan, Niklaus Grunwald, Jeff Chang.

@@ -14,16 +14,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Introduction
-
-The *demulticoder* package is a Cutadapt and DADA2 wrapper package for metabarcoding analyses. The package is designed for users with varying experience doing metabarcoding analysis. Outputs are intuitive and comprehensive to account for the iterative nature of metabarcodeing analyses. 
-
-### Key features
-- The ability to do analysis either demultiplexed or pooled amplicons within sample  
-- Multiple datasets can be trimmed of primers, filtered, denoised, merged, and assigned taxonomy in one go  
-- The package handles not just 16S or ITS datasets when using default UNITE fungal or Silva 16S databases but also oomycete rps10 analyses using oomycetedb (oomycetedb.org), or up to two custom databases (provided they are formatted as described here: https://benjjneb.github.io/dada2/training.html).
-
-The package was developed by Martha Sudermann, Zachary Foster, Niklaus Grunwald, Jeff Chang.
 
 ### Before You Start
 
@@ -82,10 +72,11 @@ knitr::kable(data.frame(
 ```
 
 
-### Primer sequence information and user-defined parameters are placed in *primerinfo_params.csv*
+### Make a new CSV file with primer sequence information and user-defined parameters
 
-To simplify how functions are called, user will provide parameters within this input file. We recommend using the template provided in documentation. 
+DADA2Primer sequence information and user-defined parameters are placed in *primerinfo_params.csv*
 
+To simplify how functions are called, user will provide parameters within this input file. We recommend using the template linked on within the homepage (TODO). 
 The only required columns user must fill in are:
 1.primer_name (rps10, its, or other for another barcode)
 2.forward-forward sequence
