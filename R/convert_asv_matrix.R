@@ -63,10 +63,10 @@ convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minim
     taxmap_path <- file.path(output_directory_path, paste0(taxmap_name, ".RData"))
     phyloseq_path <- file.path(output_directory_path, paste0(phyloseq_name, ".RData"))
     
-    if (file.exists(taxmap_path) && file.exists(phyloseq_path) && !overwrite) {
+    if (file.exists(taxmap_path) && file.exists(phyloseq_path) && !overwrite_existing) {
       cat("For", suffix, "dataset", "\n")
       cat("Files already exist:", taxmap_path, "and", phyloseq_path, "\n")
-      cat("To overwrite, set overwrite = TRUE\n")
+      cat("To overwrite, set overwrite_existing = TRUE\n")
       cat("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
     } else {
       abundance <- readr::read_csv(file.path(output_directory_path, paste0('final_asv_abundance_matrix_', suffix, '.csv')))
