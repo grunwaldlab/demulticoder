@@ -1,3 +1,2 @@
 primer_name,forward,reverse,already_trimmed,minCutadaptlength,multithread,verbose,maxN,maxEE_forward,maxEE_reverse,truncLen_forward,truncLen_reverse,truncQ,minLen,maxLen,minQ,trimLeft,trimRight,rm.lowcomplex,minOverlap,maxMismatch,min_asv_length
-rps10,GTTGGTTAGAGYARAAGACT,ATRYYTAGAAAGAYTYGAACT,FALSE,150,FALSE,FALSE,0,5,5,0,0,5,50,Inf,0,0,0,0,15,2,60
-its,CTTGGTCATTTAGAGGAAGTAA,GCTGCGTTCTTCATCGATGC,FALSE,50,FALSE,FALSE,0,5,5,0,0,5,50,Inf,0,0,0,0,15,2,60
+GCTGCGTTCTTCATCGATGC,CTTGGTCATTTAGAGGAAGTAA,GCTGCGTTCTTCATCGATGC,FALSE,50,TRUE,FALSE,0,5,5,0,0,5,50,Inf,0,0,0,0,15,2,60
