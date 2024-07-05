@@ -15,10 +15,10 @@ nature of metabarcoding analyses.
 ### Key features
 
 - The ability to do analysis on either demultiplexed or pooled amplicons
-  a within sample  
-- Multiple datasets can be trimmed of primers, filtered, denoised,
-  merged, and assigned taxonomy in one go (with different parameters for
-  each dataset if desired)  
+  within sample  
+- Amplicons from multiple datasets be trimmed of primers, filtered,
+  denoised, merged, and given taxonomic assignments in one go (with
+  different parameters for each dataset if desired)  
 - The package handles not just 16S or ITS datasets when using default
   UNITE fungal or Silva 16S databases but also oomycete rps10 analyses
   using oomycetedb (<https://oomycetedb.org>), or up to two custom
