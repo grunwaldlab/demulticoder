@@ -8,7 +8,7 @@ Description: The demulticoder package provides a workflow for analyzing
    trimming primers, and denoising data using Cutadapt and the dada2 package.
    The package can handle datasets with pooled amplicons and simple 
    experimental designs.
-License: GPL-2 | GPL-3
+License: MIT
 Encoding: UTF-8
 Depends:
    R (>= 3.0.2)  
