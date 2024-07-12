@@ -74,7 +74,7 @@ knitr::kable(data.frame(
 
 ### Make a new CSV file with primer sequence information and user-defined parameters
 
-DADA2Primer sequence information and user-defined parameters are placed in *primerinfo_params.csv*
+DADA2 Primer sequence information and user-defined parameters are placed in *primerinfo_params.csv*
 
 To simplify how functions are called, user will provide parameters within this input file. We recommend using the template linked on within the homepage (TODO). 
 The only required columns user must fill in are:
@@ -118,7 +118,6 @@ knitr::kable(data.frame(
 ), row.names = FALSE)
 ```
 
-
 ### Reference Database Format
 
 For now, the package is compatible with the following databases:
@@ -156,7 +155,6 @@ The sample names, primer sequences, and other metadata are reorganized in prepar
 analysis_setup<-demulticoder::prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
   output_directory = "~/output_test_dataset", 
-  tempdir_id = "test_dataset",
   overwrite_existing=TRUE)
 ```
 
@@ -166,7 +164,7 @@ Before running Cutadapt, please ensure that you have installed it.
 demulticoder::cut_trim(
   analysis_setup,
   cutadapt_path="/opt/homebrew/bin/cutadapt",
-  overwrite_existing = TRUE)
+  overwrite_existing = FALSE)
 ```
 
 ### ASV inference step
@@ -174,7 +172,7 @@ Raw reads will be merged and ASVs will be inferred
 ```{r ASV inference, message=FALSE}
 make_asv_abund_matrix(
   analysis_setup,
-  overwrite_existing = TRUE)
+  overwrite_existing = FALSE)
 ```
 
 ### Taxonomic assignment step
@@ -184,12 +182,12 @@ assign_tax(
   analysis_setup,
   asv_abund_matrix,
   retrieve_files=TRUE,
-  overwrite_existing=TRUE)
+  overwrite_existing=FALSE)
 ```
 
 ### Reformat ASV matrix as taxmap and phyloseq objects after optional filtering of low abundance ASVs
 ```{r Reformat final matrix, message=FALSE}
-objs<-convert_asv_matrix_to_objs(analysis_setup, save_outputs=TRUE, overwrite=TRUE)
+objs<-convert_asv_matrix_to_objs(analysis_setup, save_outputs=TRUE, overwrite_existing =FALSE)
 ```
 
 ### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded samples 
