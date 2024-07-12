@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 ### Before You Start
 
-In the following example, we demonstrate key package functionality using a subset of reads from two samples containing pooled ITS1 fungal and rps10 oomycete amplicons.
+In the following example, we demonstrate key package functionality using a subset of reads from two samples containing pooled ITS1 fungal and rps10 oomycete amplicons. The databases used in the assign taxonomy step are also abridged versions of the full UNITE and oomyceteDB databases.
 
 You can follow along because all test data and associated CSV input files are loaded with the package. Additional examples are also available on the website. 
 
@@ -25,11 +25,11 @@ You can follow along because all test data and associated CSV input files are lo
 
 You will need to prepare your raw read files and fill in the [**metadata.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv) and [**primerinfo_params.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv) templates.
 
-### Format of the Raw Read Files
+### Format of the PE amplicon files
 
 The package takes foward and reverse Illumina short read sequence data.
 
-To avoid errors, the only characters that are acceptable in sample names are letters and numbers. Characters can be separated by underscores, but no other symbols. The final characters before the **.fastq.gz** suffix MUST be **_R1** or **_R2**. 
+To avoid errors, the only characters that are acceptable in sample names are letters and numbers. Characters can be separated by underscores, but no other symbols. The files must end with the suffix **R1.fastq.gz** or **R2.fastq.gz**.
 
 Examples are permissible sample names are as follows:
 
@@ -41,16 +41,18 @@ Other permissible names are:
 * Sample1_001_R1.fastq.gz
 * Sample1_001_R2.fastq.gz
 
-What is not permissible and will have to be renamed is:
+What is not permissible is:
 
 * Sample1_001_R1_001.fastq.gz
 * Sample1_001_R2_001.fastq.gz
 
-The parsing functions will error out because the R1 and R2 are not directly preceeding the '.fastq.gz' suffix.
+There will be an error because R1 and R2 are not directly preceding the '.fastq.gz' suffix.
 
 ### Format of metadata file (*metadata.csv*)
 
-The format of the CSV file is simple. The only two necessary columns (with these names) are:
+The format of the CSV file is simple. A template is [here](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv).  
+
+The only two necessary columns (with these names) are:
 
 1. sample_name column
 2. primer_info column
@@ -71,23 +73,18 @@ knitr::kable(data.frame(
 ), row.names = FALSE)
 ```
 
+### Format of primer and parameters file (*primerinfo_parms.csv*)
 
-### Make a new CSV file with primer sequence information and user-defined parameters
+DADA2 Primer sequence information and user-defined parameters are placed in *primerinfo_params.csv*. 
 
-DADA2 Primer sequence information and user-defined parameters are placed in *primerinfo_params.csv*
+To simplify how functions are called, user will provide parameters within this input file. We recommend using the template linked [here](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv)
 
-To simplify how functions are called, user will provide parameters within this input file. We recommend using the template linked on within the homepage (TODO). 
 The only required columns user must fill in are:
 1.primer_name (rps10, its, or other for another barcode)
 2.forward-forward sequence
 3.reverse-reverse sequence
-4.already_trimmed (TRUE/FALSE)   
 
-(Most datasets will require that primers first be removed from reads. However, for some 16S datasets, if protocols like the Earth Microbiome Project were followed, primers are mostly removed during the demultiplexing for barcoded samples following an Illumina run).  It may be that a few primers still remain.  If already_trimmed flag is specified, remaining primers will be removed and then reads for which no primers were located will be copied to the trimmed folder for subsequent analyses.  
-
-If a user doesn't add any info to the subsequent columns, the default DADA2 parameters will be used. 
-
-TODO-provide info on the different parameter descriptions and which functions they are associated with. 
+If a user doesn't add any info to the subsequent columns, a series of default parameters will be used.
 
 Example template for 'primerinfo_params.csv'
 
@@ -118,6 +115,8 @@ knitr::kable(data.frame(
 ), row.names = FALSE)
 ```
 
+TODO-Below is a table of the parameters, what functions they are associated with,  the default parameters, and whether they are Cutadapt, DADA2, or package specific parameters.  
+
 ### Reference Database Format
 
 For now, the package is compatible with the following databases:
@@ -142,16 +141,19 @@ Please also ensure that you have enough storage to save intermediate files in a 
 
 ### Loading the Package
 
-For now, the package will be loaded by retrieving it from GitHub. Eventually, the package will be uploaded to CRAN or Bioconductor.
+For now, the package will be loaded by retrieving it from GitHub. 
+
+Eventually, the package will be uploaded to CRAN or Bioconductor.
 ```{r installation, warning=FALSE, message=FALSE}
 #devtools::install_github("grunwaldlab/demulticoder")
 
 library(demulticoder)
 ```
 
-### Reorganize Data Tables
+### Reorganize data tables and set-up data directory structure 
+
 The sample names, primer sequences, and other metadata are reorganized in preparation for running Cutadapt to remove primers.
-```{r prepare_reads function, warning=FALSE, message=FALSE}
+```{r prepare_reads function, warning=FALSE, message=FALSE, fig.height=8, fig.width=10}
 analysis_setup<-demulticoder::prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
   output_directory = "~/output_test_dataset", 
@@ -160,7 +162,7 @@ analysis_setup<-demulticoder::prepare_reads(
 
 ### Remove Primers with Cutadapt
 Before running Cutadapt, please ensure that you have installed it. 
-```{r remove primers with cut_trim function, message=FALSE}
+```{r remove primers with cut_trim function, message=FALSE, fig.height=6, fig.width=6}
 demulticoder::cut_trim(
   analysis_setup,
   cutadapt_path="/opt/homebrew/bin/cutadapt",
@@ -169,7 +171,7 @@ demulticoder::cut_trim(
 
 ### ASV inference step
 Raw reads will be merged and ASVs will be inferred
-```{r ASV inference, message=FALSE}
+```{r ASV inference, message=FALSE, fig.height=8, fig.width=6}
 make_asv_abund_matrix(
   analysis_setup,
   overwrite_existing = FALSE)
@@ -177,7 +179,7 @@ make_asv_abund_matrix(
 
 ### Taxonomic assignment step
 Using the core assignTaxonomy function from DADA2, taxonomic assignments will be given to ASVs. 
-```{r Assign taxonomy, message=FALSE}
+```{r Assign taxonomy, message=FALSE, fig.height=6, fig.width=6}
 assign_tax(
   analysis_setup,
   asv_abund_matrix,
@@ -186,13 +188,12 @@ assign_tax(
 ```
 
 ### Reformat ASV matrix as taxmap and phyloseq objects after optional filtering of low abundance ASVs
-```{r Reformat final matrix, message=FALSE}
-objs<-convert_asv_matrix_to_objs(analysis_setup, save_outputs=TRUE, overwrite_existing =FALSE)
+```{r Reformat final matrix, message=FALSE, fig.height=8, fig.width=6}
+objs<-convert_asv_matrix_to_objs(analysis_setup, save_outputs=TRUE)
 ```
 
 ### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded samples 
-### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded samples
-```{r Heatree demonstration its, message=FALSE}
+```{r Heatree demonstration its, message=FALSE, fig.height=6, fig.width=6}
 metacoder::heat_tree(objs$taxmap_its,
           node_label = taxon_names,
           node_size = n_obs,
@@ -203,7 +204,7 @@ metacoder::heat_tree(objs$taxmap_its,
 ```
 
 ### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded sample
-```{r Heatree demonstration rps10, message=FALSE}
+```{r Heatree demonstration rps10, message=FALSE, fig.height=6, fig.width=6}
 metacoder::heat_tree(objs$taxmap_rps10,
           node_label = taxon_names,
           node_size = n_obs,
@@ -214,7 +215,7 @@ metacoder::heat_tree(objs$taxmap_rps10,
 ```
 
 ### We can also do a variety of analyses, if we convert to phyloseq object
-```{r Phyloseq demonstration ITS, message=FALSE}
+```{r Phyloseq demonstration ITS, message=FALSE, fig.height=6, fig.width=6}
 data <- objs$phyloseq_its %>%
   phyloseq::transform_sample_counts(function(x) {x/sum(x)} ) %>% 
   phyloseq::psmelt() %>%                                        
@@ -255,7 +256,7 @@ print(abund_plot)
 
 ```
 
-```{r Phyloseq demonstration rps10, message=FALSE}
+```{r Phyloseq demonstration rps10, message=FALSE, fig.height=6, fig.width=6}
 data <- objs$phyloseq_rps10 %>%
   phyloseq::transform_sample_counts(function(x) {x/sum(x)} ) %>% 
   phyloseq::psmelt() %>%                                        
