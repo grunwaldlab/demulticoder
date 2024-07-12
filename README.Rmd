@@ -21,7 +21,7 @@ The ***demulticoder*** package is a Cutadapt and DADA2 wrapper package for metab
 
 Here is a brief schematic of the general workflow:
 
-![](man/figures/demulticoder_workflow.png)
+![](man/figures/rps10_fig1.drawio.svg)
 
 ### Key features
 - The ability to do analysis on either demultiplexed or pooled amplicons within samples  

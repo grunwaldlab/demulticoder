@@ -14,7 +14,7 @@ nature of metabarcoding analyses.
 
 Here is a brief schematic of the general workflow:
 
-![](man/figures/demulticoder_workflow.png)
+![](man/figures/rps10_fig1.drawio.svg)
 
 ### Key features
 
