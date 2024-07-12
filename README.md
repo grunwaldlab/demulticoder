@@ -1,11 +1,11 @@
 
-# Demulticoder R package
+# Demulticoder-An R package to streamline metabarcoding analyses using DADA2
 
 <img src="man/figures/logo.png" align="right" height="139" alt="" />
 
-**This package is actively under development. Until this message has
-been removed, use with caution. Additional testing, documentation, and
-examples are in progress.**
+*This package is actively under development. Until this message has been
+removed, use with caution. Additional testing, documentation, and
+examples are in progress.*
 
 ### Introduction
 
