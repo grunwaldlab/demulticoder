@@ -153,14 +153,14 @@ library(demulticoder)
 ### Reorganize data tables and set-up data directory structure 
 
 The sample names, primer sequences, and other metadata are reorganized in preparation for running Cutadapt to remove primers.
-```{r prepare_reads function, warning=FALSE, message=FALSE, fig.height=8, fig.width=10}
+```{r prepare_reads function, warning=FALSE, message=FALSE, fig.height=6, fig.width=6}
 analysis_setup<-demulticoder::prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
   output_directory = "~/output_test_dataset", 
   overwrite_existing=TRUE)
 ```
 
-### Remove Primers with Cutadapt
+### Remove primers with Cutadapt
 Before running Cutadapt, please ensure that you have installed it. 
 ```{r remove primers with cut_trim function, message=FALSE, fig.height=6, fig.width=6}
 demulticoder::cut_trim(
@@ -171,7 +171,7 @@ demulticoder::cut_trim(
 
 ### ASV inference step
 Raw reads will be merged and ASVs will be inferred
-```{r ASV inference, message=FALSE, fig.height=8, fig.width=6}
+```{r ASV inference, message=FALSE, fig.height=5, fig.width=6}
 make_asv_abund_matrix(
   analysis_setup,
   overwrite_existing = FALSE)
@@ -192,7 +192,11 @@ assign_tax(
 objs<-convert_asv_matrix_to_objs(analysis_setup, save_outputs=TRUE)
 ```
 
-### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded samples 
+### Objects can now be used for downstream data analysis  
+
+Here we make heattrees using taxmap object.  
+
+First we make a heat tree for our ITS-barcoded samples 
 ```{r Heatree demonstration its, message=FALSE, fig.height=6, fig.width=6}
 metacoder::heat_tree(objs$taxmap_its,
           node_label = taxon_names,
@@ -203,7 +207,7 @@ metacoder::heat_tree(objs$taxmap_its,
           layout = "da", initial_layout = "re")
 ```
 
-### Now we demonstrate how to make a heattree using taxmap object. First we make a heat tree for our ITS-barcoded sample
+Now we make a heat tree for our rps10-barcoded samples
 ```{r Heatree demonstration rps10, message=FALSE, fig.height=6, fig.width=6}
 metacoder::heat_tree(objs$taxmap_rps10,
           node_label = taxon_names,
@@ -214,7 +218,9 @@ metacoder::heat_tree(objs$taxmap_rps10,
           layout = "da", initial_layout = "re")
 ```
 
-### We can also do a variety of analyses, if we convert to phyloseq object
+We can also do a variety of analyses, if we convert to phyloseq object
+
+Here we demonstrate how to make a stacked bar plot of the relative abundance of taxa by sample for the ITS-barcoded samples
 ```{r Phyloseq demonstration ITS, message=FALSE, fig.height=6, fig.width=6}
 data <- objs$phyloseq_its %>%
   phyloseq::transform_sample_counts(function(x) {x/sum(x)} ) %>% 
@@ -253,9 +259,9 @@ abund_plot <- ggplot2::ggplot(data, ggplot2::aes(x = Sample, y = Abundance, fill
   )
 
 print(abund_plot)
-
 ```
 
+Finally,we demonstrate how to make a stacked bar plot of the relative abundance of taxa by sample for the rps10-barcoded samples
 ```{r Phyloseq demonstration rps10, message=FALSE, fig.height=6, fig.width=6}
 data <- objs$phyloseq_rps10 %>%
   phyloseq::transform_sample_counts(function(x) {x/sum(x)} ) %>% 

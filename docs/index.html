@@ -7,12 +7,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="The demulticoder package provides a workflow for analyzing multiplex metabarcoding data. It includes functions for filtering, trimming primers, and denoising data using Cutadapt and the dada2 package. The package can handle datasets with pooled amplicons and simple experimental designs.">
 <title>An R Package for the Integrated Analysis of Multiplex Metabarcodes • demulticoder</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="An R Package for the Integrated Analysis of Multiplex Metabarcodes">
 <meta property="og:description" content="The demulticoder package provides a workflow for analyzing multiplex metabarcoding data. It includes functions for filtering, trimming primers, and denoising data using Cutadapt and the dada2 package. The package can handle datasets with pooled amplicons and simple experimental designs.">
+<meta property="og:image" content="https://grunwaldlab.github.io/demulticoder/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -67,23 +74,25 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="demulticoder-r-package">Demulticoder R package<a class="anchor" aria-label="anchor" href="#demulticoder-r-package"></a>
-</h1></div>
-<p><em>This package is actively under development. Additional testing, documentation, website, and examples forthcoming. Until this message has been removed, use with caution.</em></p>
+<div class="page-header">
+<img src="logo.png" class="logo" alt=""><h1 id="demulticoder-r-package">Demulticoder R package<a class="anchor" aria-label="anchor" href="#demulticoder-r-package"></a>
+</h1>
+</div>
+<p><strong>This package is actively under development. Until this message has been removed, use with caution. Additional testing, documentation, and examples are in progress.</strong></p>
 <div class="section level3">
 <h3 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h3>
 <p>The <strong><em>demulticoder</em></strong> package is a Cutadapt and DADA2 wrapper package for metabarcodng analyses. The main commands and outputs are intuitive and comprehensive, which helps to account for the complex and iterative nature of metabarcoding analyses.</p>
+<p>Here is a brief schematic of the general workflow:</p>
+<p><img src="reference/figures/rps10_fig1_smaller.drawio.svg" height="500"></p>
 </div>
 <div class="section level3">
 <h3 id="key-features">Key features<a class="anchor" aria-label="anchor" href="#key-features"></a>
 </h3>
 <ul>
-<li>The ability to do analysis on either demultiplexed or pooled amplicons within a sample<br>
-</li>
-<li>Amplicons from multiple samples can be trimmed of primers, filtered, denoised, merged, and given taxonomic assignments in one go (with different parameters for each dataset if desired)<br>
-</li>
-<li>The package handles not just 16S or ITS datasets when using default UNITE fungal or Silva 16S databases but also oomycete rps10 analyses using oomycetedb (<a href="https://oomycetedb.org" class="external-link uri">https://oomycetedb.org</a>), or up to two custom databases (provided they are formatted as described here: <a href="https://benjjneb.github.io/dada2/training.html" class="external-link uri">https://benjjneb.github.io/dada2/training.html</a>).</li>
+<li><p>The ability to do analysis on either demultiplexed or pooled amplicons within samples</p></li>
+<li><p>Amplicons from multiple datasets be trimmed of primers, filtered, denoised, merged, and given taxonomic assignments in one go (with different parameters for each dataset if desired)</p></li>
+<li><p>The package handles not just 16S or ITS datasets when using default UNITE fungal or Silva 16S databases but also oomycete rps10 analyses using oomycetedb (<a href="https://oomycetedb.org" class="external-link uri">https://oomycetedb.org</a>), or up to two custom databases (provided they are formatted as described here: <a href="https://benjjneb.github.io/dada2/training.html" class="external-link uri">https://benjjneb.github.io/dada2/training.html</a>).</p></li>
 </ul>
 </div>
 <div class="section level3">
@@ -94,29 +103,48 @@
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"grunwaldlab/demulticoder"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="dependencies">Dependencies<a class="anchor" aria-label="anchor" href="#dependencies"></a>
+<h3 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h3>
-</div>
-<div class="section level3">
-<h3 id="required-inputs">Required inputs<a class="anchor" aria-label="anchor" href="#required-inputs"></a>
-</h3>
-<p>In one directory, add the following components:</p>
+<p><strong>1. Set-up input directory and files</strong></p>
+<p>After installing the package, make a data directory and add the following files:<br>
+- PE short read amplicon data. The files must end in either *_R1.fastq.gz* , or *_R2.fastq.gz* and each sample must have both R1 and R2 files.</p>
 <ul>
-<li><p>Paired-end read files (package tested on Illumina short-read data)</p></li>
-<li><p>Your <strong>metadata.csv</strong> file -&gt; <a href="https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv" class="external-link">download template here</a></p></li>
-<li><p>Your <strong>primerinfo_params.csv</strong> file -&gt; <a href="https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv" class="external-link">download template here</a></p></li>
+<li><p><a href="https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv" class="external-link"><strong>metadata.csv</strong></a> file (there will be a unique row for each sample, and samples will be entered twice if they contain pooled amplicions, as in the example template)</p></li>
+<li><p><a href="https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv" class="external-link"><strong>primerinfo_params.csv</strong></a> file (there will be a new row for each unique barcode and associated primer sequences, and there are also optional Cutadapt, DADA2 or filtering parameters that can be added or adjusted)</p></li>
 </ul>
+<p><strong>2. Prepare reads</strong></p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">output</span><span class="op">&lt;-</span><span class="fu"><a href="reference/prepare_reads.html">prepare_reads</a></span><span class="op">(</span></span>
+<span>  data_directory <span class="op">=</span> <span class="st">"&lt;DATADIR&gt;"</span>,</span>
+<span>  output_directory <span class="op">=</span> <span class="st">"&lt;OUTDIR&gt;"</span><span class="op">)</span></span></code></pre></div>
+<p><strong>3. Cut and trim reads</strong></p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/cut_trim.html">cut_trim</a></span><span class="op">(</span></span>
+<span>  <span class="va">output</span>,</span>
+<span>  cutadapt_path<span class="op">=</span><span class="st">"&lt;CUTADAPTPATH&gt;"</span><span class="op">)</span></span></code></pre></div>
+<p><strong>4. Make ASV abundance matrix</strong></p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/make_asv_abund_matrix.html">make_asv_abund_matrix</a></span><span class="op">(</span></span>
+<span>  <span class="va">output</span><span class="op">)</span></span></code></pre></div>
+<p><strong>5. Assign taxonomy</strong></p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/assign_tax.html">assign_tax</a></span><span class="op">(</span></span>
+<span>  <span class="va">output</span>,</span>
+<span>  <span class="va">asv_abund_matrix</span><span class="op">)</span></span></code></pre></div>
+<p><strong>6. Convert ASV matrix to taxmap and phyloseq objects</strong></p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">objs</span><span class="op">&lt;-</span><span class="fu"><a href="reference/convert_asv_matrix_to_objs.html">convert_asv_matrix_to_objs</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="information-on-user-defined-parameters-that-can-be-added-to-metadata-file">Information on user-defined parameters that can be added to metadata file<a class="anchor" aria-label="anchor" href="#information-on-user-defined-parameters-that-can-be-added-to-metadata-file"></a>
+<h3 id="check-out-the-website-to-view-the-documentation-and-see-more-examples">Check out the website to view the documentation and see more examples<a class="anchor" aria-label="anchor" href="#check-out-the-website-to-view-the-documentation-and-see-more-examples"></a>
 </h3>
-<p>TODO</p>
+<p>For more information, key functions, inputs, and example vignettes, check out the documentation at: <a href="https://grunwaldlab.github.io/demulticoder" class="uri">https://grunwaldlab.github.io/demulticoder</a></p>
 </div>
 <div class="section level3">
 <h3 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h3>
-<p>Stay tuned</p>
-<p>The package was developed by Martha Sudermann, Zachary Foster, Samantha Dawson, Hung Phan, Niklaus Grunwald, Jeff Chang.</p>
+<p>The package was developed by Martha Sudermann, Zachary Foster, Samantha Dawson, Hung Phan, Niklaus Grnwald, Jeff Chang.</p>
+<p>Stay tuned for associated manuscript.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -130,9 +158,7 @@
 <div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li>
-<a href="https://www.r-project.org/Licenses/GPL-2" class="external-link">GPL-2</a> | <a href="https://www.r-project.org/Licenses/GPL-3" class="external-link">GPL-3</a>
-</li>
+<li><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a></li>
 </ul>
 </div>
 
@@ -147,7 +173,7 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Martha Sudermann <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Martha A. Sudermann <br><small class="roles"> Author, maintainer </small>  </li>
 </ul>
 </div>
 
@@ -158,7 +184,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Martha Sudermann.</p>
+  <p>Developed by Martha A. Sudermann.</p>
 </div>
 
 <div class="pkgdown-footer-right">
