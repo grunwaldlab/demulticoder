@@ -1,8 +1,8 @@
 ---
-title: "Pooled barcode example"
+title: "Pooled amplicon example"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Pooled barcode example}
+  %\VignetteIndexEntry{Pooled amplicon example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

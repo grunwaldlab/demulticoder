@@ -1,171 +1,171 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/404.html</loc>
+    <loc>/404.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/LICENSE-text.html</loc>
+    <loc>/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/articles/01_getting_started.html</loc>
+    <loc>/articles/01_getting_started.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/articles/02_mixed_barcode_example.html</loc>
+    <loc>/articles/02_mixed_barcode_example.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/articles/03_pooled_barcode_example.html</loc>
+    <loc>/articles/03_pooled_amplicon_example.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/articles/04_custom_database_workflow.html</loc>
+    <loc>/articles/03_pooled_barcode_example.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/articles/index.html</loc>
+    <loc>/articles/04_custom_database_workflow.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/articles/mixed_barcode_example.html</loc>
+    <loc>/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/articles/package_workflow.html</loc>
+    <loc>/articles/mixed_barcode_example.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/articles/pooled_barcode_example.html</loc>
+    <loc>/articles/package_workflow.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/authors.html</loc>
+    <loc>/authors.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/index.html</loc>
+    <loc>/index.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/add_pid_to_tax.html</loc>
+    <loc>/reference/add_pid_to_tax.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/assignTax_as_char.html</loc>
+    <loc>/reference/assignTax_as_char.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/assign_tax.html</loc>
+    <loc>/reference/assign_tax.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/assign_taxonomyDada2.html</loc>
+    <loc>/reference/assign_taxonomyDada2.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/convert_asv_matrix_to_objs.html</loc>
+    <loc>/reference/convert_asv_matrix_to_objs.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/countOverlap.html</loc>
+    <loc>/reference/countOverlap.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/createASVSequenceTable.html</loc>
+    <loc>/reference/createASVSequenceTable.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/cut_trim.html</loc>
+    <loc>/reference/cut_trim.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/filter_and_trim.html</loc>
+    <loc>/reference/filter_and_trim.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/format_abund_matrix.html</loc>
+    <loc>/reference/format_abund_matrix.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/format_database.html</loc>
+    <loc>/reference/format_database.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/format_db_16s.html</loc>
+    <loc>/reference/format_db_16s.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/format_db_its.html</loc>
+    <loc>/reference/format_db_its.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/format_db_other1.html</loc>
+    <loc>/reference/format_db_other1.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/format_db_other2.html</loc>
+    <loc>/reference/format_db_other2.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/format_db_rps10.html</loc>
+    <loc>/reference/format_db_rps10.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/get_fastq_paths.html</loc>
+    <loc>/reference/get_fastq_paths.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/get_pids.html</loc>
+    <loc>/reference/get_pids.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/get_post_trim_hits.html</loc>
+    <loc>/reference/get_post_trim_hits.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/get_pre_primer_hits.html</loc>
+    <loc>/reference/get_pre_primer_hits.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/get_read_counts.html</loc>
+    <loc>/reference/get_read_counts.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/get_ref_seq.html</loc>
+    <loc>/reference/get_ref_seq.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/index.html</loc>
+    <loc>/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/infer_asv_command.html</loc>
+    <loc>/reference/infer_asv_command.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/infer_asvs.html</loc>
+    <loc>/reference/infer_asvs.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/make_abund_matrix.html</loc>
+    <loc>/reference/make_abund_matrix.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/make_asv_abund_matrix.html</loc>
+    <loc>/reference/make_asv_abund_matrix.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/make_cutadapt_tibble.html</loc>
+    <loc>/reference/make_cutadapt_tibble.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/make_seqhist.html</loc>
+    <loc>/reference/make_seqhist.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/merge_reads_command.html</loc>
+    <loc>/reference/merge_reads_command.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/orient_primers.html</loc>
+    <loc>/reference/orient_primers.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/plot_post_trim_qc.html</loc>
+    <loc>/reference/plot_post_trim_qc.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/plot_qc.html</loc>
+    <loc>/reference/plot_qc.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/prep_abund_matrix.html</loc>
+    <loc>/reference/prep_abund_matrix.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/prepare_metadata_table.html</loc>
+    <loc>/reference/prepare_metadata_table.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/prepare_reads.html</loc>
+    <loc>/reference/prepare_reads.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/primer_check.html</loc>
+    <loc>/reference/primer_check.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/process_single_barcode.html</loc>
+    <loc>/reference/process_single_barcode.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/read_fastq.html</loc>
+    <loc>/reference/read_fastq.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/read_parameters.html</loc>
+    <loc>/reference/read_parameters.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/read_prefilt_fastq.html</loc>
+    <loc>/reference/read_prefilt_fastq.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/remove_ns.html</loc>
+    <loc>/reference/remove_ns.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/run_cutadapt.html</loc>
+    <loc>/reference/run_cutadapt.html</loc>
   </url>
   <url>
-    <loc>https://grunwaldlab.github.io/demulticoder/reference/setup_directories.html</loc>
+    <loc>/reference/setup_directories.html</loc>
   </url>
 </urlset>

@@ -187,13 +187,15 @@ assign_tax(
   overwrite_existing=FALSE)
 ```
 
+
 ### Reformat ASV matrix as taxmap and phyloseq objects after optional filtering of low abundance ASVs
 ```{r Reformat final matrix, message=FALSE, fig.height=8, fig.width=6}
 objs<-convert_asv_matrix_to_objs(analysis_setup, save_outputs=TRUE)
 ```
 
-### Objects can now be used for downstream data analysis  
+### Format of output matrix
 
+### Objects can now be used for downstream data analysis  
 Here we make heattrees using taxmap object.  
 
 First we make a heat tree for our ITS-barcoded samples 
