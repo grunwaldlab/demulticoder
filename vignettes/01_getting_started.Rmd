@@ -146,6 +146,7 @@ For now, the package will be loaded by retrieving it from GitHub.
 Eventually, the package will be uploaded to CRAN or Bioconductor.
 ```{r installation, warning=FALSE, message=FALSE}
 #devtools::install_github("grunwaldlab/demulticoder")
+devtools::load_all("~/demulticoder")
 library(demulticoder)
 ```
 
@@ -165,7 +166,7 @@ Before running Cutadapt, please ensure that you have installed it.
 demulticoder::cut_trim(
   analysis_setup,
   cutadapt_path="/usr/bin/cutadapt",
-  overwrite_existing = FALSE)
+  overwrite_existing = TRUE)
 ```
 
 ### ASV inference step
