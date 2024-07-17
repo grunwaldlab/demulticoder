@@ -1,8 +1,8 @@
 ---
-title: "Custom database workflow"
+title: "Custom database example"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Custom database workflow}
+  %\VignetteIndexEntry{Custom database example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

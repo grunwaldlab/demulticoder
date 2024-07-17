@@ -134,14 +134,13 @@ steps<a class="anchor" aria-label="anchor" href="#step-1-remove-ns-and-create-di
 <span><span class="co">#&gt; Warning in get_read_names(paired_file_paths[1]) ==</span></span>
 <span><span class="co">#&gt; get_read_names(paired_file_paths[2]): longer object length is not a multiple of</span></span>
 <span><span class="co">#&gt; shorter object length</span></span>
-<span><span class="co">#&gt; Creating output directory: /tmp/RtmpGXuOFp/demulticoder_run/prefiltered_sequences</span></span></code></pre></div>
+<span><span class="co">#&gt; Creating output directory: /tmp/RtmpJyJvUP/demulticoder_run/prefiltered_sequences</span></span></code></pre></div>
 <p><img src="03_pooled_amplicon_example_files/figure-html/prepare%20reads-1.png" width="576"></p>
 </div>
-</div>
-<div class="section level2">
-<h2 id="step-2-run-cutadapt-to-remove-primers-and-then-trim-reads-with-dada2-filterandtrim-function">Step 2-Run Cutadapt to remove primers and then trim reads with DADA2
+<div class="section level3">
+<h3 id="step-2-run-cutadapt-to-remove-primers-and-then-trim-reads-with-dada2-filterandtrim-function">Step 2-Run Cutadapt to remove primers and then trim reads with DADA2
 filterAndTrim function<a class="anchor" aria-label="anchor" href="#step-2-run-cutadapt-to-remove-primers-and-then-trim-reads-with-dada2-filterandtrim-function"></a>
-</h2>
+</h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cut_trim.html">cut_trim</a></span><span class="op">(</span></span>
 <span>  <span class="va">outputs</span>,</span>
@@ -150,6 +149,7 @@ filterAndTrim function<a class="anchor" aria-label="anchor" href="#step-2-run-cu
 <span><span class="co">#&gt; Running Cutadapt 3.5 for its sequence data </span></span>
 <span><span class="co">#&gt; Running Cutadapt 3.5 for rps10 sequence data</span></span></code></pre></div>
 <p><img src="03_pooled_amplicon_example_files/figure-html/Remove%20primers%20and%20trim%20reads-1.png" width="576"></p>
+</div>
 <div class="section level3">
 <h3 id="step-3-core-asv-inference-step">Step 3-Core ASV inference step<a class="anchor" aria-label="anchor" href="#step-3-core-asv-inference-step"></a>
 </h3>
@@ -217,10 +217,10 @@ filterAndTrim function<a class="anchor" aria-label="anchor" href="#step-2-run-cu
 <span><span class="co">#&gt; Identified 0 bimeras out of 7 input sequences.</span></span></code></pre>
 <p><img src="03_pooled_amplicon_example_files/figure-html/ASV%20inference-3.png" width="576"><img src="03_pooled_amplicon_example_files/figure-html/ASV%20inference-4.png" width="576"></p>
 <pre><code><span><span class="co">#&gt; $its</span></span>
-<span><span class="co">#&gt; [1] "/tmp/RtmpGXuOFp/demulticoder_run/asvabund_matrixDADA2_its.RData"</span></span>
+<span><span class="co">#&gt; [1] "/tmp/RtmpJyJvUP/demulticoder_run/asvabund_matrixDADA2_its.RData"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $rps10</span></span>
-<span><span class="co">#&gt; [1] "/tmp/RtmpGXuOFp/demulticoder_run/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
+<span><span class="co">#&gt; [1] "/tmp/RtmpJyJvUP/demulticoder_run/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="step-4-assign-taxonomy-step">Step 4-Assign taxonomy step<a class="anchor" aria-label="anchor" href="#step-4-assign-taxonomy-step"></a>
@@ -427,7 +427,7 @@ function<a class="anchor" aria-label="anchor" href="#step-5-convert-asv-matrix-t
 <span><span class="co">#&gt;    yaml                   2.3.8      <span style="color: #555555;">2023-12-11</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
 <span><span class="co">#&gt;    zlibbioc               1.40.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #555555;"> [1] /tmp/Rtmp6UyrH0/temp_libpath28a0b146ec3112</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;"> [1] /tmp/Rtmp6UyrH0/temp_libpath28a0b118fc5f56</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;"> [2] /home/marthasudermann/R/x86_64-pc-linux-gnu-library/4.1</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;"> [3] /usr/local/lib/R/site-library</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;"> [4] /usr/lib/R/site-library</span></span></span>

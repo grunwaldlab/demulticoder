@@ -33,7 +33,7 @@ outputs<-prepare_reads(
   overwrite_existing = TRUE)
 ```
 
-## Step 2-Run Cutadapt to remove primers and then trim reads with DADA2 filterAndTrim function 
+### Step 2-Run Cutadapt to remove primers and then trim reads with DADA2 filterAndTrim function 
 ```{r Remove primers and trim reads, fig.height=6, fig.width=6}
 cut_trim(
   outputs,
