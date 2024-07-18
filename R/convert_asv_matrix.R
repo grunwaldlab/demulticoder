@@ -46,6 +46,7 @@
 #' analysis_setup, 
 #' save_outputs=FALSE
 #' )
+
 convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minimum_bootstrap = 0, save_outputs = FALSE, overwrite_existing = FALSE) {
   data_tables <- analysis_setup$data_tables
   output_directory_path <- analysis_setup$directory_paths$output_directory
@@ -75,14 +76,14 @@ convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minim
       abundance$dada2_tax <- purrr::map_chr(strsplit(abundance$dada2_tax, ';'), function(x) {
         paste(
           sapply(
-            strsplit(x, '--'), 
+            strsplit(x, '--'),
             function(parts) {
               if (parts[[3]] != "ASV" && as.numeric(parts[[2]]) <= minimum_bootstrap) {
-                parts[[1]] <- "Unknown"
+                parts[[1]] <- NA
               }
               paste(parts, collapse = '--')
             }
-          ), 
+          ),
           collapse = ';'
         )
       })
