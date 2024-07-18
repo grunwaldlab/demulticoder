@@ -76,18 +76,36 @@ convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minim
       
       # Modify taxonomic assignments based on bootstrap value
       abundance$dada2_tax <- sapply(strsplit(abundance$dada2_tax, ';'), function(x) {
-        purrr::map_chr(strsplit(x, '--'), function(parts) {
+        tax_levels <- strsplit(x, '--')
+        modified_levels <- lapply(tax_levels, function(parts) {
           if (length(parts) >= 3 && parts[[3]] != "ASV" && as.numeric(parts[[2]]) <= minimum_bootstrap) {
-            parts[[1]] <- NA  # Set first element to NA (missing value)
+            parts[[1]] <- NA_character_  # Use NA_character_ to ensure consistency
           }
-          return(paste(parts, collapse = '--'))
-        }) %>% paste(collapse = ';')
+          parts
+        })
+        # Use vapply to ensure consistent output type
+        vapply(modified_levels, function(parts) {
+          if (is.na(parts[[1]])) {
+            NA_character_
+          } else {
+            paste(parts, collapse = '--')
+          }
+        }, character(1))
       })
+      
+      # Remove any remaining "NA" strings
+      abundance$dada2_tax[abundance$dada2_tax == "NA"] <- NA_character_
+      
+      # Ensure dada2_tax is character type with actual NA values
+      abundance$dada2_tax <- as.character(abundance$dada2_tax)
       
       obj_dada <- metacoder::parse_tax_data(abundance, class_cols = 'dada2_tax', class_sep = ';', include_tax_data = TRUE,
                                             class_regex = '^(.+)--(.+)--(.+)$',
                                             class_key = c(taxon = 'taxon_name', boot = 'info', rank = 'taxon_rank'))
       names(obj_dada$data) <- c('abund', 'score')
+      
+      # Ensure NAs are properly handled in the taxon data
+      obj_dada$taxon_data$taxon_name[obj_dada$taxon_data$taxon_name == "NA"] <- NA_character_
       
       obj_dada$data$otu_table = obj_dada$data$abund[, -3:-4]
       obj_dada$data$sample_data = data_tables$metadata
