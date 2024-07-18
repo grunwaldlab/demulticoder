@@ -75,27 +75,14 @@ convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minim
       abundance <- dplyr::filter(abundance, !is_low_abund)
       
       # Modify taxonomic assignments based on bootstrap value
-      abundance$dada2_tax <- purrr::map_chr(strsplit(abundance$dada2_tax, ';'), function(x) {
-        paste(
-          sapply(
-            strsplit(x, '--'),
-            function(parts) {
-              if (parts[[3]] != "ASV" && as.numeric(parts[[2]]) < minimum_bootstrap) {
-                parts[[1]] <- NA  # Set to actual NA if below minimum_bootstrap
-              }
-              if (is.na(parts[[1]])) {
-                return(NA_character_)  # Return NA_character_ for the whole part if taxon is NA
-              }
-              paste(parts, collapse = '--')
-            }
-          ),
-          collapse = ';',
-          na.rm = TRUE  # Remove NA values when collapsing
-        )
+      abundance$dada2_tax <- sapply(strsplit(abundance$dada2_tax, ';'), function(x) {
+        purrr::map_chr(strsplit(x, '--'), function(parts) {
+          if (length(parts) >= 3 && parts[[3]] != "ASV" && as.numeric(parts[[2]]) <= minimum_bootstrap) {
+            parts[[1]] <- NA  # Set first element to NA (missing value)
+          }
+          return(paste(parts, collapse = '--'))
+        }) %>% paste(collapse = ';')
       })
-      
-      # Replace empty strings with NA
-      abundance$dada2_tax[abundance$dada2_tax == ""] <- NA
       
       obj_dada <- metacoder::parse_tax_data(abundance, class_cols = 'dada2_tax', class_sep = ';', include_tax_data = TRUE,
                                             class_regex = '^(.+)--(.+)--(.+)$',
@@ -123,7 +110,7 @@ convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minim
         cat("Taxmap object saved in:", taxmap_path, "\n")
         cat("Phyloseq object saved in:", phyloseq_path, "\n")
         cat("ASVs filtered by minimum read depth:", min_read_depth, "\n")
-        cat("Taxonomic assignments with bootstrap value below", minimum_bootstrap, "were set to NA\n")
+        cat("Taxonomic assignments with bootstrap value below or equal to", minimum_bootstrap, "were set to NA\n")
         cat("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
       } else {
         cat("For", suffix, "dataset", "\n")
