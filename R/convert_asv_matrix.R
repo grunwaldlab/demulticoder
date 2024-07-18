@@ -79,7 +79,7 @@ convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minim
             strsplit(x, '--'),
             function(parts) {
               if (parts[[3]] != "ASV" && as.numeric(parts[[2]]) <= minimum_bootstrap) {
-                parts[[1]] <- NA_character_
+                parts[[1]] <- "NA"
               }
               paste(parts, collapse = '--')
             }
@@ -89,7 +89,6 @@ convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minim
       })
       
       # Convert "NA" strings to actual NA values
-      abundance$dada2_tax[is.na(abundance$dada2_tax)] <- NA
       abundance$dada2_tax[is.na(abundance$dada2_tax)] <- "NA"
       
       obj_dada <- metacoder::parse_tax_data(abundance, class_cols = 'dada2_tax', class_sep = ';', include_tax_data = TRUE,
