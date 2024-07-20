@@ -47,6 +47,8 @@
 #' save_outputs=FALSE
 #' )
 
+
+#TODO for given barcode, for taxmap object, retain only sample name and relevant barcode
 convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minimum_bootstrap = 0, save_outputs = FALSE, overwrite_existing = FALSE) {
   data_tables <- analysis_setup$data_tables
   output_directory_path <- analysis_setup$directory_paths$output_directory
@@ -96,6 +98,7 @@ convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minim
                                             class_key = c(taxon = 'taxon_name', boot = 'info', rank = 'taxon_rank'))
       names(obj_dada$data) <- c('abund', 'score')
       
+      #Fix this part
       obj_dada$data$otu_table = obj_dada$data$abund[, -3:-4]
       obj_dada$data$sample_data = data_tables$metadata
       

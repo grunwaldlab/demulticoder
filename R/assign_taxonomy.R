@@ -124,9 +124,9 @@ assignTax_as_char <- function(tax_results, temp_directory_path, locus) {
 #' @keywords internal
 format_abund_matrix <- function(data_tables, asv_abund_matrix, seq_tax_asv, output_directory_path, locus) {
   formatted_abund_asv <- t(asv_abund_matrix)
-  asv_id_column <- paste("asv_", seq_along(rownames(formatted_abund_asv)), sep = "")
+  #asv_id_column <- paste("asv_", seq_along(rownames(formatted_abund_asv)), sep = "")
   formatted_abund_asv <- cbind(
-    asv_id = asv_id_column,
+    #asv_id = asv_id_column,
     sequence = rownames(formatted_abund_asv),
     dada2_tax = stringr::str_match(seq_tax_asv[rownames(formatted_abund_asv)], pattern = "^(.+)--Species")[,1],
     #dada2_pid = as.numeric(stringr_str_match(seq_tax_asv[rownames(formatted_abund_asv)], '--([0-9.]+)--ASV$')[, 2]),
@@ -134,11 +134,7 @@ format_abund_matrix <- function(data_tables, asv_abund_matrix, seq_tax_asv, outp
   formatted_abund_asv <- tibble::as_tibble(formatted_abund_asv)
   
   primer_seqs <- apply(data_tables$primer_data[, 2:ncol(data_tables$primer_data)], 2, paste, collapse = "|")
-  
-  # Function to create a regular expression pattern for a primer with ambiguity codes
-  # Function to create a regular expression pattern for a primer with ambiguity codes
   create_primer_pattern <- function(primer_seq) {
-    # Replace ambiguity codes with corresponding regular expression patterns
     ambig_code_mapping <- c("R" = "[AG]", "Y" = "[CT]", "S" = "[GC]", "W" = "[AT]", "K" = "[GT]", "M" = "[AC]", "B" = "[CGT]", "D" = "[AGT]", "H" = "[ACT]", "V" = "[ACG]", "N" = "[ACGT]")
     
     pattern <- ""
@@ -173,7 +169,11 @@ format_abund_matrix <- function(data_tables, asv_abund_matrix, seq_tax_asv, outp
   
   # Update the abundance matrix with filtered rows
   filtered_abund_matrix <- formatted_abund_asv[keep_rows, ]
-  
+  asv_id_column <- paste("asv_", seq_along(rownames(filtered_abund_matrix)), sep = "")
+  filtered_abund_matrix <- cbind(
+    asv_id = asv_id_column,
+    filtered_abund_matrix)
+
   # Return the filtered abundance matrix
   
   readr::write_csv(filtered_abund_matrix, file = file.path(output_directory_path, paste0('final_asv_abundance_matrix_', locus, '.csv')))
