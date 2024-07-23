@@ -105,6 +105,6 @@ check out the documentation at:
 ### Citation
 
 The package was developed by Martha Sudermann, Zachary Foster, Samantha
-Dawson, Hung Phan, Niklaus Grnwald, Jeff Chang.
+Dawson, Hung Phan, Jeff Chang, and Ni.laus Grünwald/
 
 Stay tuned for associated manuscript.

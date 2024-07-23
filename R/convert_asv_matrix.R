@@ -100,7 +100,8 @@ convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minim
       
       #Fix this part
       obj_dada$data$otu_table = obj_dada$data$abund[, -3:-4]
-      obj_dada$data$sample_data = data_tables$metadata
+      filtered_sample_data <- data_tables$metadata[data_tables$metadata$primer_name == suffix, ]
+      obj_dada$data$sample_data = filtered_sample_data
       
       phylo_obj <- metacoder::as_phyloseq(
         obj_dada,

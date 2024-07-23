@@ -16,7 +16,7 @@ nature of metabarcoding analyses.
 
 Here is a brief schematic of the general workflow:
 
-<img src="man/figures/rps10_fig1_smaller.drawio.svg" width="80%" height="400px" style="display: block; margin: auto;" />
+<img src="man/figures/rps10_fig1_smaller.drawio.svg" width="500px" height="500px" style="display: block; margin: auto auto auto 0;" />
 
 ### Key features
 
