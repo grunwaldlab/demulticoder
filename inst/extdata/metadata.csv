@@ -1,5 +1,5 @@
-sample_name,primer_name,well,organism
-S1,rps10,A01,Cry
-S2,rps10,B01,Cin
-S1,its,A01,Cry
-S2,its,B01,Cin
+sample_name,primer_name,organism
+S1,rps10,Cry
+S2,rps10,Cin
+S1,its,Cry
+S2,its,Cin

@@ -14,7 +14,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-
 ### Before You Start
 
 In the following example, we demonstrate key package functionality using a subset of reads from two samples containing pooled ITS1 fungal and rps10 oomycete amplicons. The databases used in the assign taxonomy step are also abridged versions of the full UNITE and oomyceteDB databases.
@@ -30,23 +29,6 @@ You will need to prepare your raw read files and fill in the [**metadata.csv**](
 The package takes foward and reverse Illumina short read sequence data.
 
 To avoid errors, the only characters that are acceptable in sample names are letters and numbers. Characters can be separated by underscores, but no other symbols. The files must end with the suffix **R1.fastq.gz** or **R2.fastq.gz**.
-
-Examples are permissible sample names are as follows:
-
-* Sample1_R1.fastq.gz
-* Sample1_R2.fastq.gz
-
-Other permissible names are:
-
-* Sample1_001_R1.fastq.gz
-* Sample1_001_R2.fastq.gz
-
-What is not permissible is:
-
-* Sample1_001_R1_001.fastq.gz
-* Sample1_001_R2_001.fastq.gz
-
-There will be an error because R1 and R2 are not directly preceding the '.fastq.gz' suffix.
 
 ### Format of metadata file (*metadata.csv*)
 
@@ -68,7 +50,6 @@ Example using test dataset:
 knitr::kable(data.frame(
   sample_name = c("S1", "S2", "S1", "S2"),
   primer_name = c("rps10", "rps10", "its", "its"),
-  well = c("A01", "B01", "A01", "B01"),
   organism = c("Cry", "Cin", "Cry", "Cin")
 ), row.names = FALSE)
 ```
@@ -77,14 +58,12 @@ knitr::kable(data.frame(
 
 DADA2 Primer sequence information and user-defined parameters are placed in *primerinfo_params.csv*. 
 
-To simplify how functions are called, user will provide parameters within this input file. We recommend using the template linked [here](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv)
+To simplify how functions are called, user will provide parameters within this input file. We recommend using the template linked [here](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv). Remember to add any additional optional DADA2 parameters you want to use.
 
 The only required columns user must fill in are:
 1.primer_name (rps10, its, or other for another barcode)
 2.forward-forward sequence
 3.reverse-reverse sequence
-
-If a user doesn't add any info to the subsequent columns, a series of default parameters will be used.
 
 Example template for 'primerinfo_params.csv'
 
@@ -115,7 +94,7 @@ knitr::kable(data.frame(
 ), row.names = FALSE)
 ```
 
-TODO-Below is a table of the parameters, what functions they are associated with,  the default parameters, and whether they are Cutadapt, DADA2, or package specific parameters.  
+For more info on parameter specifics, eee Documentation tab. 
 
 ### Reference Database Format
 
@@ -164,7 +143,7 @@ Before running Cutadapt, please ensure that you have installed it.
 ```{r remove primers with cut_trim function, message=FALSE, fig.height=6, fig.width=6}
 demulticoder::cut_trim(
   analysis_setup,
-  cutadapt_path="/",
+  cutadapt_path="/opt/homebrew/bin/cutadapt",
   overwrite_existing = FALSE)
 ```
 

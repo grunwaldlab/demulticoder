@@ -379,7 +379,7 @@ cut_trim <- function(analysis_setup,
   }
   
   default_params <- list(
-    minCutadaptlength=50,
+    minCutadaptlength=0,
     maxEE_forward = Inf,
     maxEE_reverse = Inf,
     truncQ = 2,

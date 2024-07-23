@@ -4,8 +4,7 @@
 #' @param analysis_setup analysis_setup An object containing directory paths and
 #'   data tables, produced by the `prepare_reads` function
 #' @param min_read_depth ASV filter parameter. If mean read depth of across all
-#'   samples is less than this threshold, ASV will be filtered. reads is less
-#'   than this value across all samples
+#'   samples is less than this threshold, ASV will be filtered. 
 #' @param minimum_bootstrap Threshold for bootstrap support value for taxonomic
 #'   assignments. Below designated minimum bootstrap threshold, taxnomoic
 #'   assignments will be set to N/A

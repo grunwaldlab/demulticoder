@@ -17,8 +17,7 @@ convert_asv_matrix_to_objs(
 data tables, produced by the \code{prepare_reads} function}
 
 \item{min_read_depth}{ASV filter parameter. If mean read depth of across all
-samples is less than this threshold, ASV will be filtered. reads is less
-than this value across all samples}
+samples is less than this threshold, ASV will be filtered.}
 
 \item{minimum_bootstrap}{Threshold for bootstrap support value for taxonomic
 assignments. Below designated minimum bootstrap threshold, taxnomoic
