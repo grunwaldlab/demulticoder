@@ -21,8 +21,8 @@ The ***demulticoder*** package is a Cutadapt and DADA2 wrapper package for metab
 
 Here is a brief schematic of the general workflow:
 
-```{r workflow-diagram, echo=FALSE, out.width="80%", out.height="400px", fig.align="center"}
-knitr::include_graphics("man/figures/rps10_fig1_smaller.drawio.svg")
+```{r workflow-diagram, echo=FALSE, out.width="40%", out.height="40%", fig.align="center"}
+knitr::include_graphics("man/figures/rps10_fig1_smaller.drawio.png")
 ```
 
 ### Key features
