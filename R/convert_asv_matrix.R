@@ -171,7 +171,7 @@ convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minim
         cat("Taxmap object saved in:", taxmap_path, "\n")
         cat("Phyloseq object saved in:", phyloseq_path, "\n")
         cat("ASVs filtered by minimum read depth:", min_read_depth, "\n")
-        cat("For taxonomic assignments, if minimum bootstrap was set to:", minimum_bootstrap, "assignments were set to NA", "\n")
+        cat("For taxonomic assignments, if minimum bootstrap was set to:", minimum_bootstrap, "assignments were set to 'Unsupported'", "\n")
         cat("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
       } else {
         cat("For", suffix, "dataset", "\n")
