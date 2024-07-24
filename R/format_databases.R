@@ -108,7 +108,7 @@ format_db_its <- function(data_tables, data_path, output_directory_path, temp_di
 #' @keywords internal
 format_db_16s <- function(data_tables, data_path, output_directory_path, temp_directory_path, db_16s) {
 
-  database_path <- file.path(temp_directory_path, "sixteenS_reference_db.fa")
+  database_path <- file.path(temp_directory_path, "r16S_reference_db.fa")
   
   db_16s <- metacoder::read_fasta(file.path(data_path, db_16s))
   data_16s <- tibble::tibble(taxonomy = names(db_16s), sequence = db_16s)
@@ -269,7 +269,7 @@ format_database <- function(data_tables, data_path, output_directory_path, temp_
     return(format_db_rps10(data_tables, data_path, output_directory_path, temp_directory_path, db_rps10))
   } else if (barcode == "its") {
     return(format_db_its(data_tables, data_path, output_directory_path, temp_directory_path, db_its))
-  } else if (barcode == "sixteenS") {
+  } else if (barcode == "r16S") {
     return(format_db_16s(data_tables, data_path, output_directory_path, temp_directory_path, db_16s))
   } else if (barcode == "other1") {
     return(format_db_other(data_tables, data_path, output_directory_path, temp_directory_path, db_other1))
