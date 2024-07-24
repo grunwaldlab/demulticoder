@@ -108,7 +108,6 @@ The primerinfo_params.csv file contains information about the primer sequences u
 **DADA2 learnErrors function parameters:**  
 
 * **nbases**: Number of bases to use for error rate learning (default: 1e+08)
-* **errorEstimationFunction**: Computed on the matrix of observed transitions after each sample inference step in order to generate the new matrix of estimated error rates (default: loessErrfun)
 * **randomize**: Randomize reads for error rate learning (default: FALSE)
 * **MAX_CONSIST**: Maximum number of self-consistency iterations (default: 10)
 * **OMEGA_C**: Convergence threshold for the error rates (default: 0)
@@ -123,7 +122,6 @@ The primerinfo_params.csv file contains information about the primer sequences u
 
 **DADA2 dada function parameters:**  
 
-* **errorEstimationFunction**: Computed on the matrix of observed transitions after each sample inference step in order to generate the new matrix of estimated error rates (default: loessErrfun)
 * **OMP**: Use OpenMP multi-threading if available (default: TRUE)
 * **n**: Number of reads to use for error rate estimation (default: 1e+05)
 * **id.sep**: Character separating sample ID from sequence name (default: "\\s")

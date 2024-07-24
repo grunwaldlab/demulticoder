@@ -35,7 +35,7 @@ analysis_setup<-prepare_reads(
 )
 cut_trim(
 analysis_setup,
-cutadapt_path="/opt/homebrew/bin/cutadapt", 
+cutadapt_path="/usr/bin/cutadapt", 
 overwrite_existing = FALSE
 )
 }
