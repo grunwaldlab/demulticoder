@@ -61,7 +61,7 @@ DADA2 Primer sequence information and user-defined parameters are placed in *pri
 To simplify how functions are called, user will provide parameters within this input file. We recommend using the template linked [here](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv). Remember to add any additional optional DADA2 parameters you want to use.
 
 The only required columns user must fill in are:
-1.primer_name (rps10, its, or other for another barcode)
+1.primer_name compatible options are currently (add to cells as written as this is crucial during database formatting step): rps10, its, r16S, other1, other2
 2.forward-forward sequence
 3.reverse-reverse sequence
 

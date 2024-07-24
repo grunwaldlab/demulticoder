@@ -258,7 +258,7 @@ process_single_barcode <-
 #'   assignment
 #' @param db_rps10 The reference database for the rps10 locus
 #' @param db_its The reference database for the ITS locus
-#' @param db_16s The reference database for the 16S locus
+#' @param db_16S The reference database for the 16S locus
 #' @param db_other1 The reference database for different locus 1 (assumes format is like SILVA DB entries)
 #' @param db_other2 The reference database for a different locus 2 (assumes format is like SILVA DB entries)
 #' @param verbose Logical, indicating whether to display verbose output
@@ -296,7 +296,7 @@ process_single_barcode <-
 #' retrieve_files=FALSE, 
 #' overwrite_existing=FALSE
 #' )
-assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, overwrite_existing = FALSE, db_rps10 = "oomycetedb.fasta", db_its = "fungidb.fasta", db_16s = "bacteriadb.fasta", db_other1 = "otherdb1.fasta", db_other2 = "otherdb2.fasta") {
+assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, overwrite_existing = FALSE, db_rps10 = "oomycetedb.fasta", db_its = "fungidb.fasta", db_16S = "bacteriadb.fasta", db_other1 = "otherdb1.fasta", db_other2 = "otherdb2.fasta") {
   data_tables <- analysis_setup$data_tables
   data_path <- analysis_setup$directory_paths$data_directory
   output_directory_path <- analysis_setup$directory_paths$output_directory
@@ -350,7 +350,7 @@ assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose 
       # Load merged reads for the current barcode
       load(file.path(temp_directory_path, paste0("asvabund_matrixDADA2_", barcode, ".RData")))
       
-      format_database(data_tables, data_path, output_directory_path, temp_directory_path, barcode, db_its, db_rps10, db_16s, db_other1, db_other2)
+      format_database(data_tables, data_path, output_directory_path, temp_directory_path, barcode, db_its, db_rps10, db_16S, db_other1, db_other2)
       
       # Run taxonomy assignment for the current barcode
       process_single_barcode(
