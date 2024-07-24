@@ -296,7 +296,7 @@ plot_post_trim_qc <- function(cutadapt_data, output_directory_path, n = 500000) 
 #' )
 #' cut_trim(
 #' analysis_setup,
-#' cutadapt_path="/opt/homebrew/bin/cutadapt", 
+#' cutadapt_path="/usr/bin/cutadapt", 
 #' overwrite_existing = FALSE
 #' )
 cut_trim <- function(analysis_setup,

@@ -134,7 +134,7 @@ The sample names, primer sequences, and other metadata are reorganized in prepar
 ```{r prepare_reads function, warning=FALSE, message=FALSE, fig.height=6, fig.width=6}
 analysis_setup<-demulticoder::prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
-  output_directory = "~/output_test_dataset", 
+  output_directory = "~/output_test_dataset2", 
   overwrite_existing=TRUE)
 ```
 
@@ -143,7 +143,7 @@ Before running Cutadapt, please ensure that you have installed it.
 ```{r remove primers with cut_trim function, message=FALSE, fig.height=6, fig.width=6}
 demulticoder::cut_trim(
   analysis_setup,
-  cutadapt_path="/opt/homebrew/bin/cutadapt",
+  cutadapt_path="/usr/bin/cutadapt",
   overwrite_existing = FALSE)
 ```
 
@@ -168,7 +168,7 @@ assign_tax(
 
 ### Reformat ASV matrix as taxmap and phyloseq objects after optional filtering of low abundance ASVs
 ```{r Reformat final matrix, message=FALSE, fig.height=8, fig.width=6}
-objs<-convert_asv_matrix_to_objs(analysis_setup, save_outputs=TRUE, minimum_bootstrap = 50)
+objs<-convert_asv_matrix_to_objs(analysis_setup, minimum_bootstrap = 0, save_outputs=TRUE)
 ```
 
 ### Format of output matrix
