@@ -79,7 +79,8 @@ S2,its,Cin
 
 ## primerinfo_params.csv
 
-The primerinfo_params.csv file contains information about the primer sequences used in the experiment, along with optional additional parameters that are part of the DADA2 pipeline. If anything is not specified, the default values will be used. The file has the following columns:  
+The primerinfo_params.csv file contains information about the primer sequences used in the experiment, along with optional additional parameters that are part of the DADA2 pipeline. If anything is not specified, the default values will be used.  
+
 **Required columns:**  
 
 * **primer_name**: Name of the primer/barcode (e.g., its, rps10)
