@@ -12,7 +12,7 @@ format_database(
   barcode,
   db_its,
   db_rps10,
-  db_16s,
+  db_16S,
   db_other1,
   db_other2
 )

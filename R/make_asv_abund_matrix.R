@@ -33,7 +33,6 @@ infer_asvs <- function(data_tables,my_direction, my_primer_pair_id, barcode_para
     fastq_paths,
     multithread = barcode_params$multithread,
     nbases = barcode_params$nbases,
-    errorEstimationFunction=barcode_params$loessErrfun,
     randomize = barcode_params$randomize,
     MAX_CONSIST = barcode_params$MAX_CONSIST,
     OMEGA_C = barcode_params$OMEGA_C,
@@ -71,7 +70,6 @@ infer_asvs <- function(data_tables,my_direction, my_primer_pair_id, barcode_para
     fastq_paths,
     err = error_profile,
     pool=barcode_params$pool,
-    errorEstimationFunction=barcode_params$errEstimationFunction,
     multithread = barcode_params$multithread
   )
   
@@ -328,7 +326,6 @@ make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {
   default_params <- list(
     multithread = FALSE,
     nbases = 1e+08,
-    errorEstimationFunction=loessErrfun,
     randomize = FALSE,
     MAX_CONSIST = 10,
     OMEGA_C = 0,

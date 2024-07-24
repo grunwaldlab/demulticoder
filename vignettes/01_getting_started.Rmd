@@ -125,7 +125,7 @@ For now, the package will be loaded by retrieving it from GitHub.
 Eventually, the package will be uploaded to CRAN or Bioconductor.
 ```{r installation, warning=FALSE, message=FALSE}
 #devtools::install_github("grunwaldlab/demulticoder")
-library(demulticoder)
+devtools::load_all("~/demulticoder")
 ```
 
 ### Reorganize data tables and set-up data directory structure 
@@ -168,7 +168,7 @@ assign_tax(
 
 ### Reformat ASV matrix as taxmap and phyloseq objects after optional filtering of low abundance ASVs
 ```{r Reformat final matrix, message=FALSE, fig.height=8, fig.width=6}
-objs<-convert_asv_matrix_to_objs(analysis_setup, save_outputs=TRUE)
+objs<-convert_asv_matrix_to_objs(analysis_setup, save_outputs=TRUE, minimum_bootstrap = 50)
 ```
 
 ### Format of output matrix

@@ -47,7 +47,62 @@
 #' )
 
 
-#TODO for given barcode, for taxmap object, retain only sample name and relevant barcode
+#' # Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
+#' analysis_setup<-prepare_reads(
+#'   data_directory = system.file("extdata", package = "demulticoder"), 
+#'   output_directory = tempdir(),
+#'   tempdir_path = tempdir(),
+#'   tempdir_id = "demulticoder_run_temp", 
+#'   overwrite_existing = FALSE
+#' )
+#' cut_trim(
+#' analysis_setup,
+#' cutadapt_path="/opt/homebrew/bin/cutadapt", 
+#' overwrite_existing = FALSE
+#' )
+#' make_asv_abund_matrix(
+#' analysis_setup, 
+#' overwrite_existing = FALSE
+#' )
+#' assign_tax(
+#' analysis_setup,
+#' asv_abund_matrix,
+#' retrieve_files=FALSE, 
+#' overwrite_existing=FALSE
+#' )
+#' objs<-convert_asv_matrix_to_objs(
+#' analysis_setup, 
+#' save_outputs=FALSE
+#' )
+
+#' # Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
+#' analysis_setup<-prepare_reads(
+#'   data_directory = system.file("extdata", package = "demulticoder"), 
+#'   output_directory = tempdir(),
+#'   tempdir_path = tempdir(),
+#'   tempdir_id = "demulticoder_run_temp", 
+#'   overwrite_existing = FALSE
+#' )
+#' cut_trim(
+#' analysis_setup,
+#' cutadapt_path="/opt/homebrew/bin/cutadapt", 
+#' overwrite_existing = FALSE
+#' )
+#' make_asv_abund_matrix(
+#' analysis_setup, 
+#' overwrite_existing = FALSE
+#' )
+#' assign_tax(
+#' analysis_setup,
+#' asv_abund_matrix,
+#' retrieve_files=FALSE, 
+#' overwrite_existing=FALSE
+#' )
+#' objs<-convert_asv_matrix_to_objs(
+#' analysis_setup, 
+#' save_outputs=FALSE
+#' )
+
 convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minimum_bootstrap = 0, save_outputs = FALSE, overwrite_existing = FALSE) {
   data_tables <- analysis_setup$data_tables
   output_directory_path <- analysis_setup$directory_paths$output_directory
@@ -80,7 +135,7 @@ convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minim
             strsplit(x, '--'),
             function(parts) {
               if (parts[[3]] != "ASV" && as.numeric(parts[[2]]) <= minimum_bootstrap) {
-                parts[[1]] <- "NA"
+                parts[[1]] <- "Unsupported"
               }
               paste(parts, collapse = '--')
             }
@@ -88,19 +143,15 @@ convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minim
           collapse = ';'
         )
       })
-      
-      # Convert "NA" strings to actual NA values
-      abundance$dada2_tax[is.na(abundance$dada2_tax)] <- NA
-      
       obj_dada <- metacoder::parse_tax_data(abundance, class_cols = 'dada2_tax', class_sep = ';', include_tax_data = TRUE,
                                             class_regex = '^(.+)--(.+)--(.+)$',
                                             class_key = c(taxon = 'taxon_name', boot = 'info', rank = 'taxon_rank'))
       names(obj_dada$data) <- c('abund', 'score')
       
-      #Fix this part
       obj_dada$data$otu_table = obj_dada$data$abund[, -3:-4]
       filtered_sample_data <- data_tables$metadata[data_tables$metadata$primer_name == suffix, ]
       obj_dada$data$sample_data = filtered_sample_data
+      
       
       phylo_obj <- metacoder::as_phyloseq(
         obj_dada,
