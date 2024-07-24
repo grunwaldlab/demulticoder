@@ -92,7 +92,7 @@ format_db_its <- function(data_tables, data_path, output_directory_path, temp_di
   return(data_its)
 }
 
-#' An 16s database that has modified headers and is output in the
+#' An 16S database that has modified headers and is output in the
 #' reference_databases folder
 #' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
 #' @param data_path Path to the data directory
@@ -100,23 +100,23 @@ format_db_its <- function(data_tables, data_path, output_directory_path, temp_di
 #'   are output
 #' @param temp_directory_path User-defined temporary directory to place reads
 #'   throughout the workflow metadata, and primer_info files
-#' @param db_16s The name of the database
+#' @param db_16S The name of the database
 #'
-#' @return An 16s database that has modified headers and is output in the
+#' @return An 16S database that has modified headers and is output in the
 #'   reference_databases folder
 #'
 #' @keywords internal
-format_db_16s <- function(data_tables, data_path, output_directory_path, temp_directory_path, db_16s) {
+format_db_16S <- function(data_tables, data_path, output_directory_path, temp_directory_path, db_16S) {
 
   database_path <- file.path(temp_directory_path, "r16S_reference_db.fa")
   
-  db_16s <- metacoder::read_fasta(file.path(data_path, db_16s))
-  data_16s <- tibble::tibble(taxonomy = names(db_16s), sequence = db_16s)
-  data_16s$taxonomy <- gsub(data_16s$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
-  data_16s$taxonomy <- trimws(data_16s$taxonomy)
-  data_16s$taxonomy <- stringr::str_replace(data_16s$taxonomy, "^((?:[^;]*;){5})([^;]+);([^;]+);$", "\\1\\2;\\2_\\3;")
+  db_16S <- metacoder::read_fasta(file.path(data_path, db_16S))
+  data_16S <- tibble::tibble(taxonomy = names(db_16S), sequence = db_16S)
+  data_16S$taxonomy <- gsub(data_16S$taxonomy, pattern = ' ', replacement = '_', fixed = TRUE)
+  data_16S$taxonomy <- trimws(data_16S$taxonomy)
+  data_16S$taxonomy <- stringr::str_replace(data_16S$taxonomy, "^((?:[^;]*;){5})([^;]+);([^;]+);$", "\\1\\2;\\2_\\3;")
   
-  data_16s$taxonomy <- sapply(data_16s$taxonomy, function(tax) {
+  data_16S$taxonomy <- sapply(data_16S$taxonomy, function(tax) {
     tax_parts <- strsplit(tax, ";")[[1]]
     while (length(tax_parts) < 7) {
       tax_parts <- c(tax_parts, "NA")
@@ -124,24 +124,24 @@ format_db_16s <- function(data_tables, data_path, output_directory_path, temp_di
     paste(tax_parts, collapse = ";")
   })
   
-  #data_16s$taxonomy <- paste0(data_16s$taxonomy, ";refdb_", seq_along(data_16s$taxonomy), ";")
-  data_16s$taxonomy <- paste0(data_16s$taxonomy, ";")
+  #data_16S$taxonomy <- paste0(data_16S$taxonomy, ";refdb_", seq_along(data_16S$taxonomy), ";")
+  data_16S$taxonomy <- paste0(data_16S$taxonomy, ";")
   
-  data_16s$genus <- ifelse(
-    sapply(strsplit(data_16s$taxonomy, ";"), length) >= 7,
-    sapply(strsplit(data_16s$taxonomy, ";"), function(x) x[6]),
+  data_16S$genus <- ifelse(
+    sapply(strsplit(data_16S$taxonomy, ";"), length) >= 7,
+    sapply(strsplit(data_16S$taxonomy, ";"), function(x) x[6]),
     NA
   )
   
-  genus_count <- table(data_16s$genus)
+  genus_count <- table(data_16S$genus)
   count_table <- as.data.frame(genus_count, stringsAsFactors = FALSE)
   count_table <- tibble::tibble(count_table)
   names(count_table) <- c('Genus', 'Number of sequences')
   
-  readr::write_csv(count_table, file = file.path(output_directory_path, "genus_count_table_16s.csv"))
-  readr::write_lines(paste0(">", data_16s$taxonomy, "\n", db_16s), file = database_path)
+  readr::write_csv(count_table, file = file.path(output_directory_path, "genus_count_table_16S.csv"))
+  readr::write_lines(paste0(">", data_16S$taxonomy, "\n", db_16S), file = database_path)
   
-  return(data_16s)
+  return(data_16S)
 }
 
 #' An other, user-specified database that is initially in the format specified by DADA2 with header simply taxonomic levels (kingdom down to species, separated by semi-colons, ;)
@@ -264,13 +264,13 @@ format_db_other2 <-function(data_tables, data_path, output_directory_path, temp_
 #' @return A formatted database based on the specified barcode type
 #'
 #' @keywords internal
-format_database <- function(data_tables, data_path, output_directory_path, temp_directory_path, barcode, db_its, db_rps10, db_16s, db_other1, db_other2) {
+format_database <- function(data_tables, data_path, output_directory_path, temp_directory_path, barcode, db_its, db_rps10, db_16S, db_other1, db_other2) {
   if (barcode == "rps10") {
     return(format_db_rps10(data_tables, data_path, output_directory_path, temp_directory_path, db_rps10))
   } else if (barcode == "its") {
     return(format_db_its(data_tables, data_path, output_directory_path, temp_directory_path, db_its))
   } else if (barcode == "r16S") {
-    return(format_db_16s(data_tables, data_path, output_directory_path, temp_directory_path, db_16s))
+    return(format_db_16S(data_tables, data_path, output_directory_path, temp_directory_path, db_16S))
   } else if (barcode == "other1") {
     return(format_db_other(data_tables, data_path, output_directory_path, temp_directory_path, db_other1))
   } else if (barcode == "other2") {
