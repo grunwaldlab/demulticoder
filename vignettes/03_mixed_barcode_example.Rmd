@@ -1,6 +1,8 @@
 ---
 title: "Mixed barcode example"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    fig_path: "man/figures"
 vignette: >
   %\VignetteIndexEntry{Mixed barcode example}
   %\VignetteEngine{knitr::rmarkdown}
@@ -15,55 +17,315 @@ knitr::opts_chunk$set(
 ```
 
 ## Demonstration of how to use demulticoder on a dataset that is actually three separate datasets (RPS10, ITS, and 16S) at once
+This is a small dataset comprised 24 samples. In three separate experiments, 16S, ITS, and 16S genes/regions were amplified, following an experiment in which some soil samples were treated with diallyl disulfide (organosulfur biocontrol compound derived from garlic), half were exposed to anaerobic conditions vs. aerobic conditions, and half the samples were one soil type (Tulelake) vs. another (Madras). The goal was to examine the bacterial, fungal, and oomycete communities within these different treatment groups. Reads were obtained following three separate Illumina MiSeq runs. The following *Demulticoder* workflow below picks up after these runs. The read data has already been demultiplexed, and for each sample, there is 16S, ITS, and rps10 reads within three separate FASTQ files per sample. 
 
-Input metadata and primerinfo_params files are in data folder
+The goal of this workflow is to demonstrate that you can analyze simultaneously (but with different parameters), multiple datasets, related or not. Final matrices are separated by barcode, to avoid any violation of assumptions regarding experimental design. If the user so desires, they could combine the final matrices, depending on how the experiment was designed. 
 
-TODO show example and add more commentary
+### Step 1-Prepare metadata.csv file
+You will see that sample names are unique for 
+Here is the CSV file looks like:
+```{csv}
+sample_name,primer_name,incubation,soil,treatment
+1_1_01,r16S,Anaerobic,Madras,untreated
+1_2_01,r16S,Anaerobic,Madras,untreated
+1_3_01,r16S,Anaerobic,Madras,untreated
+2_1_01,r16S,Anaerobic,Madras,DADS_1gal_A
+2_2_01,r16S,Anaerobic,Madras,DADS_1gal_A
+2_3_01,r16S,Anaerobic,Madras,DADS_1gal_A
+3_1_01,r16S,Anaerobic,Tulelake,untreated
+3_2_01,r16S,Anaerobic,Tulelake,untreated
+3_3_01,r16S,Anaerobic,Tulelake,untreated
+4_1_01,r16S,Anaerobic,Tulelake,DADS_1gal_A
+4_2_01,r16S,Anaerobic,Tulelake,DADS_1gal_A
+4_3_01,r16S,Anaerobic,Tulelake,DADS_1gal_A
+5_1_01,r16S,Aerobic,Madras,untreated
+5_2_01,r16S,Aerobic,Madras,untreated
+5_3_01,r16S,Aerobic,Madras,untreated
+6_1_01,r16S,Aerobic,Madras,DADS_1gal_A
+6_2_01,r16S,Aerobic,Madras,DADS_1gal_A
+6_3_01,r16S,Aerobic,Madras,DADS_1gal_A
+7_1_01,r16S,Aerobic,Tulelake,untreated
+7_2_01,r16S,Aerobic,Tulelake,untreated
+7_3_01,r16S,Aerobic,Tulelake,untreated
+8_1_01,r16S,Aerobic,Tulelake,DADS_1gal_A
+8_2_01,r16S,Aerobic,Tulelake,DADS_1gal_A
+8_3_01,r16S,Aerobic,Tulelake,DADS_1gal_A
+Dung1_1_S221_L001_02,its,Anaerobic ,Madras,untreated
+Dung1_1_S222,rps10,Anaerobic ,Madras,untreated
+Dung1_2_S222_L001_02,its,Anaerobic ,Madras,untreated
+Dung1_2_S223,rps10,Anaerobic ,Madras,DADS_1gal_A
+Dung1_3_S223_L001_02,its,Anaerobic ,Madras,DADS_1gal_A
+Dung1_3_S224,rps10,Anaerobic ,Madras,DADS_1gal_A
+Dung2_1_S224_L001_02,its,Anaerobic ,Tulelake,untreated
+Dung2_1_S225,rps10,Anaerobic ,Tulelake,untreated
+Dung2_2_S225_L001_02,its,Anaerobic ,Tulelake,untreated
+Dung2_2_S226,rps10,Anaerobic ,Tulelake,DADS_1gal_A
+Dung2_3_S226_L001_02,its,Anaerobic ,Tulelake,DADS_1gal_A
+Dung2_3_S227,rps10,Anaerobic ,Tulelake,DADS_1gal_A
+Dung3_1_S227_L001_02,its,Aerobic,Madras,untreated
+Dung3_1_S228,rps10,Aerobic,Madras,untreated
+Dung3_2_S228_L001_02,its,Aerobic,Madras,untreated
+Dung3_2_S229,rps10,Aerobic,Madras,DADS_1gal_A
+Dung3_3_S229_L001_02,its,Aerobic,Madras,DADS_1gal_A
+Dung3_3_S230,rps10,Aerobic,Madras,DADS_1gal_A
+Dung4_1_S230_L001_02,its,Aerobic,Tulelake,untreated
+Dung4_1_S231,rps10,Aerobic,Tulelake,untreated
+Dung4_2_S231_L001_02,its,Aerobic,Tulelake,untreated
+Dung4_2_S232,rps10,Aerobic,Tulelake,DADS_1gal_A
+Dung4_3_S232_L001_02,its,Aerobic,Tulelake,DADS_1gal_A
+Dung4_3_S233,rps10,Aerobic,Tulelake,DADS_1gal_A
+Dung5_1_S233_L001_02,its,Anaerobic ,Madras,untreated
+Dung5_1_S234,rps10,Anaerobic ,Madras,untreated
+Dung5_2_S234_L001_02,its,Anaerobic ,Madras,untreated
+Dung5_2_S235,rps10,Anaerobic ,Madras,DADS_1gal_A
+Dung5_3_S235_L001_02,its,Anaerobic ,Madras,DADS_1gal_A
+Dung5_3_S236,rps10,Anaerobic ,Madras,DADS_1gal_A
+Dung6_1_S236_L001_02,its,Anaerobic ,Tulelake,untreated
+Dung6_1_S237,rps10,Anaerobic ,Tulelake,untreated
+Dung6_2_S237_L001_02,its,Anaerobic ,Tulelake,untreated
+Dung6_2_S238,rps10,Anaerobic ,Tulelake,DADS_1gal_A
+Dung6_3_S238_L001_02,its,Anaerobic ,Tulelake,DADS_1gal_A
+Dung6_3_S239,rps10,Anaerobic ,Tulelake,DADS_1gal_A
+Dung7_1_S239_L001_02,its,Aerobic,Madras,untreated
+Dung7_1_S240,rps10,Aerobic,Madras,untreated
+Dung7_2_S240_L001_02,its,Aerobic,Madras,untreated
+Dung7_2_S241,rps10,Aerobic,Madras,DADS_1gal_A
+Dung7_3_S241_L001_02,its,Aerobic,Madras,DADS_1gal_A
+Dung7_3_S242,rps10,Aerobic,Madras,DADS_1gal_A
+Dung8_1_S242_L001_02,its,Aerobic,Tulelake,untreated
+Dung8_1_S243,rps10,Aerobic,Tulelake,untreated
+Dung8_2_S243_L001_02,its,Aerobic,Tulelake,untreated
+Dung8_2_S244,rps10,Aerobic,Tulelake,DADS_1gal_A
+Dung8_3_S244_L001_02,its,Aerobic,Tulelake,DADS_1gal_A
+Dung8_3_S245,rps10,Aerobic,Tulelake,DADS_1gal_A
+```
+
+In tabular format: 
+```{r, echo=FALSE}
+metadata <- read.csv(text = "
+sample_name,primer_name,incubation,soil,treatment
+1_1_01,r16S,Anaerobic,Madras,untreated
+1_2_01,r16S,Anaerobic,Madras,untreated
+1_3_01,r16S,Anaerobic,Madras,untreated
+2_1_01,r16S,Anaerobic,Madras,DADS_1gal_A
+2_2_01,r16S,Anaerobic,Madras,DADS_1gal_A
+2_3_01,r16S,Anaerobic,Madras,DADS_1gal_A
+3_1_01,r16S,Anaerobic,Tulelake,untreated
+3_2_01,r16S,Anaerobic,Tulelake,untreated
+3_3_01,r16S,Anaerobic,Tulelake,untreated
+4_1_01,r16S,Anaerobic,Tulelake,DADS_1gal_A
+4_2_01,r16S,Anaerobic,Tulelake,DADS_1gal_A
+4_3_01,r16S,Anaerobic,Tulelake,DADS_1gal_A
+5_1_01,r16S,Aerobic,Madras,untreated
+5_2_01,r16S,Aerobic,Madras,untreated
+5_3_01,r16S,Aerobic,Madras,untreated
+6_1_01,r16S,Aerobic,Madras,DADS_1gal_A
+6_2_01,r16S,Aerobic,Madras,DADS_1gal_A
+6_3_01,r16S,Aerobic,Madras,DADS_1gal_A
+7_1_01,r16S,Aerobic,Tulelake,untreated
+7_2_01,r16S,Aerobic,Tulelake,untreated
+7_3_01,r16S,Aerobic,Tulelake,untreated
+8_1_01,r16S,Aerobic,Tulelake,DADS_1gal_A
+8_2_01,r16S,Aerobic,Tulelake,DADS_1gal_A
+8_3_01,r16S,Aerobic,Tulelake,DADS_1gal_A
+", stringsAsFactors = FALSE)
+
+knitr::kable(head(metadata, 24), row.names = FALSE)
+```
+
+### Step 2-Prepare primerinfo_params.csv file
+
+Here is the CSV file looks like:
+```{csv}
+primer_name,forward,reverse,already_trimmed,minCutadaptlength,multithread,verbose,maxN,maxEE_forward,maxEE_reverse,truncLen_forward,truncLen_reverse,truncQ,minLen,maxLen,minQ,trimLeft,trimRight,rm.lowcomplex,minOverlap,maxMismatch,min_asv_length
+rps10,GTTGGTTAGAGYARAAGACT,ATRYYTAGAAAGAYTYGAACT,FALSE,50,TRUE,TRUE,0,5,5,0,0,5,50,Inf,0,0,0,0,15,2,50
+its,GTGARTCATCGAATCTTTG,TCCTSCGCTTATTGATATGC,FALSE,50,TRUE,TRUE,0,2,2,0,0,5,50,295,0,0,0,0,15,2,50
+r16S,GTGYCAGCMGCCGCGGTAA,GGACTACNVGGGTWTCTAAT,TRUE,50,TRUE,TRUE,0,2,2,0,0,5,50,Inf,0,0,0,0,15,2,50
+```
+
+In tabular format: 
+```{r, echo=FALSE}
+primerinfo_params <- read.csv(text = "
+primer_name,forward,reverse,already_trimmed,minCutadaptlength,multithread,verbose,maxN,maxEE_forward,maxEE_reverse,truncLen_forward,truncLen_reverse,truncQ,minLen,maxLen,minQ,trimLeft,trimRight,rm.lowcomplex,minOverlap,maxMismatch,min_asv_length
+rps10,GTTGGTTAGAGYARAAGACT,ATRYYTAGAAAGAYTYGAACT,FALSE,50,TRUE,TRUE,0,5,5,0,0,5,50,Inf,0,0,0,0,15,2,50
+its,GTGARTCATCGAATCTTTG,TCCTSCGCTTATTGATATGC,FALSE,50,TRUE,TRUE,0,2,2,0,0,5,50,295,0,0,0,0,15,2,50
+r16S,GTGYCAGCMGCCGCGGTAA,GGACTACNVGGGTWTCTAAT,TRUE,50,TRUE,TRUE,0,2,2,0,0,5,50,Inf,0,0,0,0,15,2,50
+", stringsAsFactors = FALSE)
+
+knitr::kable(primerinfo_params, row.names = FALSE)
+```
+
 ```{r setup, include=FALSE}
 #TODO-at some point switch to loading github repo version
-#devtools::load_all("~/demulticoder")
-#library("demulticoder")
+devtools::load_all("~/demulticoder")
+library("demulticoder")
 ```
 
-### Step 1-Remove N's and create directory structure for downstream steps
+### Step 3-Remove N's and create directory structure for downstream steps
 ```{r prepare reads, fig.height=6, fig.width=6}
-#outputs<-prepare_reads(
-  #data_directory = "~/demulticoder_benchmarking/demulticoder_combined_analysis_dads/data", 
-  #output_directory = "~/output_multiple_datasets", 
-  #overwrite_existing = TRUE)
+outputs<-prepare_reads(
+  data_directory = "~/demulticoder_benchmarking/demulticoder_combined_analysis_dads/data", 
+  output_directory = "~/demulticoder_benchmarking/package_vignettes/output_multiple_datasets", 
+  tempdir_id = "~/demulticoder_benchmarking/temp",
+  overwrite_existing = TRUE)
 ```
 
-### Step 2-Run Cutadapt to remove primers and then trim reads with DADA2 filterAndTrim function 
+### Step 4-Run Cutadapt to remove primers and then trim reads with DADA2 filterAndTrim function 
 ```{r Remove primers and trim reads, fig.height=6, fig.width=6}
-#cut_trim(
-  #outputs,
-  #cutadapt_path="/usr/bin/cutadapt",
-  #overwrite_existing = TRUE)
+cut_trim(
+  outputs,
+  cutadapt_path="/usr/bin/cutadapt",
+  overwrite_existing = FALSE)
 ```
 
-### Step 3-Core ASV inference step
+### Step 5-Core ASV inference step
 ```{r ASV inference, fig.height=6, fig.width=6}
-#make_asv_abund_matrix(
-  #outputs,
-  #overwrite_existing = TRUE)
+make_asv_abund_matrix(
+  outputs,
+  overwrite_existing = FALSE)
 ```
 
-### Step 4-Assign taxonomy step
+### Step 6-Assign taxonomy step
 ```{r assign taxonomy step, fig.height=6, fig.width=6}
-#assign_tax(
-  #outputs,
-  #asv_abund_matrix,
-  #db_its = "sh_general_release_dynamic_all_25.07.2023.fasta",
-  #db_rps10 = "oomycetedb.fasta",
-  #db_16s="silva_nr99_v138.1_wSpecies_train_set.fa",
-  #etrieve_files=TRUE,
-  #overwrite_existing=FALSE)
+assign_tax(
+  outputs,
+  asv_abund_matrix,
+  db_its = "sh_general_release_dynamic_all_25.07.2023.fasta",
+  db_rps10 = "oomycetedb.fasta",
+  db_16s="silva_nr99_v138.1_wSpecies_train_set.fa",
+  retrieve_files=TRUE,
+  overwrite_existing=FALSE)
 ```
 
-### Step 5-convert asv matrix to taxmap and phyloseq objects with one function
+### Step 7-convert asv matrix to taxmap and phyloseq objects with one function
 ```{r convert matrix to other formats, fig.height=6, fig.width=6}
-#objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing = TRUE)
+objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing = TRUE)
 ```
+
+Here we demonstrate how to make a stacked bar plot of the relative abundance of taxa by sample for the 16S-barcoded samples
+```{r Phyloseq demonstration ITS, message=FALSE}
+data <- objs$phyloseq_its %>%
+  phyloseq::transform_sample_counts(function(x) {x/sum(x)} ) %>% 
+  phyloseq::psmelt() %>%                                        
+  dplyr::filter(Abundance > 0.01) %>%                      
+  dplyr::arrange(Genus)                                      
+
+abund_plot <- ggplot2::ggplot(data, ggplot2::aes(x = Sample, y = Abundance, fill = Genus)) + 
+  ggplot2::geom_bar(stat = "identity", position = "stack", color = "black", size = 0.2) +
+  ggplot2::scale_fill_viridis_d() +
+  ggplot2::theme_minimal() +
+  ggplot2::labs(
+    y = "Relative Abundance",
+    title = "Relative abundance of taxa by sample",
+    fill = "Genus"
+  ) +
+  ggplot2::theme(
+    axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, vjust = 0.5, size = 14),
+    panel.grid.major = ggplot2::element_blank(),
+    panel.grid.minor = ggplot2::element_blank(),
+    legend.position = "top",
+    legend.text = ggplot2::element_text(size = 14),
+    legend.title = ggplot2::element_text(size = 14),  # Adjust legend title size
+    strip.text = ggplot2::element_text(size = 14),
+    strip.background = ggplot2::element_blank()
+  ) +
+  ggplot2::guides(
+    fill = ggplot2::guide_legend(
+      reverse = TRUE,
+      keywidth = 1,
+      keyheight = 1,
+      title.position = "top",
+      title.hjust = 0.5,  # Center the legend title
+      label.theme = ggplot2::element_text(size = 10)  # Adjust the size of the legend labels
+    )
+  )
+
+print(abund_plot)
+```
+
+Here we demonstrate how to make a stacked bar plot of the relative abundance of taxa by sample for the ITS-barcoded samples
+```{r Phyloseq demonstration ITS, message=FALSE}
+data <- objs$phyloseq_its %>%
+  phyloseq::transform_sample_counts(function(x) {x/sum(x)} ) %>% 
+  phyloseq::psmelt() %>%                                        
+  dplyr::filter(Abundance > 0.01) %>%                      
+  dplyr::arrange(Genus)                                      
+
+abund_plot <- ggplot2::ggplot(data, ggplot2::aes(x = Sample, y = Abundance, fill = Genus)) + 
+  ggplot2::geom_bar(stat = "identity", position = "stack", color = "black", size = 0.2) +
+  ggplot2::scale_fill_viridis_d() +
+  ggplot2::theme_minimal() +
+  ggplot2::labs(
+    y = "Relative Abundance",
+    title = "Relative abundance of taxa by sample",
+    fill = "Genus"
+  ) +
+  ggplot2::theme(
+    axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, vjust = 0.5, size = 14),
+    panel.grid.major = ggplot2::element_blank(),
+    panel.grid.minor = ggplot2::element_blank(),
+    legend.position = "top",
+    legend.text = ggplot2::element_text(size = 14),
+    legend.title = ggplot2::element_text(size = 14),  # Adjust legend title size
+    strip.text = ggplot2::element_text(size = 14),
+    strip.background = ggplot2::element_blank()
+  ) +
+  ggplot2::guides(
+    fill = ggplot2::guide_legend(
+      reverse = TRUE,
+      keywidth = 1,
+      keyheight = 1,
+      title.position = "top",
+      title.hjust = 0.5,  # Center the legend title
+      label.theme = ggplot2::element_text(size = 10)  # Adjust the size of the legend labels
+    )
+  )
+
+print(abund_plot)
+```
+
+Finally,we demonstrate how to make a stacked bar plot of the relative abundance of taxa by sample for the rps10-barcoded samples
+```{r Phyloseq demonstration rps10, message=FALSE}
+data <- objs$phyloseq_rps10 %>%
+  phyloseq::transform_sample_counts(function(x) {x/sum(x)} ) %>% 
+  phyloseq::psmelt() %>%                                        
+  dplyr::filter(Abundance > 0.01) %>%                      
+  dplyr::arrange(Genus)                                      
+
+abund_plot <- ggplot2::ggplot(data, ggplot2::aes(x = Sample, y = Abundance, fill = Genus)) + 
+  ggplot2::geom_bar(stat = "identity", position = "stack", color = "black", size = 0.2) +
+  ggplot2::scale_fill_viridis_d() +
+  ggplot2::theme_minimal() +
+  ggplot2::labs(
+    y = "Relative Abundance",
+    title = "Relative abundance of taxa by sample",
+    fill = "Genus"
+  ) +
+  ggplot2::theme(
+    axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, vjust = 0.5, size = 14),
+    panel.grid.major = ggplot2::element_blank(),
+    panel.grid.minor = ggplot2::element_blank(),
+    legend.position = "top",
+    legend.text = ggplot2::element_text(size = 14),
+    legend.title = ggplot2::element_text(size = 14),  # Adjust legend title size
+    strip.text = ggplot2::element_text(size = 14),
+    strip.background = ggplot2::element_blank()
+  ) +
+  ggplot2::guides(
+    fill = ggplot2::guide_legend(
+      reverse = TRUE,
+      keywidth = 1,
+      keyheight = 1,
+      title.position = "top",
+      title.hjust = 0.5,  # Center the legend title
+      label.theme = ggplot2::element_text(size = 10)  # Adjust the size of the legend labels
+    )
+  )
+
+print(abund_plot)
+```
+
+Differential abundance heat tree example using metatcoder with taxmap objects
 
 ```{r}
 sessioninfo::session_info()

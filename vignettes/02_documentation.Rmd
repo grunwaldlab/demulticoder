@@ -1,12 +1,20 @@
 ---
 title: "Documentation"
-output:
-  html_document:
-    df_print: paged
-  pdf_document: default
-vignette: "%\\VignetteIndexEntry{Getting Started} %\\VignetteEngine{knitr::rmarkdown}
-  %\\VignetteEncoding{UTF-8}\n"
+output: 
+  rmarkdown::html_vignette:
+    fig_path: "man/figures"
+vignette: >
+  %\VignetteIndexEntry{Documentation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(

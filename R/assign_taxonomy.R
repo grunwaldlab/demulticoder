@@ -283,7 +283,7 @@ process_single_barcode <-
 #' )
 #' cut_trim(
 #' analysis_setup,
-#' cutadapt_path="/opt/homebrew/bin/cutadapt", 
+#' cutadapt_path="/usr/bin/cutadapt",
 #' overwrite_existing = FALSE
 #' )
 #' make_asv_abund_matrix(

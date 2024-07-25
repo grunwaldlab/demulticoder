@@ -114,7 +114,7 @@ templates.</p>
 <div class="section level3">
 <h3 id="format-of-the-pe-amplicon-files">Format of the PE amplicon files<a class="anchor" aria-label="anchor" href="#format-of-the-pe-amplicon-files"></a>
 </h3>
-<p>The package takes foward and reverse Illumina short read sequence
+<p>The package takes forward and reverse Illumina short read sequence
 data.</p>
 <p>To avoid errors, the only characters that are acceptable in sample
 names are letters and numbers. Characters can be separated by
@@ -296,9 +296,9 @@ other2 2.forward-forward sequence 3.reverse-reverse sequence</p>
 <li><p>SILVA 16S database with species assignments: <a href="https://zenodo.org/records/4587955/files/silva_nr99_v138.1_wSpecies_train_set.fa.gz?download=1" class="external-link">https://zenodo.org/records/4587955/files/silva_nr99_v138.1_wSpecies_train_set.fa.gz?download=1</a></p></li>
 <li><p>UNITE fungal database from <a href="https://unite.ut.ee/repository.php" class="external-link">https://unite.ut.ee/repository.php</a></p></li>
 </ul>
-<p>A user can select up to one other database (for now), but will first
-need to reformat headers exactly like the UNITE fungal database
-specifications.</p>
+<p>A user can select up to two other databases, but will first need to
+reformat headers exactly like the SILVA database. See more in the
+‘Documentation’ tab.</p>
 <p>Databases will be copied into the user-specified data folder where
 raw data files and csv files are located. The names will be parameters
 in the <em>assignTax</em> function</p>
@@ -306,15 +306,16 @@ in the <em>assignTax</em> function</p>
 <div class="section level3">
 <h3 id="additional-notes">Additional Notes<a class="anchor" aria-label="anchor" href="#additional-notes"></a>
 </h3>
-<p>Computer specifications may be a limiting factor– If you are using
+<p>Computer specifications may be a limiting factor. If you are using
 the SILVA or UNITE databases for taxonomic assignment steps, an ordinary
 personal computer (unless it has sufficient RAM) may not have enough
 memory for the taxonomic assignment steps, even with few samples. The
-test databases in the package are randomly subsetted for demonstration
-purposes.</p>
+test databases are comprised of randomly subset reads. The following
+example, should run on a personal computer with at least 16 GB of
+RAM.</p>
 <p>Users need to upload their own databases to their input data folder.
-If computer crashes during the taxonomic assignment step, please switch
-to a computing cluster.</p>
+If computer crashes during the taxonomic assignment step, you will need
+to switch to a computer with sufficient memory.</p>
 <p>Please also ensure that you have enough storage to save intermediate
 files in a temporary directory (default) or user-specified directory
 before proceeding.</p>
@@ -338,7 +339,7 @@ reorganized in preparation for running Cutadapt to remove primers.</p>
 <span>  data_directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"demulticoder"</span><span class="op">)</span>,</span>
 <span>  output_directory <span class="op">=</span> <span class="st">"~/output_test_dataset2"</span>, </span>
 <span>  overwrite_existing<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="01_getting_started_files/figure-html/prepare_reads%20function-1.png" width="576"></p>
+<p><img src="prepare_reads%20function-1.png" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="remove-primers-with-cutadapt">Remove primers with Cutadapt<a class="anchor" aria-label="anchor" href="#remove-primers-with-cutadapt"></a>
@@ -355,7 +356,7 @@ it.</p>
 <span><span class="co">#&gt; function was rerun.</span></span>
 <span><span class="co">#&gt; Running Cutadapt 3.5 for its sequence data </span></span>
 <span><span class="co">#&gt; Running Cutadapt 3.5 for rps10 sequence data</span></span></code></pre></div>
-<p><img src="01_getting_started_files/figure-html/remove%20primers%20with%20cut_trim%20function-1.png" width="576"></p>
+<p><img src="remove%20primers%20with%20cut_trim%20function-1.png" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="asv-inference-step">ASV inference step<a class="anchor" aria-label="anchor" href="#asv-inference-step"></a>
@@ -389,7 +390,7 @@ it.</p>
 <span><span class="co">#&gt; infinite values.</span></span>
 <span><span class="co">#&gt; Sample 1 - 1481 reads in 1021 unique sequences.</span></span>
 <span><span class="co">#&gt; Sample 2 - 1217 reads in 815 unique sequences.</span></span></code></pre></div>
-<p><img src="01_getting_started_files/figure-html/ASV%20inference-1.png" width="576"></p>
+<p><img src="ASV%20inference-1.png" width="576"></p>
 <pre><code><span><span class="co">#&gt; 824778 total bases in 2935 reads from 2 samples will be used for learning the error rates.</span></span>
 <span><span class="co">#&gt; Initializing error rates to maximum possible estimate.</span></span>
 <span><span class="co">#&gt; selfConsist step 1 ..</span></span>
@@ -411,12 +412,12 @@ it.</p>
 <span><span class="co">#&gt; infinite values.</span></span>
 <span><span class="co">#&gt; Sample 1 - 1429 reads in 1044 unique sequences.</span></span>
 <span><span class="co">#&gt; Sample 2 - 1506 reads in 1284 unique sequences.</span></span></code></pre>
-<p><img src="01_getting_started_files/figure-html/ASV%20inference-2.png" width="576"><img src="01_getting_started_files/figure-html/ASV%20inference-3.png" width="576"><img src="01_getting_started_files/figure-html/ASV%20inference-4.png" width="576"></p>
+<p><img src="ASV%20inference-2.png" width="576"><img src="ASV%20inference-3.png" width="576"><img src="ASV%20inference-4.png" width="576"></p>
 <pre><code><span><span class="co">#&gt; $its</span></span>
-<span><span class="co">#&gt; [1] "/tmp/Rtmp0Z3ehQ/demulticoder_run/asvabund_matrixDADA2_its.RData"</span></span>
+<span><span class="co">#&gt; [1] "/tmp/Rtmpta0HYe/demulticoder_run/asvabund_matrixDADA2_its.RData"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $rps10</span></span>
-<span><span class="co">#&gt; [1] "/tmp/Rtmp0Z3ehQ/demulticoder_run/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
+<span><span class="co">#&gt; [1] "/tmp/Rtmpta0HYe/demulticoder_run/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="taxonomic-assignment-step">Taxonomic assignment step<a class="anchor" aria-label="anchor" href="#taxonomic-assignment-step"></a>
@@ -474,7 +475,7 @@ filtering of low abundance ASVs<a class="anchor" aria-label="anchor" href="#refo
 <span>          node_color_axis_label <span class="op">=</span> <span class="st">"ASV count"</span>,</span>
 <span>          node_size_axis_label <span class="op">=</span> <span class="st">"Total Abundance of Taxa"</span>,</span>
 <span>          layout <span class="op">=</span> <span class="st">"da"</span>, initial_layout <span class="op">=</span> <span class="st">"re"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="01_getting_started_files/figure-html/Heatree%20demonstration%20its-1.png" width="576"></p>
+<p><img src="Heatree%20demonstration%20its-1.png" width="576"></p>
 <p>Now we make a heat tree for our rps10-barcoded samples</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">metacoder</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/metacoder/man/heat_tree.html" class="external-link">heat_tree</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">taxmap_rps10</span>,</span>
@@ -484,7 +485,7 @@ filtering of low abundance ASVs<a class="anchor" aria-label="anchor" href="#refo
 <span>          node_color_axis_label <span class="op">=</span> <span class="st">"ASV count"</span>,</span>
 <span>          node_size_axis_label <span class="op">=</span> <span class="st">"Total Abundance of Taxa"</span>,</span>
 <span>          layout <span class="op">=</span> <span class="st">"da"</span>, initial_layout <span class="op">=</span> <span class="st">"re"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="01_getting_started_files/figure-html/Heatree%20demonstration%20rps10-1.png" width="576"></p>
+<p><img src="Heatree%20demonstration%20rps10-1.png" width="576"></p>
 <p>We can also do a variety of analyses, if we convert to phyloseq
 object</p>
 <p>Here we demonstrate how to make a stacked bar plot of the relative
@@ -532,7 +533,7 @@ abundance of taxa by sample for the ITS-barcoded samples</p>
 <span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">abund_plot</span><span class="op">)</span></span></code></pre></div>
-<p><img src="01_getting_started_files/figure-html/Phyloseq%20demonstration%20ITS-1.png" width="576"></p>
+<p><img src="Phyloseq%20demonstration%20ITS-1.png" width="576"></p>
 <p>Finally,we demonstrate how to make a stacked bar plot of the relative
 abundance of taxa by sample for the rps10-barcoded samples</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -573,7 +574,7 @@ abundance of taxa by sample for the rps10-barcoded samples</p>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">abund_plot</span><span class="op">)</span></span></code></pre></div>
-<p><img src="01_getting_started_files/figure-html/Phyloseq%20demonstration%20rps10-1.png" width="576"></p>
+<p><img src="Phyloseq%20demonstration%20rps10-1.png" width="576"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
