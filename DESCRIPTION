@@ -1,13 +1,14 @@
 Package: demulticoder
 Title: An R Package for the Integrated Analysis of Multiplex Metabarcodes
 Version: 0.0.0.9000
-Authors@R: 
-   person("Zachary S. L", "Foster", role = c("aut", "cre"))
-   person("Hung", "Phan", role = c("aut", "cre"))
-   person("Samantha", "Dawson", role = c("aut", "cre"))
-   person ("Jeff", "H. Chang", role = "aut")
-   person("Niklaus", "Grünwald", role = "aut")
-   person("Martha A.", "Sudermann", , "sudermam@oregonstate.edu, role = c("aut", "cre"))
+Authors@R: c(
+   person("Zachary S. L", "Foster", role = c("aut", "cre")),
+   person("Hung", "Phan", role = c("aut", "cre")),
+   person("Samantha", "Dawson", role = c("aut", "cre")),
+   person("Jeff", "H. Chang", role = "aut"),
+   person("Niklaus", "Grünwald", role = "aut"),
+   person("Martha A.", "Sudermann", email = "sudermam@oregonstate.edu", role = c("aut", "cre"))
+)
 Description: The demulticoder package provides a workflow for analyzing 
    multiplex metabarcoding data. It includes functions for filtering, 
    trimming primers, and denoising data using Cutadapt and the dada2 package.
