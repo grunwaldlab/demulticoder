@@ -58,8 +58,8 @@ Assign taxonomy functions
 # Assign taxonomies to ASVs on a per barcode basis
 analysis_setup<-prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"), 
-  output_directory = "~/output",
-  tempdir_path = "~/temp,"
+  output_directory = "~/package_output",
+  tempdir_path = tempdir(),
   tempdir_id = "demulticoder_run_temp", 
   overwrite_existing = FALSE
 )
