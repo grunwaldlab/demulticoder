@@ -28,8 +28,8 @@ samples contain pooled barcodes, reads will also be demultiplexed
 # and then trim reads based on specific DADA2 parameters
 analysis_setup<-prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"), 
-  output_directory = tempdir(),
-  tempdir_path = tempdir(),
+  output_directory = "~/output",
+  tempdir_path = "~/temp,"
   tempdir_id = "demulticoder_run_temp", 
   overwrite_existing = FALSE
 )

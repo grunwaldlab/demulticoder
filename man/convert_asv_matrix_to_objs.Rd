@@ -39,68 +39,14 @@ Filter ASV abundance matrix and convert to taxmap object
 # Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
 analysis_setup<-prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"), 
-  output_directory = tempdir(),
-  tempdir_path = tempdir(),
+  output_directory = "~/output",
+  tempdir_path = "~/temp,"
   tempdir_id = "demulticoder_run_temp", 
   overwrite_existing = FALSE
 )
 cut_trim(
 analysis_setup,
 cutadapt_path="/opt/homebrew/bin/cutadapt", 
-overwrite_existing = FALSE
-)
-make_asv_abund_matrix(
-analysis_setup, 
-overwrite_existing = FALSE
-)
-assign_tax(
-analysis_setup,
-asv_abund_matrix,
-retrieve_files=FALSE, 
-overwrite_existing=FALSE
-)
-objs<-convert_asv_matrix_to_objs(
-analysis_setup, 
-save_outputs=FALSE
-)
-# Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
-analysis_setup<-prepare_reads(
-  data_directory = system.file("extdata", package = "demulticoder"), 
-  output_directory = tempdir(),
-  tempdir_path = tempdir(),
-  tempdir_id = "demulticoder_run_temp", 
-  overwrite_existing = FALSE
-)
-cut_trim(
-analysis_setup,
-cutadapt_path="/opt/homebrew/bin/cutadapt", 
-overwrite_existing = FALSE
-)
-make_asv_abund_matrix(
-analysis_setup, 
-overwrite_existing = FALSE
-)
-assign_tax(
-analysis_setup,
-asv_abund_matrix,
-retrieve_files=FALSE, 
-overwrite_existing=FALSE
-)
-objs<-convert_asv_matrix_to_objs(
-analysis_setup, 
-save_outputs=FALSE
-)
-# Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
-analysis_setup<-prepare_reads(
-  data_directory = system.file("extdata", package = "demulticoder"), 
-  output_directory = tempdir(),
-  tempdir_path = tempdir(),
-  tempdir_id = "demulticoder_run_temp", 
-  overwrite_existing = FALSE
-)
-cut_trim(
-analysis_setup,
-cutadapt_path="/usr/bin/cutadapt",
 overwrite_existing = FALSE
 )
 make_asv_abund_matrix(
