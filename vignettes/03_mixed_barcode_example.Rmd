@@ -12,7 +12,8 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.path = "./"
 )
 ```
 
@@ -158,6 +159,7 @@ knitr::kable(primerinfo_params, row.names = FALSE)
 ```{r setup, include=FALSE}
 #TODO-at some point switch to loading github repo version
 devtools::load_all("~/demulticoder")
+
 library("demulticoder")
 ```
 
@@ -166,7 +168,7 @@ library("demulticoder")
 outputs<-prepare_reads(
   data_directory = "~/demulticoder_benchmarking/demulticoder_combined_analysis_dads/data", 
   output_directory = "~/demulticoder_benchmarking/package_vignettes/output_multiple_datasets", 
-  tempdir_id = "~/demulticoder_benchmarking/temp",
+  tempdir_path = "~/demulticoder_benchmarking/temp",
   overwrite_existing = TRUE)
 ```
 
@@ -175,14 +177,14 @@ outputs<-prepare_reads(
 cut_trim(
   outputs,
   cutadapt_path="/usr/bin/cutadapt",
-  overwrite_existing = FALSE)
+  overwrite_existing = TRUE)
 ```
 
 ### Step 5-Core ASV inference step
 ```{r ASV inference, fig.height=6, fig.width=6}
 make_asv_abund_matrix(
   outputs,
-  overwrite_existing = FALSE)
+  overwrite_existing = TRUE)
 ```
 
 ### Step 6-Assign taxonomy step
@@ -192,9 +194,9 @@ assign_tax(
   asv_abund_matrix,
   db_its = "sh_general_release_dynamic_all_25.07.2023.fasta",
   db_rps10 = "oomycetedb.fasta",
-  db_16s="silva_nr99_v138.1_wSpecies_train_set.fa",
+  db_16S="silva_nr99_v138.1_wSpecies_train_set.fa",
   retrieve_files=TRUE,
-  overwrite_existing=FALSE)
+  overwrite_existing=TRUE)
 ```
 
 ### Step 7-convert asv matrix to taxmap and phyloseq objects with one function
@@ -202,12 +204,13 @@ assign_tax(
 objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing = TRUE)
 ```
 
+### Use phyloseq objects to examine the community composition of each sample
 Here we demonstrate how to make a stacked bar plot of the relative abundance of taxa by sample for the 16S-barcoded samples
-```{r Phyloseq demonstration ITS, message=FALSE}
+```{r Phyloseq demonstration 16S, fig.width=20, fig.height=20, message=FALSE}
 data <- objs$phyloseq_its %>%
   phyloseq::transform_sample_counts(function(x) {x/sum(x)} ) %>% 
   phyloseq::psmelt() %>%                                        
-  dplyr::filter(Abundance > 0.01) %>%                      
+  dplyr::filter(Abundance > 0.005) %>%                      
   dplyr::arrange(Genus)                                      
 
 abund_plot <- ggplot2::ggplot(data, ggplot2::aes(x = Sample, y = Abundance, fill = Genus)) + 
@@ -220,13 +223,13 @@ abund_plot <- ggplot2::ggplot(data, ggplot2::aes(x = Sample, y = Abundance, fill
     fill = "Genus"
   ) +
   ggplot2::theme(
-    axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, vjust = 0.5, size = 14),
+    axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, vjust = 0.5, size = 10),
     panel.grid.major = ggplot2::element_blank(),
     panel.grid.minor = ggplot2::element_blank(),
     legend.position = "top",
-    legend.text = ggplot2::element_text(size = 14),
-    legend.title = ggplot2::element_text(size = 14),  # Adjust legend title size
-    strip.text = ggplot2::element_text(size = 14),
+    legend.text = ggplot2::element_text(size = 10),
+    legend.title = ggplot2::element_text(size = 10),  # Adjust legend title size
+    strip.text = ggplot2::element_text(size = 10),
     strip.background = ggplot2::element_blank()
   ) +
   ggplot2::guides(
@@ -244,11 +247,11 @@ print(abund_plot)
 ```
 
 Here we demonstrate how to make a stacked bar plot of the relative abundance of taxa by sample for the ITS-barcoded samples
-```{r Phyloseq demonstration ITS, message=FALSE}
+```{r Phyloseq demonstration ITS, fig.width=20, fig.height=20, message=FALSE}
 data <- objs$phyloseq_its %>%
   phyloseq::transform_sample_counts(function(x) {x/sum(x)} ) %>% 
   phyloseq::psmelt() %>%                                        
-  dplyr::filter(Abundance > 0.01) %>%                      
+  dplyr::filter(Abundance > 0.005) %>%                      
   dplyr::arrange(Genus)                                      
 
 abund_plot <- ggplot2::ggplot(data, ggplot2::aes(x = Sample, y = Abundance, fill = Genus)) + 
@@ -261,13 +264,13 @@ abund_plot <- ggplot2::ggplot(data, ggplot2::aes(x = Sample, y = Abundance, fill
     fill = "Genus"
   ) +
   ggplot2::theme(
-    axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, vjust = 0.5, size = 14),
+    axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, vjust = 0.5, size = 10),
     panel.grid.major = ggplot2::element_blank(),
     panel.grid.minor = ggplot2::element_blank(),
     legend.position = "top",
-    legend.text = ggplot2::element_text(size = 14),
-    legend.title = ggplot2::element_text(size = 14),  # Adjust legend title size
-    strip.text = ggplot2::element_text(size = 14),
+    legend.text = ggplot2::element_text(size = 10),
+    legend.title = ggplot2::element_text(size = 10),  # Adjust legend title size
+    strip.text = ggplot2::element_text(size = 10),
     strip.background = ggplot2::element_blank()
   ) +
   ggplot2::guides(
@@ -285,11 +288,11 @@ print(abund_plot)
 ```
 
 Finally,we demonstrate how to make a stacked bar plot of the relative abundance of taxa by sample for the rps10-barcoded samples
-```{r Phyloseq demonstration rps10, message=FALSE}
+```{r Phyloseq demonstration rps10, fig.width=8, fig.height=7, message=FALSE}
 data <- objs$phyloseq_rps10 %>%
   phyloseq::transform_sample_counts(function(x) {x/sum(x)} ) %>% 
   phyloseq::psmelt() %>%                                        
-  dplyr::filter(Abundance > 0.01) %>%                      
+  dplyr::filter(Abundance > 0.0005) %>%                      
   dplyr::arrange(Genus)                                      
 
 abund_plot <- ggplot2::ggplot(data, ggplot2::aes(x = Sample, y = Abundance, fill = Genus)) + 
@@ -302,13 +305,13 @@ abund_plot <- ggplot2::ggplot(data, ggplot2::aes(x = Sample, y = Abundance, fill
     fill = "Genus"
   ) +
   ggplot2::theme(
-    axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, vjust = 0.5, size = 14),
+    axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, vjust = 0.5, size = 10),
     panel.grid.major = ggplot2::element_blank(),
     panel.grid.minor = ggplot2::element_blank(),
     legend.position = "top",
-    legend.text = ggplot2::element_text(size = 14),
-    legend.title = ggplot2::element_text(size = 14),  # Adjust legend title size
-    strip.text = ggplot2::element_text(size = 14),
+    legend.text = ggplot2::element_text(size = 10),
+    legend.title = ggplot2::element_text(size = 10),  # Adjust legend title size
+    strip.text = ggplot2::element_text(size = 10),
     strip.background = ggplot2::element_blank()
   ) +
   ggplot2::guides(
@@ -325,7 +328,6 @@ abund_plot <- ggplot2::ggplot(data, ggplot2::aes(x = Sample, y = Abundance, fill
 print(abund_plot)
 ```
 
-Differential abundance heat tree example using metatcoder with taxmap objects
 
 ```{r}
 sessioninfo::session_info()

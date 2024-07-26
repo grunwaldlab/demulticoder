@@ -32,8 +32,6 @@ samples contain pooled barcodes, reads will also be demultiplexed"><meta propert
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-example-workflows">Example Workflows</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-example-workflows">
     <a class="dropdown-item" href="../articles/03_mixed_barcode_example.html">Mixed Barcode Example</a>
-    <a class="dropdown-item" href="../articles/04_pooled_amplicon_example.html">Pooled Amplicon Example</a>
-    <a class="dropdown-item" href="../articles/05_custom_database_example.html">Custom Database Example</a>
   </div>
 </li>
 <li class="active nav-item">
@@ -98,14 +96,13 @@ existing files and directories from previous runs. Default is <code>FALSE</code>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Remove remaining primers from raw reads, demultiplex pooled barcoded samples, </span></span></span>
 <span class="r-in"><span><span class="co"># and then trim reads based on specific DADA2 parameters</span></span></span>
-<span class="r-in"><span><span class="va">analysis_setup</span><span class="op">&lt;-</span><span class="fu"><a href="prepare_reads.html">prepare_reads</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  data_directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"demulticoder"</span><span class="op">)</span>, </span></span>
+<span class="r-in"><span><span class="va">analysis_setup</span> <span class="op">&lt;-</span> <span class="fu"><a href="prepare_reads.html">prepare_reads</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data_directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"demulticoder"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  output_directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  tempdir_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  tempdir_id <span class="op">=</span> <span class="st">"demulticoder_run_temp"</span>, </span></span>
-<span class="r-in"><span>  overwrite_existing <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span>  tempdir_id <span class="op">=</span> <span class="st">"demulticoder_run_temp"</span>,</span></span>
+<span class="r-in"><span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Existing data detected: Primer counts and N's may have been removed from previous runs. Loading existing output. To perform a  new analysis, specify overwrite_existing = TRUE.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">2</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">22</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Delimiter:</span> ","</span>
@@ -124,182 +121,23 @@ existing files and directories from previous runs. Default is <code>FALSE</code>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">4</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">4</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">4</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">3</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Delimiter:</span> ","</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">chr</span> (4): sample_name, primer_name, well, organism</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">chr</span> (3): sample_name, primer_name, organism</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">16</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">7</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Delimiter:</span> ","</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">chr</span> (3): primer_name, orientation, sequence</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">dbl</span> (4): S1_R1, S1_R2, S2_R1, S2_R2</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Cutadapt input</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   sample_name samplename_barcode primer_name well organism</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          S1             S1_its         its  A01      Cry</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2          S1             S1_its         its  A01      Cry</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          S1           S1_rps10       rps10  A01      Cry</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4          S1           S1_rps10       rps10  A01      Cry</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5          S2             S2_its         its  B01      Cin</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6          S2             S2_its         its  B01      Cin</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7          S2           S2_rps10       rps10  B01      Cin</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8          S2           S2_rps10       rps10  B01      Cin</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  forward                f_compt                  f_rev</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 CTTGGTCATTTAGAGGAAGTAA GAACCAGTAAATCTCCTTCATT AATGAAGGAGATTTACTGGTTC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 CTTGGTCATTTAGAGGAAGTAA GAACCAGTAAATCTCCTTCATT AATGAAGGAGATTTACTGGTTC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   GTTGGTTAGAGYARAAGACT   CAACCAATCTCRTYTTCTGA   TCAGAARAYGAGATTGGTTG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   GTTGGTTAGAGYARAAGACT   CAACCAATCTCRTYTTCTGA   TCAGAARAYGAGATTGGTTG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 CTTGGTCATTTAGAGGAAGTAA GAACCAGTAAATCTCCTTCATT AATGAAGGAGATTTACTGGTTC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 CTTGGTCATTTAGAGGAAGTAA GAACCAGTAAATCTCCTTCATT AATGAAGGAGATTTACTGGTTC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   GTTGGTTAGAGYARAAGACT   CAACCAATCTCRTYTTCTGA   TCAGAARAYGAGATTGGTTG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   GTTGGTTAGAGYARAAGACT   CAACCAATCTCRTYTTCTGA   TCAGAARAYGAGATTGGTTG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     f_rc               reverse               r_compt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 TTACTTCCTCTAAATGACCAAG  GCTGCGTTCTTCATCGATGC  CGACGCAAGAAGTAGCTACG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 TTACTTCCTCTAAATGACCAAG  GCTGCGTTCTTCATCGATGC  CGACGCAAGAAGTAGCTACG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   AGTCTTYTRCTCTAACCAAC ATRYYTAGAAAGAYTYGAACT TAYRRATCTTTCTRARCTTGA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   AGTCTTYTRCTCTAACCAAC ATRYYTAGAAAGAYTYGAACT TAYRRATCTTTCTRARCTTGA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 TTACTTCCTCTAAATGACCAAG  GCTGCGTTCTTCATCGATGC  CGACGCAAGAAGTAGCTACG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 TTACTTCCTCTAAATGACCAAG  GCTGCGTTCTTCATCGATGC  CGACGCAAGAAGTAGCTACG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   AGTCTTYTRCTCTAACCAAC ATRYYTAGAAAGAYTYGAACT TAYRRATCTTTCTRARCTTGA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   AGTCTTYTRCTCTAACCAAC ATRYYTAGAAAGAYTYGAACT TAYRRATCTTTCTRARCTTGA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   r_rev                  r_rc file_id direction</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  CGTAGCTACTTCTTGCGTCG  GCATCGATGAAGAACGCAGC   S1_R1   Forward</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  CGTAGCTACTTCTTGCGTCG  GCATCGATGAAGAACGCAGC   S1_R2   Reverse</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 TCAAGYTYAGAAAGATYYRTA AGTTCRARTCTTTCTARRYAT   S1_R1   Forward</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 TCAAGYTYAGAAAGATYYRTA AGTTCRARTCTTTCTARRYAT   S1_R2   Reverse</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  CGTAGCTACTTCTTGCGTCG  GCATCGATGAAGAACGCAGC   S2_R1   Forward</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  CGTAGCTACTTCTTGCGTCG  GCATCGATGAAGAACGCAGC   S2_R2   Reverse</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 TCAAGYTYAGAAAGATYYRTA AGTTCRARTCTTTCTARRYAT   S2_R1   Forward</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 TCAAGYTYAGAAAGATYYRTA AGTTCRARTCTTTCTARRYAT   S2_R2   Reverse</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                           directory_data_path</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 /home/marthasudermann/R/x86_64-pc-linux-gnu-library/4.1/demulticoder/extdata/S1_R1.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 /home/marthasudermann/R/x86_64-pc-linux-gnu-library/4.1/demulticoder/extdata/S1_R2.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 /home/marthasudermann/R/x86_64-pc-linux-gnu-library/4.1/demulticoder/extdata/S1_R1.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 /home/marthasudermann/R/x86_64-pc-linux-gnu-library/4.1/demulticoder/extdata/S1_R2.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 /home/marthasudermann/R/x86_64-pc-linux-gnu-library/4.1/demulticoder/extdata/S2_R1.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 /home/marthasudermann/R/x86_64-pc-linux-gnu-library/4.1/demulticoder/extdata/S2_R2.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 /home/marthasudermann/R/x86_64-pc-linux-gnu-library/4.1/demulticoder/extdata/S2_R1.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 /home/marthasudermann/R/x86_64-pc-linux-gnu-library/4.1/demulticoder/extdata/S2_R2.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                         temp_data_path</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 /tmp/Rtmp4WSdPi/demulticoder_run_temp/S1_R1.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 /tmp/Rtmp4WSdPi/demulticoder_run_temp/S1_R2.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 /tmp/Rtmp4WSdPi/demulticoder_run_temp/S1_R1.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 /tmp/Rtmp4WSdPi/demulticoder_run_temp/S1_R2.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 /tmp/Rtmp4WSdPi/demulticoder_run_temp/S2_R1.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 /tmp/Rtmp4WSdPi/demulticoder_run_temp/S2_R2.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 /tmp/Rtmp4WSdPi/demulticoder_run_temp/S2_R1.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 /tmp/Rtmp4WSdPi/demulticoder_run_temp/S2_R2.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                             prefiltered_path</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 /tmp/Rtmp4WSdPi/demulticoder_run_temp/prefiltered_sequences/S1_R1.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 /tmp/Rtmp4WSdPi/demulticoder_run_temp/prefiltered_sequences/S1_R2.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 /tmp/Rtmp4WSdPi/demulticoder_run_temp/prefiltered_sequences/S1_R1.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 /tmp/Rtmp4WSdPi/demulticoder_run_temp/prefiltered_sequences/S1_R2.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 /tmp/Rtmp4WSdPi/demulticoder_run_temp/prefiltered_sequences/S2_R1.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 /tmp/Rtmp4WSdPi/demulticoder_run_temp/prefiltered_sequences/S2_R2.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 /tmp/Rtmp4WSdPi/demulticoder_run_temp/prefiltered_sequences/S2_R1.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 /tmp/Rtmp4WSdPi/demulticoder_run_temp/prefiltered_sequences/S2_R2.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                   trimmed_path</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   /tmp/Rtmp4WSdPi/demulticoder_run_temp/trimmed_sequences/S1_R1_its.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   /tmp/Rtmp4WSdPi/demulticoder_run_temp/trimmed_sequences/S1_R2_its.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 /tmp/Rtmp4WSdPi/demulticoder_run_temp/trimmed_sequences/S1_R1_rps10.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 /tmp/Rtmp4WSdPi/demulticoder_run_temp/trimmed_sequences/S1_R2_rps10.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   /tmp/Rtmp4WSdPi/demulticoder_run_temp/trimmed_sequences/S2_R1_its.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   /tmp/Rtmp4WSdPi/demulticoder_run_temp/trimmed_sequences/S2_R2_its.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 /tmp/Rtmp4WSdPi/demulticoder_run_temp/trimmed_sequences/S2_R1_rps10.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 /tmp/Rtmp4WSdPi/demulticoder_run_temp/trimmed_sequences/S2_R2_rps10.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                   untrimmed_path</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   /tmp/Rtmp4WSdPi/demulticoder_run_temp/untrimmed_sequences/S1_R1_its.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   /tmp/Rtmp4WSdPi/demulticoder_run_temp/untrimmed_sequences/S1_R2_its.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 /tmp/Rtmp4WSdPi/demulticoder_run_temp/untrimmed_sequences/S1_R1_rps10.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 /tmp/Rtmp4WSdPi/demulticoder_run_temp/untrimmed_sequences/S1_R2_rps10.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   /tmp/Rtmp4WSdPi/demulticoder_run_temp/untrimmed_sequences/S2_R1_its.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   /tmp/Rtmp4WSdPi/demulticoder_run_temp/untrimmed_sequences/S2_R2_its.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 /tmp/Rtmp4WSdPi/demulticoder_run_temp/untrimmed_sequences/S2_R1_rps10.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 /tmp/Rtmp4WSdPi/demulticoder_run_temp/untrimmed_sequences/S2_R2_rps10.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                   filtered_path</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   /tmp/Rtmp4WSdPi/demulticoder_run_temp/filtered_sequences/S1_R1_its.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   /tmp/Rtmp4WSdPi/demulticoder_run_temp/filtered_sequences/S1_R2_its.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 /tmp/Rtmp4WSdPi/demulticoder_run_temp/filtered_sequences/S1_R1_rps10.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 /tmp/Rtmp4WSdPi/demulticoder_run_temp/filtered_sequences/S1_R2_rps10.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   /tmp/Rtmp4WSdPi/demulticoder_run_temp/filtered_sequences/S2_R1_its.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   /tmp/Rtmp4WSdPi/demulticoder_run_temp/filtered_sequences/S2_R2_its.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 /tmp/Rtmp4WSdPi/demulticoder_run_temp/filtered_sequences/S2_R1_rps10.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 /tmp/Rtmp4WSdPi/demulticoder_run_temp/filtered_sequences/S2_R2_rps10.fastq.gz</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Primer input</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   primer_name                forward                f_compt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1         its CTTGGTCATTTAGAGGAAGTAA GAACCAGTAAATCTCCTTCATT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       rps10   GTTGGTTAGAGYARAAGACT   CAACCAATCTCRTYTTCTGA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                    f_rev                   f_rc               reverse</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 AATGAAGGAGATTTACTGGTTC TTACTTCCTCTAAATGACCAAG  GCTGCGTTCTTCATCGATGC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   TCAGAARAYGAGATTGGTTG   AGTCTTYTRCTCTAACCAAC ATRYYTAGAAAGAYTYGAACT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 r_compt                 r_rev                  r_rc</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  CGACGCAAGAAGTAGCTACG  CGTAGCTACTTCTTGCGTCG  GCATCGATGAAGAACGCAGC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 TAYRRATCTTTCTRARCTTGA TCAAGYTYAGAAAGATYYRTA AGTTCRARTCTTTCTARRYAT</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Fastq input</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   file_id sample_name direction</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   S1_R1          S1   Forward</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   S1_R2          S1   Reverse</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   S2_R1          S2   Forward</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   S2_R2          S2   Reverse</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                           directory_data_path</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 /home/marthasudermann/R/x86_64-pc-linux-gnu-library/4.1/demulticoder/extdata/S1_R1.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 /home/marthasudermann/R/x86_64-pc-linux-gnu-library/4.1/demulticoder/extdata/S1_R2.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 /home/marthasudermann/R/x86_64-pc-linux-gnu-library/4.1/demulticoder/extdata/S2_R1.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 /home/marthasudermann/R/x86_64-pc-linux-gnu-library/4.1/demulticoder/extdata/S2_R2.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                         temp_data_path</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 /tmp/Rtmp4WSdPi/demulticoder_run_temp/S1_R1.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 /tmp/Rtmp4WSdPi/demulticoder_run_temp/S1_R2.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 /tmp/Rtmp4WSdPi/demulticoder_run_temp/S2_R1.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 /tmp/Rtmp4WSdPi/demulticoder_run_temp/S2_R2.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                             prefiltered_path</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 /tmp/Rtmp4WSdPi/demulticoder_run_temp/prefiltered_sequences/S1_R1.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 /tmp/Rtmp4WSdPi/demulticoder_run_temp/prefiltered_sequences/S1_R2.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 /tmp/Rtmp4WSdPi/demulticoder_run_temp/prefiltered_sequences/S2_R1.fastq.gz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 /tmp/Rtmp4WSdPi/demulticoder_run_temp/prefiltered_sequences/S2_R2.fastq.gz</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Parameters input</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 20</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   primer_name already_trimmed minCutadaptlength multithread verbose  maxN</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>                       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> rps10       FALSE                         150 TRUE        TRUE        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> its         FALSE                          50 TRUE        TRUE        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 14 more variables: maxEE_forward &lt;dbl&gt;, maxEE_reverse &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   truncLen_forward &lt;dbl&gt;, truncLen_reverse &lt;dbl&gt;, truncQ &lt;dbl&gt;, minLen &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   maxLen &lt;dbl&gt;, minQ &lt;dbl&gt;, trimLeft &lt;dbl&gt;, trimRight &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   rm.lowcomplex &lt;dbl&gt;, minOverlap &lt;dbl&gt;, maxMismatch &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   min_asv_length &lt;dbl&gt;</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Metadata input</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Creating output directory: /tmp/Rtmpth61Ls/demulticoder_run_temp/prefiltered_sequences</span>
 <span class="r-plt img"><img src="cut_trim-1.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   samplename_barcode primer_name sample_name well organism</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1             S1_its         its          S1  A01      Cry</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3           S1_rps10       rps10          S1  A01      Cry</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2             S2_its         its          S2  B01      Cin</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4           S2_rps10       rps10          S2  B01      Cin</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  forward                f_compt                  f_rev</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 CTTGGTCATTTAGAGGAAGTAA GAACCAGTAAATCTCCTTCATT AATGAAGGAGATTTACTGGTTC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   GTTGGTTAGAGYARAAGACT   CAACCAATCTCRTYTTCTGA   TCAGAARAYGAGATTGGTTG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 CTTGGTCATTTAGAGGAAGTAA GAACCAGTAAATCTCCTTCATT AATGAAGGAGATTTACTGGTTC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   GTTGGTTAGAGYARAAGACT   CAACCAATCTCRTYTTCTGA   TCAGAARAYGAGATTGGTTG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     f_rc               reverse               r_compt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 TTACTTCCTCTAAATGACCAAG  GCTGCGTTCTTCATCGATGC  CGACGCAAGAAGTAGCTACG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   AGTCTTYTRCTCTAACCAAC ATRYYTAGAAAGAYTYGAACT TAYRRATCTTTCTRARCTTGA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 TTACTTCCTCTAAATGACCAAG  GCTGCGTTCTTCATCGATGC  CGACGCAAGAAGTAGCTACG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   AGTCTTYTRCTCTAACCAAC ATRYYTAGAAAGAYTYGAACT TAYRRATCTTTCTRARCTTGA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   r_rev                  r_rc</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  CGTAGCTACTTCTTGCGTCG  GCATCGATGAAGAACGCAGC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 TCAAGYTYAGAAAGATYYRTA AGTTCRARTCTTTCTARRYAT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  CGTAGCTACTTCTTGCGTCG  GCATCGATGAAGAACGCAGC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 TCAAGYTYAGAAAGATYYRTA AGTTCRARTCTTTCTARRYAT</span>
 <span class="r-in"><span><span class="fu">cut_trim</span><span class="op">(</span></span></span>
 <span class="r-in"><span><span class="va">analysis_setup</span>,</span></span>
 <span class="r-in"><span>cutadapt_path<span class="op">=</span><span class="st">"/usr/bin/cutadapt"</span>, </span></span>
-<span class="r-in"><span>overwrite_existing <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span>overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in list.files(path = directory_path, pattern = pattern, full.names = TRUE,     recursive = TRUE):</span> invalid 'path' argument</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Running Cutadapt 3.5 for its sequence data </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Running Cutadapt 3.5 for rps10 sequence data </span>
+<span class="r-plt img"><img src="cut_trim-2.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -307,7 +145,7 @@ existing files and directories from previous runs. Default is <code>FALSE</code>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Martha A. Sudermann.</p>
+  <p></p><p>Developed by Zachary S. L Foster, Hung Phan, Samantha Dawson, Jeff H. Chang, Niklaus Grünwald, Martha A. Sudermann.</p>
 </div>
 
 <div class="pkgdown-footer-right">

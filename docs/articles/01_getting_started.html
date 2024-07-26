@@ -52,8 +52,6 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-example-workflows">Example Workflows</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-example-workflows">
     <a class="dropdown-item" href="../articles/03_mixed_barcode_example.html">Mixed Barcode Example</a>
-    <a class="dropdown-item" href="../articles/04_pooled_amplicon_example.html">Pooled Amplicon Example</a>
-    <a class="dropdown-item" href="../articles/05_custom_database_example.html">Custom Database Example</a>
   </div>
 </li>
 <li class="nav-item">
@@ -327,7 +325,10 @@ before proceeding.</p>
 <p>Eventually, the package will be uploaded to CRAN or Bioconductor.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#devtools::install_github("grunwaldlab/demulticoder")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/load_all.html" class="external-link">load_all</a></span><span class="op">(</span><span class="st">"~/demulticoder"</span><span class="op">)</span></span></code></pre></div>
+<span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/load_all.html" class="external-link">load_all</a></span><span class="op">(</span><span class="st">"~/demulticoder"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/demulticoder/" class="external-link">"demulticoder"</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="reorganize-data-tables-and-set-up-data-directory-structure">Reorganize data tables and set-up data directory structure<a class="anchor" aria-label="anchor" href="#reorganize-data-tables-and-set-up-data-directory-structure"></a>
@@ -414,10 +415,10 @@ it.</p>
 <span><span class="co">#&gt; Sample 2 - 1506 reads in 1284 unique sequences.</span></span></code></pre>
 <p><img src="ASV%20inference-2.png" width="576"><img src="ASV%20inference-3.png" width="576"><img src="ASV%20inference-4.png" width="576"></p>
 <pre><code><span><span class="co">#&gt; $its</span></span>
-<span><span class="co">#&gt; [1] "/tmp/Rtmpta0HYe/demulticoder_run/asvabund_matrixDADA2_its.RData"</span></span>
+<span><span class="co">#&gt; [1] "/tmp/RtmprZMghK/demulticoder_run/asvabund_matrixDADA2_its.RData"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $rps10</span></span>
-<span><span class="co">#&gt; [1] "/tmp/Rtmpta0HYe/demulticoder_run/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
+<span><span class="co">#&gt; [1] "/tmp/RtmprZMghK/demulticoder_run/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="taxonomic-assignment-step">Taxonomic assignment step<a class="anchor" aria-label="anchor" href="#taxonomic-assignment-step"></a>
@@ -584,7 +585,7 @@ abundance of taxa by sample for the rps10-barcoded samples</p>
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Martha A. Sudermann.</p>
+<p>Developed by Zachary S. L Foster, Hung Phan, Samantha Dawson, Jeff H. Chang, Niklaus Grünwald, Martha A. Sudermann.</p>
 </div>
 
 <div class="pkgdown-footer-right">
