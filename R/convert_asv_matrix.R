@@ -22,7 +22,7 @@
 #' analysis_setup<-prepare_reads(
 #'   data_directory = system.file("extdata", package = "demulticoder"), 
 #'   output_directory = "~/package_output",
-#'   tempdir_path = tempdir(),
+#'   tempdir_path = "~/temp",
 #'   tempdir_id = "demulticoder_run_temp", 
 #'   overwrite_existing = FALSE
 #' )
