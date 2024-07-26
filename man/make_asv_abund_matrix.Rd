@@ -30,7 +30,7 @@ The function processes data for each unique barcode separately,
 inferring ASVs, merging reads, and creating an ASV abundance matrix
 }
 \examples{
-The primary wrapper function for DADA2 ASV inference steps
+# The primary wrapper function for DADA2 ASV inference steps
 analysis_setup <- prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
   output_directory = tempdir(),
