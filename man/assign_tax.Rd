@@ -66,16 +66,16 @@ analysis_setup <- prepare_reads(
 cut_trim(
 analysis_setup,
 cutadapt_path="/usr/bin/cutadapt",
-overwrite_existing = FALSE
+overwrite_existing = TRUE
 )
 make_asv_abund_matrix(
 analysis_setup, 
-overwrite_existing = FALSE
+overwrite_existing = TRUE
 )
 assign_tax(
 analysis_setup,
 asv_abund_matrix, 
 retrieve_files=FALSE, 
-overwrite_existing=FALSE
+overwrite_existing = TRUE
 )
 }

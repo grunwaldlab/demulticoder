@@ -36,6 +36,6 @@ analysis_setup <- prepare_reads(
 cut_trim(
 analysis_setup,
 cutadapt_path="/usr/bin/cutadapt", 
-overwrite_existing = FALSE
+overwrite_existing = TRUE
 )
 }

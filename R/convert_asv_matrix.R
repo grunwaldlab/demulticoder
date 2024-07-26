@@ -18,7 +18,7 @@
 #' @export
 #' 
 #' @examples
-#' # Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
+#' Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
 #' analysis_setup <- prepare_reads(
 #'   data_directory = system.file("extdata", package = "demulticoder"),
 #'   output_directory = tempdir(),
@@ -28,22 +28,21 @@
 #' )
 #' cut_trim(
 #' analysis_setup,
-#' cutadapt_path="/opt/homebrew/bin/cutadapt", 
-#' overwrite_existing = FALSE
+#' cutadapt_path="/usr/bin/cutadapt",
+#' overwrite_existing = TRUE
 #' )
 #' make_asv_abund_matrix(
 #' analysis_setup, 
-#' overwrite_existing = FALSE
+#' overwrite_existing = TRUE
 #' )
 #' assign_tax(
 #' analysis_setup,
-#' asv_abund_matrix,
+#' asv_abund_matrix, 
 #' retrieve_files=FALSE, 
-#' overwrite_existing=FALSE
+#' overwrite_existing=TRUE
 #' )
 #' objs<-convert_asv_matrix_to_objs(
-#' analysis_setup, 
-#' save_outputs=FALSE
+#' analysis_setup
 #' )
 
 convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minimum_bootstrap = 0, save_outputs = FALSE, overwrite_existing = FALSE) {

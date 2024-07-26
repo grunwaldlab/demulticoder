@@ -308,11 +308,11 @@ make_seqhist <- function(asv_abund_matrix, output_directory_path) {
 #' cut_trim(
 #' analysis_setup,
 #' cutadapt_path="/usr/bin/cutadapt",
-#' overwrite_existing = FALSE
+#' overwrite_existing = TRUE
 #' )
 #' make_asv_abund_matrix(
 #' analysis_setup, 
-#' overwrite_existing = FALSE
+#' overwrite_existing = TRUE
 #' )
 
 make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {

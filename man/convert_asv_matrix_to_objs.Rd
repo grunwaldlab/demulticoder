@@ -36,7 +36,7 @@ ASV matrix converted to taxmap object
 Filter ASV abundance matrix and convert to taxmap object
 }
 \examples{
-# Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
+Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
 analysis_setup <- prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
   output_directory = tempdir(),
@@ -46,21 +46,20 @@ analysis_setup <- prepare_reads(
 )
 cut_trim(
 analysis_setup,
-cutadapt_path="/opt/homebrew/bin/cutadapt", 
-overwrite_existing = FALSE
+cutadapt_path="/usr/bin/cutadapt",
+overwrite_existing = TRUE
 )
 make_asv_abund_matrix(
 analysis_setup, 
-overwrite_existing = FALSE
+overwrite_existing = TRUE
 )
 assign_tax(
 analysis_setup,
-asv_abund_matrix,
+asv_abund_matrix, 
 retrieve_files=FALSE, 
-overwrite_existing=FALSE
+overwrite_existing=TRUE
 )
 objs<-convert_asv_matrix_to_objs(
-analysis_setup, 
-save_outputs=FALSE
+analysis_setup
 )
 }
