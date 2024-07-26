@@ -21,8 +21,8 @@
 #' # Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
 #' analysis_setup<-prepare_reads(
 #'   data_directory = system.file("extdata", package = "demulticoder"), 
-#'   output_directory = "~/output",
-#'   tempdir_path = "~/temp,"
+#'   output_directory = "~/package_output",
+#'   tempdir_path = tempdir(),
 #'   tempdir_id = "demulticoder_run_temp", 
 #'   overwrite_existing = FALSE
 #' )
