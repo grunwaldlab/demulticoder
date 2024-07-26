@@ -274,12 +274,12 @@ process_single_barcode <-
 #'
 #' @examples
 #' # Assign taxonomies to ASVs on a per barcode basis
-#' analysis_setup<-prepare_reads(
-#'   data_directory = system.file("extdata", package = "demulticoder"), 
-#'   output_directory = "~/package_output",
-#'   tempdir_path = "~/temp",
-#'   tempdir_id = "demulticoder_run_temp", 
-#'   overwrite_existing = FALSE
+#' analysis_setup <- prepare_reads(
+#'   data_directory = system.file("extdata", package = "demulticoder"),
+#'   output_directory = tempdir(),
+#'   tempdir_path = tempdir(),
+#'   tempdir_id = "demulticoder_run_temp",
+#'   overwrite_existing = TRUE
 #' )
 #' cut_trim(
 #' analysis_setup,

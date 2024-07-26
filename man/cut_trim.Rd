@@ -26,12 +26,12 @@ samples contain pooled barcodes, reads will also be demultiplexed
 \examples{
 # Remove remaining primers from raw reads, demultiplex pooled barcoded samples, 
 # and then trim reads based on specific DADA2 parameters
-analysis_setup<-prepare_reads(
-  data_directory = system.file("extdata", package = "demulticoder"), 
-  output_directory = "~/package_output",
-  tempdir_path = "~/temp",
-  tempdir_id = "demulticoder_run_temp", 
-  overwrite_existing = FALSE
+analysis_setup <- prepare_reads(
+  data_directory = system.file("extdata", package = "demulticoder"),
+  output_directory = tempdir(),
+  tempdir_path = tempdir(),
+  tempdir_id = "demulticoder_run_temp",
+  overwrite_existing = TRUE
 )
 cut_trim(
 analysis_setup,

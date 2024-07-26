@@ -297,13 +297,13 @@ make_seqhist <- function(asv_abund_matrix, output_directory_path) {
 #' @export make_asv_abund_matrix
 #'
 #' @examples
-#' # The primary wrapper function for DADA2 ASV inference steps
-#' analysis_setup<-prepare_reads(
-#'   data_directory = system.file("extdata", package = "demulticoder"), 
-#'   output_directory = "~/package_output",
+#' The primary wrapper function for DADA2 ASV inference steps
+#' analysis_setup <- prepare_reads(
+#'   data_directory = system.file("extdata", package = "demulticoder"),
+#'   output_directory = tempdir(),
 #'   tempdir_path = tempdir(),
-#'   tempdir_id = "demulticoder_run_temp", 
-#'   overwrite_existing = FALSE
+#'   tempdir_id = "demulticoder_run_temp",
+#'   overwrite_existing = TRUE
 #' )
 #' cut_trim(
 #' analysis_setup,
