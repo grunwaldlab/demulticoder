@@ -2,7 +2,7 @@
 % Please edit documentation in R/convert_asv_matrix.R
 \name{convert_asv_matrix_to_objs}
 \alias{convert_asv_matrix_to_objs}
-\title{Filter ASV abundance matrix and convert to taxmap object}
+\title{Filter ASV abundance matrix and convert to taxmap and phyloseq objects}
 \usage{
 convert_asv_matrix_to_objs(
   analysis_setup,
@@ -33,7 +33,7 @@ results. Default is FALSE.}
 ASV matrix converted to taxmap object
 }
 \description{
-Filter ASV abundance matrix and convert to taxmap object
+Filter ASV abundance matrix and convert to taxmap and phyloseq objects
 }
 \examples{
 # Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
