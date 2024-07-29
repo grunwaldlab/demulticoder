@@ -1,4 +1,4 @@
-#' Filter ASV abundance matrix and convert to taxmap object
+#' Filter ASV abundance matrix and convert to taxmap and phyloseq objects
 #' @importFrom utils modifyList read.table stack
 #' 
 #' @param analysis_setup analysis_setup An object containing directory paths and
