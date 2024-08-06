@@ -1,0 +1,94 @@
+---
+title: "16S Mothur SOP Validation"
+output: 
+  rmarkdown::html_vignette:
+    fig_path: "man/figures"
+vignette: >
+  %\VignetteIndexEntry{16S Mothur SOP Validation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Demonstration of how to use demulticoder on a dataset that is actually three separate datasets (RPS10, ITS, and 16S) at once
+
+Input metadata and primerinfo_params files are in data folder
+
+TODO show example and add more commentary
+```{r setup, include=FALSE}
+#TODO-at some point switch to loading github repo version
+devtools::load_all("~/demulticoder")
+library("demulticoder")
+```
+
+### Step 1-Remove N's and create directory structure for downstream steps
+```{r prepare reads, fig.height=6, fig.width=6}
+outputs<-prepare_reads(
+  data_directory = "~/demulticoder_benchmarking/demulticoder_mothur_miseq_sop/data", 
+  output_directory = "~/demulticoder_benchmarking/demulticoder_mothur_miseq_sop/outputs",
+  overwrite_existing = TRUE)
+```
+
+### Step 2-Run Cutadapt to remove primers and then trim reads with DADA2 filterAndTrim function 
+```{r Remove primers and trim reads, fig.height=6, fig.width=6}
+cut_trim(
+  outputs,
+  cutadapt_path="/usr/bin/cutadapt",
+  overwrite_existing = TRUE)
+```
+
+### Step 3-Core ASV inference step
+```{r ASV inference, fig.height=6, fig.width=6}
+make_asv_abund_matrix(
+  outputs,
+  overwrite_existing = TRUE)
+```
+
+### Step 4-Assign taxonomy step
+```{r assign taxonomy step, fig.height=6, fig.width=6}
+assign_tax(
+  outputs,
+  asv_abund_matrix,
+  db_16S="silva_nr99_v138.1_wSpecies_train_set.fa",
+  retrieve_files=TRUE,
+  overwrite_existing=TRUE)
+```
+
+### Step 5-convert asv matrix to taxmap and phyloseq objects with one function
+```{r convert matrix to other formats, fig.height=6, fig.width=6}
+objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing = TRUE)
+```
+
+### Step 6-evaluate accuracy as shown in dada2 tutorial
+```{r convert matrix to other formats, fig.height=6, fig.width=6}
+load("~/demulticoder_benchmarking/demulticoder_mothur_miseq_sop/outputs")
+unqs.mock <- seqtab.nochim["Mock",]
+unqs.mock <- sort(unqs.mock[unqs.mock>0], decreasing=TRUE) # Drop ASVs absent in the Mock
+cat("DADA2 inferred", length(unqs.mock), "sample sequences present in the Mock community.\n")
+
+mock.ref <- getSequences(file.path(path, "HMP_MOCK.v35.fasta"))
+match.ref <- sum(sapply(names(unqs.mock), function(x) any(grepl(x, mock.ref))))
+cat("Of those,", sum(match.ref), "were exact matches to the expected reference sequences.\n")
+```
+
+### Follow-up work using phyloseq to do side-by-side comparison with dada2 example
+```{r phyloseq diversity analysis, fig.height=6, fig.width=6}
+plot_richness(objs, x="Day", measures=c("Shannon", "Simpson"), color="When")
+```
+
+```{r phyloseq diversity analysis, fig.height=6, fig.width=6}
+# Transform data to proportions as appropriate for Bray-Curtis distances
+ps.prop <- transform_sample_counts(ps, function(otu) otu/sum(otu))
+ord.nmds.bray <- ordinate(ps.prop, method="NMDS", distance="bray")
+plot_ordination(ps.prop, ord.nmds.bray, color="When", title="Bray NMDS")
+```
+
+```{r}
+sessioninfo::session_info()
+```
