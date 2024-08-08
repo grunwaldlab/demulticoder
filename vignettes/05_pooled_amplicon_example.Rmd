@@ -21,8 +21,6 @@ knitr::opts_chunk$set(
 
 ## Demonstration of how to use demulticoder on a dataset that has pooled amplicoins (RPS10 and ITS)
 
-TODO add more instruction and summary
-
 Input metadata and primerinfo_params files are in data folder
 ```{r setup, include=FALSE}
 #TODO-at some point switch to loading github repo version

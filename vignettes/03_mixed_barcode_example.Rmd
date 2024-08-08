@@ -328,6 +328,96 @@ abund_plot <- ggplot2::ggplot(data, ggplot2::aes(x = Sample, y = Abundance, fill
 print(abund_plot)
 ```
 
+### Step 10-looks look at a heat tree to see what taxa are more abundant in early vs. late samples, as another means to visualize the data and showcase how easy it is to use taxmap object rather than phylseq object 
+```{r heat tree example, fig.height=6, fig.width=6}
+objs$taxmap_r16S$data$tax_data <-metacoder::calc_obs_props(objs$taxmap_r16S, "otu_table")
+
+objs$taxmap_r16S$data$tax_abund <- metacoder::calc_taxon_abund(objs$taxmap_r16S, "tax_data",
+                                       cols = objs$taxmap_r16S$data$sample_data$samplename_barcode)
+
+objs$taxmap_r16S$data$tax_occ <- metacoder::calc_n_samples(objs$taxmap_r16S, "tax_abund", groups = objs$taxmap_r16S$data$sample_data$When, cols = objs$taxmap_r16S$data$sample_data$samplename_barcode)
+
+
+objs$taxmap_r16S$data$diff_table <- metacoder::compare_groups(objs$taxmap_r16S,
+                                      data = "tax_abund",
+                                      cols = objs$taxmap_r16S$data$sample_data$samplename_barcode,
+                                      groups = objs$taxmap_r16S$data$sample_data$When)
+print(objs$taxmap_r16S$data$diff_table)
+
+set.seed(999)
+metacoder::heat_tree(obj, 
+          node_label = taxon_names,
+          node_size = n_obs, # n_obs is a function that calculates, in this case, the number of OTUs per taxon
+          node_color = log2_median_ratio, # A column from `obj$data$diff_table`
+          node_color_interval = c(-2, 2), # The range of `log2_median_ratio` to display
+          node_color_range = c("cyan", "gray", "tan"), # The color palette used
+          node_size_axis_label = "OTU count",
+          node_color_axis_label = "Log 2 ratio of median proportions",
+          layout = "davidson-harel", # The primary layout algorithm
+          initial_layout = "reingold-tilford") # The layout algorithm that initializes node locations
+
+```
+
+### Step 10-looks look at a heat tree to see what taxa are more abundant in early vs. late samples, as another means to visualize the data and showcase how easy it is to use taxmap object rather than phylseq object 
+```{r heat tree example, fig.height=6, fig.width=6}
+objs$taxmap_r16S$data$tax_data <-metacoder::calc_obs_props(objs$taxmap_r16S, "otu_table")
+
+objs$taxmap_r16S$data$tax_abund <- metacoder::calc_taxon_abund(objs$taxmap_r16S, "tax_data",
+                                       cols = objs$taxmap_r16S$data$sample_data$samplename_barcode)
+
+objs$taxmap_r16S$data$tax_occ <- metacoder::calc_n_samples(objs$taxmap_r16S, "tax_abund", groups = objs$taxmap_r16S$data$sample_data$When, cols = objs$taxmap_r16S$data$sample_data$samplename_barcode)
+
+
+objs$taxmap_r16S$data$diff_table <- metacoder::compare_groups(objs$taxmap_r16S,
+                                      data = "tax_abund",
+                                      cols = objs$taxmap_r16S$data$sample_data$samplename_barcode,
+                                      groups = objs$taxmap_r16S$data$sample_data$When)
+print(objs$taxmap_r16S$data$diff_table)
+
+set.seed(999)
+metacoder::heat_tree(obj, 
+          node_label = taxon_names,
+          node_size = n_obs, # n_obs is a function that calculates, in this case, the number of OTUs per taxon
+          node_color = log2_median_ratio, # A column from `obj$data$diff_table`
+          node_color_interval = c(-2, 2), # The range of `log2_median_ratio` to display
+          node_color_range = c("cyan", "gray", "tan"), # The color palette used
+          node_size_axis_label = "OTU count",
+          node_color_axis_label = "Log 2 ratio of median proportions",
+          layout = "davidson-harel", # The primary layout algorithm
+          initial_layout = "reingold-tilford") # The layout algorithm that initializes node locations
+
+```
+
+### Step 10-looks look at a heat tree to see what taxa are more abundant in early vs. late samples, as another means to visualize the data and showcase how easy it is to use taxmap object rather than phylseq object 
+```{r heat tree example, fig.height=6, fig.width=6}
+objs$taxmap_r16S$data$tax_data <-metacoder::calc_obs_props(objs$taxmap_r16S, "otu_table")
+
+objs$taxmap_r16S$data$tax_abund <- metacoder::calc_taxon_abund(objs$taxmap_r16S, "tax_data",
+                                       cols = objs$taxmap_r16S$data$sample_data$samplename_barcode)
+
+objs$taxmap_r16S$data$tax_occ <- metacoder::calc_n_samples(objs$taxmap_r16S, "tax_abund", groups = objs$taxmap_r16S$data$sample_data$When, cols = objs$taxmap_r16S$data$sample_data$samplename_barcode)
+
+
+objs$taxmap_r16S$data$diff_table <- metacoder::compare_groups(objs$taxmap_r16S,
+                                      data = "tax_abund",
+                                      cols = objs$taxmap_r16S$data$sample_data$samplename_barcode,
+                                      groups = objs$taxmap_r16S$data$sample_data$When)
+print(objs$taxmap_r16S$data$diff_table)
+
+set.seed(999)
+metacoder::heat_tree(obj, 
+          node_label = taxon_names,
+          node_size = n_obs, # n_obs is a function that calculates, in this case, the number of OTUs per taxon
+          node_color = log2_median_ratio, # A column from `obj$data$diff_table`
+          node_color_interval = c(-2, 2), # The range of `log2_median_ratio` to display
+          node_color_range = c("cyan", "gray", "tan"), # The color palette used
+          node_size_axis_label = "OTU count",
+          node_color_axis_label = "Log 2 ratio of median proportions",
+          layout = "davidson-harel", # The primary layout algorithm
+          initial_layout = "reingold-tilford") # The layout algorithm that initializes node locations
+
+```
+
 
 ```{r}
 sessioninfo::session_info()

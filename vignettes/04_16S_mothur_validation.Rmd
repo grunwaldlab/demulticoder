@@ -150,17 +150,11 @@ phyloseq::plot_ordination(ps.prop, ord.nmds.bray, color="When", title="Bray NMDS
 ```
 
 ### Step 9-Let's look at what the top 20 taxa are in the early vs. late samples  time points, as shown in the dada2 tutorial
-```{r phyloseq diversity analysis, fig.height=6, fig.width=6}
-# Transform data to proportions as appropriate for Bray-Curtis distances
-ps.prop <- transform_sample_counts(ps, function(otu) otu/sum(otu))
-ord.nmds.bray <- ordinate(ps.prop, method="NMDS", distance="bray")
-plot_ordination(ps.prop, ord.nmds.bray, color="When", title="Bray NMDS")
-```
-
-
-### Step 10-looks look at a heat tree to see what taxa are more abundant in early vs. late samples, as another means to visualize the data and showcase how easy it is to use taxmap object rather than phylseq object 
-```{r phyloseq diversity analysis, fig.height=6, fig.width=6}
-
+```{r phyloseq diversity analysis, fig.height=5, fig.width=8}
+top20 <- names(sort(phyloseq::taxa_sums(objs$phyloseq_r16S), decreasing=TRUE))[1:20]
+ps.top20 <- phyloseq::transform_sample_counts(objs$phyloseq_r16S, function(OTU) OTU/sum(OTU))
+ps.top20 <- phyloseq::prune_taxa(top20, ps.top20)
+phyloseq::plot_bar(ps.top20, x="Day", fill="Family") + ggplot2::facet_wrap(~When, scales="free_x")
 ```
 
 
