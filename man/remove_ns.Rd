@@ -5,7 +5,7 @@
 \title{Wrapper function for core DADA2 filter and trim function for first filtering
 step}
 \usage{
-remove_ns(fastq_data, multithread = TRUE, temp_directory_path)
+remove_ns(fastq_data, multithread, temp_directory_path)
 }
 \arguments{
 \item{fastq_data}{A data frame with the fastq file paths, the direction of

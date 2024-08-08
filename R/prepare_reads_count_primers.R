@@ -223,7 +223,7 @@ primer_check <- function(fastq_data) {
 #' @keywords internal
 read_prefilt_fastq <-
   function(data_directory_path = data_directory_path,
-           multithread = FALSE,
+           multithread,
            temp_directory_path) {
     fastq_data <- read_fastq(data_directory_path, temp_directory_path)
     primer_check(fastq_data)
@@ -249,7 +249,7 @@ read_prefilt_fastq <-
 #' @keywords internal
 remove_ns <-
   function(fastq_data,
-           multithread = TRUE,
+           multithread,
            temp_directory_path) {
     prefiltered_read_dir <-
       file.path(temp_directory_path, "prefiltered_sequences")
@@ -278,6 +278,7 @@ remove_ns <-
 #'   function
 #' @param fastq_data A data frame with the FASTQ file paths, the direction of
 #'   the sequences, and names of sequences
+#' @param count_all_samples A logical value indicating whether to count primers in all samples or just the first 10, if more than 10 samples 
 #'
 #' @return The number of reads in which the primer is found
 #'
@@ -285,7 +286,8 @@ remove_ns <-
 get_pre_primer_hits <-
   function(primer_data,
            fastq_data,
-           output_directory_path) {
+           output_directory_path,
+           count_all_samples) {
     primer_hit_data <-
       tidyr::gather(
         primer_data,
@@ -314,9 +316,15 @@ get_pre_primer_hits <-
       primer_hit_data <- readr::read_csv(primer_hit_data_csv_path)
       
     } else {
-      primer_hit_counts <- furrr::future_map(fastq_data$prefiltered_path,
-                                      function (a_path)
-                                        purrr::map_dbl(primer_hit_data$sequence, primer_hits, path = a_path))
+      if (count_all_samples || nrow(fastq_data) < 10) {
+        primer_hit_counts <- furrr::future_map(fastq_data$prefiltered_path,
+                                               function (a_path)
+                                                 purrr::map_dbl(primer_hit_data$sequence, primer_hits, path = a_path))
+      } else {
+        primer_hit_counts <- furrr::future_map(fastq_data$prefiltered_path[1:10],
+                                               function (a_path)
+                                                 purrr::map_dbl(primer_hit_data$sequence, primer_hits, path = a_path))
+      }
       
       names(primer_hit_counts) <- paste0(fastq_data$file_id)
       
@@ -345,8 +353,8 @@ get_pre_primer_hits <-
       plot <-
         ggplot2::ggplot(data = total_primers, ggplot2::aes(x = primer_type, y = Total)) +
         ggplot2::geom_bar(stat = "identity",
-                 width = 0.8,
-                 fill = "seagreen3") +
+                          width = 0.8,
+                          fill = "seagreen3") +
         ggplot2::geom_text(
           ggplot2::aes(label = Total),
           vjust = -0.5,
@@ -479,7 +487,6 @@ prepare_reads <- function(data_directory = "data",
                           output_directory = "output",
                           tempdir_path = NULL,
                           tempdir_id = "demulticoder_run",
-                          multithread = FALSE,
                           overwrite_existing = FALSE) {
   directory_paths <-
     setup_directories(data_directory, output_directory, tempdir_path, tempdir_id)
@@ -524,10 +531,22 @@ prepare_reads <- function(data_directory = "data",
   primer_data <- orient_primers(primers_params_path)
   parameters <- read_parameters(primers_params_path)
   metadata <- prepare_metadata_table(metadata_path, primer_data)
+  
+  multithread <- if ("multithread" %in% names(parameters)) {
+    parameters$multithread[1]
+  } else {
+    FALSE
+  }
+  count_all_samples <- if ("count_all_samples" %in% names(parameters)) {
+    parameters$count_all_samples[1]
+  } else {
+    FALSE
+  }
+  
   fastq_data <-
     read_prefilt_fastq(data_directory_path, multithread, temp_directory_path)
   pre_primer_hit_data <-
-    get_pre_primer_hits(primer_data, fastq_data, output_directory_path)
+    get_pre_primer_hits(primer_data, fastq_data, output_directory_path, count_all_samples)
   cutadapt_data <-
     make_cutadapt_tibble(fastq_data, metadata, temp_directory_path)
   data_tables <- list(

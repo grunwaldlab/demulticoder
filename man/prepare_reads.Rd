@@ -9,7 +9,6 @@ prepare_reads(
   output_directory = "output",
   tempdir_path = NULL,
   tempdir_id = "demulticoder_run",
-  multithread = FALSE,
   overwrite_existing = FALSE
 )
 }
@@ -28,11 +27,11 @@ directory path will be identified using the \code{tempdir()} command.}
 "demulticoder_run". The user can provide any helpful ID, whether it be a
 date or specific name for the run.}
 
-\item{multithread}{Logical, indicating whether to use multithreading for
-certain operations. Default is \code{FALSE}.}
-
 \item{overwrite_existing}{Logical, indicating whether to remove or overwrite
 existing files and directories from previous runs. Default is \code{FALSE}.}
+
+\item{multithread}{Logical, indicating whether to use multithreading for
+certain operations. Default is \code{FALSE}.}
 }
 \value{
 A list containing data tables, including metadata, primer sequences

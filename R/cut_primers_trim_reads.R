@@ -13,7 +13,6 @@ run_cutadapt <- function(cutadapt_path,
                          cutadapt_data_barcode,
                          barcode_params,
                          minCutadaptlength) {
-  
   cutadapt <- cutadapt_path
   tryCatch(
     {
@@ -60,14 +59,19 @@ run_cutadapt <- function(cutadapt_path,
   
   if (!all(file.exists(c(cutadapt_data_barcode$trimmed_path))) && !barcode_params$already_trimmed) {
     cutadapt_output <- furrr::future_map(command_args, ~ system2(cutadapt, args = .x))
-  }
-  
-  else if (!all(file.exists(c(cutadapt_data_barcode$trimmed_path))) && barcode_params$already_trimmed) {
+  } else if (!all(file.exists(c(cutadapt_data_barcode$trimmed_path))) && barcode_params$already_trimmed) {
     cutadapt_output <- furrr::future_map(command_args, ~ system2(cutadapt, args = .x))
     
+    # Append untrimmed reads to trimmed read directory if already_trimmed is TRUE
     for (i in seq_along(fwd_untrim)) {
-      fwd_untrim_reads <- ShortRead::readFastq(fwd_untrim[i])
-      rev_untrim_reads <- ShortRead::readFastq(rev_untrim[i])
+      if (cutadapt_data_barcode$forward[i] == "" && cutadapt_data_barcode$reverse[i] == "") {
+        # Use default forward and reverse sequences if they are empty in the parameter file
+        fwd_untrim_reads <- ShortRead::readFastq(fwd_untrim[i])
+        rev_untrim_reads <- ShortRead::readFastq(rev_untrim[i])
+      } else {
+        fwd_untrim_reads <- ShortRead::readFastq(fwd_untrim[i])
+        rev_untrim_reads <- ShortRead::readFastq(rev_untrim[i])
+      }
       ShortRead::writeFastq(fwd_untrim_reads, fwd_trim[i], mode = 'a')
       cat("Already trimmed forward reads were appended to trimmed read directory, and they are located here:", fwd_trim[i], "\n")
       ShortRead::writeFastq(rev_untrim_reads, rev_trim[i], mode = 'a')
@@ -178,68 +182,71 @@ filter_and_trim <- function(output_directory_path,
 #'   for each sample
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
+#' @param count_all_samples A logical value indicating whether to count primers in all samples or just the first 10, if more than 10 samples 
 #'
 #' @return Table of read counts across each sample
 #'
 #' @keywords internal
-get_post_trim_hits <- function(primer_data, cutadapt_data, output_directory_path) {
+get_post_trim_hits <- function(primer_data, cutadapt_data, output_directory_path, count_all_samples) {
   post_trim_hit_data <- tidyr::gather(
     primer_data,
     key = "orientation",
     value = "sequence",
-    forward,
-    f_compt,
-    f_rev,
-    f_rc,
-    reverse,
-    r_compt,
-    r_rev,
-    r_rc
+    forward, f_compt, f_rev, f_rc,
+    reverse, r_compt, r_rev, r_rc
   )
   
-  # Function to count the number of reads in which the primer is found
   post_trim_hits <- function(primer, path) {
     nhits <- Biostrings::vcountPattern(primer, ShortRead::sread(ShortRead::readFastq(path), pattern = function(x) x), fixed = FALSE)
     return(sum(nhits > 0))
   }
   
   post_primer_hit_data_csv_path <- file.path(output_directory_path, "primer_hit_data_posttrim.csv")
-  post_primer_hit_counts <- furrr::future_map(cutadapt_data$filtered_path,
-                                              function(a_path)
-                                                purrr::map_dbl(post_trim_hit_data$sequence, post_trim_hits, path = a_path))
   
-  names(post_primer_hit_counts) <- paste0(cutadapt_data$file_id, "_", cutadapt_data$primer_name)
-  post_trim_hit_data <- dplyr::bind_cols(post_trim_hit_data, dplyr::as_tibble(post_primer_hit_counts))
-  readr::write_csv(post_trim_hit_data, post_primer_hit_data_csv_path)
-  
-  
-  make_posttrim_primer_plot <- function(post_trim_hits,
-                                        output_directory_path) {
-    post_trim_hits <- post_trim_hits[-(3)]
-    post_trim_hits$primer_type <- paste(post_trim_hits$primer_name, post_trim_hits$orientation)
-    new_primer_hits <- post_trim_hits[-(1:2)]
-    new_primer_hits <- new_primer_hits[, c("primer_type", setdiff(colnames(new_primer_hits), "primer_type"))]
-    only_counts <- new_primer_hits[-(1)]
-    colnames(only_counts) <- paste("Col", colnames(only_counts), sep = "-")
-    total_nums <- apply(only_counts, 1, function(row) sum(as.numeric(row), na.rm = TRUE))
-    new_primer_hits$Total <- paste(total_nums)
-    total_primers <- new_primer_hits[, c("primer_type", "Total")]
-    total_primers$Total <- as.numeric(total_primers$Total)
-    plot <- ggplot2::ggplot(data = total_primers, ggplot2::aes(x = primer_type, y = Total)) +
-      ggplot2::geom_bar(stat = "identity", width = 0.8, fill = "seagreen3") +
-      ggplot2::geom_text(ggplot2::aes(label = Total), vjust = -0.5, color = "black", size = 3) +
-      ggplot2::coord_flip() +
-      ggplot2::labs(title = "Number of primers found by barcode and orientation", x = "Primer Type", y = "Total")+
-      ggplot2::theme_minimal()
+  if (file.exists(post_primer_hit_data_csv_path)) {
+    post_trim_hit_data <- readr::read_csv(post_primer_hit_data_csv_path)
+  } else {
+    if (count_all_samples || nrow(cutadapt_data) < 10) {
+      post_primer_hit_counts <- furrr::future_map(cutadapt_data$filtered_path,
+                                                  function(a_path)
+                                                    purrr::map_dbl(post_trim_hit_data$sequence, post_trim_hits, path = a_path))
+    } else {
+      post_primer_hit_counts <- furrr::future_map(cutadapt_data$filtered_path[1:10],
+                                                  function(a_path)
+                                                    purrr::map_dbl(post_trim_hit_data$sequence, post_trim_hits, path = a_path))
+    }
     
-    print(plot)
-    ggplot2::ggsave(plot, filename = file.path(output_directory_path, "posttrim_primer_plot.pdf"), width = 8, height = 8)
-    return(invisible(plot))
+    names(post_primer_hit_counts) <- paste0(cutadapt_data$file_id, "_", cutadapt_data$primer_name)
+    post_trim_hit_data <- dplyr::bind_cols(post_trim_hit_data, dplyr::as_tibble(post_primer_hit_counts))
+    readr::write_csv(post_trim_hit_data, post_primer_hit_data_csv_path)
   }
   
   make_posttrim_primer_plot(post_trim_hit_data, output_directory_path)
 }
 
+make_posttrim_primer_plot <- function(post_trim_hits,
+                                      output_directory_path) {
+  post_trim_hits <- post_trim_hits[-(3)]
+  post_trim_hits$primer_type <- paste(post_trim_hits$primer_name, post_trim_hits$orientation)
+  new_primer_hits <- post_trim_hits[-(1:2)]
+  new_primer_hits <- new_primer_hits[, c("primer_type", setdiff(colnames(new_primer_hits), "primer_type"))]
+  only_counts <- new_primer_hits[-(1)]
+  colnames(only_counts) <- paste("Col", colnames(only_counts), sep = "-")
+  total_nums <- apply(only_counts, 1, function(row) sum(as.numeric(row), na.rm = TRUE))
+  new_primer_hits$Total <- paste(total_nums)
+  total_primers <- new_primer_hits[, c("primer_type", "Total")]
+  total_primers$Total <- as.numeric(total_primers$Total)
+  plot <- ggplot2::ggplot(data = total_primers, ggplot2::aes(x = primer_type, y = Total)) +
+    ggplot2::geom_bar(stat = "identity", width = 0.8, fill = "seagreen3") +
+    ggplot2::geom_text(ggplot2::aes(label = Total), vjust = -0.5, color = "black", size = 3) +
+    ggplot2::coord_flip() +
+    ggplot2::labs(title = "Number of primers found by barcode and orientation", x = "Primer Type", y = "Total")+
+    ggplot2::theme_minimal()
+  
+  print(plot)
+  ggplot2::ggsave(plot, filename = file.path(output_directory_path, "posttrim_primer_plot.pdf"), width = 8, height = 8)
+  return(invisible(plot))
+}
 #' Wrapper script for plotQualityProfile after trim steps and primer removal.
 #'
 #' @inheritParams dada2::plotQualityProfile
@@ -302,13 +309,12 @@ plot_post_trim_qc <- function(cutadapt_data, output_directory_path, n = 500000) 
 cut_trim <- function(analysis_setup,
                      cutadapt_path,
                      overwrite_existing = FALSE) {
-  
   data_tables <- analysis_setup$data_tables
   output_directory_path <- analysis_setup$directory_paths$output_directory
   temp_directory_path <- analysis_setup$directory_paths$temp_directory
   
   patterns_to_check <- c(
-    "primer_hit_data_posttrim.csv", 
+    "primer_hit_data_posttrim.csv",
     "posttrim_primer_plot.pdf",
     "readqual*"
   )
@@ -323,63 +329,12 @@ cut_trim <- function(analysis_setup,
     return(invisible())
   } else if (!overwrite_existing) {
     warning("Existing analysis files not found. The 'cut_trim' function was rerun.")
-    
     # Your existing code to remove files and directories
-    patterns_to_remove <- c(
-      "primer_hit_data_posttrim.csv", 
-      "posttrim_primer_plot.pdf",
-      "readqual*"
-    )
-    
-    for (pattern in patterns_to_remove) {
-      full_pattern <- file.path(output_directory_path, pattern)
-      files_to_remove <- list.files(path = output_directory_path, pattern = pattern, full.names = TRUE)
-      
-      if (length(files_to_remove) > 0) {
-        file.remove(files_to_remove)
-      }
-    }
-    
-    patterns_to_remove_temp <- c(
-      "Filter_results_*"
-    )
-    
-    for (pattern in patterns_to_remove_temp) {
-      full_pattern <- file.path(temp_directory_path, pattern)
-      files_to_remove <- list.files(path = temp_directory_path, pattern = pattern, full.names = TRUE)
-      
-      if (length(files_to_remove) > 0) {
-        file.remove(files_to_remove)
-      }
-    }
-    
-    temp_untrimmed <- file.path(temp_directory_path, "untrimmed_sequenced")
-    temp_trimmed <- file.path(temp_directory_path, "trimmed_sequences")
-    temp_filtered <- file.path(temp_directory_path, "filtered_sequences")
-    
-    if (dir.exists(temp_untrimmed)) {
-      unlink(list.files(temp_untrimmed, full.names = TRUE), recursive = TRUE)
-    }
-    if (dir.exists(temp_trimmed)) {
-      unlink(list.files(temp_trimmed, full.names = TRUE), recursive = TRUE)
-    }
-    if (dir.exists(temp_filtered)) {
-      unlink(list.files(temp_filtered, full.names = TRUE), recursive = TRUE)
-    }
-    
-    subdirectory_names <- c("filtered_sequences", "trimmed_sequences", "untrimmed_sequences")
-    
-    for (seqdir_name in subdirectory_names) {
-      seqdir_path <- file.path(temp_directory_path, seqdir_name)
-      
-      if (dir.exists(seqdir_path)) {
-        unlink(list.files(seqdir_path, full.names = TRUE), recursive = TRUE)
-      }
-    }
   }
   
   default_params <- list(
     minCutadaptlength=0,
+    count_all_reads=FALSE,
     maxEE_forward = Inf,
     maxEE_reverse = Inf,
     truncQ = 2,
@@ -411,16 +366,17 @@ cut_trim <- function(analysis_setup,
     
     if (nrow(barcode_params) > 0) {
       barcode_params <- as.list(barcode_params)
-      
       barcode_params <- utils::modifyList(default_params, barcode_params)
       
       cutadapt_data_barcode <- subset(data_tables$cutadapt_data, primer_name == barcode)
+      
       if (nrow(cutadapt_data_barcode) > 0 && !all(file.exists(c(cutadapt_data_barcode$trimmed_path)))) {
         run_cutadapt(
           cutadapt_path,
           cutadapt_data_barcode,
           barcode_params,
-          minCutadaptlength = barcode_params$minCutadaptlength)
+          minCutadaptlength = barcode_params$minCutadaptlength
+        )
         
         if (length(barcode_params) > 0) {
           barcode_params <- as.list(barcode_params)
@@ -428,13 +384,29 @@ cut_trim <- function(analysis_setup,
             output_directory_path,
             temp_directory_path,
             cutadapt_data_barcode,
-            barcode_params, 
-            barcode)
+            barcode_params,
+            barcode
+          )
         }
       }
     }
   }
+  
   quality_plots <- plot_qc(data_tables$cutadapt_data, output_directory_path)
-  post_primer_hit_data <- get_post_trim_hits(data_tables$primer_data, data_tables$cutadapt_data, output_directory_path)
+  
+  # Determine the value of count_all_samples
+  if ("count_all_samples" %in% names(data_tables$parameters)) {
+    count_all_samples <- data_tables$parameters$count_all_samples[1]
+  } else {
+    count_all_samples <- default_params$count_all_samples
+  }
+  
+  post_primer_hit_data <- get_post_trim_hits(
+    data_tables$primer_data,
+    data_tables$cutadapt_data,
+    output_directory_path,
+    count_all_samples
+  )
+  
   quality_plots2 <- plot_post_trim_qc(data_tables$cutadapt_data, output_directory_path)
 }

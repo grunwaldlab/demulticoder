@@ -8,7 +8,7 @@ primers with Cutadapt. Part of a larger 'prepare_reads' function.}
 \usage{
 read_prefilt_fastq(
   data_directory_path = data_directory_path,
-  multithread = FALSE,
+  multithread,
   temp_directory_path
 )
 }
