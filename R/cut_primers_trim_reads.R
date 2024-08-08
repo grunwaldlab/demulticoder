@@ -182,12 +182,11 @@ filter_and_trim <- function(output_directory_path,
 #'   for each sample
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
-#' @param count_all_samples A logical value indicating whether to count primers in all samples or just the first 10, if more than 10 samples 
 #'
 #' @return Table of read counts across each sample
 #'
 #' @keywords internal
-get_post_trim_hits <- function(primer_data, cutadapt_data, output_directory_path, count_all_samples) {
+get_post_trim_hits <- function(primer_data, cutadapt_data, output_directory_path) {
   post_trim_hit_data <- tidyr::gather(
     primer_data,
     key = "orientation",
@@ -206,17 +205,11 @@ get_post_trim_hits <- function(primer_data, cutadapt_data, output_directory_path
   if (file.exists(post_primer_hit_data_csv_path)) {
     post_trim_hit_data <- readr::read_csv(post_primer_hit_data_csv_path)
   } else {
-    if (count_all_samples || nrow(cutadapt_data) <= 10) {
-      post_primer_hit_counts <- furrr::future_map(cutadapt_data$filtered_path,
-                                                  function(a_path)
-                                                    purrr::map_dbl(post_trim_hit_data$sequence, post_trim_hits, path = a_path))
-      names(post_primer_hit_counts) <- paste0(cutadapt_data$file_id[1:length(post_primer_hit_counts)], "_", cutadapt_data$primer_name[1:length(post_primer_hit_counts)])
-    } else {
-      post_primer_hit_counts <- furrr::future_map(cutadapt_data$filtered_path[1:10],
-                                                  function(a_path)
-                                                    purrr::map_dbl(post_trim_hit_data$sequence, post_trim_hits, path = a_path))
-      names(post_primer_hit_counts) <- paste0(cutadapt_data$file_id[1:10], "_", cutadapt_data$primer_name[1:10])
-    }
+    post_primer_hit_counts <- furrr::future_map(cutadapt_data$filtered_path,
+                                                function(a_path)
+                                                  purrr::map_dbl(post_trim_hit_data$sequence, post_trim_hits, path = a_path))
+    
+    names(post_primer_hit_counts) <- paste0(cutadapt_data$file_id, "_", cutadapt_data$primer_name)
     
     post_trim_hit_data <- dplyr::bind_cols(post_trim_hit_data, dplyr::as_tibble(post_primer_hit_counts))
     readr::write_csv(post_trim_hit_data, post_primer_hit_data_csv_path)
@@ -257,7 +250,7 @@ make_posttrim_primer_plot <- function(post_trim_hits,
 #'   for each sample
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
-#'
+#'   
 #' @return Quality profiles of reads after primer trimming
 #'
 #' @keywords internal
@@ -337,7 +330,6 @@ cut_trim <- function(analysis_setup,
   
   default_params <- list(
     minCutadaptlength=0,
-    count_all_reads=FALSE,
     maxEE_forward = Inf,
     maxEE_reverse = Inf,
     truncQ = 2,
@@ -397,18 +389,10 @@ cut_trim <- function(analysis_setup,
   
   quality_plots <- plot_qc(data_tables$cutadapt_data, output_directory_path)
   
-  # Determine the value of count_all_samples
-  if ("count_all_samples" %in% names(data_tables$parameters)) {
-    count_all_samples <- data_tables$parameters$count_all_samples[1]
-  } else {
-    count_all_samples <- default_params$count_all_samples
-  }
-  
   post_primer_hit_data <- get_post_trim_hits(
     data_tables$primer_data,
     data_tables$cutadapt_data,
-    output_directory_path,
-    count_all_samples
+    output_directory_path
   )
   
   quality_plots2 <- plot_post_trim_qc(data_tables$cutadapt_data, output_directory_path)

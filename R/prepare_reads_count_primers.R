@@ -278,7 +278,6 @@ remove_ns <-
 #'   function
 #' @param fastq_data A data frame with the FASTQ file paths, the direction of
 #'   the sequences, and names of sequences
-#' @param count_all_samples A logical value indicating whether to count primers in all samples or just the first 10, if more than 10 samples 
 #'
 #' @return The number of reads in which the primer is found
 #'
@@ -291,7 +290,6 @@ remove_ns <-
 #'   function
 #' @param fastq_data A data frame with the FASTQ file paths, the direction of
 #'   the sequences, and names of sequences
-#' @param count_all_samples A logical value indicating whether to count primers in all samples or just the first 10, if more than 10 samples 
 #'
 #' @return The number of reads in which the primer is found
 #'
@@ -299,8 +297,7 @@ remove_ns <-
 get_pre_primer_hits <-
   function(primer_data,
            fastq_data,
-           output_directory_path,
-           count_all_samples) {
+           output_directory_path) {
     primer_hit_data <-
       tidyr::gather(
         primer_data,
@@ -327,19 +324,12 @@ get_pre_primer_hits <-
     
     if (file.exists(primer_hit_data_csv_path)) {
       primer_hit_data <- readr::read_csv(primer_hit_data_csv_path)
-      
     } else {
-      if (count_all_samples || nrow(fastq_data) <= 10) {
-        primer_hit_counts <- furrr::future_map(fastq_data$prefiltered_path,
-                                               function (a_path)
-                                                 purrr::map_dbl(primer_hit_data$sequence, primer_hits, path = a_path))
-      } else {
-        primer_hit_counts <- furrr::future_map(fastq_data$prefiltered_path[1:10],
-                                               function (a_path)
-                                                 purrr::map_dbl(primer_hit_data$sequence, primer_hits, path = a_path))
-      }
+      primer_hit_counts <- furrr::future_map(fastq_data$prefiltered_path,
+                                             function (a_path)
+                                               purrr::map_dbl(primer_hit_data$sequence, primer_hits, path = a_path))
       
-      names(primer_hit_counts) <- paste0(fastq_data$file_id[1:length(primer_hit_counts)])
+      names(primer_hit_counts) <- paste0(fastq_data$file_id)
       
       primer_hit_data <-
         dplyr::bind_cols(primer_hit_data, dplyr::as_tibble(primer_hit_counts))
@@ -549,16 +539,11 @@ prepare_reads <- function(data_directory = "data",
   } else {
     FALSE
   }
-  count_all_samples <- if ("count_all_samples" %in% names(parameters)) {
-    parameters$count_all_samples[1]
-  } else {
-    FALSE
-  }
   
   fastq_data <-
     read_prefilt_fastq(data_directory_path, multithread, temp_directory_path)
   pre_primer_hit_data <-
-    get_pre_primer_hits(primer_data, fastq_data, output_directory_path, count_all_samples)
+    get_pre_primer_hits(primer_data, fastq_data, output_directory_path)
   cutadapt_data <-
     make_cutadapt_tibble(fastq_data, metadata, temp_directory_path)
   data_tables <- list(
