@@ -1,0 +1,17 @@
+---
+title: "Custom database example"
+output: 
+  rmarkdown::html_vignette:
+    fig_path: "man/figures"
+vignette: >
+  %\VignetteIndexEntry{Custom database example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```

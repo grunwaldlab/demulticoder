@@ -1,0 +1,76 @@
+---
+title: "Pooled amplicon example"
+output: 
+  rmarkdown::html_vignette:
+    fig_path: "man/figures"
+vignette: >
+  %\VignetteIndexEntry{Pooled amplicon example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>", 
+  fig.path = "./",
+  fig.width = 6,
+  fig.height = 6
+)
+```
+
+## Demonstration of how to use demulticoder on a dataset that has pooled amplicoins (RPS10 and ITS)
+
+TODO add more instruction and summary
+
+Input metadata and primerinfo_params files are in data folder
+```{r setup, include=FALSE}
+#TODO-at some point switch to loading github repo version
+devtools::load_all("~/demulticoder")
+library("demulticoder")
+```
+
+### Step 1-Remove N's and create directory structure for downstream steps
+```{r prepare reads}
+outputs<-prepare_reads(
+  data_directory = "~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode_short/data", 
+  output_directory = "~/output_pooled_amplicons", 
+  overwrite_existing = TRUE)
+```
+
+### Step 2-Run Cutadapt to remove primers and then trim reads with DADA2 filterAndTrim function 
+```{r Remove primers and trim reads}
+cut_trim(
+  outputs,
+  cutadapt_path="/usr/bin/cutadapt",
+  overwrite_existing = TRUE)
+```
+
+### Step 3-Core ASV inference step
+```{r ASV inference}
+make_asv_abund_matrix(
+  outputs,
+  overwrite_existing = TRUE)
+```
+
+### Step 4-Assign taxonomy step
+```{r assign taxonomy step}
+assign_tax(
+  outputs,
+  asv_abund_matrix,
+  db_its = "sh_general_release_dynamic_all_25.07.2023.fasta",
+  db_rps10 = "oomycetedb.fasta",
+  retrieve_files=TRUE,
+  overwrite_existing=FALSE)
+```
+
+### Step 5-convert asv matrix to taxmap and phyloseq objects with one function
+```{r convert matrix to other formats}
+objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing = TRUE)
+```
+
+TODO add final quick analysis
+
+```{r}
+sessioninfo::session_info()
+```
