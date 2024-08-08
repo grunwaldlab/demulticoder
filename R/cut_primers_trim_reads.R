@@ -206,22 +206,25 @@ get_post_trim_hits <- function(primer_data, cutadapt_data, output_directory_path
   if (file.exists(post_primer_hit_data_csv_path)) {
     post_trim_hit_data <- readr::read_csv(post_primer_hit_data_csv_path)
   } else {
-    if (count_all_samples || nrow(cutadapt_data) < 10) {
+    if (count_all_samples || nrow(cutadapt_data) <= 10) {
       post_primer_hit_counts <- furrr::future_map(cutadapt_data$filtered_path,
                                                   function(a_path)
                                                     purrr::map_dbl(post_trim_hit_data$sequence, post_trim_hits, path = a_path))
+      names(post_primer_hit_counts) <- paste0(cutadapt_data$file_id[1:length(post_primer_hit_counts)], "_", cutadapt_data$primer_name[1:length(post_primer_hit_counts)])
     } else {
       post_primer_hit_counts <- furrr::future_map(cutadapt_data$filtered_path[1:10],
                                                   function(a_path)
                                                     purrr::map_dbl(post_trim_hit_data$sequence, post_trim_hits, path = a_path))
+      names(post_primer_hit_counts) <- paste0(cutadapt_data$file_id[1:10], "_", cutadapt_data$primer_name[1:10])
     }
     
-    names(post_primer_hit_counts) <- paste0(cutadapt_data$file_id, "_", cutadapt_data$primer_name)
     post_trim_hit_data <- dplyr::bind_cols(post_trim_hit_data, dplyr::as_tibble(post_primer_hit_counts))
     readr::write_csv(post_trim_hit_data, post_primer_hit_data_csv_path)
   }
   
   make_posttrim_primer_plot(post_trim_hit_data, output_directory_path)
+  
+  return(post_trim_hit_data)
 }
 
 make_posttrim_primer_plot <- function(post_trim_hits,

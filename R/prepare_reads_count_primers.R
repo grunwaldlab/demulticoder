@@ -283,6 +283,19 @@ remove_ns <-
 #' @return The number of reads in which the primer is found
 #'
 #' @keywords internal
+#' Get primer counts for reach sample before primer removal and trimming steps
+#'
+#' @param output_directory_path The path to the directory where resulting files
+#'   are output
+#' @param primer_data The primer data data frame created in orient_primers
+#'   function
+#' @param fastq_data A data frame with the FASTQ file paths, the direction of
+#'   the sequences, and names of sequences
+#' @param count_all_samples A logical value indicating whether to count primers in all samples or just the first 10, if more than 10 samples 
+#'
+#' @return The number of reads in which the primer is found
+#'
+#' @keywords internal
 get_pre_primer_hits <-
   function(primer_data,
            fastq_data,
@@ -316,7 +329,7 @@ get_pre_primer_hits <-
       primer_hit_data <- readr::read_csv(primer_hit_data_csv_path)
       
     } else {
-      if (count_all_samples || nrow(fastq_data) < 10) {
+      if (count_all_samples || nrow(fastq_data) <= 10) {
         primer_hit_counts <- furrr::future_map(fastq_data$prefiltered_path,
                                                function (a_path)
                                                  purrr::map_dbl(primer_hit_data$sequence, primer_hits, path = a_path))
@@ -326,7 +339,7 @@ get_pre_primer_hits <-
                                                  purrr::map_dbl(primer_hit_data$sequence, primer_hits, path = a_path))
       }
       
-      names(primer_hit_counts) <- paste0(fastq_data$file_id)
+      names(primer_hit_counts) <- paste0(fastq_data$file_id[1:length(primer_hit_counts)])
       
       primer_hit_data <-
         dplyr::bind_cols(primer_hit_data, dplyr::as_tibble(primer_hit_counts))
@@ -377,7 +390,6 @@ get_pre_primer_hits <-
     
     make_primer_hit_plot(primer_hit_data, output_directory_path)
   }
-
 #' Prepare for primmer trimming with Cutaapt. Make new sub-directories and
 #' specify paths for the trimmed and untrimmed reads
 #'
