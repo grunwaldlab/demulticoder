@@ -117,7 +117,7 @@ objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing 
 ```
 
 ### Step 6-evaluate accuracy using mock community, as shown in dada2 tutorial
-```{r convert matrix to other formats, fig.height=6, fig.width=6}
+```{r examine accuracy, fig.height=6, fig.width=6}
 library(Biostrings); packageVersion("Biostrings")
 tax_matrix<-read.csv("~/demulticoder_benchmarking/demulticoder_mothur_miseq_sop/outputs/final_asv_abundance_matrix_r16S.csv")
 
@@ -135,14 +135,14 @@ cat("Of those,", sum(match.ref), "were exact matches to the expected reference s
 When looking at mock community sample, we were able to extract 20 bacterial sequences with 0% mismatch, and this matched what was described previously. 
 
 ### Step 7-Follow-up work using phyloseq to do side-by-side comparison with dada2 example and to examine alpha diversity results
-```{r phyloseq diversity analysis, fig.height=6, fig.width=6}
+```{r phyloseq alpha divresity analysis, fig.height=6, fig.width=6}
 #Let's prune mock community sample
 objs$phyloseq_r16S <- phyloseq::prune_samples(phyloseq::sample_names(objs$phyloseq_r16S) != "Mock_r16S", objs$phyloseq_r16S) # Remove mock sample
 phyloseq::plot_richness(objs$phyloseq_r16S, x="Day", measures=c("Shannon", "Simpson"), color="When")
 ```
 
 ### Step 8-Examine ordination plots as additional point of comparison with DADA2 tutorial
-```{r phyloseq diversity analysis, fig.height=6, fig.width=6}
+```{r phyloseq beta diversity analysis, fig.height=6, fig.width=6}
 # Transform data to proportions as appropriate for Bray-Curtis distances
 ps.prop <- phyloseq::transform_sample_counts(objs$phyloseq_r16S, function(otu) otu/sum(otu))
 ord.nmds.bray <- phyloseq::ordinate(ps.prop, method="NMDS", distance="bray")
@@ -150,7 +150,7 @@ phyloseq::plot_ordination(ps.prop, ord.nmds.bray, color="When", title="Bray NMDS
 ```
 
 ### Step 9-Let's look at what the top 20 taxa are in the early vs. late samples  time points, as shown in the dada2 tutorial
-```{r phyloseq diversity analysis, fig.height=5, fig.width=8}
+```{r phyloseq community analysis, fig.height=5, fig.width=8}
 top20 <- names(sort(phyloseq::taxa_sums(objs$phyloseq_r16S), decreasing=TRUE))[1:20]
 ps.top20 <- phyloseq::transform_sample_counts(objs$phyloseq_r16S, function(OTU) OTU/sum(OTU))
 ps.top20 <- phyloseq::prune_taxa(top20, ps.top20)

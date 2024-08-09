@@ -4,12 +4,7 @@
 \alias{get_pre_primer_hits}
 \title{Get primer counts for reach sample before primer removal and trimming steps}
 \usage{
-get_pre_primer_hits(
-  primer_data,
-  fastq_data,
-  output_directory_path,
-  count_all_samples
-)
+get_pre_primer_hits(primer_data, fastq_data, output_directory_path)
 }
 \arguments{
 \item{primer_data}{The primer data data frame created in orient_primers
@@ -20,13 +15,24 @@ the sequences, and names of sequences}
 
 \item{output_directory_path}{The path to the directory where resulting files
 are output}
-
-\item{count_all_samples}{A logical value indicating whether to count primers in all samples or just the first 10, if more than 10 samples}
 }
 \value{
+The number of reads in which the primer is found
+
 The number of reads in which the primer is found
 }
 \description{
 Get primer counts for reach sample before primer removal and trimming steps
 }
+\keyword{Get}
+\keyword{and}
+\keyword{before}
+\keyword{counts}
+\keyword{for}
 \keyword{internal}
+\keyword{primer}
+\keyword{reach}
+\keyword{removal}
+\keyword{sample}
+\keyword{steps}
+\keyword{trimming}

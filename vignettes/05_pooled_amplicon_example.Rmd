@@ -31,7 +31,7 @@ library("demulticoder")
 ### Step 1-Remove N's and create directory structure for downstream steps
 ```{r prepare reads}
 outputs<-prepare_reads(
-  data_directory = "~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode_short/data", 
+  data_directory = "~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/data", 
   output_directory = "~/output_pooled_amplicons", 
   overwrite_existing = TRUE)
 ```
@@ -67,7 +67,10 @@ assign_tax(
 objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing = TRUE)
 ```
 
-TODO add final quick analysis
+### Step 6-Let's now proceed with some exploratory analysis using taxmap objs
+```{r convert matrix to other formats}
+objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing = TRUE)
+```
 
 ```{r}
 sessioninfo::session_info()

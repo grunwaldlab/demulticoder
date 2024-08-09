@@ -4,12 +4,7 @@
 \alias{get_post_trim_hits}
 \title{Get primer counts for reach sample after primer removal and trimming steps}
 \usage{
-get_post_trim_hits(
-  primer_data,
-  cutadapt_data,
-  output_directory_path,
-  count_all_samples
-)
+get_post_trim_hits(primer_data, cutadapt_data, output_directory_path)
 }
 \arguments{
 \item{primer_data}{The primer data frame created in orient_primers function}
@@ -19,8 +14,6 @@ for each sample}
 
 \item{output_directory_path}{The path to the directory where resulting files
 are output}
-
-\item{count_all_samples}{A logical value indicating whether to count primers in all samples or just the first 10, if more than 10 samples}
 }
 \value{
 Table of read counts across each sample

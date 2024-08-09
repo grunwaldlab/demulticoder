@@ -139,9 +139,9 @@ knitr::kable(head(metadata, 24), row.names = FALSE)
 Here is the CSV file looks like:
 ```{csv}
 primer_name,forward,reverse,already_trimmed,minCutadaptlength,multithread,verbose,maxN,maxEE_forward,maxEE_reverse,truncLen_forward,truncLen_reverse,truncQ,minLen,maxLen,minQ,trimLeft,trimRight,rm.lowcomplex,minOverlap,maxMismatch,min_asv_length
-rps10,GTTGGTTAGAGYARAAGACT,ATRYYTAGAAAGAYTYGAACT,FALSE,50,TRUE,TRUE,0,5,5,0,0,5,50,Inf,0,0,0,0,15,2,50
-its,GTGARTCATCGAATCTTTG,TCCTSCGCTTATTGATATGC,FALSE,50,TRUE,TRUE,0,2,2,0,0,5,50,295,0,0,0,0,15,2,50
-r16S,GTGYCAGCMGCCGCGGTAA,GGACTACNVGGGTWTCTAAT,TRUE,50,TRUE,TRUE,0,2,2,0,0,5,50,Inf,0,0,0,0,15,2,50
+rps10,GTTGGTTAGAGYARAAGACT,ATRYYTAGAAAGAYTYGAACT,FALSE,FALSE,50,TRUE,TRUE,0,5,5,0,0,5,50,Inf,0,0,0,0,15,2,50
+its,GTGARTCATCGAATCTTTG,TCCTSCGCTTATTGATATGC,FALSE,FALSE,50,TRUE,TRUE,0,2,2,0,0,5,50,292,0,0,0,0,15,2,50
+r16S,GTGYCAGCMGCCGCGGTAA,GGACTACNVGGGTWTCTAAT,TRUE,FALSE,50,TRUE,TRUE,0,2,2,0,0,5,50,Inf,0,0,0,0,15,2,50
 ```
 
 In tabular format: 
@@ -149,7 +149,7 @@ In tabular format:
 primerinfo_params <- read.csv(text = "
 primer_name,forward,reverse,already_trimmed,minCutadaptlength,multithread,verbose,maxN,maxEE_forward,maxEE_reverse,truncLen_forward,truncLen_reverse,truncQ,minLen,maxLen,minQ,trimLeft,trimRight,rm.lowcomplex,minOverlap,maxMismatch,min_asv_length
 rps10,GTTGGTTAGAGYARAAGACT,ATRYYTAGAAAGAYTYGAACT,FALSE,50,TRUE,TRUE,0,5,5,0,0,5,50,Inf,0,0,0,0,15,2,50
-its,GTGARTCATCGAATCTTTG,TCCTSCGCTTATTGATATGC,FALSE,50,TRUE,TRUE,0,2,2,0,0,5,50,295,0,0,0,0,15,2,50
+its,GTGARTCATCGAATCTTTG,TCCTSCGCTTATTGATATGC,FALSE,50,TRUE,TRUE,0,2,2,0,0,5,50,292,0,0,0,0,15,2,50
 r16S,GTGYCAGCMGCCGCGGTAA,GGACTACNVGGGTWTCTAAT,TRUE,50,TRUE,TRUE,0,2,2,0,0,5,50,Inf,0,0,0,0,15,2,50
 ", stringsAsFactors = FALSE)
 
@@ -159,7 +159,6 @@ knitr::kable(primerinfo_params, row.names = FALSE)
 ```{r setup, include=FALSE}
 #TODO-at some point switch to loading github repo version
 devtools::load_all("~/demulticoder")
-
 library("demulticoder")
 ```
 
@@ -167,9 +166,9 @@ library("demulticoder")
 ```{r prepare reads, fig.height=6, fig.width=6}
 outputs<-prepare_reads(
   data_directory = "~/demulticoder_benchmarking/demulticoder_combined_analysis_dads/data", 
-  output_directory = "~/demulticoder_benchmarking/package_vignettes/output_multiple_datasets", 
+  output_directory = "~/demulticoder_benchmarking/demulticoder_combined_analysis_dads/outputs", 
   tempdir_path = "~/demulticoder_benchmarking/temp",
-  overwrite_existing = TRUE)
+  overwrite_existing = FALSE)
 ```
 
 ### Step 4-Run Cutadapt to remove primers and then trim reads with DADA2 filterAndTrim function 
@@ -192,22 +191,22 @@ make_asv_abund_matrix(
 assign_tax(
   outputs,
   asv_abund_matrix,
-  db_its = "sh_general_release_dynamic_all_25.07.2023.fasta",
-  db_rps10 = "oomycetedb.fasta",
+  db_its="sh_general_release_dynamic_all_25.07.2023.fasta",
+  db_rps10="oomycetedb.fasta",
   db_16S="silva_nr99_v138.1_wSpecies_train_set.fa",
-  retrieve_files=TRUE,
+  retrieve_files=FALSE,
   overwrite_existing=TRUE)
 ```
 
 ### Step 7-convert asv matrix to taxmap and phyloseq objects with one function
 ```{r convert matrix to other formats, fig.height=6, fig.width=6}
-objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing = TRUE)
+objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing = TRUE, minimum_bootstrap = 80)
 ```
 
 ### Use phyloseq objects to examine the community composition of each sample
 Here we demonstrate how to make a stacked bar plot of the relative abundance of taxa by sample for the 16S-barcoded samples
 ```{r Phyloseq demonstration 16S, fig.width=20, fig.height=20, message=FALSE}
-data <- objs$phyloseq_its %>%
+data <- objs$phyloseq_r16S %>%
   phyloseq::transform_sample_counts(function(x) {x/sum(x)} ) %>% 
   phyloseq::psmelt() %>%                                        
   dplyr::filter(Abundance > 0.005) %>%                      
@@ -329,95 +328,91 @@ print(abund_plot)
 ```
 
 ### Step 10-looks look at a heat tree to see what taxa are more abundant in early vs. late samples, as another means to visualize the data and showcase how easy it is to use taxmap object rather than phylseq object 
-```{r heat tree example, fig.height=6, fig.width=6}
-objs$taxmap_r16S$data$tax_data <-metacoder::calc_obs_props(objs$taxmap_r16S, "otu_table")
+```{r heat tree example its, fig.height=6, fig.width=6}
 
+objs$taxmap_r16S$data$tax_data <- metacoder::zero_low_counts(objs$taxmap_r16S, data = "otu_table", min_count = 5)
+objs$taxmap_r16S$data$tax_data <-metacoder::calc_obs_props(objs$taxmap_r16S, "tax_data")
 objs$taxmap_r16S$data$tax_abund <- metacoder::calc_taxon_abund(objs$taxmap_r16S, "tax_data",
                                        cols = objs$taxmap_r16S$data$sample_data$samplename_barcode)
 
-objs$taxmap_r16S$data$tax_occ <- metacoder::calc_n_samples(objs$taxmap_r16S, "tax_abund", groups = objs$taxmap_r16S$data$sample_data$When, cols = objs$taxmap_r16S$data$sample_data$samplename_barcode)
+objs$taxmap_r16S$data$tax_occ <- metacoder::calc_n_samples(objs$taxmap_r16S, "tax_abund", groups = objs$taxmap_r16S$data$sample_data$organism, cols = objs$taxmap_r16S$data$sample_data$samplename_barcode)
 
+
+objs$taxmap_r16S <- metacoder::filter_taxa(objs$taxmap_r16S, taxon_names == "Bacteria", subtaxa = TRUE)
 
 objs$taxmap_r16S$data$diff_table <- metacoder::compare_groups(objs$taxmap_r16S,
                                       data = "tax_abund",
                                       cols = objs$taxmap_r16S$data$sample_data$samplename_barcode,
-                                      groups = objs$taxmap_r16S$data$sample_data$When)
-print(objs$taxmap_r16S$data$diff_table)
-
+                                      groups = objs$taxmap_r16S$data$sample_data$treatment)
 set.seed(999)
-metacoder::heat_tree(obj, 
+metacoder::heat_tree(objs$taxmap_r16S, 
           node_label = taxon_names,
           node_size = n_obs, # n_obs is a function that calculates, in this case, the number of OTUs per taxon
-          node_color = log2_median_ratio, # A column from `obj$data$diff_table`
+          node_color = log2_median_ratio, # A column from `objs$taxmap_r16S$data$diff_table`
           node_color_interval = c(-2, 2), # The range of `log2_median_ratio` to display
           node_color_range = c("cyan", "gray", "tan"), # The color palette used
           node_size_axis_label = "OTU count",
           node_color_axis_label = "Log 2 ratio of median proportions",
           layout = "davidson-harel", # The primary layout algorithm
           initial_layout = "reingold-tilford") # The layout algorithm that initializes node locations
-
 ```
 
 ### Step 10-looks look at a heat tree to see what taxa are more abundant in early vs. late samples, as another means to visualize the data and showcase how easy it is to use taxmap object rather than phylseq object 
 ```{r heat tree example, fig.height=6, fig.width=6}
-objs$taxmap_r16S$data$tax_data <-metacoder::calc_obs_props(objs$taxmap_r16S, "otu_table")
-
-objs$taxmap_r16S$data$tax_abund <- metacoder::calc_taxon_abund(objs$taxmap_r16S, "tax_data",
-                                       cols = objs$taxmap_r16S$data$sample_data$samplename_barcode)
-
-objs$taxmap_r16S$data$tax_occ <- metacoder::calc_n_samples(objs$taxmap_r16S, "tax_abund", groups = objs$taxmap_r16S$data$sample_data$When, cols = objs$taxmap_r16S$data$sample_data$samplename_barcode)
+objs$taxmap_its <- metacoder::filter_taxa(objs$taxmap_its, taxon_names == "Fungi", subtaxa = TRUE)
 
 
-objs$taxmap_r16S$data$diff_table <- metacoder::compare_groups(objs$taxmap_r16S,
+objs$taxmap_its$data$tax_data <- metacoder::zero_low_counts(objs$taxmap_its, data = "otu_table", min_count = 5)
+objs$taxmap_its$data$tax_data <-metacoder::calc_obs_props(objs$taxmap_its, "tax_data")
+objs$taxmap_its$data$tax_abund <- metacoder::calc_taxon_abund(objs$taxmap_its, "tax_data",
+                                       cols = objs$taxmap_its$data$sample_data$samplename_barcode)
+
+objs$taxmap_its$data$tax_occ <- metacoder::calc_n_samples(objs$taxmap_its, "tax_abund", groups = objs$taxmap_its$data$sample_data$organism, cols = objs$taxmap_its$data$sample_data$samplename_barcode)
+
+
+objs$taxmap_its$data$diff_table <- metacoder::compare_groups(objs$taxmap_its,
                                       data = "tax_abund",
-                                      cols = objs$taxmap_r16S$data$sample_data$samplename_barcode,
-                                      groups = objs$taxmap_r16S$data$sample_data$When)
-print(objs$taxmap_r16S$data$diff_table)
-
+                                      cols = objs$taxmap_its$data$sample_data$samplename_barcode,
+                                      groups = objs$taxmap_its$data$sample_data$treatment)
 set.seed(999)
-metacoder::heat_tree(obj, 
+metacoder::heat_tree(objs$taxmap_its, 
           node_label = taxon_names,
           node_size = n_obs, # n_obs is a function that calculates, in this case, the number of OTUs per taxon
-          node_color = log2_median_ratio, # A column from `obj$data$diff_table`
+          node_color = log2_median_ratio, # A column from `objs$taxmap_its$data$diff_table`
           node_color_interval = c(-2, 2), # The range of `log2_median_ratio` to display
           node_color_range = c("cyan", "gray", "tan"), # The color palette used
           node_size_axis_label = "OTU count",
           node_color_axis_label = "Log 2 ratio of median proportions",
           layout = "davidson-harel", # The primary layout algorithm
           initial_layout = "reingold-tilford") # The layout algorithm that initializes node locations
-
 ```
 
 ### Step 10-looks look at a heat tree to see what taxa are more abundant in early vs. late samples, as another means to visualize the data and showcase how easy it is to use taxmap object rather than phylseq object 
-```{r heat tree example, fig.height=6, fig.width=6}
-objs$taxmap_r16S$data$tax_data <-metacoder::calc_obs_props(objs$taxmap_r16S, "otu_table")
+```{r heat tree example rps10, fig.height=6, fig.width=6}
+objs$taxmap_rps10$data$tax_data <- metacoder::zero_low_counts(objs$taxmap_rps10, data = "otu_table", min_count = 5)
+objs$taxmap_rps10$data$tax_data <-metacoder::calc_obs_props(objs$taxmap_rps10, "tax_data")
+objs$taxmap_rps10$data$tax_abund <- metacoder::calc_taxon_abund(objs$taxmap_rps10, "tax_data",
+                                       cols = objs$taxmap_rps10$data$sample_data$samplename_barcode)
 
-objs$taxmap_r16S$data$tax_abund <- metacoder::calc_taxon_abund(objs$taxmap_r16S, "tax_data",
-                                       cols = objs$taxmap_r16S$data$sample_data$samplename_barcode)
-
-objs$taxmap_r16S$data$tax_occ <- metacoder::calc_n_samples(objs$taxmap_r16S, "tax_abund", groups = objs$taxmap_r16S$data$sample_data$When, cols = objs$taxmap_r16S$data$sample_data$samplename_barcode)
+objs$taxmap_rps10$data$tax_occ <- metacoder::calc_n_samples(objs$taxmap_rps10, "tax_abund", groups = objs$taxmap_rps10$data$sample_data$organism, cols = objs$taxmap_rps10$data$sample_data$samplename_barcode)
 
 
-objs$taxmap_r16S$data$diff_table <- metacoder::compare_groups(objs$taxmap_r16S,
+objs$taxmap_rps10$data$diff_table <- metacoder::compare_groups(objs$taxmap_rps10,
                                       data = "tax_abund",
-                                      cols = objs$taxmap_r16S$data$sample_data$samplename_barcode,
-                                      groups = objs$taxmap_r16S$data$sample_data$When)
-print(objs$taxmap_r16S$data$diff_table)
-
+                                      cols = objs$taxmap_rps10$data$sample_data$samplename_barcode,
+                                      groups = objs$taxmap_rps10$data$sample_data$treatment)
 set.seed(999)
-metacoder::heat_tree(obj, 
+metacoder::heat_tree(objs$taxmap_rps10, 
           node_label = taxon_names,
           node_size = n_obs, # n_obs is a function that calculates, in this case, the number of OTUs per taxon
-          node_color = log2_median_ratio, # A column from `obj$data$diff_table`
+          node_color = log2_median_ratio, # A column from `objs$taxmap_rps10$data$diff_table`
           node_color_interval = c(-2, 2), # The range of `log2_median_ratio` to display
           node_color_range = c("cyan", "gray", "tan"), # The color palette used
           node_size_axis_label = "OTU count",
           node_color_axis_label = "Log 2 ratio of median proportions",
           layout = "davidson-harel", # The primary layout algorithm
           initial_layout = "reingold-tilford") # The layout algorithm that initializes node locations
-
 ```
-
 
 ```{r}
 sessioninfo::session_info()
