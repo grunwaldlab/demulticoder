@@ -13,9 +13,7 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>", 
-  fig.path = "./",
-  fig.width = 6,
-  fig.height = 6
+  fig.path = "./"
 )
 ```
 
@@ -32,7 +30,8 @@ library("demulticoder")
 ```{r prepare reads}
 outputs<-prepare_reads(
   data_directory = "~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/data", 
-  output_directory = "~/output_pooled_amplicons", 
+  output_directory = "~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/outputs", 
+  tempdir_path = "~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/temp_rhode", 
   overwrite_existing = TRUE)
 ```
 
@@ -41,7 +40,7 @@ outputs<-prepare_reads(
 cut_trim(
   outputs,
   cutadapt_path="/usr/bin/cutadapt",
-  overwrite_existing = TRUE)
+  overwrite_existing = FALSE)
 ```
 
 ### Step 3-Core ASV inference step
@@ -56,9 +55,10 @@ make_asv_abund_matrix(
 assign_tax(
   outputs,
   asv_abund_matrix,
-  db_its = "sh_general_release_dynamic_all_25.07.2023.fasta",
+  db_its = "sh_general_release_dynamic_all_04.04.2024.fasta",
   db_rps10 = "oomycetedb.fasta",
   retrieve_files=TRUE,
+  tryRC = TRUE,
   overwrite_existing=FALSE)
 ```
 
@@ -67,9 +67,12 @@ assign_tax(
 objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing = TRUE)
 ```
 
-### Step 6-Let's now proceed with some exploratory analysis using taxmap objs
-```{r convert matrix to other formats}
-objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing = TRUE)
+### Step 6-Let's now proceed with some exploratory analysis using taxmap objs. The code is addapted from an analysis done by Zach Foster. 
+
+# Based on previous analyses, we will read our output matrices directly, combine rps10 and its matrices, and make sure there are no redundant taxa, and then proceed. This demonstration shows that you don't need to rely on the converted phyloseq or taxmap objects if you want more flexibility.
+```{r Additional analysis 1}
+rps10_matrix<-read.csv("~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/outputs2/final_asv_abundance_matrix_rps10.csv")
+its_matrix<-read.csv("~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/outputs2/final_asv_abundance_matrix_its.csv")
 ```
 
 ```{r}

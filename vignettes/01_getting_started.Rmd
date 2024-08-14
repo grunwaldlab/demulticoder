@@ -143,7 +143,7 @@ The sample names, primer sequences, and other metadata are reorganized in prepar
 ```{r prepare_reads function, warning=FALSE, message=FALSE}
 analysis_setup<-demulticoder::prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
-  output_directory = "~/output_test_dataset2", 
+  output_directory = "~/output_test_dataset", 
   overwrite_existing=TRUE)
 ```
 
