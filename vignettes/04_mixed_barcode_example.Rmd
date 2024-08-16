@@ -207,7 +207,7 @@ assign_tax(
 
 ### Step 8-Convert ASV matrix to taxmap and phyloseq objects with one function  
 ```{r convert matrix to other formats, fig.height=6, fig.width=6}
-objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing = TRUE)
+objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing = TRUE, minimum_bootstrap = 60)
 ```
 
 ### Step 9-Use phyloseq objects to examine the community composition of each sample  
@@ -433,49 +433,105 @@ print(combined_plot)
 ```
 
 ### Step 11-Based on the big differences in microbial communities between untreated and treated samples, whether some taxa are more differentially abudnant in untreated vs. treated samples. We will use DESEQ2.
-```{r heat tree 16S}
 
+Here is an example with the 16S dataset. For whatever reason, there is an error with igraph, so figure isn't rendering, even though intermediate outputs look reasonable. Will look at this again. Other two trees rendered properly. 
+```{r heat tree 16S, fig.height=6, fig.width=6, message=FALSE, echo=FALSE}
+objs$taxmap_r16S$data$tax_abund <- calc_taxon_abund(objs$taxmap_r16S, data = "otu_table", cols = objs$taxmap_r16S$data$sample_data$sample_id)
+# Calculate total abundance per sample
+asv_total_abundance <- rowSums(objs$taxmap_r16S$data$tax_abund[, -1])
+
+
+objs$taxmap_r16S <- metacoder::filter_taxa(objs$taxmap_r16S, taxon_names == "Bacteria", subtaxa = TRUE)
+objs$taxmap_r16S <- metacoder::filter_taxa(objs$taxmap_r16S, taxon_names != "None", reassign_obs = FALSE)
+objs$taxmap_r16S <- metacoder::filter_taxa(objs$taxmap_r16S, taxon_names != "", reassign_obs = FALSE)
+objs$taxmap_r16S <- metacoder::filter_taxa(objs$taxmap_r16S, taxon_names != "NA", reassign_obs = FALSE)
+objs$taxmap_r16S <- metacoder::filter_taxa(objs$taxmap_r16S, taxon_names != "Unsupported", reassign_obs = FALSE)
+
+
+objs$taxmap_r16S$data$diff_table_deseq <- metacoder::calc_diff_abund_deseq2(objs$taxmap_r16S,
+                                      data = "tax_abund",
+                                      cols = objs$taxmap_r16S$data$sample_data$samplename_barcode, # What columns of sample data to
+                                      groups = objs$taxmap_r16S$data$sample_data$treatment) # What category each sample is assigned to
+
+objs$taxmap_r16S$data$diff_table_deseq$log2FoldChange[objs$taxmap_r16S$data$diff_table_deseq$padj > 0.05] <- 0
+
+range(objs$taxmap_r16S$objs$taxmap_r16S$data$diff_table_deseq$padj, finite = TRUE) 
+range(objs$taxmap_r16S$data$diff_table_deseq$log2FoldChange, finite = TRUE) 
+
+
+objs$taxmap_r16S%>%
+  metacoder::filter_taxa(taxon_ranks == "Species", supertaxa = TRUE, reassign_obs = FALSE) %>%
+  # Filter taxa to only include those where the kingdom is "Bacteria"
+  heat_tree_matrix(data = "diff_table_deseq",
+                   node_label = taxon_names,
+                   node_size = n_obs, # number of OTUs
+                   node_color = log2FoldChange, # difference between groups
+                   node_color_trans = "linear",
+                   node_color_interval = c(-11, 11), # symmetric interval
+                   edge_color_interval = c(-11, 11), # symmetric interval
+                   node_color_range = diverging_palette(), # diverging colors
+                   node_size_axis_label = "ASV count",
+                   node_color_axis_label = "Log 2 Fold Change",
+                   layout = "da", initial_layout = "re",
+                   key_size = 0.67, 
+                   seed=1)
 ```
 
-```{r heat tree ITS}
-objs$taxmap_its$data$tax_abund <- calc_taxon_abund(objs$taxmap_its, data = "otu_table", cols = objs$taxmap_its$data$sample_data$sample_id)
 
+Let's look at what fungal taxa are more abundant in treated vs. untreated samples
+```{r heat tree ITS, fig.height=6, fig.width=6, message=FALSE, echo=FALSE}
+objs$taxmap_its$data$tax_abund <- calc_taxon_abund(objs$taxmap_its, data = "otu_table", cols = objs$taxmap_its$data$sample_data$sample_id)
 # Calculate total abundance per sample
 asv_total_abundance <- rowSums(objs$taxmap_its$data$tax_abund[, -1])
+
+
+objs$taxmap_its<- filter_taxa(objs$taxmap_its, taxon_names == "Fungi", subtaxa = TRUE)
+objs$taxmap_its <- filter_taxa(objs$taxmap_its, taxon_names != "")
+objs$taxmap_its <- metacoder::filter_taxa(objs$taxmap_its, taxon_names != "Unsupported", reassign_obs = FALSE)
+
 
 objs$taxmap_its$data$diff_table_deseq <- metacoder::calc_diff_abund_deseq2(objs$taxmap_its,
                                       data = "tax_abund",
                                       cols = objs$taxmap_its$data$sample_data$samplename_barcode, # What columns of sample data to
                                       groups = objs$taxmap_its$data$sample_data$treatment) # What category each sample is assigned to
 
+
+
 objs$taxmap_its$data$diff_table_deseq$log2FoldChange[objs$taxmap_its$data$diff_table_deseq$padj > 0.05] <- 0
 
 range(objs$taxmap_its$objs$taxmap_its$data$diff_table_deseq$padj, finite = TRUE) 
 range(objs$taxmap_its$data$diff_table_deseq$log2FoldChange, finite = TRUE) 
 
+
+
 set.seed(1)
 objs$taxmap_its %>%
   metacoder::filter_taxa(taxon_ranks == "Species", supertaxa = TRUE, reassign_obs = FALSE) %>%
+  metacoder::filter_taxa(taxon_names != "Unsupported", reassign_obs = FALSE) %>%
   heat_tree_matrix(data = "diff_table_deseq",
                    node_label = taxon_names,
                    node_size = n_obs, # number of OTUs
                    node_color = log2FoldChange, # difference between groups
                    node_color_trans = "linear",
-                   node_color_interval = c(-27, 27), # symmetric interval
-                   edge_color_interval = c(-27, 27), # symmetric interval
+                   node_color_interval = c(-25, 25), # symmetric interval
+                   edge_color_interval = c(-25, 25), # symmetric interval
                    node_color_range = diverging_palette(), # diverging colors
                    node_size_axis_label = "ASV count",
                    node_color_axis_label = "Log 2 Fold Change",
                    layout = "da", initial_layout = "re",
                    key_size = 0.67,
-                   seed = 2)
+                   seed = 1)
 ```
 
-```{r heat tree RPS10}
+Finally, let's look at which oomycetes are more abudnant in treated vs.treated samples
+```{r heat tree RPS10, fig.height=6, fig.width=6, message=FALSE, echo=FALSE}
 objs$taxmap_rps10$data$tax_abund <- calc_taxon_abund(objs$taxmap_rps10, data = "otu_table", cols = objs$taxmap_rps10$data$sample_data$sample_id)
 
 # Calculate total abundance per sample
 asv_total_abundance <- rowSums(objs$taxmap_rps10$data$tax_abund[, -1])
+
+
+objs$taxmap_rps10 <- metacoder::filter_taxa(objs$taxmap_rps10, taxon_names != "Unsupported", reassign_obs = FALSE)
 
 objs$taxmap_rps10$data$diff_table_deseq <- metacoder::calc_diff_abund_deseq2(objs$taxmap_rps10,
                                       data = "tax_abund",
@@ -484,12 +540,16 @@ objs$taxmap_rps10$data$diff_table_deseq <- metacoder::calc_diff_abund_deseq2(obj
 
 objs$taxmap_rps10$data$diff_table_deseq$log2FoldChange[objs$taxmap_rps10$data$diff_table_deseq$padj > 0.05] <- 0
 
+
 range(objs$taxmap_rps10$objs$taxmap_rps10$data$diff_table_deseq$padj, finite = TRUE) 
 range(objs$taxmap_rps10$data$diff_table_deseq$log2FoldChange, finite = TRUE) 
 
+
 set.seed(1)
 objs$taxmap_rps10 %>%
-  #metacoder::filter_taxa(taxon_ranks == "Species", supertaxa = TRUE, reassign_obs = FALSE) %>%
+  metacoder::filter_taxa(taxon_ranks == "Species", supertaxa = TRUE, reassign_obs = FALSE) %>%
+  metacoder::filter_taxa(taxon_names != "Unsupported", reassign_obs = FALSE) %>%
+  metacoder::filter_taxa(taxon_names != "", reassign_obs = FALSE) %>%
   heat_tree_matrix(data = "diff_table_deseq",
                    node_label = taxon_names,
                    node_size = n_obs, # number of OTUs
@@ -502,7 +562,7 @@ objs$taxmap_rps10 %>%
                    node_color_axis_label = "Log 2 Fold Change",
                    layout = "da", initial_layout = "re",
                    key_size = 0.67,
-                   seed = 2)
+                   seed = 1)
 ```
 
 ```{r}
