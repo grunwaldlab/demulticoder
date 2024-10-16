@@ -12,8 +12,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>", 
-  fig.path = "./"
+  comment = "#>"
 )
 ```
 
@@ -32,7 +31,7 @@ outputs<-prepare_reads(
   data_directory = "~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/data", 
   output_directory = "~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/outputs_trunq2_overlap12", 
   tempdir_path = "~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/temp_rhode2", 
-  overwrite_existing = TRUE)
+  overwrite_existing = FALSE)
 ```
 
 ### Step 2-Run Cutadapt to remove primers and then trim reads with DADA2 filterAndTrim function 
@@ -47,7 +46,7 @@ cut_trim(
 ```{r ASV inference}
 make_asv_abund_matrix(
   outputs,
-  overwrite_existing = TRUE)
+  overwrite_existing = FALSE)
 ```
 
 ### Step 4-Assign taxonomy step
@@ -69,10 +68,11 @@ objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing 
 
 ### Step 6-Let's now proceed with some exploratory analysis using taxmap objs. The code is addapted from an analysis done by Zach Foster. 
 
-# Based on previous analyses, we will load output matrices directly, combine rps10 and its matrices, and make sure there are no redundant taxa, and then proceed. This demonstration shows that you don't need to rely on the converted phyloseq or taxmap objects if you want more flexibilitywith being able to combine matrices.
+# Based on previous analyses, we will load output matrices directly, combine rps10 and its matrices, and make sure there are no redundant taxa, and then proceed. This demonstration shows that you don't need to rely on the converted phyloseq or taxmap objects if you want more flexibility with being able to combine matrices.
 ```{r Additional analysis 1}
-rps10_matrix<-read.csv("~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/outputs2/final_asv_abundance_matrix_rps10.csv")
+rps10_matrix<-read.csv("~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/")
 its_matrix<-read.csv("~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/outputs2/final_asv_abundance_matrix_its.csv")
+
 ```
 
 ```{r}

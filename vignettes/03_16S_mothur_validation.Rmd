@@ -12,7 +12,8 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.path = "./"
 )
 ```
 
@@ -74,15 +75,15 @@ knitr::kable(data, row.names = FALSE)
 
 ```{r setup, include=FALSE}
 #TODO-at some point switch to loading github repo version
-devtools::load_all("~/demulticoder")
+devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
 library("demulticoder")
 ```
 
 ### Step 1-Remove N's and create directory structure for downstream steps
 ```{r prepare reads, fig.height=6, fig.width=6}
 outputs<-prepare_reads(
-  data_directory = "~/demulticoder_benchmarking/demulticoder_mothur_miseq_sop/data", 
-  output_directory = "~/demulticoder_benchmarking/demulticoder_mothur_miseq_sop/outputs",
+  data_directory = "~/demulticoder_benchmarking_2/demulticoder_mothur_miseq_sop/data", 
+  output_directory = "~/demulticoder_benchmarking_2/demulticoder_mothur_miseq_sop/outputs",
   overwrite_existing = FALSE)
 ```
 
@@ -119,7 +120,7 @@ objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing 
 ### Step 6-evaluate accuracy using mock community, as shown in dada2 tutorial
 ```{r examine accuracy, fig.height=6, fig.width=6}
 library(Biostrings); packageVersion("Biostrings")
-tax_matrix<-read.csv("~/demulticoder_benchmarking/demulticoder_mothur_miseq_sop/outputs/final_asv_abundance_matrix_r16S.csv")
+tax_matrix<-read.csv("~/demulticoder_benchmarking_2/demulticoder_mothur_miseq_sop/outputs/final_asv_abundance_matrix_r16S.csv")
 
 unqs.mock <- tax_matrix[, c(2, which(colnames(tax_matrix) == "Mock_r16S"))]
 

@@ -8,8 +8,12 @@ navbar:
     articles:
       text: Example Workflows
       menu:
+        text: 16S SOP Validation
+        href: articles/03_16S_mothur_validation.html
       - text: Mixed Barcode Example
-        href: articles/03_mixed_barcode_example.html
+        href: articles/04_mixed_barcode_example.html
+        text: Pooled Barcode Example
+        href: articles/05_pooled_amplicon_example.html
     intro:
       text: Get Started
       href: articles/01_getting_started.html
