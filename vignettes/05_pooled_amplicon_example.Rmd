@@ -72,7 +72,6 @@ objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing 
 ```{r Additional analysis 1}
 rps10_matrix<-read.csv("~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/")
 its_matrix<-read.csv("~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/outputs2/final_asv_abundance_matrix_its.csv")
-
 ```
 
 ```{r}
