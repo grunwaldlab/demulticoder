@@ -1,0 +1,237 @@
+---
+title: "A comparison of standard workflow vs. demulticoder analysis outputs"
+output: 
+  rmarkdown::html_vignette:
+    fig_path: "man/figures"
+vignette: >
+  %\VignetteIndexEntry{Multiplexed and pooled barcode examples}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(phyloseq); packageVersion("phyloseq")
+library(ggplot2); packageVersion("ggplot2")
+library(readr); packageVersion("readr")
+library(tidyr); packageVersion("tidyr")
+library(purrr); packageVersion("purrr")
+library(furrr); packageVersion("furrr")
+library(dplyr); packageVersion("dplyr")
+library(stringr); packageVersion("stringr")
+library(forcats); packageVersion("forcats")
+library(metacoder); packageVersion("metacoder")
+library(data.table); packageVersion("data.table")
+library(decontam); packageVersion("decontam")
+library(Biostrings); packageVersion("Biostrings")
+library(magick); packageVersion("magick")
+library(vegan); packageVersion("vegan")
+library(pdftools);packageVersion("pdftools")
+library(vegan); packageVersion("vegan")
+library(grid)
+library(gridExtra)
+```
+
+## More in-depth comparison of standard workflow outputs vs. demluticoder analysis outputs for a multiplexed and pooled pooled barcode dataset
+
+This analysis accompanies the analyses described in the associated manuscript. 
+Input metadata and primerinfo_params files are in data folder
+
+```{r setup, include=FALSE}
+#TODO-at some point switch to loading github repo version
+devtools::load_all("~/demulticoder")
+library("demulticoder")
+```
+
+### Load demulticoder outputs
+```{r load demulticoder outputs}
+seed <- 1
+set.seed(seed)
+
+asv_matrix_rps10<-read.csv("demulticoder/data/final_asv_abundance_matrix_rps10.csv")
+asv_matrix_rps10$dada2_tax <- asv_matrix_rps10$dada2_tax <- gsub("Stramenopila", "Eukaryota--100--Domain;Stramenopila", asv_matrix_rps10$dada2_tax)
+asv_matrix_rps10 <- asv_matrix_rps10[, -1]
+colnames(asv_matrix_rps10)[3:ncol(asv_matrix_rps10)] <- gsub("_rps10$", "", colnames(asv_matrix_rps10)[3:ncol(asv_matrix_rps10)])
+
+asv_matrix_its<-read.csv("demulticoder/data/final_asv_abundance_matrix_its.csv")
+asv_matrix_its$dada2_tax <- gsub("Fungi", "Eukaryota--100--Domain;Fungi", asv_matrix_its$dada2_tax)
+asv_matrix_its <- asv_matrix_its[, -1]
+colnames(asv_matrix_its)[3:ncol(asv_matrix_rps10)] <- gsub("_its$", "", colnames(asv_matrix_its)[3:ncol(asv_matrix_its)])
+
+
+#Let's combine these matrices
+#For easier analysis, we previously combined the two matrices, and appended domain info to each one so we can make one heat tree for combined dataset
+sample_cols_its <- setdiff(names(asv_matrix_its), c("sequence", "dada2_tax"))
+sample_cols_rps10 <- setdiff(names(asv_matrix_rps10), c("sequence", "dada2_tax"))
+
+if(!all(sample_cols_its == sample_cols_rps10)) {
+  stop("Sample columns do not match between ITS and RPS10 dataframes!")
+}
+
+abundance <- rbind(
+ asv_matrix_its[, c("sequence", "dada2_tax", sample_cols_its)],  # ITS data
+  asv_matrix_rps10[, c("sequence", "dada2_tax", sample_cols_rps10)]  # RPS10 data
+)
+
+write.csv(abundance, "demulticoder/data/final_asv_abundance_matrix_combined_demulticoder.csv")
+
+metadata_path <- file.path("demulticoder/data/metadata.csv")
+metadata <- read_csv(metadata_path)
+print(metadata)
+```
+
+### Load standard workflow outputs-ITS data
+```{r load standard workflow outputs}
+taxa_its<- read.table("standard_workflow/its/data/its_taxa.out", sep="\t", stringsAsFactors=F,header=T)
+
+taxa_filt_its <- taxa_its %>%
+  mutate(across(starts_with("tax."), ~ ifelse(get(str_replace(cur_column(), "tax.", "boot.")) < 0, NA, .))) %>%
+  set_names(str_replace(names(.), "tax.", ""))
+
+remove_prefix_its <- function(data) {
+  data <- gsub("[a-z]__", "", data)  
+  return(data)
+}
+
+taxa_filt_its[] <- lapply(taxa_filt_its, remove_prefix_its)
+
+revise_species_its <- function(genus, species) {
+  revise_species_its <- ifelse(is.na(species), NA, paste(genus, species, sep = "_"))
+  return(revise_species_its)
+}
+
+taxa_filt_its$Species <- revise_species_its(taxa_filt_its$Genus, taxa_filt_its$Species)
+taxa_its_df <- as.data.frame(taxa_filt_its)
+taxa_its_df$sequence <- rownames(taxa_its_df)
+taxa_its_df <- taxa_its_df[, c("sequence", setdiff(names(taxa_its_df), "sequence"))]
+rownames(taxa_its_df) <- NULL
+
+#Load ASV matrix now
+seqtab_nochim_its <- read.table("standard_workflow/its/data/its_seqtab_nochim.out")
+seqtab_nochim_its <- t(seqtab_nochim_its)
+seqtab_nochim_its_df <- as.data.frame(seqtab_nochim_its)
+seqtab_nochim_its_df$sequence <- rownames(seqtab_nochim_its_df)
+seqtab_nochim_its_df <- seqtab_nochim_its_df[, c("sequence", setdiff(names(seqtab_nochim_its_df), "sequence"))]
+rownames(seqtab_nochim_its_df) <- NULL
+
+
+#Combine matrices
+combined_df_its <- merge(seqtab_nochim_its_df, taxa_its_df, by = "sequence", all = TRUE)
+
+taxonomic_cols <- c("Kingdom", "Phylum", "Class", "Order", 
+                    "Family", "Genus", "Species")
+
+bootstrap_cols <- c("boot.Kingdom", "boot.Phylum", "boot.Class", "boot.Order", 
+                    "boot.Family", "boot.Genus", "boot.Species")
+
+dada2_tax <- mapply(function(tax, boot, level) {
+  paste(tax, boot, level, sep = "--")
+}, combined_df_its[, taxonomic_cols], combined_df_its[, bootstrap_cols], 
+   c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"))
+
+combined_df_its$dada2_tax <- apply(dada2_tax, 1, paste, collapse = ";")
+
+#Remove all other tax and boot columns
+combined_df_its <- combined_df_its[, !(names(combined_df_its) %in% c(taxonomic_cols, bootstrap_cols))]
+
+# Reorder columns to put 'taxa_bootstrap_combined' after 'sequence'
+combined_df_its <- combined_df_its[, c("sequence", "dada2_tax", setdiff(names(combined_df_its), c("sequence", "dada2_tax")))]
+
+#Add domain-100-Eukaryota; prefix before Kingdom
+combined_df_its$dada2_tax <- gsub("Fungi", "Eukaryota--100--Domain;Fungi", combined_df_its$dada2_tax)
+
+#Load metadata
+samdf_its<- read.csv("standard_workflow/its/data/metadata_its.csv")
+
+#Save file
+write.csv(combined_df_its, "standard_workflow/its/data/its_abundance_matrix_combined_dada2workflow.csv")
+```
+
+### Load standard workflow outputs-rps10 data
+```{r load standard workflow outputs}
+taxa_rps10<- read.table("standard_workflow/rps10/data/rps10_taxa.out", sep="\t", stringsAsFactors=F,header=T)
+
+taxa_filt_rps10 <- taxa_rps10 %>%
+  mutate(across(starts_with("tax."), ~ ifelse(get(str_replace(cur_column(), "tax.", "boot.")) < 0, NA, .))) %>%
+  set_names(str_replace(names(.), "tax.", ""))
+
+remove_prefix_rps10 <- function(data) {
+  data <- gsub("[a-z]__", "", data)  
+  return(data)
+}
+
+taxa_filt_rps10[] <- lapply(taxa_filt_rps10, remove_prefix_rps10)
+
+taxa_rps10_df <- as.data.frame(taxa_filt_rps10)
+taxa_rps10_df$sequence <- rownames(taxa_rps10_df)
+taxa_rps10_df <- taxa_rps10_df[, c("sequence", setdiff(names(taxa_rps10_df), "sequence"))]
+rownames(taxa_rps10_df) <- NULL
+
+#Load ASV matrix now
+seqtab_nochim_rps10 <- read.table("standard_workflow/rps10/data/rps10_seqtab_nochim.out")
+rownames(seqtab_nochim_rps10) <- gsub("__", "_", rownames(seqtab_nochim_rps10))
+
+seqtab_nochim_rps10 <- t(seqtab_nochim_rps10)
+seqtab_nochim_rps10_df <- as.data.frame(seqtab_nochim_rps10)
+seqtab_nochim_rps10_df$sequence <- rownames(seqtab_nochim_rps10_df)
+seqtab_nochim_rps10_df <- seqtab_nochim_rps10_df[, c("sequence", setdiff(names(seqtab_nochim_rps10_df), "sequence"))]
+rownames(seqtab_nochim_rps10_df) <- NULL
+
+#Combine matrices
+combined_df_rps10 <- merge(seqtab_nochim_rps10_df, taxa_rps10_df, by = "sequence", all = TRUE)
+
+taxonomic_cols <- c("Kingdom", "Phylum", "Class", "Order", 
+                    "Family", "Genus", "Species")
+
+bootstrap_cols <- c("boot.Kingdom", "boot.Phylum", "boot.Class", "boot.Order", 
+                    "boot.Family", "boot.Genus", "boot.Species")
+
+dada2_tax <- mapply(function(tax, boot, level) {
+  paste(tax, boot, level, sep = "--")
+}, combined_df_rps10[, taxonomic_cols], combined_df_rps10[, bootstrap_cols], 
+   c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"))
+
+combined_df_rps10$dada2_tax <- apply(dada2_tax, 1, paste, collapse = ";")
+
+#Remove all other tax and boot columns
+combined_df_rps10 <- combined_df_rps10[, !(names(combined_df_rps10) %in% c(taxonomic_cols, bootstrap_cols))]
+
+# Reorder columns to put 'taxa_bootstrap_combined' after 'sequence'
+combined_df_rps10 <- combined_df_rps10[, c("sequence", "dada2_tax", setdiff(names(combined_df_rps10), c("sequence", "dada2_tax")))]
+
+#Add domain-100-Eukaryota; prefix before Kingdom
+combined_df_rps10$dada2_tax <- gsub("Stramenopila", "Eukaryota--100--Domain;Stramenopila", combined_df_rps10$dada2_tax)
+
+#Load metadata
+samdf_rps10<- read.csv("standard_workflow/rps10/data/metadata_rps10.csv")
+
+#Save file
+write.csv(combined_df_rps10, "standard_workflow/rps10/data/rps10_abundance_matrix_combined_dada2workflow.csv")
+
+#Load DADA2 metadata file
+samdf_rps10<- read.csv("standard_workflow/rps10/data/metadata_rps10.csv")
+```
+```
+
+### Generate summary of read counts throughout the workflow for demlticoder specfific analysis
+```{r load demulticoder outputs}
+#Fourth, let's track reads
+track_reads_demulticoder_its<-read.csv("demulticoder/data/track_reads_its.csv", row.names = 1)
+track_reads_demulticoder_rps10<-read.csv("demulticoder/data/track_reads_rps10.csv", row.names = 1)
+```
+
+### Generate summary of read counts throughout the workflow for demlticoder specfific analysis
+```{r load demulticoder outputs}
+
+```
+
+### Track reads throughout demulticoder workflows
+
+### Track reasd throughout standard workflows
+```{r}
+sessioninfo::session_info()
+```

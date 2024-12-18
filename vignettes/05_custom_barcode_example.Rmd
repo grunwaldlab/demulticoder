@@ -1,5 +1,5 @@
 ---
-title: "Pooled amplicon example"
+title: "Custom barcode example"
 output: 
   rmarkdown::html_vignette:
     fig_path: "man/figures"

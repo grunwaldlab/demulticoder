@@ -56,7 +56,7 @@ convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minim
   result_list <- list()
   
   for (suffix in unique_suffixes) {
-    taxmap_name <- paste0("obj_dada_", suffix)
+    taxmap_name <- paste0("taxmap_obj_", suffix)
     phyloseq_name <- paste0("phylo_obj_", suffix)
     
     taxmap_path <- file.path(output_directory_path, paste0(taxmap_name, ".RData"))
@@ -85,28 +85,28 @@ convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minim
           collapse = ';'
         )
       })
-      obj_dada <- metacoder::parse_tax_data(abundance, class_cols = 'dada2_tax', class_sep = ';', include_tax_data = TRUE,
+      taxmap_obj <- metacoder::parse_tax_data(abundance, class_cols = 'dada2_tax', class_sep = ';', include_tax_data = TRUE,
                                             class_regex = '^(.+)--(.+)--(.+)$',
                                             class_key = c(taxon = 'taxon_name', boot = 'info', rank = 'taxon_rank'))
-      names(obj_dada$data) <- c('abund', 'score')
+      names(taxmap_obj$data) <- c('abund', 'score')
       
-      obj_dada$data$otu_table = obj_dada$data$abund[, -3:-4]
+      taxmap_obj$data$otu_table = taxmap_obj$data$abund[, -3:-4]
       filtered_sample_data <- data_tables$metadata[data_tables$metadata$primer_name == suffix, ]
-      obj_dada$data$sample_data = filtered_sample_data
+      taxmap_obj$data$sample_data = filtered_sample_data
       
       
       phylo_obj <- metacoder::as_phyloseq(
-        obj_dada,
-        sample_data = obj_dada$data$sample_data,
+        taxmap_obj,
+        sample_data = taxmap_obj$data$sample_data,
         sample_id_col = "samplename_barcode", 
         otu_id_col = "asv_id"
       )
       
-      result_list[[paste0("taxmap_", suffix)]] <- obj_dada
+      result_list[[paste0("taxmap_", suffix)]] <- taxmap_obj
       result_list[[paste0("phyloseq_", suffix)]] <- phylo_obj
       
       if (save_outputs == TRUE) {
-        save(obj_dada, file = taxmap_path)
+        save(taxmap_obj, file = taxmap_path)
         save(phylo_obj, file = phyloseq_path)
         
         cat("For", suffix, "dataset", "\n")
