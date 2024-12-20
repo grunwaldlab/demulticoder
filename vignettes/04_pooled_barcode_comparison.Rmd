@@ -36,14 +36,16 @@ library(grid)
 library(gridExtra)
 ```
 
-## More in-depth comparison of standard workflow outputs vs. demluticoder analysis outputs for a multiplexed and pooled pooled barcode dataset
+## More in-depth comparison of standard workflow outputs vs. demulticoder analysis outputs for a multiplexed and pooled pooled barcode dataset
 
-This analysis accompanies the analyses described in the associated manuscript. 
-Input metadata and primerinfo_params files are in data folder
+This analysis accompanies the rhododendron rhizobiome analyses described in the associated manuscript. 
 
+Briefly, TODO
+
+### Input metadata and primerinfo_params files are in data folder
 ```{r setup, include=FALSE}
 #TODO-at some point switch to loading github repo version
-devtools::load_all("~/demulticoder")
+devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
 library("demulticoder")
 ```
 
@@ -52,12 +54,12 @@ library("demulticoder")
 seed <- 1
 set.seed(seed)
 
-asv_matrix_rps10<-read.csv("demulticoder/data/final_asv_abundance_matrix_rps10.csv")
+asv_matrix_rps10<-read.csv("~/benchmark_demulticoder/demulticoder/data/final_asv_abundance_matrix_rps10.csv")
 asv_matrix_rps10$dada2_tax <- asv_matrix_rps10$dada2_tax <- gsub("Stramenopila", "Eukaryota--100--Domain;Stramenopila", asv_matrix_rps10$dada2_tax)
 asv_matrix_rps10 <- asv_matrix_rps10[, -1]
 colnames(asv_matrix_rps10)[3:ncol(asv_matrix_rps10)] <- gsub("_rps10$", "", colnames(asv_matrix_rps10)[3:ncol(asv_matrix_rps10)])
 
-asv_matrix_its<-read.csv("demulticoder/data/final_asv_abundance_matrix_its.csv")
+asv_matrix_its<-read.csv("~/benchmark_demulticoder/demulticoder/data/final_asv_abundance_matrix_its.csv")
 asv_matrix_its$dada2_tax <- gsub("Fungi", "Eukaryota--100--Domain;Fungi", asv_matrix_its$dada2_tax)
 asv_matrix_its <- asv_matrix_its[, -1]
 colnames(asv_matrix_its)[3:ncol(asv_matrix_rps10)] <- gsub("_its$", "", colnames(asv_matrix_its)[3:ncol(asv_matrix_its)])
@@ -77,16 +79,16 @@ abundance <- rbind(
   asv_matrix_rps10[, c("sequence", "dada2_tax", sample_cols_rps10)]  # RPS10 data
 )
 
-write.csv(abundance, "demulticoder/data/final_asv_abundance_matrix_combined_demulticoder.csv")
+abundance_with_inf <- read.csv("~/benchmark_demulticoder/demulticoder/data/abundance_with_infection_data.csv") 
 
-metadata_path <- file.path("demulticoder/data/metadata.csv")
+metadata_path <- file.path("~/benchmark_demulticoder/demulticoder/data/metadata_with_infection_data.csv")
 metadata <- read_csv(metadata_path)
 print(metadata)
 ```
 
 ### Load standard workflow outputs-ITS data
 ```{r load standard workflow outputs}
-taxa_its<- read.table("standard_workflow/its/data/its_taxa.out", sep="\t", stringsAsFactors=F,header=T)
+taxa_its<- read.table("~/benchmark_demulticoder/standard_workflow/its/data/its_taxa.out", sep="\t", stringsAsFactors=F,header=T)
 
 taxa_filt_its <- taxa_its %>%
   mutate(across(starts_with("tax."), ~ ifelse(get(str_replace(cur_column(), "tax.", "boot.")) < 0, NA, .))) %>%
@@ -111,7 +113,7 @@ taxa_its_df <- taxa_its_df[, c("sequence", setdiff(names(taxa_its_df), "sequence
 rownames(taxa_its_df) <- NULL
 
 #Load ASV matrix now
-seqtab_nochim_its <- read.table("standard_workflow/its/data/its_seqtab_nochim.out")
+seqtab_nochim_its <- read.table("~/benchmark_demulticoder/standard_workflow/its/data/its_seqtab_nochim.out")
 seqtab_nochim_its <- t(seqtab_nochim_its)
 seqtab_nochim_its_df <- as.data.frame(seqtab_nochim_its)
 seqtab_nochim_its_df$sequence <- rownames(seqtab_nochim_its_df)
@@ -145,15 +147,12 @@ combined_df_its <- combined_df_its[, c("sequence", "dada2_tax", setdiff(names(co
 combined_df_its$dada2_tax <- gsub("Fungi", "Eukaryota--100--Domain;Fungi", combined_df_its$dada2_tax)
 
 #Load metadata
-samdf_its<- read.csv("standard_workflow/its/data/metadata_its.csv")
-
-#Save file
-write.csv(combined_df_its, "standard_workflow/its/data/its_abundance_matrix_combined_dada2workflow.csv")
+samdf_its<- read.csv("~/benchmark_demulticoder/standard_workflow/its/data/metadata_its.csv")
 ```
 
 ### Load standard workflow outputs-rps10 data
 ```{r load standard workflow outputs}
-taxa_rps10<- read.table("standard_workflow/rps10/data/rps10_taxa.out", sep="\t", stringsAsFactors=F,header=T)
+taxa_rps10<- read.table("~/benchmark_demulticoder/standard_workflow/rps10/data/rps10_taxa.out", sep="\t", stringsAsFactors=F,header=T)
 
 taxa_filt_rps10 <- taxa_rps10 %>%
   mutate(across(starts_with("tax."), ~ ifelse(get(str_replace(cur_column(), "tax.", "boot.")) < 0, NA, .))) %>%
@@ -172,7 +171,7 @@ taxa_rps10_df <- taxa_rps10_df[, c("sequence", setdiff(names(taxa_rps10_df), "se
 rownames(taxa_rps10_df) <- NULL
 
 #Load ASV matrix now
-seqtab_nochim_rps10 <- read.table("standard_workflow/rps10/data/rps10_seqtab_nochim.out")
+seqtab_nochim_rps10 <- read.table("~/benchmark_demulticoder/standard_workflow/rps10/data/rps10_seqtab_nochim.out")
 rownames(seqtab_nochim_rps10) <- gsub("__", "_", rownames(seqtab_nochim_rps10))
 
 seqtab_nochim_rps10 <- t(seqtab_nochim_rps10)
@@ -207,31 +206,420 @@ combined_df_rps10 <- combined_df_rps10[, c("sequence", "dada2_tax", setdiff(name
 combined_df_rps10$dada2_tax <- gsub("Stramenopila", "Eukaryota--100--Domain;Stramenopila", combined_df_rps10$dada2_tax)
 
 #Load metadata
-samdf_rps10<- read.csv("standard_workflow/rps10/data/metadata_rps10.csv")
-
-#Save file
-write.csv(combined_df_rps10, "standard_workflow/rps10/data/rps10_abundance_matrix_combined_dada2workflow.csv")
+samdf_rps10<- read.csv("~/benchmark_demulticoder/standard_workflow/rps10/data/metadata_rps10.csv")
 
 #Load DADA2 metadata file
-samdf_rps10<- read.csv("standard_workflow/rps10/data/metadata_rps10.csv")
-```
+samdf_rps10<- read.csv("~/benchmark_demulticoder/standard_workflow/rps10/data/metadata_rps10.csv")
 ```
 
-### Generate summary of read counts throughout the workflow for demlticoder specfific analysis
-```{r load demulticoder outputs}
+### Finally Let's first combine rps10 and its data into fully combined matrices
+```{r combine dataframes standard workflows}
+sample_cols_its <- setdiff(names(combined_df_its), c("sequence", "dada2_tax"))
+sample_cols_rps10 <- setdiff(names(combined_df_rps10), c("sequence", "dada2_tax"))
+
+if(!all(sample_cols_its == sample_cols_rps10)) {
+  stop("Sample columns do not match between ITS and RPS10 dataframes!")
+}
+
+abundance_sw <- rbind(
+  combined_df_its[, c("sequence", "dada2_tax", sample_cols_its)],  # ITS data
+  combined_df_rps10[, c("sequence", "dada2_tax", sample_cols_rps10)]  # RPS10 data
+)
+
+abundance_sw_inf <- read.csv("~/benchmark_demulticoder/standard_workflow/combined_data/metadata_with_infection_data.csv")
+
+#Let's also load metadata file-consistent with demulticoder analysis
+metadata_path_sf <- file.path("~/benchmark_demulticoder/standard_workflow/combined_data/metadata_with_infection_data.csv")
+metadata_sf <- read_csv(metadata_path_sf)
+print(metadata_sf)
+```
+
+### Finally Let's first combine rps10 and its data into fully combined matrices
+```{r combine dataframes}
+sample_cols_its <- setdiff(names(combined_df_its), c("sequence", "dada2_tax"))
+sample_cols_rps10 <- setdiff(names(combined_df_rps10), c("sequence", "dada2_tax"))
+
+if(!all(sample_cols_its == sample_cols_rps10)) {
+  stop("Sample columns do not match between ITS and RPS10 dataframes!")
+}
+
+abundance <- rbind(
+  combined_df_its[, c("sequence", "dada2_tax", sample_cols_its)],  # ITS data
+  combined_df_rps10[, c("sequence", "dada2_tax", sample_cols_rps10)]  # RPS10 data
+)
+
+
+#Let's also load metadata file-consistent with demulticoder analysis
+metadata_path <- file.path("~/benchmark_demulticoder/standard_workflow/combined_data/metadata_with_infection_data.csv")
+metadata <- read_csv(metadata_path)
+print(metadata)
+```
+
+### Generate summary of read counts throughout the workflow for demlticoder specific analysis
+```{r get demulticoder read stats}
 #Fourth, let's track reads
-track_reads_demulticoder_its<-read.csv("demulticoder/data/track_reads_its.csv", row.names = 1)
-track_reads_demulticoder_rps10<-read.csv("demulticoder/data/track_reads_rps10.csv", row.names = 1)
+track_reads_demulticoder_its<-read.csv("~/benchmark_demulticoder/demulticoder/data/track_reads_its.csv", row.names = 1)
+track_reads_demulticoder_rps10<-read.csv("~/benchmark_demulticoder/demulticoder/data/track_reads_rps10.csv", row.names = 1)
+track_reads_sw_its<-read.csv("~/benchmark_demulticoder/standard_workflow/its/data/its_trackreads.out", row.names = 1)
+track_reads_standard_wf_its <- read.table("~/benchmark_demulticoder/standard_workflow/its/data/its_trackreads.out", sep="\t", stringsAsFactors = F, header=T)
+track_reads_standard_wf_rps10 <- read.table("~/benchmark_demulticoder/standard_workflow/rps10/data/rps10_trackreads.out", sep="\t", stringsAsFactors = F, header=T)
 ```
 
-### Generate summary of read counts throughout the workflow for demlticoder specfific analysis
-```{r load demulticoder outputs}
+### Now, let's compare read counts across workflows for rps10 amplicons
+```{r compare reads-rps10}
+rps10_summary_reads_demulticoder<-summary(track_reads_demulticoder_rps10)
+print(rps10_summary_reads_demulticoder)
 
+rps10_summary_reads_sw<-summary(track_reads_standard_wf_rps10)
+print(rps10_summary_reads_sw)
 ```
 
-### Track reads throughout demulticoder workflows
+### Now, let's compare read counts across workflows for ITS amplicons
+```{r compare reads-rps10}
+its_summary_reads_demulticoder<-summary(track_reads_demulticoder_its)
+print(its_summary_reads_demulticoder)
 
-### Track reasd throughout standard workflows
+its_summary_reads_sw<-summary(track_reads_standard_wf_its)
+print(its_summary_reads_sw)
+```
+
+### Let's convert our two matrices to taxmap objects
+Let's convert our new matrix and associated metadata table to a taxmap object for demulticoder analysis
+```{r, Convert matrix created with demulticoder workflow to taxmap obj}
+metadata <- filter(metadata, ! is_ambiguous)
+abundance_with_inf <- filter(abundance_with_inf, ! is_inoculum)
+
+#Filter out mock community samples and also any mock community samples as well
+metadata <- filter(metadata, sample_type != "Mock community" & sample_type != "Negative control")
+
+obj <- parse_tax_data(abundance, class_cols = 'dada2_tax', class_sep = ';',
+                      class_regex = '^(.+)--(.+)--(.+)$',
+                      class_key = c(taxon = 'taxon_name', boot = 'info', rank = 'taxon_rank'))
+names(obj$data) <- c('abund', 'score')
+obj <- transmute_obs(obj, 'score', sequence = sequence[input_index], boot = boot, rank = rank)
+
+
+# For diversity calculations, we'll use proportions of read depth
+# We'll set any proportion to 0 that is less than the inverse of the read count of the non-control sample with the fewest reads.
+# This should account for unequal sample read depth without the randomness of rarefaction.
+
+metadata$raw_count <- colSums(obj$data$abund[, metadata$sample_name])
+lowest_count <- min(metadata$raw_count[! is.na(metadata$organism)])
+lowest_count
+obj$data$prop <- calc_obs_props(obj, data = 'abund', cols = metadata$sample_name)
+obj$data$prop <- zero_low_counts(obj, data = 'prop', min_count = 1 / lowest_count, cols = metadata$sample_name)
+obj$data$prop
+
+obj$data$prop[metadata$sample_name] <- map(metadata$sample_name, function(id) {
+  out <- obj$data$prop[[id]]
+  out[is.na(out) | is.nan(out)] <- 0
+  out
+})
+
+obj$data$prop
+
+#Let's modify the metadata sheet
+metadata <- metadata %>%
+  mutate(organism = fct_relevel(ordered(organism), "Control", "Cin", "Plu", "Cry"))
+```
+
+Let's convert our new matrix and associated metadata table to a taxmap object for output of standard workflow analysis
+```{r, Convert matrix created with demulticoder workflow to taxmap obj}
+metadata_sf <- filter(metadata, ! is_ambiguous)
+abundance_sw_inf <- filter(abundance_with_inf, ! is_inoculum)
+
+#Filter out mock community samples and also any mock community samples as well
+metadata_sf <- filter(metadata, sample_type != "Mock community" & sample_type != "Negative control")
+
+obj_sf <- parse_tax_data(abundance_sw_inf, class_cols = 'dada2_tax', class_sep = ';',
+                      class_regex = '^(.+)--(.+)--(.+)$',
+                      class_key = c(taxon = 'taxon_name', boot = 'info', rank = 'taxon_rank'))
+names(obj_sf$data) <- c('abund', 'score')
+obj_sf <- transmute_obs(obj_sf, 'score', sequence = sequence[input_index], boot = boot, rank = rank)
+
+
+# For diversity calculations, we'll use proportions of read depth
+# We'll set any proportion to 0 that is less than the inverse of the read count of the non-control sample with the fewest reads.
+# This should account for unequal sample read depth without the randomness of rarefaction.
+
+metadata_sf$raw_count <- colSums(obj_sf$data$abund[, metadata_sf$sample_name])
+lowest_count <- min(metadata_sf$raw_count[! is.na(metadata_sf$organism)])
+lowest_count
+obj_sf$data$prop <- calc_obs_props(obj_sf, data = 'abund', cols = metadata_sf$sample_name)
+obj_sf$data$prop <- zero_low_counts(obj_sf, data = 'prop', min_count = 1 / lowest_count, cols = metadata_sf$sample_name)
+obj_sf$data$prop
+
+obj_sf$data$prop[metadata_sf$sample_name] <- map(metadata_sf$sample_name, function(id) {
+  out <- obj_sf$data$prop[[id]]
+  out[is.na(out) | is.nan(out)] <- 0
+  out
+})
+
+obj_sf$data$prop
+
+#Let's modify the metadata_sf sheet
+metadata_sf <- metadata_sf %>%
+  mutate(organism = fct_relevel(ordered(organism), "Control", "Cin", "Plu", "Cry"))
+```
+
+### Let's examine alpha diversity within pots
+Demulticoder outputs
+```{r, alpha diversity demulticoder}
+abund_table <- obj$data$abund[metadata$sample_name]
+metadata$richness <- vegan::specnumber(abund_table, MARGIN = 2)
+metadata$shannon <- vegan::diversity(abund_table, MARGIN = 2, index = "shannon")
+metadata$invsimpson <- vegan::diversity(abund_table, MARGIN = 2, index = "invsimpson")
+
+plotted_factors <- c('Organism' = 'organism', 'Flooded' = 'flooded', 'Pathogen Concentration' = 'path_conc', 'Trial' = 'experiment')
+
+# Reformat data for plotting
+alpha_plot_data <- plotted_factors %>%
+  map2_dfr(names(plotted_factors), 
+           function(factor, factor_name) {
+             out <- metadata
+             out$factor <- factor_name
+             out$value <- as.character(metadata[[factor]])
+             return(out)
+           }) %>%
+  mutate(path_conc = factor(path_conc, 
+                            levels = sort(unique(path_conc)), 
+                            labels = paste(sort(unique(path_conc)), 'CFU/g'), 
+                            ordered = TRUE)) %>%
+  filter(sample_type == 'Sample') %>%
+  select(sample_name, factor, value, invsimpson) %>%
+  tidyr::gather(key = "index", value = "diversity", -sample_name, -factor, -value) %>%
+  mutate(value = forcats::fct_relevel(ordered(value), "Control", "Cin", "Plu", "Cry"))
+
+# ANOVA and Tukey's HSD
+anova_and_hsd <- function(x) {
+  anova_result <- aov(diversity ~ value, x)
+  tukey_result <- agricolae::HSD.test(anova_result, "value", group = TRUE)
+  group_data <- tukey_result$groups[order(rownames(tukey_result$groups)),]
+  group_key <- setNames(group_data$groups, rownames(group_data))
+  group_key[as.character(x$value)]
+}
+alpha_plot_data$group <- unlist(map(split(alpha_plot_data, alpha_plot_data$factor)[unique(alpha_plot_data$factor)], anova_and_hsd))
+
+
+alpha_subplot <- ggplot(alpha_plot_data, aes(x = value, y = diversity)) +
+  geom_boxplot() +
+  geom_text(aes(x = value,
+                y = max(diversity) + 2,
+                label = group),
+            col = 'black',
+            size = 5) +
+  facet_grid( ~ factor, scales = "free") +
+  labs(x = NULL, y = 'Diversity (Inverse Simpson)') +
+  guides(color = "none") +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position="bottom")
+```
+
+Standard workflow
+```{r, alpha diversity demulticoder}
+abund_table <- obj$data$abund[metadata$sample_name]
+metadata$richness <- vegan::specnumber(abund_table, MARGIN = 2)
+metadata$shannon <- vegan::diversity(abund_table, MARGIN = 2, index = "shannon")
+metadata$invsimpson <- vegan::diversity(abund_table, MARGIN = 2, index = "invsimpson")
+write.csv(metadata, file.path("standard_workflow", "combined_results/alpha_diversity.csv"))
+print(metadata)
+
+plotted_factors <- c('Organism' = 'organism', 'Flooded' = 'flooded', 'Pathogen Concentration' = 'path_conc', 'Trial' = 'experiment')
+
+# Reformat data for plotting
+alpha_plot_data <- plotted_factors %>%
+  map2_dfr(names(plotted_factors), 
+           function(factor, factor_name) {
+             out <- metadata
+             out$factor <- factor_name
+             out$value <- as.character(metadata[[factor]])
+             return(out)
+           }) %>%
+  mutate(path_conc = factor(path_conc, 
+                            levels = sort(unique(path_conc)), 
+                            labels = paste(sort(unique(path_conc)), 'CFU/g'), 
+                            ordered = TRUE)) %>%
+  filter(sample_type == 'Sample') %>%
+  select(sample_name, factor, value, invsimpson) %>%
+  tidyr::gather(key = "index", value = "diversity", -sample_name, -factor, -value) %>%
+  mutate(value = forcats::fct_relevel(ordered(value), "Control", "Cin", "Plu", "Cry"))
+
+# ANOVA and Tukey's HSD
+anova_and_hsd <- function(x) {
+  anova_result <- aov(diversity ~ value, x)
+  tukey_result <- agricolae::HSD.test(anova_result, "value", group = TRUE)
+  group_data <- tukey_result$groups[order(rownames(tukey_result$groups)),]
+  group_key <- setNames(group_data$groups, rownames(group_data))
+  group_key[as.character(x$value)]
+}
+alpha_plot_data$group <- unlist(map(split(alpha_plot_data, alpha_plot_data$factor)[unique(alpha_plot_data$factor)], anova_and_hsd))
+
+
+alpha_subplot <- ggplot(alpha_plot_data, aes(x = value, y = diversity)) +
+  geom_boxplot() +
+  geom_text(aes(x = value,
+                y = max(diversity) + 2,
+                label = group),
+            col = 'black',
+            size = 5) +
+  facet_grid( ~ factor, scales = "free") +
+  labs(x = NULL, y = 'Diversity (Inverse Simpson)') +
+  guides(color = "none") +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position="bottom")
+```
+
+### Let's examine beta diversity within pots
+Demulticoder outputs
+```{r, beta diversity demulticoder}
+set.seed(1)
+prob_table <- obj$data$prop[metadata$sample_name]
+nmds_plot_data <- function(prob_table) {
+  metadata <- metadata[metadata$sample_name %in% colnames(prob_table), ]
+  set.seed(1)
+  nmds_results <- vegan::metaMDS(t(prob_table), trymax = 1000, k = 2, trace = 0)
+  nmds_data <- nmds_results$points %>%
+    as_tibble() %>%
+    bind_cols(metadata)
+  names(nmds_data)[1:2] <- paste0("NMDS", 1:2)
+  return(nmds_data)
+}
+
+nmds_data <- nmds_plot_data(prob_table[! is.na(metadata$organism) & metadata$valid_inoc])
+
+nmds_factors <- c(Flooded = 'flooded', Organism = 'organism', 'Pathogen CFU/g' = 'path_conc', 'Trial' = 'experiment')
+
+make_one_plot <- function(factor, name) {
+  nmds_data %>%
+    mutate(factor = as.character(nmds_data[[factor]]),
+           NMDS1 = scales::rescale(NMDS1),
+           NMDS2 = scales::rescale(NMDS2)) %>%
+    mutate(factor = fct_relevel(ordered(factor), "Control", "Cin", "Plu", "Cry")) %>%
+    ggplot(aes_string(x = "NMDS1", y = "NMDS2", color = "factor", label = "sample_name")) +
+    # geom_label(size = 2) +
+    geom_point() +
+    coord_fixed() +
+    viridis::scale_color_viridis(discrete = TRUE, end = .9) +
+    labs(color = NULL, x = NULL, y = NULL) +
+    theme(panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.text = element_blank(),
+          axis.title = element_text(size = 7), 
+          axis.ticks = element_blank(),
+          plot.margin = unit(rep(0.04, 4), "cm"),
+          # panel.background = element_rect(fill = 'transparent', colour = NA),
+          # plot.background = element_rect(fill = "white", colour = NA),
+          legend.position = "bottom",
+          legend.text = element_text(size = 10),
+          legend.key.height = unit(0.5, 'cm'),
+          legend.key.width = unit(0.2, 'cm'))
+}
+
+nmds_subplots <- map2(nmds_factors, names(nmds_factors), make_one_plot)
+nmds_plot <- ggpubr::ggarrange(plotlist = c(list(ggplot() + theme_void()), nmds_subplots),
+                       nrow = 1, widths = c(0.15, 1, 1, 1, 1))
+
+ggsave(nmds_plot, path = "standard_workflow/combined_figures", filename = "nmds.pdf", 
+       width = 7, height = 8)
+print(nmds_plot)
+
+combined_div_plot <- ggpubr::ggarrange(alpha_subplot, nmds_plot, ncol = 1, labels = c('A', 'B'),
+                               heights = c(1, 1))
+combined_div_plot
+
+ggsave(combined_div_plot, path = "standard_workflow/combined_figures", filename = "diversity.pdf", 
+       width = 10, height = 6, bg = "#FFFFFF")
+
+ggsave(combined_div_plot, path = "standard_workflow/combined_figures", filename = "diversity.svg", 
+       width = 10, height = 6, bg = "#FFFFFF")
+```
+
+Standard workflow
+```{r, beta diversity demulticoder}
+set.seed(1)
+prob_table <- obj$data$prop[metadata$sample_name]
+nmds_plot_data <- function(prob_table) {
+  metadata <- metadata[metadata$sample_name %in% colnames(prob_table), ]
+  set.seed(1)
+  nmds_results <- vegan::metaMDS(t(prob_table), trymax = 1000, k = 2, trace = 0)
+  nmds_data <- nmds_results$points %>%
+    as_tibble() %>%
+    bind_cols(metadata)
+  names(nmds_data)[1:2] <- paste0("NMDS", 1:2)
+  return(nmds_data)
+}
+
+nmds_data <- nmds_plot_data(prob_table[! is.na(metadata$organism) & metadata$valid_inoc])
+
+nmds_factors <- c(Flooded = 'flooded', Organism = 'organism', 'Pathogen CFU/g' = 'path_conc', 'Trial' = 'experiment')
+
+make_one_plot <- function(factor, name) {
+  nmds_data %>%
+    mutate(factor = as.character(nmds_data[[factor]]),
+           NMDS1 = scales::rescale(NMDS1),
+           NMDS2 = scales::rescale(NMDS2)) %>%
+    mutate(factor = fct_relevel(ordered(factor), "Control", "Cin", "Plu", "Cry")) %>%
+    ggplot(aes_string(x = "NMDS1", y = "NMDS2", color = "factor", label = "sample_name")) +
+    # geom_label(size = 2) +
+    geom_point() +
+    coord_fixed() +
+    viridis::scale_color_viridis(discrete = TRUE, end = .9) +
+    labs(color = NULL, x = NULL, y = NULL) +
+    theme(panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.text = element_blank(),
+          axis.title = element_text(size = 7), 
+          axis.ticks = element_blank(),
+          plot.margin = unit(rep(0.04, 4), "cm"),
+          # panel.background = element_rect(fill = 'transparent', colour = NA),
+          # plot.background = element_rect(fill = "white", colour = NA),
+          legend.position = "bottom",
+          legend.text = element_text(size = 10),
+          legend.key.height = unit(0.5, 'cm'),
+          legend.key.width = unit(0.2, 'cm'))
+}
+
+nmds_subplots <- map2(nmds_factors, names(nmds_factors), make_one_plot)
+nmds_plot <- ggpubr::ggarrange(plotlist = c(list(ggplot() + theme_void()), nmds_subplots),
+                       nrow = 1, widths = c(0.15, 1, 1, 1, 1))
+
+ggsave(nmds_plot, path = "standard_workflow/combined_figures", filename = "nmds.pdf", 
+       width = 7, height = 8)
+print(nmds_plot)
+
+combined_div_plot <- ggpubr::ggarrange(alpha_subplot, nmds_plot, ncol = 1, labels = c('A', 'B'),
+                               heights = c(1, 1))
+combined_div_plot
+
+ggsave(combined_div_plot, path = "standard_workflow/combined_figures", filename = "diversity.pdf", 
+       width = 10, height = 6, bg = "#FFFFFF")
+
+ggsave(combined_div_plot, path = "standard_workflow/combined_figures", filename = "diversity.svg", 
+       width = 10, height = 6, bg = "#FFFFFF")
+```
+
+### Let's do a quick differential abundance analysis with DESeq2
+Demulticoder outputs
+```{r, alpha diversity demulticoder}
+```
+
+Standard workflow
+```{r, alpha diversity demulticoder}
+```
+
+### Let's examine community composition more broadly
+Demulticoder outputs
+```{r, alpha diversity demulticoder}
+```
+
+Standard workflow
+```{r, alpha diversity demulticoder}
+```
+
 ```{r}
 sessioninfo::session_info()
 ```

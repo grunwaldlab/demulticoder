@@ -15,8 +15,6 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "./"
 )
-
-library(phyloseq); packageVersion("phyloseq")
 ```
 
 ## Demonstration of how to use demulticoder on a dataset that is actually three separate datasets (RPS10, ITS, and 16S) at once
@@ -84,8 +82,10 @@ library("demulticoder")
 ### Step 1-Remove N's and create directory structure for downstream steps
 ```{r prepare reads, fig.height=6, fig.width=6}
 outputs<-prepare_reads(
-  data_directory = "~/demulticoder_benchmarking/mothur_16S_sop/data", 
-  output_directory = "~/demulticoder_benchmarking/mothur_16S_sop/data",
+  data_directory = "~/benchmark_demulticoder/mothur_16S_sop/data", 
+  output_directory = "~/benchmark_demulticoder/mothur_16S_sop/outputs",
+  tempdir_path = "~/benchmark_demulticoder/mothur_16S_sop/temp",
+  tempdir_id = "SOP_run",
   overwrite_existing = FALSE)
 ```
 
@@ -93,15 +93,15 @@ outputs<-prepare_reads(
 ```{r Remove primers and trim reads, fig.height=6, fig.width=6}
 cut_trim(
   outputs,
-  cutadapt_path="/usr/bin/cutadapt",
-  overwrite_existing = TRUE)
+  cutadapt_path="/opt/homebrew/bin/cutadapt",
+  overwrite_existing = FALSE)
 ```
 
 ### Step 3-Core ASV inference step
 ```{r ASV inference, fig.height=6, fig.width=6}
 make_asv_abund_matrix(
   outputs,
-  overwrite_existing = TRUE)
+  overwrite_existing = FALSE)
 ```
 
 ### Step 4-Assign taxonomy step
@@ -111,7 +111,7 @@ assign_tax(
   asv_abund_matrix,
   db_16S="silva_nr99_v138.1_wSpecies_train_set.fa",
   retrieve_files=TRUE,
-  overwrite_existing=TRUE)
+  overwrite_existing=FALSE)
 ```
 
 ### Step 5-convert asv matrix to taxmap and phyloseq objects with one function
@@ -137,12 +137,7 @@ cat("Of those,", sum(match.ref), "were exact matches to the expected reference s
 When looking at mock community sample, we were able to extract 20 bacterial sequences with 0% mismatch, and this matched what was described previously. 
 
 ### Step 7-Follow-up work using phyloseq to do side-by-side comparison with dada2 example and to examine alpha diversity results
-```{r phyloseq alpha divresity analysis, fig.height=6, fig.width=6}
-#Let's prune mock community sample
-#load objs if not running whole pipeline
-load("~/benchmark_demulticoder/mothur_16S_sop/data/phylo_obj_r16S.RData")
-load("~/benchmark_demulticoder/mothur_16S_sop/data/taxmap_obj_r16S.RData")
-
+```{r phyloseq alpha diversity analysis, fig.height=6, fig.width=6}
 objs$phyloseq_r16S <- phyloseq::prune_samples(phyloseq::sample_names(objs$phyloseq_r16S) != "Mock_r16S", objs$phyloseq_r16S) # Remove mock sample
 phyloseq::plot_richness(objs$phyloseq_r16S, x="Day", measures=c("Shannon", "Simpson"), color="When")
 ```
