@@ -54,205 +54,20 @@ library("demulticoder")
 seed <- 1
 set.seed(seed)
 
-asv_matrix_rps10<-read.csv("~/benchmark_demulticoder/demulticoder/data/final_asv_abundance_matrix_rps10.csv")
-asv_matrix_rps10$dada2_tax <- asv_matrix_rps10$dada2_tax <- gsub("Stramenopila", "Eukaryota--100--Domain;Stramenopila", asv_matrix_rps10$dada2_tax)
-asv_matrix_rps10 <- asv_matrix_rps10[, -1]
-colnames(asv_matrix_rps10)[3:ncol(asv_matrix_rps10)] <- gsub("_rps10$", "", colnames(asv_matrix_rps10)[3:ncol(asv_matrix_rps10)])
-
-asv_matrix_its<-read.csv("~/benchmark_demulticoder/demulticoder/data/final_asv_abundance_matrix_its.csv")
-asv_matrix_its$dada2_tax <- gsub("Fungi", "Eukaryota--100--Domain;Fungi", asv_matrix_its$dada2_tax)
-asv_matrix_its <- asv_matrix_its[, -1]
-colnames(asv_matrix_its)[3:ncol(asv_matrix_rps10)] <- gsub("_its$", "", colnames(asv_matrix_its)[3:ncol(asv_matrix_its)])
-
-
-#Let's combine these matrices
-#For easier analysis, we previously combined the two matrices, and appended domain info to each one so we can make one heat tree for combined dataset
-sample_cols_its <- setdiff(names(asv_matrix_its), c("sequence", "dada2_tax"))
-sample_cols_rps10 <- setdiff(names(asv_matrix_rps10), c("sequence", "dada2_tax"))
-
-if(!all(sample_cols_its == sample_cols_rps10)) {
-  stop("Sample columns do not match between ITS and RPS10 dataframes!")
-}
-
-abundance <- rbind(
- asv_matrix_its[, c("sequence", "dada2_tax", sample_cols_its)],  # ITS data
-  asv_matrix_rps10[, c("sequence", "dada2_tax", sample_cols_rps10)]  # RPS10 data
-)
-
 abundance_with_inf <- read.csv("~/benchmark_demulticoder/demulticoder/data/abundance_with_infection_data.csv") 
 
 metadata_path <- file.path("~/benchmark_demulticoder/demulticoder/data/metadata_with_infection_data.csv")
-metadata <- read_csv(metadata_path)
+metadata <- readr::read_csv(metadata_path)
 print(metadata)
 ```
 
-### Load standard workflow outputs-ITS data
+### Load standard workflow outputs
 ```{r load standard workflow outputs}
-taxa_its<- read.table("~/benchmark_demulticoder/standard_workflow/its/data/its_taxa.out", sep="\t", stringsAsFactors=F,header=T)
-
-taxa_filt_its <- taxa_its %>%
-  mutate(across(starts_with("tax."), ~ ifelse(get(str_replace(cur_column(), "tax.", "boot.")) < 0, NA, .))) %>%
-  set_names(str_replace(names(.), "tax.", ""))
-
-remove_prefix_its <- function(data) {
-  data <- gsub("[a-z]__", "", data)  
-  return(data)
-}
-
-taxa_filt_its[] <- lapply(taxa_filt_its, remove_prefix_its)
-
-revise_species_its <- function(genus, species) {
-  revise_species_its <- ifelse(is.na(species), NA, paste(genus, species, sep = "_"))
-  return(revise_species_its)
-}
-
-taxa_filt_its$Species <- revise_species_its(taxa_filt_its$Genus, taxa_filt_its$Species)
-taxa_its_df <- as.data.frame(taxa_filt_its)
-taxa_its_df$sequence <- rownames(taxa_its_df)
-taxa_its_df <- taxa_its_df[, c("sequence", setdiff(names(taxa_its_df), "sequence"))]
-rownames(taxa_its_df) <- NULL
-
-#Load ASV matrix now
-seqtab_nochim_its <- read.table("~/benchmark_demulticoder/standard_workflow/its/data/its_seqtab_nochim.out")
-seqtab_nochim_its <- t(seqtab_nochim_its)
-seqtab_nochim_its_df <- as.data.frame(seqtab_nochim_its)
-seqtab_nochim_its_df$sequence <- rownames(seqtab_nochim_its_df)
-seqtab_nochim_its_df <- seqtab_nochim_its_df[, c("sequence", setdiff(names(seqtab_nochim_its_df), "sequence"))]
-rownames(seqtab_nochim_its_df) <- NULL
-
-
-#Combine matrices
-combined_df_its <- merge(seqtab_nochim_its_df, taxa_its_df, by = "sequence", all = TRUE)
-
-taxonomic_cols <- c("Kingdom", "Phylum", "Class", "Order", 
-                    "Family", "Genus", "Species")
-
-bootstrap_cols <- c("boot.Kingdom", "boot.Phylum", "boot.Class", "boot.Order", 
-                    "boot.Family", "boot.Genus", "boot.Species")
-
-dada2_tax <- mapply(function(tax, boot, level) {
-  paste(tax, boot, level, sep = "--")
-}, combined_df_its[, taxonomic_cols], combined_df_its[, bootstrap_cols], 
-   c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"))
-
-combined_df_its$dada2_tax <- apply(dada2_tax, 1, paste, collapse = ";")
-
-#Remove all other tax and boot columns
-combined_df_its <- combined_df_its[, !(names(combined_df_its) %in% c(taxonomic_cols, bootstrap_cols))]
-
-# Reorder columns to put 'taxa_bootstrap_combined' after 'sequence'
-combined_df_its <- combined_df_its[, c("sequence", "dada2_tax", setdiff(names(combined_df_its), c("sequence", "dada2_tax")))]
-
-#Add domain-100-Eukaryota; prefix before Kingdom
-combined_df_its$dada2_tax <- gsub("Fungi", "Eukaryota--100--Domain;Fungi", combined_df_its$dada2_tax)
-
-#Load metadata
-samdf_its<- read.csv("~/benchmark_demulticoder/standard_workflow/its/data/metadata_its.csv")
-```
-
-### Load standard workflow outputs-rps10 data
-```{r load standard workflow outputs}
-taxa_rps10<- read.table("~/benchmark_demulticoder/standard_workflow/rps10/data/rps10_taxa.out", sep="\t", stringsAsFactors=F,header=T)
-
-taxa_filt_rps10 <- taxa_rps10 %>%
-  mutate(across(starts_with("tax."), ~ ifelse(get(str_replace(cur_column(), "tax.", "boot.")) < 0, NA, .))) %>%
-  set_names(str_replace(names(.), "tax.", ""))
-
-remove_prefix_rps10 <- function(data) {
-  data <- gsub("[a-z]__", "", data)  
-  return(data)
-}
-
-taxa_filt_rps10[] <- lapply(taxa_filt_rps10, remove_prefix_rps10)
-
-taxa_rps10_df <- as.data.frame(taxa_filt_rps10)
-taxa_rps10_df$sequence <- rownames(taxa_rps10_df)
-taxa_rps10_df <- taxa_rps10_df[, c("sequence", setdiff(names(taxa_rps10_df), "sequence"))]
-rownames(taxa_rps10_df) <- NULL
-
-#Load ASV matrix now
-seqtab_nochim_rps10 <- read.table("~/benchmark_demulticoder/standard_workflow/rps10/data/rps10_seqtab_nochim.out")
-rownames(seqtab_nochim_rps10) <- gsub("__", "_", rownames(seqtab_nochim_rps10))
-
-seqtab_nochim_rps10 <- t(seqtab_nochim_rps10)
-seqtab_nochim_rps10_df <- as.data.frame(seqtab_nochim_rps10)
-seqtab_nochim_rps10_df$sequence <- rownames(seqtab_nochim_rps10_df)
-seqtab_nochim_rps10_df <- seqtab_nochim_rps10_df[, c("sequence", setdiff(names(seqtab_nochim_rps10_df), "sequence"))]
-rownames(seqtab_nochim_rps10_df) <- NULL
-
-#Combine matrices
-combined_df_rps10 <- merge(seqtab_nochim_rps10_df, taxa_rps10_df, by = "sequence", all = TRUE)
-
-taxonomic_cols <- c("Kingdom", "Phylum", "Class", "Order", 
-                    "Family", "Genus", "Species")
-
-bootstrap_cols <- c("boot.Kingdom", "boot.Phylum", "boot.Class", "boot.Order", 
-                    "boot.Family", "boot.Genus", "boot.Species")
-
-dada2_tax <- mapply(function(tax, boot, level) {
-  paste(tax, boot, level, sep = "--")
-}, combined_df_rps10[, taxonomic_cols], combined_df_rps10[, bootstrap_cols], 
-   c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"))
-
-combined_df_rps10$dada2_tax <- apply(dada2_tax, 1, paste, collapse = ";")
-
-#Remove all other tax and boot columns
-combined_df_rps10 <- combined_df_rps10[, !(names(combined_df_rps10) %in% c(taxonomic_cols, bootstrap_cols))]
-
-# Reorder columns to put 'taxa_bootstrap_combined' after 'sequence'
-combined_df_rps10 <- combined_df_rps10[, c("sequence", "dada2_tax", setdiff(names(combined_df_rps10), c("sequence", "dada2_tax")))]
-
-#Add domain-100-Eukaryota; prefix before Kingdom
-combined_df_rps10$dada2_tax <- gsub("Stramenopila", "Eukaryota--100--Domain;Stramenopila", combined_df_rps10$dada2_tax)
-
-#Load metadata
-samdf_rps10<- read.csv("~/benchmark_demulticoder/standard_workflow/rps10/data/metadata_rps10.csv")
-
-#Load DADA2 metadata file
-samdf_rps10<- read.csv("~/benchmark_demulticoder/standard_workflow/rps10/data/metadata_rps10.csv")
-```
-
-### Finally Let's first combine rps10 and its data into fully combined matrices
-```{r combine dataframes standard workflows}
-sample_cols_its <- setdiff(names(combined_df_its), c("sequence", "dada2_tax"))
-sample_cols_rps10 <- setdiff(names(combined_df_rps10), c("sequence", "dada2_tax"))
-
-if(!all(sample_cols_its == sample_cols_rps10)) {
-  stop("Sample columns do not match between ITS and RPS10 dataframes!")
-}
-
-abundance_sw <- rbind(
-  combined_df_its[, c("sequence", "dada2_tax", sample_cols_its)],  # ITS data
-  combined_df_rps10[, c("sequence", "dada2_tax", sample_cols_rps10)]  # RPS10 data
-)
-
-abundance_sw_inf <- read.csv("~/benchmark_demulticoder/standard_workflow/combined_data/metadata_with_infection_data.csv")
-
+abundance_sw_inf <- read.csv("~/benchmark_demulticoder/standard_workflow/combined_data/abundance_with_infection_data.csv")
 #Let's also load metadata file-consistent with demulticoder analysis
 metadata_path_sf <- file.path("~/benchmark_demulticoder/standard_workflow/combined_data/metadata_with_infection_data.csv")
 metadata_sf <- read_csv(metadata_path_sf)
 print(metadata_sf)
-```
-
-### Finally Let's first combine rps10 and its data into fully combined matrices
-```{r combine dataframes}
-sample_cols_its <- setdiff(names(combined_df_its), c("sequence", "dada2_tax"))
-sample_cols_rps10 <- setdiff(names(combined_df_rps10), c("sequence", "dada2_tax"))
-
-if(!all(sample_cols_its == sample_cols_rps10)) {
-  stop("Sample columns do not match between ITS and RPS10 dataframes!")
-}
-
-abundance <- rbind(
-  combined_df_its[, c("sequence", "dada2_tax", sample_cols_its)],  # ITS data
-  combined_df_rps10[, c("sequence", "dada2_tax", sample_cols_rps10)]  # RPS10 data
-)
-
-
-#Let's also load metadata file-consistent with demulticoder analysis
-metadata_path <- file.path("~/benchmark_demulticoder/standard_workflow/combined_data/metadata_with_infection_data.csv")
-metadata <- read_csv(metadata_path)
-print(metadata)
 ```
 
 ### Generate summary of read counts throughout the workflow for demlticoder specific analysis
@@ -292,7 +107,7 @@ abundance_with_inf <- filter(abundance_with_inf, ! is_inoculum)
 #Filter out mock community samples and also any mock community samples as well
 metadata <- filter(metadata, sample_type != "Mock community" & sample_type != "Negative control")
 
-obj <- parse_tax_data(abundance, class_cols = 'dada2_tax', class_sep = ';',
+obj <- parse_tax_data(abundance_with_inf, class_cols = 'dada2_tax', class_sep = ';',
                       class_regex = '^(.+)--(.+)--(.+)$',
                       class_key = c(taxon = 'taxon_name', boot = 'info', rank = 'taxon_rank'))
 names(obj$data) <- c('abund', 'score')
@@ -325,11 +140,11 @@ metadata <- metadata %>%
 
 Let's convert our new matrix and associated metadata table to a taxmap object for output of standard workflow analysis
 ```{r, Convert matrix created with demulticoder workflow to taxmap obj}
-metadata_sf <- filter(metadata, ! is_ambiguous)
-abundance_sw_inf <- filter(abundance_with_inf, ! is_inoculum)
+metadata_sf <- filter(metadata_sf, ! is_ambiguous)
+abundance_sw_inf <- filter(abundance_sw_inf, ! is_inoculum)
 
 #Filter out mock community samples and also any mock community samples as well
-metadata_sf <- filter(metadata, sample_type != "Mock community" & sample_type != "Negative control")
+metadata_sf <- filter(metadata_sf, sample_type != "Mock community" & sample_type != "Negative control")
 
 obj_sf <- parse_tax_data(abundance_sw_inf, class_cols = 'dada2_tax', class_sep = ';',
                       class_regex = '^(.+)--(.+)--(.+)$',
@@ -415,26 +230,26 @@ alpha_subplot <- ggplot(alpha_plot_data, aes(x = value, y = diversity)) +
         panel.grid.minor = element_blank(),
         axis.text.x = element_text(angle = 45, hjust = 1),
         legend.position="bottom")
+
+alpha_subplot
 ```
 
 Standard workflow
 ```{r, alpha diversity demulticoder}
-abund_table <- obj$data$abund[metadata$sample_name]
-metadata$richness <- vegan::specnumber(abund_table, MARGIN = 2)
-metadata$shannon <- vegan::diversity(abund_table, MARGIN = 2, index = "shannon")
-metadata$invsimpson <- vegan::diversity(abund_table, MARGIN = 2, index = "invsimpson")
-write.csv(metadata, file.path("standard_workflow", "combined_results/alpha_diversity.csv"))
-print(metadata)
+abund_table_sf <- obj_sf$data$abund[metadata_sf$sample_name]
+metadata_sf$richness <- vegan::specnumber(abund_table_sf, MARGIN = 2)
+metadata_sf$shannon <- vegan::diversity(abund_table_sf, MARGIN = 2, index = "shannon")
+metadata_sf$invsimpson <- vegan::diversity(abund_table_sf, MARGIN = 2, index = "invsimpson")
 
 plotted_factors <- c('Organism' = 'organism', 'Flooded' = 'flooded', 'Pathogen Concentration' = 'path_conc', 'Trial' = 'experiment')
 
 # Reformat data for plotting
-alpha_plot_data <- plotted_factors %>%
+alpha_plot_data_sf <- plotted_factors %>%
   map2_dfr(names(plotted_factors), 
            function(factor, factor_name) {
-             out <- metadata
+             out <- metadata_sf
              out$factor <- factor_name
-             out$value <- as.character(metadata[[factor]])
+             out$value <- as.character(metadata_sf[[factor]])
              return(out)
            }) %>%
   mutate(path_conc = factor(path_conc, 
@@ -447,17 +262,17 @@ alpha_plot_data <- plotted_factors %>%
   mutate(value = forcats::fct_relevel(ordered(value), "Control", "Cin", "Plu", "Cry"))
 
 # ANOVA and Tukey's HSD
-anova_and_hsd <- function(x) {
+anova_and_hsd_sf <- function(x) {
   anova_result <- aov(diversity ~ value, x)
   tukey_result <- agricolae::HSD.test(anova_result, "value", group = TRUE)
   group_data <- tukey_result$groups[order(rownames(tukey_result$groups)),]
   group_key <- setNames(group_data$groups, rownames(group_data))
   group_key[as.character(x$value)]
 }
-alpha_plot_data$group <- unlist(map(split(alpha_plot_data, alpha_plot_data$factor)[unique(alpha_plot_data$factor)], anova_and_hsd))
+alpha_plot_data_sf$group <- unlist(map(split(alpha_plot_data_sf, alpha_plot_data_sf$factor)[unique(alpha_plot_data_sf$factor)], anova_and_hsd_sf))
 
 
-alpha_subplot <- ggplot(alpha_plot_data, aes(x = value, y = diversity)) +
+alpha_subplot_sf <- ggplot(alpha_plot_data_sf, aes(x = value, y = diversity)) +
   geom_boxplot() +
   geom_text(aes(x = value,
                 y = max(diversity) + 2,
@@ -471,6 +286,8 @@ alpha_subplot <- ggplot(alpha_plot_data, aes(x = value, y = diversity)) +
         panel.grid.minor = element_blank(),
         axis.text.x = element_text(angle = 45, hjust = 1),
         legend.position="bottom")
+
+alpha_subplot_sf
 ```
 
 ### Let's examine beta diversity within pots
@@ -523,43 +340,31 @@ nmds_subplots <- map2(nmds_factors, names(nmds_factors), make_one_plot)
 nmds_plot <- ggpubr::ggarrange(plotlist = c(list(ggplot() + theme_void()), nmds_subplots),
                        nrow = 1, widths = c(0.15, 1, 1, 1, 1))
 
-ggsave(nmds_plot, path = "standard_workflow/combined_figures", filename = "nmds.pdf", 
-       width = 7, height = 8)
-print(nmds_plot)
-
-combined_div_plot <- ggpubr::ggarrange(alpha_subplot, nmds_plot, ncol = 1, labels = c('A', 'B'),
-                               heights = c(1, 1))
-combined_div_plot
-
-ggsave(combined_div_plot, path = "standard_workflow/combined_figures", filename = "diversity.pdf", 
-       width = 10, height = 6, bg = "#FFFFFF")
-
-ggsave(combined_div_plot, path = "standard_workflow/combined_figures", filename = "diversity.svg", 
-       width = 10, height = 6, bg = "#FFFFFF")
+nmds_plot
 ```
 
 Standard workflow
 ```{r, beta diversity demulticoder}
 set.seed(1)
-prob_table <- obj$data$prop[metadata$sample_name]
-nmds_plot_data <- function(prob_table) {
+prob_table <- obj_sf$data$prop[metadata$sample_name]
+nmds_plot_sf_data_sf <- function(prob_table) {
   metadata <- metadata[metadata$sample_name %in% colnames(prob_table), ]
   set.seed(1)
   nmds_results <- vegan::metaMDS(t(prob_table), trymax = 1000, k = 2, trace = 0)
-  nmds_data <- nmds_results$points %>%
+  nmds_data_sf <- nmds_results$points %>%
     as_tibble() %>%
     bind_cols(metadata)
-  names(nmds_data)[1:2] <- paste0("NMDS", 1:2)
-  return(nmds_data)
+  names(nmds_data_sf)[1:2] <- paste0("NMDS", 1:2)
+  return(nmds_data_sf)
 }
 
-nmds_data <- nmds_plot_data(prob_table[! is.na(metadata$organism) & metadata$valid_inoc])
+nmds_data_sf <- nmds_plot_sf_data_sf(prob_table[! is.na(metadata$organism) & metadata$valid_inoc])
 
 nmds_factors <- c(Flooded = 'flooded', Organism = 'organism', 'Pathogen CFU/g' = 'path_conc', 'Trial' = 'experiment')
 
 make_one_plot <- function(factor, name) {
-  nmds_data %>%
-    mutate(factor = as.character(nmds_data[[factor]]),
+  nmds_data_sf %>%
+    mutate(factor = as.character(nmds_data_sf[[factor]]),
            NMDS1 = scales::rescale(NMDS1),
            NMDS2 = scales::rescale(NMDS2)) %>%
     mutate(factor = fct_relevel(ordered(factor), "Control", "Cin", "Plu", "Cry")) %>%
@@ -584,40 +389,371 @@ make_one_plot <- function(factor, name) {
 }
 
 nmds_subplots <- map2(nmds_factors, names(nmds_factors), make_one_plot)
-nmds_plot <- ggpubr::ggarrange(plotlist = c(list(ggplot() + theme_void()), nmds_subplots),
+nmds_plot_sf <- ggpubr::ggarrange(plotlist = c(list(ggplot() + theme_void()), nmds_subplots),
                        nrow = 1, widths = c(0.15, 1, 1, 1, 1))
 
-ggsave(nmds_plot, path = "standard_workflow/combined_figures", filename = "nmds.pdf", 
-       width = 7, height = 8)
-print(nmds_plot)
-
-combined_div_plot <- ggpubr::ggarrange(alpha_subplot, nmds_plot, ncol = 1, labels = c('A', 'B'),
-                               heights = c(1, 1))
-combined_div_plot
-
-ggsave(combined_div_plot, path = "standard_workflow/combined_figures", filename = "diversity.pdf", 
-       width = 10, height = 6, bg = "#FFFFFF")
-
-ggsave(combined_div_plot, path = "standard_workflow/combined_figures", filename = "diversity.svg", 
-       width = 10, height = 6, bg = "#FFFFFF")
+ nmds_plot_sf
 ```
 
-### Let's do a quick differential abundance analysis with DESeq2
+### Let's do a quick differential abundance analysis with DESeq2 and look at differences when inoculum concentration is altered 
 Demulticoder outputs
-```{r, alpha diversity demulticoder}
+```{r diff heat tree setup demulticoder}
+#Make sure our factors are input properly as factors
+metadata$path_conc <- as.factor(metadata$path_conc)
+metadata$path_conc<- factor(metadata$path_conc, levels = c("0", "1", "100"))
+
+metadata$organism <- as.factor(metadata$organism)
+metadata$organism<- factor(metadata$organism, levels = c("Control", "Cin", "Cry", "Plu"))
+
+metadata$flooded <- as.factor(metadata$flooded)
+metadata$flooded <- factor(metadata$flooded, levels = c("TRUE", "FALSE"))
+
+metadata$experiment <- as.factor(metadata$experiment)
+metadata$experiment<- factor(metadata$experiment, levels = c("1", "2"))
+
+abundance_with_inf$is_low_abund <- rowSums(abundance_with_inf[, metadata$sample_name]) < 5
+obj2 <- parse_tax_data(abundance_with_inf, class_cols = 'dada2_tax', class_sep = ';',
+                      class_regex = '^(.+)--(.+)--(.+)$',
+                      class_key = c(taxon = 'taxon_name', boot = 'info', rank = 'taxon_rank'))
+names(obj2$data) <- c('abund', 'score')
+obj2 <- transmute_obs(obj2, 'score', sequence = sequence[input_index], boot = boot, rank = rank)
+print(obj2)
+
+obj2$data$tax_abund <- calc_taxon_abund(obj2, data = "abund", cols = metadata$sample_name)
+
+obj2$data$abund_prop <- calc_obs_props(obj2, data = "abund", cols = metadata$sample_name, groups = rep("tax_prop", nrow(metadata)))
+obj2$data$tax_prop <- calc_taxon_abund(obj2, data = "abund_prop", cols = "tax_prop")
+obj2$data$abund_prop <- NULL
+
+obj_subset <- obj2 %>%
+  filter_taxa(taxon_ranks == "Species", supertaxa = TRUE, reassign_obs = c(tax_abund = FALSE)) 
+min_bootstrap <- 0
+
+obj_subset$data$score$boot <- as.numeric(obj_subset$data$score$boot)
+max_boot <- obj_subset$data$score %>%
+  group_by(taxon_id) %>%
+  summarise(max = max(boot))
+max_boot <- setNames(max_boot$max, max_boot$taxon_id)
+obj_subset <- filter_taxa(obj_subset, max_boot[taxon_ids] >= min_bootstrap | taxon_ranks %in% c("ASV", "Reference"), reassign_obs = c(abund = TRUE, score = FALSE))
+```
+
+Standard workflow outputs
+```{r diff heat tree setup standard workflow}
+#Make sure our factors are input properly as factors
+metadata_sf$path_conc <- as.factor(metadata_sf$path_conc)
+metadata_sf$path_conc<- factor(metadata_sf$path_conc, levels = c("0", "1", "100"))
+
+metadata_sf$organism <- as.factor(metadata_sf$organism)
+metadata_sf$organism<- factor(metadata_sf$organism, levels = c("Control", "Cin", "Cry", "Plu"))
+
+metadata_sf$flooded <- as.factor(metadata_sf$flooded)
+metadata_sf$flooded <- factor(metadata_sf$flooded, levels = c("TRUE", "FALSE"))
+
+metadata_sf$experiment <- as.factor(metadata_sf$experiment)
+metadata_sf$experiment<- factor(metadata_sf$experiment, levels = c("1", "2"))
+
+abundance_sw_inf$is_low_abund <- rowSums(abundance_sw_inf[, metadata_sf$sample_name]) < 5
+obj2_sf <- parse_tax_data(abundance_sw_inf, class_cols = 'dada2_tax', class_sep = ';',
+                      class_regex = '^(.+)--(.+)--(.+)$',
+                      class_key = c(taxon = 'taxon_name', boot = 'info', rank = 'taxon_rank'))
+names(obj2_sf$data) <- c('abund', 'score')
+obj2_sf <- transmute_obs(obj2_sf, 'score', sequence = sequence[input_index], boot = boot, rank = rank)
+print(obj2_sf)
+
+obj2_sf$data$tax_abund <- calc_taxon_abund(obj2_sf, data = "abund", cols = metadata_sf$sample_name)
+
+obj2_sf$data$abund_prop <- calc_obs_props(obj2_sf, data = "abund", cols = metadata_sf$sample_name, groups = rep("tax_prop", nrow(metadata_sf)))
+obj2_sf$data$tax_prop <- calc_taxon_abund(obj2_sf, data = "abund_prop", cols = "tax_prop")
+obj2_sf$data$abund_prop <- NULL
+
+obj_subset_sf <- obj2_sf %>%
+  filter_taxa(taxon_ranks == "Species", supertaxa = TRUE, reassign_obs = c(tax_abund = FALSE)) 
+min_bootstrap <- 0
+
+obj_subset_sf$data$score$boot <- as.numeric(obj_subset_sf$data$score$boot)
+max_boot <- obj_subset_sf$data$score %>%
+  group_by(taxon_id) %>%
+  summarise(max = max(boot))
+max_boot <- setNames(max_boot$max, max_boot$taxon_id)
+obj_subset_sf <- filter_taxa(obj_subset_sf, max_boot[taxon_ids] >= min_bootstrap | taxon_ranks %in% c("ASV", "Reference"), reassign_obs = c(abund = TRUE, score = FALSE))
+```
+
+### Let's make differential abundance plots for our combined dataset-first let's look at diff. abundance of taxa by whether pots were flooded or not
+
+Demulticoder analysis
+```{r abundance plots-inoculum, fig.height=20, fig.width=20, message=FALSE, echo=FALSE}
+# Calculate difference between groups
+obj_subset$data$diff_table_flooded <- calc_diff_abund_deseq2(obj_subset, data = "tax_abund",
+                                                         cols = metadata$sample_name[!is.na(metadata$flooded)],
+                                                         groups = metadata$flooded[!is.na(metadata$flooded)])
+significant_taxon_ids <- unique(
+  obj_subset$data$diff_table_flooded$taxon_id[! is.na(obj_subset$data$diff_table_flooded$padj) & obj_subset$data$diff_table_flooded$padj < 0.05]
+)
+
+range(obj_subset$data$diff_table_flooded$padj, finite = TRUE) 
+range(obj_subset$data$diff_table_flooded$log2FoldChange, finite = TRUE) 
+
+set.seed = 1000
+# Plot results (might take a few minutes)
+obj_subset %>%
+  filter_taxa(taxon_ids %in% significant_taxon_ids, supertaxa = TRUE, reassign_obs = FALSE) %>%
+  filter_taxa(! grepl(x = taxon_names, "_sp$"), reassign_obs = FALSE) %>%
+  filter_taxa(! grepl(x = taxon_names, "incertae_sedis", ignore.case = TRUE), reassign_obs = FALSE) %>%
+  remove_redundant_names() %>%
+  heat_tree_matrix(data = "diff_table_flooded",
+                   node_size = tax_prop,
+                   node_label = taxon_names,
+                   node_color = ifelse(is.na(padj) | padj > 0.05, 0, log2FoldChange),
+                   node_color_range = diverging_palette(),
+                   node_color_trans = "linear",
+                   node_color_interval = c(-7.5, 7.5),
+                   edge_color_interval = c(-7.5, 7.5),
+                   node_size_range = c(.005, .035),
+                   node_label_size_range = c(.015, .025),
+                   node_size_trans = "log10",
+                   node_size_axis_label = "Mean read proportion",
+                   node_color_axis_label = "Log2 fold change",
+                   node_size_digits = 1,
+                   seed=1000,
+                   key_size = 0.5)
+
+obj_subset
 ```
 
 Standard workflow
-```{r, alpha diversity demulticoder}
+```{r, diff abundance standard workflow}
+# Calculate difference between groups
+obj_subset_sf$data$diff_table_flooded <- calc_diff_abund_deseq2(obj_subset_sf, data = "tax_abund",
+                                                         cols = metadata$sample_name[!is.na(metadata$flooded)],
+                                                         groups = metadata$flooded[!is.na(metadata$flooded)])
+significant_taxon_ids <- unique(
+  obj_subset_sf$data$diff_table_flooded$taxon_id[! is.na(obj_subset_sf$data$diff_table_flooded$padj) & obj_subset_sf$data$diff_table_flooded$padj < 0.05]
+)
+
+range(obj_subset_sf$data$diff_table_flooded$padj, finite = TRUE) 
+range(obj_subset_sf$data$diff_table_flooded$log2FoldChange, finite = TRUE) 
+
+set.seed = 1000
+# Plot results (might take a few minutes)
+obj_subset_sf %>%
+  filter_taxa(taxon_ids %in% significant_taxon_ids, supertaxa = TRUE, reassign_obs = FALSE) %>%
+  filter_taxa(! grepl(x = taxon_names, "_sp$"), reassign_obs = FALSE) %>%
+  filter_taxa(! grepl(x = taxon_names, "incertae_sedis", ignore.case = TRUE), reassign_obs = FALSE) %>%
+  remove_redundant_names() %>%
+  heat_tree_matrix(data = "diff_table_flooded",
+                   node_size = tax_prop,
+                   node_label = taxon_names,
+                   node_color = ifelse(is.na(padj) | padj > 0.05, 0, log2FoldChange),
+                   node_color_range = diverging_palette(),
+                   node_color_trans = "linear",
+                   node_color_interval = c(-7.5, 7.5),
+                   edge_color_interval = c(-7.5, 7.5),
+                   node_size_range = c(.005, .035),
+                   node_label_size_range = c(.015, .025),
+                   node_size_trans = "log10",
+                   node_size_axis_label = "Mean read proportion",
+                   node_color_axis_label = "Log2 fold change",
+                   node_size_digits = 1,
+                   seed=1000,
+                   key_size = 0.5)
+
+obj_subset_sf
 ```
+
+
+### Let's make differential abundance plots for our combined dataset-first let's look at diff. abundance of taxa by which pathogen was used as inoculum
+
+Demulticoder analysis
+```{r abundance plots-inoculum, fig.height=20, fig.width=20, message=FALSE, echo=FALSE}
+# Calculate difference between groups
+obj_subset$data$diff_table_org <- calc_diff_abund_deseq2(obj_subset, data = "tax_abund",
+                                                         cols = metadata$sample_name[!is.na(metadata$organism)],
+                                                         groups = metadata$organism[!is.na(metadata$organism)])
+significant_taxon_ids <- unique(
+  obj_subset$data$diff_table_org$taxon_id[! is.na(obj_subset$data$diff_table_org$padj) & obj_subset$data$diff_table_org$padj < 0.05]
+)
+
+range(obj_subset$data$diff_table_org$padj, finite = TRUE) 
+range(obj_subset$data$diff_table_org$log2FoldChange, finite = TRUE) 
+
+set.seed = 1000
+# Plot results (might take a few minutes)
+obj_subset %>%
+  filter_taxa(taxon_ids %in% significant_taxon_ids, supertaxa = TRUE, reassign_obs = FALSE) %>%
+  filter_taxa(! grepl(x = taxon_names, "_sp$"), reassign_obs = FALSE) %>%
+  filter_taxa(! grepl(x = taxon_names, "incertae_sedis", ignore.case = TRUE), reassign_obs = FALSE) %>%
+  remove_redundant_names() %>%
+  heat_tree_matrix(data = "diff_table_org",
+                   node_size = tax_prop,
+                   node_label = taxon_names,
+                   node_color = ifelse(is.na(padj) | padj > 0.05, 0, log2FoldChange),
+                   node_color_range = diverging_palette(),
+                   node_color_trans = "linear",
+                   node_color_interval = c(-7.5, 7.5),
+                   edge_color_interval = c(-7.5, 7.5),
+                   node_size_range = c(.005, .035),
+                   node_label_size_range = c(.015, .025),
+                   node_size_trans = "log10",
+                   node_size_axis_label = "Mean read proportion",
+                   node_color_axis_label = "Log2 fold change",
+                   node_size_digits = 1,
+                   seed=1000,
+                   key_size = 0.5)
+
+obj_subset
+```
+
+Standard workflow
+```{r, diff abundance standard workflow}
+# Calculate difference between groups
+obj_subset_sf$data$diff_table_org <- calc_diff_abund_deseq2(obj_subset_sf, data = "tax_abund",
+                                                         cols = metadata$sample_name[!is.na(metadata$organism)],
+                                                         groups = metadata$organism[!is.na(metadata$organism)])
+significant_taxon_ids <- unique(
+  obj_subset_sf$data$diff_table_org$taxon_id[! is.na(obj_subset_sf$data$diff_table_org$padj) & obj_subset_sf$data$diff_table_org$padj < 0.05]
+)
+
+range(obj_subset_sf$data$diff_table_org$padj, finite = TRUE) 
+range(obj_subset_sf$data$diff_table_org$log2FoldChange, finite = TRUE) 
+
+set.seed = 1000
+# Plot results (might take a few minutes)
+obj_subset_sf %>%
+  filter_taxa(taxon_ids %in% significant_taxon_ids, supertaxa = TRUE, reassign_obs = FALSE) %>%
+  filter_taxa(! grepl(x = taxon_names, "_sp$"), reassign_obs = FALSE) %>%
+  filter_taxa(! grepl(x = taxon_names, "incertae_sedis", ignore.case = TRUE), reassign_obs = FALSE) %>%
+  remove_redundant_names() %>%
+  heat_tree_matrix(data = "diff_table_org",
+                   node_size = tax_prop,
+                   node_label = taxon_names,
+                   node_color = ifelse(is.na(padj) | padj > 0.05, 0, log2FoldChange),
+                   node_color_range = diverging_palette(),
+                   node_color_trans = "linear",
+                   node_color_interval = c(-7.5, 7.5),
+                   edge_color_interval = c(-7.5, 7.5),
+                   node_size_range = c(.005, .035),
+                   node_label_size_range = c(.015, .025),
+                   node_size_trans = "log10",
+                   node_size_axis_label = "Mean read proportion",
+                   node_color_axis_label = "Log2 fold change",
+                   node_size_digits = 1,
+                   seed=1000,
+                   key_size = 0.5)
+
+obj_subset_sf
+```
+
 
 ### Let's examine community composition more broadly
 Demulticoder outputs
-```{r, alpha diversity demulticoder}
+```{r, community composition demulticoder}
+obj_subset <- obj2 %>%
+  filter_taxa(taxon_ranks == "Species", supertaxa = TRUE, reassign_obs = c(tax_abund = FALSE)) 
+min_bootstrap <- 60
+
+obj_subset$data$score$boot <- as.numeric(obj_subset$data$score$boot)
+max_boot <- obj_subset$data$score %>%
+  group_by(taxon_id) %>%
+  summarise(max = max(boot))
+max_boot <- setNames(max_boot$max, max_boot$taxon_id)
+obj_subset <- filter_taxa(obj_subset, max_boot[taxon_ids] >= min_bootstrap | taxon_ranks %in% c("ASV", "Reference"), reassign_obs = c(abund = TRUE, score = FALSE))
+
+obj_subset$data$asv_prop <- calc_obs_props(obj_subset, 'abund', cols = metadata$sample_name)
+obj_subset$data$tax_abund <- calc_taxon_abund(obj_subset, 'abund', cols = metadata$sample_name)
+obj_subset$data$tax_prop <- calc_taxon_abund(obj_subset, 'asv_prop', cols = metadata$sample_name)
+obj_subset$data$tax_data <- calc_n_samples(obj_subset, 'tax_prop', cols = metadata$sample_name[metadata$sample_type == 'Sample'])
+obj_subset$data$tax_data$mean_prop <- rowMeans(obj_subset$data$tax_prop[, metadata$sample_name])
+
+# Calculate the relative standard deviation for each taxon as a measure of how consistently it was found.
+rsd <- function(x, na.rm = FALSE) {sd(x, na.rm = na.rm) / mean(x, na.rm = na.rm)}
+obj_subset$data$tax_data$rel_stand_dev <- map_dbl(1:nrow(obj_subset$data$tax_abund), function(i) {
+  rsd(unlist(obj_subset$data$tax_abund[i, metadata$sample_name]), na.rm = TRUE)
+})
+obj_subset
+
+set.seed(1000)
+obj_subset %>%
+  filter_taxa(! is_stem) %>%
+  filter_taxa(n_samples >= 10, supertaxa = TRUE, reassign_obs = FALSE) %>%
+  filter_taxa(! grepl(x = taxon_names, "_sp$"), reassign_obs = FALSE) %>%
+  filter_taxa(! grepl(x = taxon_names, "incertae_sedis", ignore.case = TRUE), reassign_obs = FALSE) %>%
+  remove_redundant_names() %>%
+  heat_tree(node_size = mean_prop,
+            edge_size = n_samples,
+            node_color = ifelse(is.na(rel_stand_dev), 0, rel_stand_dev),
+            #node_color_range = c("#aaaaaa", "#8da0cb", "#66c2a5", "#a6d854", "#fc8d62", "red"),
+            node_label = taxon_names,
+            node_size_range = c(0.008, 0.025),
+            node_label_size_range = c(0.012, 0.018),
+            edge_label_size_range = c(0.010, 0.013),
+            node_size_interval = c(0, 1),
+            edge_size_range = c(0.001, 0.008),
+            #layout = "da", initial_layout = "re",
+            node_color_axis_label = "Relative standard deviation",
+            node_size_axis_label = "Mean proportion of reads",
+            edge_size_axis_label = "Number of samples",
+            node_color_digits = 2,
+            node_size_digits = 2,
+            edge_color_digits = 2,
+            edge_size_digits = 2)
+
+obj_subset
 ```
 
 Standard workflow
-```{r, alpha diversity demulticoder}
+```{r, community composition standard workflow}
+obj_subset_sf <- obj2 %>%
+  filter_taxa(taxon_ranks == "Species", supertaxa = TRUE, reassign_obs = c(tax_abund = FALSE)) 
+min_bootstrap <- 60
+
+obj_subset_sf$data$score$boot <- as.numeric(obj_subset_sf$data$score$boot)
+max_boot <- obj_subset_sf$data$score %>%
+  group_by(taxon_id) %>%
+  summarise(max = max(boot))
+max_boot <- setNames(max_boot$max, max_boot$taxon_id)
+obj_subset_sf <- filter_taxa(obj_subset_sf, max_boot[taxon_ids] >= min_bootstrap | taxon_ranks %in% c("ASV", "Reference"), reassign_obs = c(abund = TRUE, score = FALSE))
+
+obj_subset_sf$data$asv_prop <- calc_obs_props(obj_subset_sf, 'abund', cols = metadata$sample_name)
+obj_subset_sf$data$tax_abund <- calc_taxon_abund(obj_subset_sf, 'abund', cols = metadata$sample_name)
+obj_subset_sf$data$tax_prop <- calc_taxon_abund(obj_subset_sf, 'asv_prop', cols = metadata$sample_name)
+obj_subset_sf$data$tax_data <- calc_n_samples(obj_subset_sf, 'tax_prop', cols = metadata$sample_name[metadata$sample_type == 'Sample'])
+obj_subset_sf$data$tax_data$mean_prop <- rowMeans(obj_subset_sf$data$tax_prop[, metadata$sample_name])
+
+# Calculate the relative standard deviation for each taxon as a measure of how consistently it was found.
+rsd <- function(x, na.rm = FALSE) {sd(x, na.rm = na.rm) / mean(x, na.rm = na.rm)}
+obj_subset_sf$data$tax_data$rel_stand_dev <- map_dbl(1:nrow(obj_subset_sf$data$tax_abund), function(i) {
+  rsd(unlist(obj_subset_sf$data$tax_abund[i, metadata$sample_name]), na.rm = TRUE)
+})
+obj_subset_sf
+
+set.seed(1000)
+obj_subset_sf %>%
+  filter_taxa(! is_stem) %>%
+  filter_taxa(n_samples >= 10, supertaxa = TRUE, reassign_obs = FALSE) %>%
+  filter_taxa(! grepl(x = taxon_names, "_sp$"), reassign_obs = FALSE) %>%
+  filter_taxa(! grepl(x = taxon_names, "incertae_sedis", ignore.case = TRUE), reassign_obs = FALSE) %>%
+  remove_redundant_names() %>%
+  heat_tree(node_size = mean_prop,
+            edge_size = n_samples,
+            node_color = ifelse(is.na(rel_stand_dev), 0, rel_stand_dev),
+            #node_color_range = c("#aaaaaa", "#8da0cb", "#66c2a5", "#a6d854", "#fc8d62", "red"),
+            node_label = taxon_names,
+            node_size_range = c(0.008, 0.025),
+            node_label_size_range = c(0.012, 0.018),
+            edge_label_size_range = c(0.010, 0.013),
+            node_size_interval = c(0, 1),
+            edge_size_range = c(0.001, 0.008),
+            #layout = "da", initial_layout = "re",
+            node_color_axis_label = "Relative standard deviation",
+            node_size_axis_label = "Mean proportion of reads",
+            edge_size_axis_label = "Number of samples",
+            node_color_digits = 2,
+            node_size_digits = 2,
+            edge_color_digits = 2,
+            edge_size_digits = 2)
+            #aspect_ratio = 1.618)
+
+obj_subset_sf
 ```
 
 ```{r}
