@@ -121,7 +121,8 @@ objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing 
 
 ### Step 6-evaluate accuracy using mock community, as shown in dada2 tutorial
 ```{r examine accuracy, fig.height=6, fig.width=6}
-track_reads_demulticoder<-read.csv("~/benchmark_demulticoder/mothur_16S_sop/data/track_reads_r16S.csv", row.names = 1)
+track_reads_demulticoder<-read.csv("~/benchmark_demulticoder/mothur_16S_sop/outputs/track_reads_r16S.csv", row.names = 1)
+summary(track_reads_demulticoder)
 
 tax_matrix<-read.csv("~/benchmark_demulticoder/mothur_16S_sop/data/final_asv_abundance_matrix_r16S.csv")
 
