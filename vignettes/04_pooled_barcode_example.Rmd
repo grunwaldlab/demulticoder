@@ -81,9 +81,9 @@ First, we prepare the *metadata.csv* file
 ```{r prepare reads}
 outputs<-prepare_reads(
   data_directory = "~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/data", 
-  output_directory = "~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/outputs_olddb_cut", 
-  tempdir_path = "~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/temp_rhode3", 
-  overwrite_existing = TRUE)
+  output_directory = "~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/outputs_newdb_cut50",
+  tempdir_path = "~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/temp_rhode4", 
+  overwrite_existing = FALSE)
 ```
 
 ### Step 2-Run Cutadapt to remove primers and then trim reads with DADA2 filterAndTrim function 
@@ -91,17 +91,16 @@ outputs<-prepare_reads(
 cut_trim(
   outputs,
   cutadapt_path="/usr/bin/cutadapt",
-  overwrite_existing = TRUE)
+  overwrite_existing = FALSE)
 ```
 
 ### Step 3-Core ASV inference step
 ```{r ASV inference}
 make_asv_abund_matrix(
   outputs,
-  overwrite_existing = TRUE)
+  overwrite_existing = FALSE)
 ```
 
-### Step 4-Assign taxonomy step
 ```{r assign taxonomy step}
 assign_tax(
   outputs,
