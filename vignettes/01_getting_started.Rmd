@@ -141,6 +141,8 @@ The sample names, primer sequences, and other metadata are reorganized in prepar
 analysis_setup<-demulticoder::prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
   output_directory = "~/output_test_dataset", 
+  tempdir_path = "~/temp_test_dataset",
+  tempdir_id = "test_dataset",
   overwrite_existing=TRUE)
 ```
 
@@ -173,7 +175,7 @@ assign_tax(
 
 ### Reformat ASV matrix as taxmap and phyloseq objects after optional filtering of low abundance ASVs
 ```{r Reformat final matrix, message=FALSE}
-objs<-convert_asv_matrix_to_objs(analysis_setup, minimum_bootstrap = 0, save_outputs=TRUE)
+objs<-convert_asv_matrix_to_objs(analysis_setup, minimum_bootstrap = 0, save_outputs=FALSE)
 ```
 
 ### Format of output matrix

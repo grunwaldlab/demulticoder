@@ -70,7 +70,7 @@ primer_info <- data.frame(
 )
 
 # Use knitr::kable() to create the table
-knitr::kable(primer_info, row.names = FALSE)
+knitr::kable(primer_info, row.names = TRUE)
 ```
 
 ```{r setup, include=FALSE}
@@ -83,6 +83,8 @@ library("demulticoder")
 outputs<-prepare_reads(
   data_directory = "~/benchmark_demulticoder/mothur_16S_sop/data", 
   output_directory = "~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs",
+  tempdir_path = "~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp",
+  tempdir_id = "16S_vignette",
   overwrite_existing = FALSE)
 ```
 
@@ -107,13 +109,13 @@ assign_tax(
   outputs,
   asv_abund_matrix,
   db_16S="silva_nr99_v138.2_toSpecies_trainset.fa.gz",
-  retrieve_files=TRUE,
+  retrieve_files=FALSE,
   overwrite_existing=FALSE)
 ```
 
 ### Step 5-convert asv matrix to taxmap and phyloseq objects with one function
 ```{r convert matrix to other formats, fig.height=6, fig.width=6}
-objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing = TRUE)
+objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing = FALSE)
 ```
 
 ### Step 6-evaluate accuracy using mock community, as shown in dada2 tutorial
