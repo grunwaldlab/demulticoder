@@ -65,6 +65,3 @@ pkgdown::build_site()
 usethis::use_pkgdown_github_pages()
 
 usethis::use_logo("man/figures/demulticoder_logo_iteration1.png")
-
-
-R CMD check --as-cran
