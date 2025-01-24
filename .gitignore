@@ -4,3 +4,8 @@
 .Ruserdata
 Tests.R
 future_vignettes
+docs
+.Rdata
+.httr-oauth
+.DS_Store
+.quarto
