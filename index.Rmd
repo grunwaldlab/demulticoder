@@ -11,18 +11,17 @@ knitr::opts_chunk$set(
 )
 ```
 
-# *Demulticoder*-An R package to streamline metabarcoding analyses using DADA2
-<img src="man/figures/demulticoder_logo_iteration1.png" align="right" height="139" alt="" />  
+# Demulticoder R package
 
-*This package is actively under development. Until this message has been removed, use with caution. Additional testing, documentation, and examples are in progress.*
+**This package is actively under development. Until this message has been removed, use with caution. Additional testing, documentation, and examples are in progress.**
 
 ### Introduction
 
 The ***demulticoder*** package is a Cutadapt and DADA2 wrapper package for metabarcodng analyses. The main commands and outputs are intuitive and comprehensive, which helps to account for the complex and iterative nature of metabarcoding analyses. 
 
-Here is a brief schematic of the general workflow:  
+Here is a brief schematic of the general workflow:
 
-```{r workflow-diagram, echo=FALSE, out.width="60%", out.height="60%", fig.align="left"}
+```{r workflow-diagram, echo=FALSE, out.width="40%", out.height="40%", fig.align="center"}
 knitr::include_graphics("man/figures/rps10_fig1_smaller.drawio.png")
 ```
 
@@ -86,10 +85,10 @@ objs<-convert_asv_matrix_to_objs(output)
 
 ### Check out the website to view the documentation and see more examples 
 
-For more information on source code, check out the package repository: https://github.com/grunwaldlab/demulticoder/
+For more information, key functions, inputs, and example vignettes, check out the documentation at: https://grunwaldlab.github.io/demulticoder
 
 ### Citation
 
-The package was developed by Martha Sudermann, Zachary Foster, Samantha Dawson, Hung Phan, Niklaus Grnwald, Jeff Chang.
+The package was developed by Martha Sudermann, Zachary Foster, Samantha Dawson, Hung Phan, Jeff Chang, and Niklaus Grünwald
 
 Stay tuned for associated manuscript. 
