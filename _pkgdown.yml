@@ -5,17 +5,20 @@ navbar:
     left:  [intro, documentation, articles, reference]
     right: [search, github]
   components:
-    articles:
-      text: Example Workflows
-      menu:
-      - text: 16S Mothur SOP DADA2 Example
-        href: articles/03_16S_mothur_validation.html
     intro:
       text: Get Started
       href: articles/01_getting_started.html
     documentation:
       text: Documentation
       href: articles/02_documentation.html
+    articles:
+      text: Example Workflows
+      menu:
+        - text: 16S Mothur SOP DADA2 Example
+          href: articles/03_16S_mothur_validation.html
     reference:
       text: Main Functions
       href: reference/index.html
+    search:
+      # Enables a search bar in the navbar
+      text: Search
