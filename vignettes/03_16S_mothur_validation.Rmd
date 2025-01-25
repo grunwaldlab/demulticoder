@@ -74,7 +74,8 @@ knitr::kable(primer_info, row.names = TRUE)
 ```
 
 ```{r setup, include=FALSE}
-devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
+#devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
+devtools::load_all("~/demulticoder")
 library("demulticoder")
 ```
 
@@ -85,7 +86,7 @@ outputs<-prepare_reads(
   output_directory = "~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs",
   tempdir_path = "~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp",
   tempdir_id = "16S_vignette",
-  overwrite_existing = FALSE)
+  overwrite_existing = TRUE)
 ```
 
 ### Step 2-Run Cutadapt to remove primers and then trim reads with DADA2 filterAndTrim function 
