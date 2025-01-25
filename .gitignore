@@ -4,7 +4,6 @@
 .Ruserdata
 test.R
 future_vignettes
-docs
 .Rdata
 .httr-oauth
 .DS_Store
