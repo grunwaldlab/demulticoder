@@ -5,4 +5,7 @@ articles:
   01_getting_started: 01_getting_started.html
   02_documentation: 02_documentation.html
   03_16S_mothur_validation: 03_16S_mothur_validation.html
-last_built: 2025-01-25T21:41Z
+last_built: 2025-01-25T21:51Z
+urls:
+  reference: https://grunwaldlab.github.io/demulticoder/reference
+  article: https://grunwaldlab.github.io/demulticoder/articles

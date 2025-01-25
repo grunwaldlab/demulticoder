@@ -7,4 +7,3 @@ library("demulticoder")
 devtools::document()
 
 pkgdown::build_site()
-

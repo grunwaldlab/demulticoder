@@ -1,8 +1,6 @@
 
 # *Demulticoder*-An R package to streamline metabarcoding analyses using DADA2
 
-<img src="man/figures/logo.png" align="right" height="139" alt="" />
-
 *This package is actively under development. Until this message has been
 removed, use with caution. Additional testing, documentation, and
 examples are in progress.*
@@ -29,7 +27,7 @@ Here is a brief schematic of the general workflow:
 
 - The package handles not just 16S or ITS datasets when using default
   UNITE fungal or Silva 16S databases but also oomycete rps10 analyses
-  using [oomycetedb](https://grunwaldlab.github.io/OomyceteDB//), or up to two custom
+  using oomycetedb (<https://oomycetedb.org>), or up to two custom
   databases (provided they are formatted as described here:
   <https://benjjneb.github.io/dada2/training.html>).
 
@@ -107,6 +105,6 @@ check out the documentation at:
 ### Citation
 
 The package was developed by Martha Sudermann, Zachary Foster, Samantha
-Dawson, Hung Phan, Jeff Chang, and Niklaus Grunwald.
+Dawson, Hung Phan, Niklaus Grnwald, Jeff Chang.
 
 Stay tuned for associated manuscript.
