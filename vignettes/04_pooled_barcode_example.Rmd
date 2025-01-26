@@ -81,9 +81,10 @@ First, we prepare the *metadata.csv* file
 ```{r prepare reads}
 outputs<-prepare_reads(
   data_directory = "~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/data", 
-  output_directory = "~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/outputs_newdb_cut50",
-  tempdir_path = "~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/temp_rhode4", 
-  overwrite_existing = FALSE)
+  output_directory = "~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/outputs_vignette",
+  tempdir_path = "~/demulticoder_benchmarking/demulticoder_combined_analysis_rhode/temp_vignette",
+  tempdir_id = "temp_files",
+  overwrite_existing = TRUE)
 ```
 
 ### Step 2-Run Cutadapt to remove primers and then trim reads with DADA2 filterAndTrim function 
@@ -106,15 +107,15 @@ assign_tax(
   outputs,
   asv_abund_matrix,
   db_its = "sh_general_release_dynamic_18.07.2023.fasta",
-  db_rps10 = "release_1.fa",
+  db_rps10 = "oomycetedb_v2.fasta",
   retrieve_files=TRUE,
   tryRC = TRUE,
-  overwrite_existing=TRUE)
+  overwrite_existing=FALSE)
 ```
 
 ### Step 5-convert asv matrix to taxmap and phyloseq objects with one function
 ```{r convert matrix to other formats}
-objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing = TRUE)
+objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing = FALSE)
 ```
 
 ```{r}
