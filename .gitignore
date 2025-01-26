@@ -2,5 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
-Tests.R
+test.R
 future_vignettes
+.Rdata
+.httr-oauth
+.DS_Store
+.quarto

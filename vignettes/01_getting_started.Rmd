@@ -131,9 +131,7 @@ Eventually, the package will be uploaded to CRAN or Bioconductor.
 
 ```{r installation, warning=FALSE, message=FALSE}
 #devtools::install_github("grunwaldlab/demulticoder")
-
 devtools::load_all("~/demulticoder")
-
 library("demulticoder")
 ```
 
@@ -144,6 +142,8 @@ The sample names, primer sequences, and other metadata are reorganized in prepar
 analysis_setup<-demulticoder::prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
   output_directory = "~/output_test_dataset", 
+  tempdir_path = "~/temp_test_dataset",
+  tempdir_id = "test_dataset",
   overwrite_existing=TRUE)
 ```
 
@@ -152,7 +152,7 @@ Before running Cutadapt, please ensure that you have installed it.
 ```{r remove primers with cut_trim function, message=FALSE}
 demulticoder::cut_trim(
   analysis_setup,
-  cutadapt_path="/usr/bin/cutadapt",
+  cutadapt_path="/opt/homebrew/bin/cutadapt",
   overwrite_existing = FALSE)
 ```
 
@@ -174,10 +174,9 @@ assign_tax(
   overwrite_existing=FALSE)
 ```
 
-
 ### Reformat ASV matrix as taxmap and phyloseq objects after optional filtering of low abundance ASVs
 ```{r Reformat final matrix, message=FALSE}
-objs<-convert_asv_matrix_to_objs(analysis_setup, minimum_bootstrap = 0, save_outputs=TRUE)
+objs<-convert_asv_matrix_to_objs(analysis_setup, minimum_bootstrap = 0, save_outputs=FALSE)
 ```
 
 ### Format of output matrix

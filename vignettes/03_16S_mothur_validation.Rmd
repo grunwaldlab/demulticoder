@@ -70,12 +70,12 @@ primer_info <- data.frame(
 )
 
 # Use knitr::kable() to create the table
-knitr::kable(primer_info, row.names = FALSE)
+knitr::kable(primer_info, row.names = TRUE)
 ```
 
 ```{r setup, include=FALSE}
-#TODO-at some point switch to loading github repo version
-devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
+#devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
+devtools::load_all("~/demulticoder")
 library("demulticoder")
 ```
 
@@ -83,9 +83,9 @@ library("demulticoder")
 ```{r prepare reads, fig.height=6, fig.width=6}
 outputs<-prepare_reads(
   data_directory = "~/benchmark_demulticoder/mothur_16S_sop/data", 
-  output_directory = "~/benchmark_demulticoder/mothur_16S_sop/outputs",
-  tempdir_path = "~/benchmark_demulticoder/mothur_16S_sop/temp",
-  tempdir_id = "SOP_run",
+  output_directory = "~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs",
+  tempdir_path = "~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp",
+  tempdir_id = "16S_vignette",
   overwrite_existing = FALSE)
 ```
 
@@ -109,8 +109,8 @@ make_asv_abund_matrix(
 assign_tax(
   outputs,
   asv_abund_matrix,
-  db_16S="silva_nr99_v138.1_wSpecies_train_set.fa",
-  retrieve_files=TRUE,
+  db_16S="silva_nr99_v138.2_toSpecies_trainset.fa.gz",
+  retrieve_files=FALSE,
   overwrite_existing=FALSE)
 ```
 
@@ -121,10 +121,10 @@ objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing 
 
 ### Step 6-evaluate accuracy using mock community, as shown in dada2 tutorial
 ```{r examine accuracy, fig.height=6, fig.width=6}
-track_reads_demulticoder<-read.csv("~/benchmark_demulticoder/mothur_16S_sop/outputs/track_reads_r16S.csv", row.names = 1)
+track_reads_demulticoder<-read.csv("~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/track_reads_r16S.csv", row.names = 1)
 summary(track_reads_demulticoder)
 
-tax_matrix<-read.csv("~/benchmark_demulticoder/mothur_16S_sop/data/final_asv_abundance_matrix_r16S.csv")
+tax_matrix<-read.csv("~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/final_asv_abundance_matrix_r16S.csv")
 
 unqs.mock <- tax_matrix[, c(2, which(colnames(tax_matrix) == "Mock_r16S"))]
 
