@@ -1,5 +1,5 @@
 #devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
-rcmdcheck::rcmdcheck(args = "--as-cran")
+
 #devtools::clean_dll()
 #devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
 devtools::load_all("~/demulticoder")
@@ -11,4 +11,8 @@ install.packages(c("metacoder", "sessioninfo", "pkgdown"))
 library("metacoder")
 library("sessioninfo")
 library("pkgdown")
+
 pkgdown::build_site()
+pkgdown::preview_site()
+
+rcmdcheck::rcmdcheck(args = "--as-cran")
