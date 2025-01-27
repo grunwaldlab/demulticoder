@@ -14,8 +14,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="16S Mothur SOP Validation">
 </head>
 <body>
@@ -40,7 +40,8 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-example-workflows" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Example Workflows</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-example-workflows">
-<li><a class="dropdown-item" href="../articles/03_16S_mothur_validation.html">16S Mothur SOP DADA2 Example</a></li>
+<li><a class="dropdown-item" href="../articles/03_16S_mothur_validation.html">16S DADA2 Mothur SOP Validation</a></li>
+    <li><a class="dropdown-item" href="../articles/04_pooled_barcode_example.html">Pooled ITS1/rps10 barcode example</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Main Functions</a></li>
@@ -301,10 +302,9 @@ steps<a class="anchor" aria-label="anchor" href="#step-1-remove-ns-and-create-di
 <code class="sourceCode R"><span><span class="va">outputs</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/prepare_reads.html">prepare_reads</a></span><span class="op">(</span></span>
 <span>  data_directory <span class="op">=</span> <span class="st">"~/benchmark_demulticoder/mothur_16S_sop/data"</span>, </span>
 <span>  output_directory <span class="op">=</span> <span class="st">"~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs"</span>,</span>
-<span>  tempdir_path <span class="op">=</span> <span class="st">"~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp"</span>,</span>
-<span>  tempdir_id <span class="op">=</span> <span class="st">"16S_vignette"</span>,</span>
-<span>  overwrite_existing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Existing data detected: Primer counts and N's may have been removed from previous runs. Loading existing output. To perform a new analysis, specify overwrite_existing = TRUE.</span></span>
+<span>  tempdir_path <span class="op">=</span> <span class="st">"~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs"</span>,</span>
+<span>  tempdir_id <span class="op">=</span> <span class="st">"temp_files"</span>,</span>
+<span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">1</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">22</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
@@ -334,15 +334,8 @@ steps<a class="anchor" aria-label="anchor" href="#step-1-remove-ns-and-create-di
 <span><span class="co">#&gt; Warning in get_read_names(paired_file_paths[1]) ==</span></span>
 <span><span class="co">#&gt; get_read_names(paired_file_paths[2]): longer object length is not a multiple of</span></span>
 <span><span class="co">#&gt; shorter object length</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">8</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">43</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span>  (3): primer_name, orientation, sequence</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (40): F3D0_R1, F3D0_R2, F3D1_R1, F3D1_R2, F3D141_R1, F3D141_R2, F3D142_R...</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span></code></pre></div>
-<p><img src="prepare%20reads-1.png" width="576"></p>
+<span><span class="co">#&gt; Creating output directory: /home/marthasudermann/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/prefiltered_sequences</span></span></code></pre></div>
+<p><img src="prepare_reads-1.png" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="step-2-run-cutadapt-to-remove-primers-and-then-trim-reads-with-dada2-filterandtrim-function">Step 2-Run Cutadapt to remove primers and then trim reads with DADA2
@@ -351,9 +344,50 @@ filterAndTrim function<a class="anchor" aria-label="anchor" href="#step-2-run-cu
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cut_trim.html">cut_trim</a></span><span class="op">(</span></span>
 <span>  <span class="va">outputs</span>,</span>
-<span>  cutadapt_path<span class="op">=</span><span class="st">"/opt/homebrew/bin/cutadapt"</span>,</span>
-<span>  overwrite_existing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Existing data detected: Primer counts and N's may have been removed from previous runs. Loading existing output. To perform a new analysis, specify overwrite_existing = TRUE.</span></span></code></pre></div>
+<span>  cutadapt_path<span class="op">=</span><span class="st">"/usr/bin/cutadapt"</span>,</span>
+<span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Running Cutadapt 3.5 for r16S sequence data </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D0_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D0_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D1_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D1_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D141_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D141_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D142_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D142_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D143_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D143_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D144_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D144_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D145_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D145_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D146_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D146_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D147_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D147_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D148_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D148_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D149_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D149_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D150_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D150_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D2_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D2_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D3_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D3_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D5_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D5_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D6_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D6_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D7_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D7_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D8_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D8_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D9_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/F3D9_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/Mock_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/trimmed_sequences/Mock_R2_r16S.fastq.gz</span></span></code></pre></div>
+<p><img src="Remove_primers_and_trim_reads-1.png" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="step-3-core-asv-inference-step">Step 3-Core ASV inference step<a class="anchor" aria-label="anchor" href="#step-3-core-asv-inference-step"></a>
@@ -361,29 +395,134 @@ filterAndTrim function<a class="anchor" aria-label="anchor" href="#step-2-run-cu
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make_asv_abund_matrix.html">make_asv_abund_matrix</a></span><span class="op">(</span></span>
 <span>  <span class="va">outputs</span>,</span>
-<span>  overwrite_existing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Existing files found. The following ASV abundance matrices are saved in the tempdir path:</span></span>
-<span><span class="co">#&gt; /Users/masudermann/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp/16S_vignette/asvabund_matrixDADA2_r16S.RData</span></span>
-<span><span class="co">#&gt; [[1]]</span></span>
-<span><span class="co">#&gt; NULL</span></span></code></pre></div>
+<span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 33513360 total bases in 139639 reads from 20 samples will be used for learning the error rates.</span></span>
+<span><span class="co">#&gt; Initializing error rates to maximum possible estimate.</span></span>
+<span><span class="co">#&gt; selfConsist step 1 ....................</span></span>
+<span><span class="co">#&gt;    selfConsist step 2</span></span>
+<span><span class="co">#&gt;    selfConsist step 3</span></span>
+<span><span class="co">#&gt;    selfConsist step 4</span></span>
+<span><span class="co">#&gt;    selfConsist step 5</span></span>
+<span><span class="co">#&gt; Convergence after  5  rounds.</span></span>
+<span><span class="co">#&gt; Error rate plot for the Forward read of primer pair r16S</span></span>
+<span><span class="co">#&gt; Warning in scale_y_log10(): <span style="color: #00BB00;">log-10</span> transformation introduced</span></span>
+<span><span class="co">#&gt; infinite values.</span></span>
+<span><span class="co">#&gt; Sample 1 - 7112 reads in 1978 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 2 - 5299 reads in 1639 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 3 - 5463 reads in 1477 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 4 - 2914 reads in 904 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 5 - 2941 reads in 939 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 6 - 4312 reads in 1267 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 7 - 6741 reads in 1756 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 8 - 4560 reads in 1438 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 9 - 15636 reads in 3589 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 10 - 11412 reads in 2761 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 11 - 12017 reads in 3021 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 12 - 5032 reads in 1566 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 13 - 18075 reads in 3707 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 14 - 6250 reads in 1479 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 15 - 4052 reads in 1195 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 16 - 7369 reads in 1832 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 17 - 4765 reads in 1183 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 18 - 4871 reads in 1382 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 19 - 6504 reads in 1709 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 20 - 4314 reads in 897 unique sequences.</span></span>
+<span><span class="co">#&gt; 22342240 total bases in 139639 reads from 20 samples will be used for learning the error rates.</span></span>
+<span><span class="co">#&gt; Initializing error rates to maximum possible estimate.</span></span>
+<span><span class="co">#&gt; selfConsist step 1 ....................</span></span>
+<span><span class="co">#&gt;    selfConsist step 2</span></span>
+<span><span class="co">#&gt;    selfConsist step 3</span></span>
+<span><span class="co">#&gt;    selfConsist step 4</span></span>
+<span><span class="co">#&gt;    selfConsist step 5</span></span>
+<span><span class="co">#&gt;    selfConsist step 6</span></span>
+<span><span class="co">#&gt;    selfConsist step 7</span></span>
+<span><span class="co">#&gt; Convergence after  7  rounds.</span></span>
+<span><span class="co">#&gt; Error rate plot for the Reverse read of primer pair r16S</span></span>
+<span><span class="co">#&gt; Warning in scale_y_log10(): <span style="color: #00BB00;">log-10</span> transformation introduced</span></span>
+<span><span class="co">#&gt; infinite values.</span></span>
+<span><span class="co">#&gt; Sample 1 - 7112 reads in 1659 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 2 - 5299 reads in 1349 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 3 - 5463 reads in 1335 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 4 - 2914 reads in 853 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 5 - 2941 reads in 880 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 6 - 4312 reads in 1286 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 7 - 6741 reads in 1803 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 8 - 4560 reads in 1265 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 9 - 15636 reads in 3413 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 10 - 11412 reads in 2522 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 11 - 12017 reads in 2771 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 12 - 5032 reads in 1415 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 13 - 18075 reads in 3290 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 14 - 6250 reads in 1390 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 15 - 4052 reads in 1134 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 16 - 7369 reads in 1635 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 17 - 4765 reads in 1084 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 18 - 4871 reads in 1161 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 19 - 6504 reads in 1502 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 20 - 4314 reads in 732 unique sequences.</span></span>
+<span><span class="co">#&gt; 6540 paired-reads (in 107 unique pairings) successfully merged out of 6891 (in 197 pairings) input.</span></span>
+<span><span class="co">#&gt; 5027 paired-reads (in 101 unique pairings) successfully merged out of 5189 (in 157 pairings) input.</span></span>
+<span><span class="co">#&gt; 4986 paired-reads (in 81 unique pairings) successfully merged out of 5267 (in 166 pairings) input.</span></span>
+<span><span class="co">#&gt; 2595 paired-reads (in 52 unique pairings) successfully merged out of 2754 (in 108 pairings) input.</span></span>
+<span><span class="co">#&gt; 2553 paired-reads (in 60 unique pairings) successfully merged out of 2785 (in 119 pairings) input.</span></span>
+<span><span class="co">#&gt; 3646 paired-reads (in 55 unique pairings) successfully merged out of 4109 (in 157 pairings) input.</span></span>
+<span><span class="co">#&gt; 6079 paired-reads (in 81 unique pairings) successfully merged out of 6514 (in 198 pairings) input.</span></span>
+<span><span class="co">#&gt; 3968 paired-reads (in 91 unique pairings) successfully merged out of 4388 (in 187 pairings) input.</span></span>
+<span><span class="co">#&gt; 14233 paired-reads (in 143 unique pairings) successfully merged out of 15355 (in 352 pairings) input.</span></span>
+<span><span class="co">#&gt; 10529 paired-reads (in 120 unique pairings) successfully merged out of 11165 (in 277 pairings) input.</span></span>
+<span><span class="co">#&gt; 11154 paired-reads (in 137 unique pairings) successfully merged out of 11797 (in 298 pairings) input.</span></span>
+<span><span class="co">#&gt; 4349 paired-reads (in 85 unique pairings) successfully merged out of 4802 (in 179 pairings) input.</span></span>
+<span><span class="co">#&gt; 17431 paired-reads (in 153 unique pairings) successfully merged out of 17812 (in 272 pairings) input.</span></span>
+<span><span class="co">#&gt; 5850 paired-reads (in 81 unique pairings) successfully merged out of 6095 (in 159 pairings) input.</span></span>
+<span><span class="co">#&gt; 3713 paired-reads (in 86 unique pairings) successfully merged out of 3891 (in 147 pairings) input.</span></span>
+<span><span class="co">#&gt; 6865 paired-reads (in 99 unique pairings) successfully merged out of 7191 (in 187 pairings) input.</span></span>
+<span><span class="co">#&gt; 4428 paired-reads (in 68 unique pairings) successfully merged out of 4605 (in 128 pairings) input.</span></span>
+<span><span class="co">#&gt; 4576 paired-reads (in 101 unique pairings) successfully merged out of 4739 (in 174 pairings) input.</span></span>
+<span><span class="co">#&gt; 6092 paired-reads (in 109 unique pairings) successfully merged out of 6315 (in 173 pairings) input.</span></span>
+<span><span class="co">#&gt; 4269 paired-reads (in 20 unique pairings) successfully merged out of 4281 (in 28 pairings) input.</span></span></code></pre></div>
+<p><img src="ASV_inference-1.png" width="576"></p>
+<pre><code><span><span class="co">#&gt; Identified 61 bimeras out of 293 input sequences.</span></span></code></pre>
+<p><img src="ASV_inference-2.png" width="576"></p>
+<pre><code><span><span class="co">#&gt; $r16S</span></span>
+<span><span class="co">#&gt; [1] "~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/temp_files/asvabund_matrixDADA2_r16S.RData"</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="step-4-assign-taxonomy-step">Step 4-Assign taxonomy step<a class="anchor" aria-label="anchor" href="#step-4-assign-taxonomy-step"></a>
 </h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/assign_tax.html">assign_tax</a></span><span class="op">(</span></span>
 <span>  <span class="va">outputs</span>,</span>
 <span>  <span class="va">asv_abund_matrix</span>,</span>
 <span>  db_16S<span class="op">=</span><span class="st">"silva_nr99_v138.2_toSpecies_trainset.fa.gz"</span>,</span>
 <span>  retrieve_files<span class="op">=</span><span class="cn">FALSE</span>,</span>
-<span>  overwrite_existing<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Existing files found. Specify overwrite=TRUE, to rerun analysis</span></span></code></pre></div>
+<span>  overwrite_existing<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    samplename_barcode input filtered denoisedF denoisedR merged nonchim</span></span>
+<span><span class="co">#&gt; 1           F3D0_r16S  7733     7112      6976      6979   6540    6528</span></span>
+<span><span class="co">#&gt; 2           F3D1_r16S  5829     5299      5226      5239   5027    5016</span></span>
+<span><span class="co">#&gt; 3         F3D141_r16S  5926     5463      5331      5357   4986    4863</span></span>
+<span><span class="co">#&gt; 4         F3D142_r16S  3158     2914      2799      2830   2595    2521</span></span>
+<span><span class="co">#&gt; 5         F3D143_r16S  3164     2941      2822      2868   2553    2519</span></span>
+<span><span class="co">#&gt; 6         F3D144_r16S  4798     4312      4150      4228   3646    3507</span></span>
+<span><span class="co">#&gt; 7         F3D145_r16S  7331     6741      6592      6627   6079    5820</span></span>
+<span><span class="co">#&gt; 8         F3D146_r16S  4993     4560      4450      4470   3968    3879</span></span>
+<span><span class="co">#&gt; 9         F3D147_r16S 16956    15636     15433     15505  14233   13006</span></span>
+<span><span class="co">#&gt; 10        F3D148_r16S 12332    11412     11250     11267  10529    9935</span></span>
+<span><span class="co">#&gt; 11        F3D149_r16S 13006    12017     11857     11898  11154   10653</span></span>
+<span><span class="co">#&gt; 12        F3D150_r16S  5474     5032      4879      4925   4349    4240</span></span>
+<span><span class="co">#&gt; 13          F3D2_r16S 19489    18075     17907     17939  17431   16835</span></span>
+<span><span class="co">#&gt; 14          F3D3_r16S  6726     6250      6145      6176   5850    5486</span></span>
+<span><span class="co">#&gt; 15          F3D5_r16S  4418     4052      3930      3991   3713    3713</span></span>
+<span><span class="co">#&gt; 16          F3D6_r16S  7933     7369      7231      7294   6865    6678</span></span>
+<span><span class="co">#&gt; 17          F3D7_r16S  5103     4765      4646      4673   4428    4217</span></span>
+<span><span class="co">#&gt; 18          F3D8_r16S  5274     4871      4786      4802   4576    4547</span></span>
+<span><span class="co">#&gt; 19          F3D9_r16S  7023     6504      6341      6442   6092    6015</span></span>
+<span><span class="co">#&gt; 20          Mock_r16S  4748     4314      4287      4286   4269    4269</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="step-5-convert-asv-matrix-to-taxmap-and-phyloseq-objects-with-one-function">Step 5-convert asv matrix to taxmap and phyloseq objects with one
 function<a class="anchor" aria-label="anchor" href="#step-5-convert-asv-matrix-to-taxmap-and-phyloseq-objects-with-one-function"></a>
 </h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/convert_asv_matrix_to_objs.html">convert_asv_matrix_to_objs</a></span><span class="op">(</span><span class="va">outputs</span>, save_outputs<span class="op">=</span><span class="cn">TRUE</span>, overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">232</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">23</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
@@ -404,7 +543,7 @@ function<a class="anchor" aria-label="anchor" href="#step-5-convert-asv-matrix-t
 <h3 id="step-6-evaluate-accuracy-using-mock-community-as-shown-in-dada2-tutorial">Step 6-evaluate accuracy using mock community, as shown in dada2
 tutorial<a class="anchor" aria-label="anchor" href="#step-6-evaluate-accuracy-using-mock-community-as-shown-in-dada2-tutorial"></a>
 </h3>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">track_reads_demulticoder</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/track_reads_r16S.csv"</span>, row.names <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">track_reads_demulticoder</span><span class="op">)</span></span>
 <span><span class="co">#&gt;      input          filtered       denoisedF       denoisedR    </span></span>
@@ -443,7 +582,7 @@ described previously.</p>
 <h3 id="step-7-follow-up-work-using-phyloseq-to-do-side-by-side-comparison-with-dada2-example-and-to-examine-alpha-diversity-results">Step 7-Follow-up work using phyloseq to do side-by-side comparison
 with dada2 example and to examine alpha diversity results<a class="anchor" aria-label="anchor" href="#step-7-follow-up-work-using-phyloseq-to-do-side-by-side-comparison-with-dada2-example-and-to-examine-alpha-diversity-results"></a>
 </h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/prune_samples-methods.html" class="external-link">prune_samples</a></span><span class="op">(</span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html" class="external-link">sample_names</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span><span class="op">)</span> <span class="op">!=</span> <span class="st">"Mock_r16S"</span>, <span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span><span class="op">)</span> <span class="co"># Remove mock sample</span></span>
 <span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/plot_richness.html" class="external-link">plot_richness</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span>, x<span class="op">=</span><span class="st">"Day"</span>, measures<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Shannon"</span>, <span class="st">"Simpson"</span><span class="op">)</span>, color<span class="op">=</span><span class="st">"When"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in estimate_richness(physeq, split = TRUE, measures = measures): The data you have provided does not have</span></span>
@@ -452,220 +591,220 @@ with dada2 example and to examine alpha diversity results<a class="anchor" aria-
 <span><span class="co">#&gt; trimmed low-abundance taxa from the data.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; We recommended that you find the un-trimmed data and retry.</span></span></code></pre></div>
-<p><img src="phyloseq%20alpha%20diversity%20analysis-1.png" width="576"></p>
+<p><img src="phyloseq_alpha_diversity_analysis-1.png" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="step-8-examine-ordination-plots-as-additional-point-of-comparison-with-dada2-tutorial">Step 8-Examine ordination plots as additional point of comparison
 with DADA2 tutorial<a class="anchor" aria-label="anchor" href="#step-8-examine-ordination-plots-as-additional-point-of-comparison-with-dada2-tutorial"></a>
 </h3>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Transform data to proportions as appropriate for Bray-Curtis distances</span></span>
 <span><span class="va">ps.prop</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span>, <span class="kw">function</span><span class="op">(</span><span class="va">otu</span><span class="op">)</span> <span class="va">otu</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">otu</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">ord.nmds.bray</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/ordinate.html" class="external-link">ordinate</a></span><span class="op">(</span><span class="va">ps.prop</span>, method<span class="op">=</span><span class="st">"NMDS"</span>, distance<span class="op">=</span><span class="st">"bray"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Run 0 stress 0.0808378 </span></span>
-<span><span class="co">#&gt; Run 1 stress 0.1334385 </span></span>
-<span><span class="co">#&gt; Run 2 stress 0.0809639 </span></span>
-<span><span class="co">#&gt; ... Procrustes: rmse 0.009219366  max resid 0.02824555 </span></span>
-<span><span class="co">#&gt; Run 3 stress 0.09466618 </span></span>
-<span><span class="co">#&gt; Run 4 stress 0.3744204 </span></span>
-<span><span class="co">#&gt; Run 5 stress 0.09061366 </span></span>
-<span><span class="co">#&gt; Run 6 stress 0.0808378 </span></span>
-<span><span class="co">#&gt; ... Procrustes: rmse 2.017452e-06  max resid 4.726435e-06 </span></span>
+<span><span class="co">#&gt; Run 1 stress 0.08096389 </span></span>
+<span><span class="co">#&gt; ... Procrustes: rmse 0.009177604  max resid 0.02810685 </span></span>
+<span><span class="co">#&gt; Run 2 stress 0.1231378 </span></span>
+<span><span class="co">#&gt; Run 3 stress 0.121153 </span></span>
+<span><span class="co">#&gt; Run 4 stress 0.08635462 </span></span>
+<span><span class="co">#&gt; Run 5 stress 0.0808378 </span></span>
+<span><span class="co">#&gt; ... Procrustes: rmse 5.812944e-06  max resid 1.554258e-05 </span></span>
 <span><span class="co">#&gt; ... Similar to previous best</span></span>
-<span><span class="co">#&gt; Run 7 stress 0.08635462 </span></span>
-<span><span class="co">#&gt; Run 8 stress 0.0808378 </span></span>
-<span><span class="co">#&gt; ... Procrustes: rmse 6.420168e-06  max resid 1.573833e-05 </span></span>
+<span><span class="co">#&gt; Run 6 stress 0.1231378 </span></span>
+<span><span class="co">#&gt; Run 7 stress 0.09061366 </span></span>
+<span><span class="co">#&gt; Run 8 stress 0.08096389 </span></span>
+<span><span class="co">#&gt; ... Procrustes: rmse 0.009176341  max resid 0.02810282 </span></span>
+<span><span class="co">#&gt; Run 9 stress 0.1433231 </span></span>
+<span><span class="co">#&gt; Run 10 stress 0.0808378 </span></span>
+<span><span class="co">#&gt; ... Procrustes: rmse 5.646214e-06  max resid 1.499963e-05 </span></span>
 <span><span class="co">#&gt; ... Similar to previous best</span></span>
-<span><span class="co">#&gt; Run 9 stress 0.08096389 </span></span>
-<span><span class="co">#&gt; ... Procrustes: rmse 0.00914913  max resid 0.02801434 </span></span>
-<span><span class="co">#&gt; Run 10 stress 0.09061366 </span></span>
-<span><span class="co">#&gt; Run 11 stress 0.09061366 </span></span>
-<span><span class="co">#&gt; Run 12 stress 0.08096392 </span></span>
-<span><span class="co">#&gt; ... Procrustes: rmse 0.009240612  max resid 0.02831497 </span></span>
-<span><span class="co">#&gt; Run 13 stress 0.08635462 </span></span>
-<span><span class="co">#&gt; Run 14 stress 0.08635462 </span></span>
-<span><span class="co">#&gt; Run 15 stress 0.0808378 </span></span>
-<span><span class="co">#&gt; ... Procrustes: rmse 1.076163e-06  max resid 3.172951e-06 </span></span>
-<span><span class="co">#&gt; ... Similar to previous best</span></span>
-<span><span class="co">#&gt; Run 16 stress 0.09466618 </span></span>
-<span><span class="co">#&gt; Run 17 stress 0.08635462 </span></span>
-<span><span class="co">#&gt; Run 18 stress 0.0809639 </span></span>
-<span><span class="co">#&gt; ... Procrustes: rmse 0.009215314  max resid 0.02823148 </span></span>
-<span><span class="co">#&gt; Run 19 stress 0.0809639 </span></span>
-<span><span class="co">#&gt; ... Procrustes: rmse 0.009213734  max resid 0.02822652 </span></span>
-<span><span class="co">#&gt; Run 20 stress 0.09466621 </span></span>
-<span><span class="co">#&gt; *** Best solution repeated 3 times</span></span>
+<span><span class="co">#&gt; Run 11 stress 0.1231378 </span></span>
+<span><span class="co">#&gt; Run 12 stress 0.0809639 </span></span>
+<span><span class="co">#&gt; ... Procrustes: rmse 0.009215858  max resid 0.02823353 </span></span>
+<span><span class="co">#&gt; Run 13 stress 0.121153 </span></span>
+<span><span class="co">#&gt; Run 14 stress 0.1320722 </span></span>
+<span><span class="co">#&gt; Run 15 stress 0.08635462 </span></span>
+<span><span class="co">#&gt; Run 16 stress 0.121153 </span></span>
+<span><span class="co">#&gt; Run 17 stress 0.08096389 </span></span>
+<span><span class="co">#&gt; ... Procrustes: rmse 0.009186834  max resid 0.02813753 </span></span>
+<span><span class="co">#&gt; Run 18 stress 0.08635462 </span></span>
+<span><span class="co">#&gt; Run 19 stress 0.08635462 </span></span>
+<span><span class="co">#&gt; Run 20 stress 0.09466617 </span></span>
+<span><span class="co">#&gt; *** Best solution repeated 2 times</span></span>
 <span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/plot_ordination.html" class="external-link">plot_ordination</a></span><span class="op">(</span><span class="va">ps.prop</span>, <span class="va">ord.nmds.bray</span>, color<span class="op">=</span><span class="st">"When"</span>, title<span class="op">=</span><span class="st">"Bray NMDS"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="phyloseq%20beta%20diversity%20analysis-1.png" width="576"></p>
+<p><img src="phyloseq_beta_diversity_analysis-1.png" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="step-9-lets-look-at-what-the-top-20-taxa-are-in-the-early-vs--late-samples-time-points-as-shown-in-the-dada2-tutorial">Step 9-Let’s look at what the top 20 taxa are in the early vs. late
 samples time points, as shown in the dada2 tutorial<a class="anchor" aria-label="anchor" href="#step-9-lets-look-at-what-the-top-20-taxa-are-in-the-early-vs--late-samples-time-points-as-shown-in-the-dada2-tutorial"></a>
 </h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">top20</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_sums.html" class="external-link">taxa_sums</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span><span class="op">)</span>, decreasing<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span></span>
 <span><span class="va">ps.top20</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span>, <span class="kw">function</span><span class="op">(</span><span class="va">OTU</span><span class="op">)</span> <span class="va">OTU</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">OTU</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">ps.top20</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/prune_taxa-methods.html" class="external-link">prune_taxa</a></span><span class="op">(</span><span class="va">top20</span>, <span class="va">ps.top20</span><span class="op">)</span></span>
 <span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/plot_bar.html" class="external-link">plot_bar</a></span><span class="op">(</span><span class="va">ps.top20</span>, x<span class="op">=</span><span class="st">"Day"</span>, fill<span class="op">=</span><span class="st">"Family"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">When</span>, scales<span class="op">=</span><span class="st">"free_x"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="phyloseq%20community%20analysis-1.png" width="768"></p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<p><img src="phyloseq_community_analysis-1.png" width="768"></p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">sessioninfo</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/sessioninfo/reference/session_info.html" class="external-link">session_info</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Session info ───────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt;  <span style="color: #555555; font-style: italic;">setting </span> <span style="color: #555555; font-style: italic;">value</span></span></span>
-<span><span class="co">#&gt;  version  R version 4.3.2 (2023-10-31)</span></span>
-<span><span class="co">#&gt;  os       macOS Ventura 13.2.1</span></span>
-<span><span class="co">#&gt;  system   aarch64, darwin20</span></span>
+<span><span class="co">#&gt;  version  R version 4.1.2 (2021-11-01)</span></span>
+<span><span class="co">#&gt;  os       Pop!_OS 22.04 LTS</span></span>
+<span><span class="co">#&gt;  system   x86_64, linux-gnu</span></span>
 <span><span class="co">#&gt;  ui       X11</span></span>
 <span><span class="co">#&gt;  language en</span></span>
 <span><span class="co">#&gt;  collate  en_US.UTF-8</span></span>
 <span><span class="co">#&gt;  ctype    en_US.UTF-8</span></span>
 <span><span class="co">#&gt;  tz       America/Los_Angeles</span></span>
-<span><span class="co">#&gt;  date     2025-01-25</span></span>
-<span><span class="co">#&gt;  pandoc   3.1.1 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/ (via rmarkdown)</span></span>
+<span><span class="co">#&gt;  date     2025-01-27</span></span>
+<span><span class="co">#&gt;  pandoc   3.1.1 @ /usr/lib/rstudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt;  <span style="color: #555555; font-style: italic;">!</span> <span style="color: #555555; font-style: italic;">package             </span> <span style="color: #555555; font-style: italic;">*</span> <span style="color: #555555; font-style: italic;">version   </span> <span style="color: #555555; font-style: italic;">date (UTC)</span> <span style="color: #555555; font-style: italic;">lib</span> <span style="color: #555555; font-style: italic;">source</span></span></span>
-<span><span class="co">#&gt;    abind                  1.4-5      <span style="color: #555555;">2016-07-21</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    ade4                   1.7-22     <span style="color: #555555;">2023-02-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    ape                    5.8        <span style="color: #555555;">2024-04-11</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    Biobase                2.62.0     <span style="color: #555555;">2023-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;    BiocGenerics           0.48.1     <span style="color: #555555;">2023-11-02</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;    BiocParallel           1.36.0     <span style="color: #555555;">2023-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;    biomformat             1.30.0     <span style="color: #555555;">2023-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;    Biostrings             2.70.3     <span style="color: #555555;">2024-04-03</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">bioc_xgit (@c213e35)</span></span></span>
-<span><span class="co">#&gt;    bit                    4.5.0.1    <span style="color: #555555;">2024-12-03</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    bit64                  4.6.0-1    <span style="color: #555555;">2025-01-16</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    bitops                 1.0-8      <span style="color: #555555;">2024-07-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    bslib                  0.8.0      <span style="color: #555555;">2024-07-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    cachem                 1.1.0      <span style="color: #555555;">2024-05-16</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.2)</span></span></span>
-<span><span class="co">#&gt;    cli                    3.6.3      <span style="color: #555555;">2024-06-21</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.2)</span></span></span>
-<span><span class="co">#&gt;    cluster                2.1.6      <span style="color: #555555;">2023-12-01</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    codetools              0.2-20     <span style="color: #555555;">2024-03-31</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    colorspace             2.1-1      <span style="color: #555555;">2024-07-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    crayon                 1.5.3      <span style="color: #555555;">2024-06-20</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    dada2                  1.30.0     <span style="color: #555555;">2024-01-10</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">bioc_xgit (@ec87892)</span></span></span>
-<span><span class="co">#&gt;    data.table             1.15.4     <span style="color: #555555;">2024-03-30</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    DelayedArray           0.28.0     <span style="color: #555555;">2023-11-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;    deldir                 2.0-4      <span style="color: #555555;">2024-02-28</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;  <span style="color: #BBBBBB; background-color: #BB0000;">P</span> demulticoder         * <span style="color: #BB00BB; font-weight: bold;">0.0.0.9000</span> <span style="color: #555555;">2025-01-25</span> <span style="color: #555555;">[?]</span> <span style="color: #BB00BB; font-weight: bold;">load_all()</span></span></span>
-<span><span class="co">#&gt;    desc                   1.4.3      <span style="color: #555555;">2023-12-10</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    devtools               2.4.5      <span style="color: #555555;">2022-10-11</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    digest                 0.6.37     <span style="color: #555555;">2024-08-19</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    dplyr                  1.1.4      <span style="color: #555555;">2023-11-17</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    ellipsis               0.3.2      <span style="color: #555555;">2021-04-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    evaluate               1.0.3      <span style="color: #555555;">2025-01-10</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    farver                 2.1.2      <span style="color: #555555;">2024-05-13</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    fastmap                1.2.0      <span style="color: #555555;">2024-05-15</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.2)</span></span></span>
-<span><span class="co">#&gt;    foreach                1.5.2      <span style="color: #555555;">2022-02-02</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    fs                     1.6.5      <span style="color: #555555;">2024-10-30</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    furrr                  0.3.1      <span style="color: #555555;">2022-08-15</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    future                 1.34.0     <span style="color: #555555;">2024-07-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    generics               0.1.3      <span style="color: #555555;">2022-07-05</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    GenomeInfoDb           1.38.8     <span style="color: #555555;">2024-03-16</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor 3.18 (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    GenomeInfoDbData       1.2.11     <span style="color: #555555;">2023-11-14</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;    GenomicAlignments      1.38.2     <span style="color: #555555;">2024-01-20</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor 3.18 (R 4.3.2)</span></span></span>
-<span><span class="co">#&gt;    GenomicRanges          1.54.1     <span style="color: #555555;">2023-10-30</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;    ggplot2                3.5.1      <span style="color: #555555;">2024-04-23</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    globals                0.16.3     <span style="color: #555555;">2024-03-08</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    glue                   1.8.0      <span style="color: #555555;">2024-09-30</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    gtable                 0.3.6      <span style="color: #555555;">2024-10-25</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    hms                    1.1.3      <span style="color: #555555;">2023-03-21</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    htmltools              0.5.8.1    <span style="color: #555555;">2024-04-04</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    htmlwidgets            1.6.4      <span style="color: #555555;">2023-12-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    httpuv                 1.6.15     <span style="color: #555555;">2024-03-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    hwriter                1.3.2.1    <span style="color: #555555;">2022-04-08</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    igraph                 2.0.3      <span style="color: #555555;">2024-03-13</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    interp                 1.1-6      <span style="color: #555555;">2024-01-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    IRanges                2.36.0     <span style="color: #555555;">2023-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;    iterators              1.0.14     <span style="color: #555555;">2022-02-05</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    jpeg                   0.1-10     <span style="color: #555555;">2022-11-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    jquerylib              0.1.4      <span style="color: #555555;">2021-04-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    jsonlite               1.8.9      <span style="color: #555555;">2024-09-20</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    knitr                  1.49       <span style="color: #555555;">2024-11-08</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    labeling               0.4.3      <span style="color: #555555;">2023-08-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    later                  1.3.2      <span style="color: #555555;">2023-12-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    lattice                0.22-6     <span style="color: #555555;">2024-03-20</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    latticeExtra           0.6-30     <span style="color: #555555;">2022-07-04</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    lazyeval               0.2.2      <span style="color: #555555;">2019-03-15</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    lifecycle              1.0.4      <span style="color: #555555;">2023-11-07</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    listenv                0.9.1      <span style="color: #555555;">2024-01-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    magrittr               2.0.3      <span style="color: #555555;">2022-03-30</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    MASS                   7.3-60.0.1 <span style="color: #555555;">2024-01-13</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    Matrix                 1.6-5      <span style="color: #555555;">2024-01-11</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    MatrixGenerics         1.14.0     <span style="color: #555555;">2023-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;    matrixStats            1.3.0      <span style="color: #555555;">2024-04-11</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    memoise                2.0.1      <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    metacoder              0.3.7      <span style="color: #555555;">2024-02-20</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    mgcv                   1.9-1      <span style="color: #555555;">2023-12-21</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    mime                   0.12       <span style="color: #555555;">2021-09-28</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    miniUI                 0.1.1.1    <span style="color: #555555;">2018-05-18</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    multtest               2.58.0     <span style="color: #555555;">2023-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;    munsell                0.5.1      <span style="color: #555555;">2024-04-01</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    nlme                   3.1-165    <span style="color: #555555;">2024-06-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    parallelly             1.41.0     <span style="color: #555555;">2024-12-18</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    permute                0.9-7      <span style="color: #555555;">2022-01-27</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    phyloseq               1.46.0     <span style="color: #555555;">2024-04-03</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">bioc_xgit (@7320133)</span></span></span>
-<span><span class="co">#&gt;    pillar                 1.10.1     <span style="color: #555555;">2025-01-07</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    pkgbuild               1.4.6      <span style="color: #555555;">2025-01-16</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    pkgconfig              2.0.3      <span style="color: #555555;">2019-09-22</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    pkgdown                2.1.1      <span style="color: #555555;">2024-09-17</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    pkgload                1.4.0      <span style="color: #555555;">2024-06-28</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    plyr                   1.8.9      <span style="color: #555555;">2023-10-02</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    png                    0.1-8      <span style="color: #555555;">2022-11-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    profvis                0.3.8      <span style="color: #555555;">2023-05-02</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    promises               1.3.0      <span style="color: #555555;">2024-04-05</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    purrr                  1.0.2      <span style="color: #555555;">2023-08-10</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    R6                     2.5.1      <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    ragg                   1.3.2      <span style="color: #555555;">2024-05-15</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    RColorBrewer           1.1-3      <span style="color: #555555;">2022-04-03</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    Rcpp                   1.0.13     <span style="color: #555555;">2024-07-17</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.2)</span></span></span>
-<span><span class="co">#&gt;    RcppParallel           5.1.9      <span style="color: #555555;">2024-08-19</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    RCurl                  1.98-1.16  <span style="color: #555555;">2024-07-11</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    readr                  2.1.5      <span style="color: #555555;">2024-01-10</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    remotes                2.5.0      <span style="color: #555555;">2024-03-17</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    reshape2               1.4.4      <span style="color: #555555;">2020-04-09</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    rhdf5                  2.46.1     <span style="color: #555555;">2023-12-02</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor 3.18 (R 4.3.2)</span></span></span>
-<span><span class="co">#&gt;    rhdf5filters           1.14.1     <span style="color: #555555;">2023-11-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;    Rhdf5lib               1.24.2     <span style="color: #555555;">2024-02-10</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor 3.18 (R 4.3.2)</span></span></span>
-<span><span class="co">#&gt;    rlang                  1.1.4      <span style="color: #555555;">2024-06-04</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    rmarkdown              2.29       <span style="color: #555555;">2024-11-04</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    rprojroot              2.0.4      <span style="color: #555555;">2023-11-05</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    Rsamtools              2.18.0     <span style="color: #555555;">2023-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;    rstudioapi             0.16.0     <span style="color: #555555;">2024-03-24</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    S4Arrays               1.2.1      <span style="color: #555555;">2024-03-05</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor 3.18 (R 4.3.2)</span></span></span>
-<span><span class="co">#&gt;    S4Vectors              0.40.2     <span style="color: #555555;">2023-11-25</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor 3.18 (R 4.3.2)</span></span></span>
-<span><span class="co">#&gt;    sass                   0.4.9      <span style="color: #555555;">2024-03-15</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    scales                 1.3.0      <span style="color: #555555;">2023-11-28</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    sessioninfo            1.2.2      <span style="color: #555555;">2021-12-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    shiny                  1.9.1      <span style="color: #555555;">2024-08-01</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    ShortRead              1.60.0     <span style="color: #555555;">2024-01-10</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">bioc_xgit (@4304db4)</span></span></span>
-<span><span class="co">#&gt;    SparseArray            1.2.4      <span style="color: #555555;">2024-02-10</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor 3.18 (R 4.3.2)</span></span></span>
-<span><span class="co">#&gt;    stringi                1.8.4      <span style="color: #555555;">2024-05-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.2)</span></span></span>
-<span><span class="co">#&gt;    stringr                1.5.1      <span style="color: #555555;">2023-11-14</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    SummarizedExperiment   1.32.0     <span style="color: #555555;">2023-11-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;    survival               3.7-0      <span style="color: #555555;">2024-06-05</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    systemfonts            1.1.0      <span style="color: #555555;">2024-05-15</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    textshaping            0.4.0      <span style="color: #555555;">2024-05-24</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    tibble                 3.2.1      <span style="color: #555555;">2023-03-20</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    tidyr                  1.3.1      <span style="color: #555555;">2024-01-24</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    tidyselect             1.2.1      <span style="color: #555555;">2024-03-11</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    tzdb                   0.4.0      <span style="color: #555555;">2023-05-12</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    urlchecker             1.0.1      <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    usethis                3.0.0      <span style="color: #555555;">2024-07-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    vctrs                  0.6.5      <span style="color: #555555;">2023-12-01</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    vegan                  2.6-6.1    <span style="color: #555555;">2024-05-21</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    vroom                  1.6.5      <span style="color: #555555;">2023-12-05</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.1)</span></span></span>
-<span><span class="co">#&gt;    withr                  3.0.2      <span style="color: #555555;">2024-10-28</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    xfun                   0.50       <span style="color: #555555;">2025-01-07</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    xtable                 1.8-4      <span style="color: #555555;">2019-04-21</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
-<span><span class="co">#&gt;    XVector                0.42.0     <span style="color: #555555;">2023-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
-<span><span class="co">#&gt;    yaml                   2.3.10     <span style="color: #555555;">2024-07-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.3)</span></span></span>
-<span><span class="co">#&gt;    zlibbioc               1.48.2     <span style="color: #555555;">2024-03-19</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor 3.18 (R 4.3.3)</span></span></span>
+<span><span class="co">#&gt;  <span style="color: #555555; font-style: italic;">package             </span> <span style="color: #555555; font-style: italic;">*</span> <span style="color: #555555; font-style: italic;">version   </span> <span style="color: #555555; font-style: italic;">date (UTC)</span> <span style="color: #555555; font-style: italic;">lib</span> <span style="color: #555555; font-style: italic;">source</span></span></span>
+<span><span class="co">#&gt;  ade4                   1.7-22     <span style="color: #555555;">2023-02-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  ape                    5.8        <span style="color: #555555;">2024-04-11</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  Biobase                2.54.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  BiocGenerics           0.40.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  BiocParallel           1.28.3     <span style="color: #555555;">2021-12-09</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  biomformat             1.22.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  Biostrings             2.62.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  bit                    4.5.0.1    <span style="color: #555555;">2024-12-03</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  bit64                  4.6.0-1    <span style="color: #555555;">2025-01-16</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  bitops                 1.0-7      <span style="color: #555555;">2021-04-24</span> <span style="color: #555555;">[4]</span> <span style="color: #555555;">CRAN (R 4.1.1)</span></span></span>
+<span><span class="co">#&gt;  bslib                  0.8.0      <span style="color: #555555;">2024-07-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  cachem                 1.1.0      <span style="color: #555555;">2024-05-16</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  callr                  3.7.6      <span style="color: #555555;">2024-03-25</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  cli                    3.6.3      <span style="color: #555555;">2024-06-21</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  cluster                2.1.2      <span style="color: #555555;">2021-04-17</span> <span style="color: #555555;">[5]</span> <span style="color: #555555;">CRAN (R 4.1.1)</span></span></span>
+<span><span class="co">#&gt;  codetools              0.2-18     <span style="color: #555555;">2020-11-04</span> <span style="color: #555555;">[5]</span> <span style="color: #555555;">CRAN (R 4.0.3)</span></span></span>
+<span><span class="co">#&gt;  colorspace             2.1-1      <span style="color: #555555;">2024-07-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  crayon                 1.5.3      <span style="color: #555555;">2024-06-20</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  curl                   5.2.3      <span style="color: #555555;">2024-09-20</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  dada2                  1.30.0     <span style="color: #555555;">2024-01-20</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">bioc_xgit (@ec87892)</span></span></span>
+<span><span class="co">#&gt;  data.table             1.16.2     <span style="color: #555555;">2024-10-10</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  DBI                    1.2.3      <span style="color: #555555;">2024-06-02</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  DelayedArray           0.20.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  deldir                 2.0-4      <span style="color: #555555;">2024-02-28</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  demulticoder         * <span style="color: #BB00BB; font-weight: bold;">0.0.0.9000</span> <span style="color: #555555;">2025-01-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Github (grunwaldlab/demulticoder@5ca818c)</span></span></span>
+<span><span class="co">#&gt;  desc                   1.4.3      <span style="color: #555555;">2023-12-10</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  devtools               2.4.5      <span style="color: #555555;">2022-10-11</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  digest                 0.6.37     <span style="color: #555555;">2024-08-19</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  dplyr                  1.1.4      <span style="color: #555555;">2023-11-17</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  ellipsis               0.3.2      <span style="color: #555555;">2021-04-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  evaluate               1.0.3      <span style="color: #555555;">2025-01-10</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  farver                 2.1.2      <span style="color: #555555;">2024-05-13</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  fastmap                1.2.0      <span style="color: #555555;">2024-05-15</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  foreach                1.5.2      <span style="color: #555555;">2022-02-02</span> <span style="color: #555555;">[4]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  fs                     1.6.4      <span style="color: #555555;">2024-04-25</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  furrr                  0.3.1      <span style="color: #555555;">2022-08-15</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  future                 1.34.0     <span style="color: #555555;">2024-07-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  generics               0.1.3      <span style="color: #555555;">2022-07-05</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  GenomeInfoDb           1.30.1     <span style="color: #555555;">2022-01-30</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  GenomeInfoDbData       1.2.7      <span style="color: #555555;">2024-01-20</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  GenomicAlignments      1.30.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  GenomicRanges          1.46.1     <span style="color: #555555;">2021-11-18</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  ggplot2                3.5.1      <span style="color: #555555;">2024-04-23</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  globals                0.16.3     <span style="color: #555555;">2024-03-08</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  glue                   1.8.0      <span style="color: #555555;">2024-09-30</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  gtable                 0.3.6      <span style="color: #555555;">2024-10-25</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  hms                    1.1.3      <span style="color: #555555;">2023-03-21</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  htmltools              0.5.8.1    <span style="color: #555555;">2024-04-04</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  htmlwidgets            1.6.4      <span style="color: #555555;">2023-12-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  httpuv                 1.6.15     <span style="color: #555555;">2024-03-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  hwriter                1.3.2.1    <span style="color: #555555;">2022-04-08</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  igraph                 2.0.3      <span style="color: #555555;">2024-03-13</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  interp                 1.1-6      <span style="color: #555555;">2024-01-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  IRanges                2.28.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  iterators              1.0.14     <span style="color: #555555;">2022-02-05</span> <span style="color: #555555;">[4]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  jpeg                   0.1-10     <span style="color: #555555;">2022-11-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  jquerylib              0.1.4      <span style="color: #555555;">2021-04-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  jsonlite               1.8.9      <span style="color: #555555;">2024-09-20</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  knitr                  1.49       <span style="color: #555555;">2024-11-08</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  labeling               0.4.3      <span style="color: #555555;">2023-08-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  later                  1.3.2      <span style="color: #555555;">2023-12-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  lattice                0.20-45    <span style="color: #555555;">2021-09-22</span> <span style="color: #555555;">[5]</span> <span style="color: #555555;">CRAN (R 4.1.1)</span></span></span>
+<span><span class="co">#&gt;  latticeExtra           0.6-30     <span style="color: #555555;">2022-07-04</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  lazyeval               0.2.2      <span style="color: #555555;">2019-03-15</span> <span style="color: #555555;">[4]</span> <span style="color: #555555;">CRAN (R 4.0.1)</span></span></span>
+<span><span class="co">#&gt;  lifecycle              1.0.4      <span style="color: #555555;">2023-11-07</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  listenv                0.9.1      <span style="color: #555555;">2024-01-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  magrittr               2.0.3      <span style="color: #555555;">2022-03-30</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  MASS                   7.3-55     <span style="color: #555555;">2022-01-13</span> <span style="color: #555555;">[5]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  Matrix                 1.4-0      <span style="color: #555555;">2021-12-08</span> <span style="color: #555555;">[5]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  MatrixGenerics         1.6.0      <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  matrixStats            1.3.0      <span style="color: #555555;">2024-04-11</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  memoise                2.0.1      <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  metacoder              0.3.7      <span style="color: #555555;">2024-02-20</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  mgcv                   1.8-39     <span style="color: #555555;">2022-02-24</span> <span style="color: #555555;">[5]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  mime                   0.12       <span style="color: #555555;">2021-09-28</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  miniUI                 0.1.1.1    <span style="color: #555555;">2018-05-18</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  multtest               2.50.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  munsell                0.5.1      <span style="color: #555555;">2024-04-01</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  nlme                   3.1-155    <span style="color: #555555;">2022-01-13</span> <span style="color: #555555;">[5]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  parallelly             1.41.0     <span style="color: #555555;">2024-12-18</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  permute                0.9-7      <span style="color: #555555;">2022-01-27</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  phyloseq               1.38.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  pillar                 1.10.1     <span style="color: #555555;">2025-01-07</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  pkgbuild               1.4.4      <span style="color: #555555;">2024-03-17</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  pkgconfig              2.0.3      <span style="color: #555555;">2019-09-22</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  pkgdown                2.1.0      <span style="color: #555555;">2024-07-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  pkgload                1.4.0      <span style="color: #555555;">2024-06-28</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  plyr                   1.8.9      <span style="color: #555555;">2023-10-02</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  png                    0.1-8      <span style="color: #555555;">2022-11-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  processx               3.8.4      <span style="color: #555555;">2024-03-16</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  profvis                0.3.8      <span style="color: #555555;">2023-05-02</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  promises               1.3.0      <span style="color: #555555;">2024-04-05</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  ps                     1.8.0      <span style="color: #555555;">2024-09-12</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  purrr                * 1.0.2      <span style="color: #555555;">2023-08-10</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  R6                     2.5.1      <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  ragg                   1.2.1      <span style="color: #555555;">2021-12-06</span> <span style="color: #555555;">[4]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  RColorBrewer           1.1-3      <span style="color: #555555;">2022-04-03</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  Rcpp                   1.0.13     <span style="color: #555555;">2024-07-17</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  RcppParallel           5.1.8      <span style="color: #555555;">2024-07-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  RCurl                  1.98-1.16  <span style="color: #555555;">2024-07-11</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  readr                  2.1.5      <span style="color: #555555;">2024-01-10</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  remotes                2.5.0      <span style="color: #555555;">2024-03-17</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  reshape2               1.4.4      <span style="color: #555555;">2020-04-09</span> <span style="color: #555555;">[4]</span> <span style="color: #555555;">CRAN (R 4.0.1)</span></span></span>
+<span><span class="co">#&gt;  rhdf5                  2.38.1     <span style="color: #555555;">2022-03-10</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  rhdf5filters           1.6.0      <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  Rhdf5lib               1.16.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  rlang                  1.1.5      <span style="color: #555555;">2025-01-17</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  rmarkdown              2.28       <span style="color: #555555;">2024-08-17</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  Rsamtools              2.10.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  rstudioapi             0.16.0     <span style="color: #555555;">2024-03-24</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  S4Vectors              0.32.4     <span style="color: #555555;">2022-03-24</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  sass                   0.4.9      <span style="color: #555555;">2024-03-15</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  scales                 1.3.0      <span style="color: #555555;">2023-11-28</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  sessioninfo            1.2.2      <span style="color: #555555;">2021-12-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  shiny                  1.9.1      <span style="color: #555555;">2024-08-01</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  ShortRead              1.60.0     <span style="color: #555555;">2024-01-20</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">bioc_xgit (@4304db4)</span></span></span>
+<span><span class="co">#&gt;  stringi                1.8.4      <span style="color: #555555;">2024-05-06</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  stringr                1.5.1      <span style="color: #555555;">2023-11-14</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  SummarizedExperiment   1.24.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  survival               3.2-13     <span style="color: #555555;">2021-08-24</span> <span style="color: #555555;">[5]</span> <span style="color: #555555;">CRAN (R 4.1.1)</span></span></span>
+<span><span class="co">#&gt;  systemfonts            1.0.4      <span style="color: #555555;">2022-02-11</span> <span style="color: #555555;">[4]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  textshaping            0.3.6      <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[4]</span> <span style="color: #555555;">CRAN (R 4.1.1)</span></span></span>
+<span><span class="co">#&gt;  tibble                 3.2.1      <span style="color: #555555;">2023-03-20</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  tidyr                  1.3.1      <span style="color: #555555;">2024-01-24</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  tidyselect             1.2.1      <span style="color: #555555;">2024-03-11</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  tzdb                   0.4.0      <span style="color: #555555;">2023-05-12</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  urlchecker             1.0.1      <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  usethis                3.0.0      <span style="color: #555555;">2024-07-29</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  vctrs                  0.6.5      <span style="color: #555555;">2023-12-01</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  vegan                  2.6-8      <span style="color: #555555;">2024-08-28</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  viridisLite            0.4.2      <span style="color: #555555;">2023-05-02</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  vroom                  1.6.5      <span style="color: #555555;">2023-12-05</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  withr                  3.0.2      <span style="color: #555555;">2024-10-28</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  xfun                   0.50       <span style="color: #555555;">2025-01-07</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  xtable                 1.8-4      <span style="color: #555555;">2019-04-21</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  XVector                0.34.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">#&gt;  yaml                   2.3.10     <span style="color: #555555;">2024-07-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span></span>
+<span><span class="co">#&gt;  zlibbioc               1.40.0     <span style="color: #555555;">2021-10-26</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">Bioconductor</span></span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #555555;"> [1] /private/var/folders/59/9jp4sjjd00n2wp4kgqtvq7dh0000gn/T/RtmpK5OrUJ/temp_libpath16b484bbddc21</span></span></span>
-<span><span class="co">#&gt; <span style="color: #555555;"> [2] /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library</span></span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;  <span style="color: #BBBBBB; background-color: #BB0000;">P</span> ── Loaded and on-disk path mismatch.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;"> [1] /tmp/RtmpADvKpb/temp_libpath196dff25ac3e4a</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;"> [2] /home/marthasudermann/R/x86_64-pc-linux-gnu-library/4.1</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;"> [3] /usr/local/lib/R/site-library</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;"> [4] /usr/lib/R/site-library</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;"> [5] /usr/lib/R/library</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">──────────────────────────────────────────────────────────────────────────────</span></span></span></code></pre></div>
 </div>
@@ -681,7 +820,7 @@ samples time points, as shown in the dada2 tutorial<a class="anchor" aria-label=
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
     </footer>

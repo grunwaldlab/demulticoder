@@ -1,8 +1,9 @@
 pandoc: 3.1.1
-pkgdown: 2.1.1
+pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   01_getting_started: 01_getting_started.html
   02_documentation: 02_documentation.html
   03_16S_mothur_validation: 03_16S_mothur_validation.html
-last_built: 2025-01-25T23:18Z
+  04_pooled_barcode_example: 04_pooled_barcode_example.html
+last_built: 2025-01-27T20:21Z
