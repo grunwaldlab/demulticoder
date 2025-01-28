@@ -164,7 +164,7 @@ Databases will be copied into the user-specified data folder where raw data file
 
 For now, the package is compatible with the following databases:
 
-* oomycetedb from: [http://www.oomycetedb.org/](http://www.oomycetedb.org/)
+* oomycetedb from: [https://grunwaldlab.github.io/OomyceteDB/](https://grunwaldlab.github.io/OomyceteDB/)
 
 * SILVA 16S database **with** species assignments: [https://zenodo.org/records/4587955/files/silva_nr99_v138.1_wSpecies_train_set.fa.gz?download=1](https://zenodo.org/records/4587955/files/silva_nr99_v138.1_wSpecies_train_set.fa.gz?download=1)
 

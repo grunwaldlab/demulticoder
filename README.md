@@ -29,8 +29,8 @@ Here is a brief schematic of the general workflow:
 
 - The package handles not just 16S or ITS datasets when using default
   UNITE fungal or Silva 16S databases but also oomycete rps10 analyses
-  using oomycetedb (<https://oomycetedb.org>), or up to two custom
-  databases (provided they are formatted as described here:
+  using oomycetedb <https://grunwaldlab.github.io/OomyceteDB/>, or up to
+  two custom databases (provided they are formatted as described here:
   <https://benjjneb.github.io/dada2/training.html>).
 
 ### Installation
@@ -100,9 +100,8 @@ objs<-convert_asv_matrix_to_objs(output)
 
 ### Check out the website to view the documentation and see more examples
 
-For more information, key functions, inputs, and example vignettes,
-check out the documentation at:
-<https://grunwaldlab.github.io/demulticoder>
+For more information on source code, check out the package repository:
+<https://github.com/grunwaldlab/demulticoder/>
 
 ### Citation
 

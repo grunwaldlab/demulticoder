@@ -74,17 +74,18 @@ knitr::kable(primer_info, row.names = TRUE)
 ```
 
 ```{r setup, include=FALSE}
-devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
-#devtools::load_all("~/demulticoder")
+#devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
+devtools::load_all("~/demulticoder")
 library("demulticoder")
 ```
 
 ### Step 1-Remove N's and create directory structure for downstream steps
 ```{r prepare_reads, fig.height=6, fig.width=6}
+options(mc.cores = 1) 
 outputs<-prepare_reads(
   data_directory = "~/benchmark_demulticoder/mothur_16S_sop/data", 
   output_directory = "~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs",
-  tempdir_path = "~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs",
+  tempdir_path = "~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp",
   tempdir_id = "temp_files",
   overwrite_existing = TRUE)
 ```
@@ -93,7 +94,8 @@ outputs<-prepare_reads(
 ```{r Remove_primers_and_trim_reads, fig.height=6, fig.width=6}
 cut_trim(
   outputs,
-  cutadapt_path="/usr/bin/cutadapt",
+  #cutadapt_path="/usr/bin/cutadapt",
+  "/opt/homebrew/bin/cutadapt",
   overwrite_existing = TRUE)
 ```
 
@@ -111,7 +113,7 @@ assign_tax(
   asv_abund_matrix,
   db_16S="silva_nr99_v138.2_toSpecies_trainset.fa.gz",
   retrieve_files=FALSE,
-  overwrite_existing=TRUE)
+  overwrite_existing=FALSE)
 ```
 
 ### Step 5-convert asv matrix to taxmap and phyloseq objects with one function
@@ -159,8 +161,4 @@ top20 <- names(sort(phyloseq::taxa_sums(objs$phyloseq_r16S), decreasing=TRUE))[1
 ps.top20 <- phyloseq::transform_sample_counts(objs$phyloseq_r16S, function(OTU) OTU/sum(OTU))
 ps.top20 <- phyloseq::prune_taxa(top20, ps.top20)
 phyloseq::plot_bar(ps.top20, x="Day", fill="Family") + ggplot2::facet_wrap(~When, scales="free_x")
-```
-
-```{r}
-sessioninfo::session_info()
 ```

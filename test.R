@@ -5,6 +5,7 @@
 devtools::load_all("~/demulticoder")
 library("demulticoder")
 devtools::document()
+devtools::document()
 install.packages("dplyr")
 library("dplyr")
 
@@ -18,4 +19,5 @@ library("pkgdown")
 
 pkgdown::build_site()
 pkgdown::preview_site()
+
 rcmdcheck::rcmdcheck(args = "--as-cran")

@@ -7,17 +7,17 @@ navbar:
   components:
     intro:
       text: Get Started
-      href: articles/01_getting_started.html
+      href: articles/Getting_started.html
     documentation:
       text: Documentation
-      href: articles/02_documentation.html
+      href: articles/Documentation.html
     articles:
       text: Example Workflows
       menu:
         - text: 16S DADA2 Mothur SOP Validation
-          href: articles/03_16S_mothur_validation.html
+          href: articles/DADA2_16S_mothur_validation.html
         - text: Pooled ITS1/rps10 barcode example
-          href: articles/04_pooled_barcode_example.html
+          href: articles/Pooled_barcode_example.html
     reference:
       text: Main Functions
       href: reference/index.html

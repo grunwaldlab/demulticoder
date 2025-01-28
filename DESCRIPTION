@@ -21,17 +21,18 @@ Imports:
    ggplot2,
    tibble,
    utils,
-   metacoder,
-   knitr,
+   knitr
 Suggests:
     BiocManager,
     Biostrings,
     dada2,
+    metacoder,
     ShortRead,
     phyloseq,
     testthat (>= 3.0.0),
     rmarkdown,
     RcppParallel,
+    devtools
 Roxygen: list(markdown = TRUE)
 Config/testthat/edition: 3
 LazyData: true
