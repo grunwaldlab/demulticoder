@@ -47,7 +47,7 @@ devtools::install_github("grunwaldlab/demulticoder")
 After installing the package, make a data directory and add the following files:  
   -  PE short read amplicon data. The files must end in either *_R1.fastq.gz* , or *_R2.fastq.gz* and each sample must have both R1 and R2 files.
   
-  -  [**metadata.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv) file (there will be a unique row for each sample, and samples will be entered twice if they contain pooled amplicions, as in the example template)  
+  -  [**metadata.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv) file (there will be a unique row for each sample, and samples will be entered twice if they contain pooled amplicons, as in the example template)  
   
   -  [**primerinfo_params.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv) file (there will be a new row for each unique barcode and associated primer sequences, and there are also optional Cutadapt, DADA2 or filtering parameters that can be added or adjusted)
 

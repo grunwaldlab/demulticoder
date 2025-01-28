@@ -166,7 +166,7 @@ For now, the package is compatible with the following databases:
 
 * oomycetedb from: [https://grunwaldlab.github.io/OomyceteDB/](https://grunwaldlab.github.io/OomyceteDB/)
 
-* SILVA 16S database **with** species assignments: [https://zenodo.org/records/4587955/files/silva_nr99_v138.1_wSpecies_train_set.fa.gz?download=1](https://zenodo.org/records/4587955/files/silva_nr99_v138.1_wSpecies_train_set.fa.gz?download=1)
+* SILVA 16S database **with** species assignments: [https://www.arb-silva.de/](https://www.arb-silva.de/)
 
 * UNITE fungal database from [https://unite.ut.ee/repository.php](https://unite.ut.ee/repository.php)
 

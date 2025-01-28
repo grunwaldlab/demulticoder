@@ -94,8 +94,8 @@ outputs<-prepare_reads(
 ```{r Remove_primers_and_trim_reads, fig.height=6, fig.width=6}
 cut_trim(
   outputs,
-  #cutadapt_path="/usr/bin/cutadapt",
-  "/opt/homebrew/bin/cutadapt",
+  cutadapt_path="/usr/bin/cutadapt",
+  #"/opt/homebrew/bin/cutadapt",
   overwrite_existing = TRUE)
 ```
 

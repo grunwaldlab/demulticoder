@@ -101,7 +101,7 @@ knitr::kable(data.frame(
 ), row.names = FALSE)
 ```
 
-For more info on parameter specifics, eee Documentation tab. 
+For more info on parameter specifics, see Documentation tab. 
 
 ### Reference Database Format
 
@@ -109,7 +109,7 @@ For now, the package is compatible with the following databases:
 
 * oomycetedb from: [https://grunwaldlab.github.io/OomyceteDB/](https://grunwaldlab.github.io/OomyceteDB/)
 
-* SILVA 16S database with species assignments: [https://zenodo.org/records/4587955/files/silva_nr99_v138.1_wSpecies_train_set.fa.gz?download=1](https://zenodo.org/records/4587955/files/silva_nr99_v138.1_wSpecies_train_set.fa.gz?download=1)
+* SILVA 16S database with species assignments: [https://www.arb-silva.de/](https://www.arb-silva.de/)
 
 * UNITE fungal database from [https://unite.ut.ee/repository.php](https://unite.ut.ee/repository.php)
 
@@ -132,8 +132,8 @@ For now, the package will be loaded by retrieving it from GitHub.
 Eventually, the package will be uploaded to CRAN or Bioconductor.
 
 ```{r installation, warning=FALSE, message=FALSE}
-#devtools::install_github("grunwaldlab/demulticoder")
-devtools::load_all("~/demulticoder")
+devtools::install_github("grunwaldlab/demulticoder")
+#devtools::load_all("~/demulticoder")
 library("demulticoder")
 library("metacoder")
 library("dplyr")
@@ -143,7 +143,6 @@ library("dplyr")
 
 The sample names, primer sequences, and other metadata are reorganized in preparation for running Cutadapt to remove primers.
 ```{r prepare_for_analysis, warning=FALSE, message=FALSE}
-options(mc.cores = 1) 
 analysis_setup<-demulticoder::prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
   output_directory = "~/output_test_dataset", 
@@ -155,11 +154,10 @@ analysis_setup<-demulticoder::prepare_reads(
 ### Remove primers with Cutadapt
 Before running Cutadapt, please ensure that you have installed it. 
 ```{r remove_primers_with_cut_trim_function, message=TRUE}
-#cutadapt_path="/usr/bin/cutadapt",
 
 demulticoder::cut_trim(
   analysis_setup,
-  cutadapt_path = "/opt/homebrew/bin/cutadapt",
+  cutadapt_path = "/usr/bin/cutadapt",
   overwrite_existing = TRUE)
 ```
 
