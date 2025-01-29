@@ -132,8 +132,8 @@ For now, the package will be loaded by retrieving it from GitHub.
 Eventually, the package will be uploaded to CRAN or Bioconductor.
 
 ```{r installation, warning=FALSE, message=FALSE}
-devtools::install_github("grunwaldlab/demulticoder")
-#devtools::load_all("~/demulticoder")
+#devtools::install_github("grunwaldlab/demulticoder")
+devtools::load_all("~/demulticoder")
 library("demulticoder")
 library("metacoder")
 library("dplyr")
@@ -154,10 +154,10 @@ analysis_setup<-demulticoder::prepare_reads(
 ### Remove primers with Cutadapt
 Before running Cutadapt, please ensure that you have installed it. 
 ```{r remove_primers_with_cut_trim_function, message=TRUE}
-
 demulticoder::cut_trim(
   analysis_setup,
-  cutadapt_path = "/usr/bin/cutadapt",
+  cutadapt_path = "/opt/homebrew/bin/cutadapt",
+  #cutadapt_path = "/usr/bin/cutadapt",
   overwrite_existing = TRUE)
 ```
 

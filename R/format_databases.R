@@ -30,8 +30,10 @@ format_db_rps10 <- function(data_tables, data_path, output_directory_path, temp_
     sub(data_rps10$taxonomy[index], pattern = binomial[index], replacement = paste0(species[index], ';', binomial[index]))
   })
   
+  data_rps10$taxonomy <- paste0(data_rps10$taxonomy, ";refdb_", seq_along(data_rps10$taxonomy), ";")
   data_rps10$taxonomy <- trimws(data_rps10$taxonomy)
-  data_rps10$taxonomy <- paste0(data_rps10$taxonomy, ';')
+  
+  #data_rps10$taxonomy <- paste0(data_rps10$taxonomy, ';')
   
   readr::write_lines(paste0(">", data_rps10$taxonomy, "\n", db_rps10), file = database_path)
   
@@ -67,7 +69,7 @@ format_db_its <- function(data_tables, data_path, output_directory_path, temp_di
   data_its$taxonomy <- stringr::str_extract(data_its$header, "(?<=\\|)[^|]+$")
   data_its$taxonomy <- gsub("[A-Za-z]__", "", data_its$taxonomy)
   data_its$taxonomy <- gsub(" ", "_", data_its$taxonomy)
-  data_its$taxonomy <- paste0(data_its$taxonomy, ";")
+  
   data_its$taxonomy <- trimws(data_its$taxonomy)
   
   data_its$taxonomy <- sapply(data_its$taxonomy, function(tax) {
@@ -78,16 +80,21 @@ format_db_its <- function(data_tables, data_path, output_directory_path, temp_di
     paste(tax_parts, collapse = ";")
   })
   
-  #data_its$taxonomy <- paste0(data_its$taxonomy, ";refdb_", seq_along(data_its$taxonomy), ";")
-  data_its$taxonomy <- paste0(data_its$taxonomy, ";")
+  data_its$taxonomy <- paste0(data_its$taxonomy, ";refdb_", seq_along(data_its$taxonomy), ";")
   
-  data_its$name <- sub("^([^|]+)\\|.*$", "\\1", data_its$header)
-  species_count <- table(data_its$name)
-  count_table <- as.data.frame(species_count, stringsAsFactors = FALSE)
+  data_its$genus <- ifelse(
+    sapply(strsplit(data_its$taxonomy, ";"), length) >= 8,
+    sapply(strsplit(data_its$taxonomy, ";"), function(x) x[6]),
+    NA
+  )
+  
+  genus_count <- table(data_its$genus)
+  count_table <- as.data.frame(genus_count, stringsAsFactors = FALSE)
   count_table <- tibble::tibble(count_table)
-  names(count_table) <- c('Species', 'Number of sequences')
+  names(count_table) <- c('Genus', 'Number of sequences')
   
-  readr::write_csv(count_table, file = file.path(output_directory_path, "species_count_table_its.csv"))
+  
+  readr::write_csv(count_table, file = file.path(output_directory_path, "genus_count_table_its.csv"))
   readr::write_lines(paste0(">", data_its$taxonomy, "\n", data_its$sequence), file = database_path)
   return(data_its)
 }
@@ -124,11 +131,10 @@ format_db_16S <- function(data_tables, data_path, output_directory_path, temp_di
     paste(tax_parts, collapse = ";")
   })
   
-  #data_16S$taxonomy <- paste0(data_16S$taxonomy, ";refdb_", seq_along(data_16S$taxonomy), ";")
-  data_16S$taxonomy <- paste0(data_16S$taxonomy, ";")
+  data_16S$taxonomy <- paste0(data_16S$taxonomy, ";refdb_", seq_along(data_16S$taxonomy), ";")
   
   data_16S$genus <- ifelse(
-    sapply(strsplit(data_16S$taxonomy, ";"), length) >= 7,
+    sapply(strsplit(data_16S$taxonomy, ";"), length) >= 8,
     sapply(strsplit(data_16S$taxonomy, ";"), function(x) x[6]),
     NA
   )
@@ -166,21 +172,21 @@ format_db_other1 <-function(data_tables, data_path, output_directory_path, temp_
   
   data_other1$taxonomy <- sapply(data_other1$taxonomy, function(tax) {
     tax_parts <- strsplit(tax, ";")[[1]]
-    while (length(tax_parts) < 7) {
+    while (length(tax_parts) < 8) {
       tax_parts <- c(tax_parts, "NA")
     }
     paste(tax_parts, collapse = ";")
   })
   
   #These seems to mess up taxonomic assignments, unfortunately, but is necessary should we want to calculate PID
-  #data_other1$taxonomy <- paste0(data_other1$taxonomy, ";refdb_", seq_along(data_other1$taxonomy), ";")
+  data_other1$taxonomy <- paste0(data_other1$taxonomy, ";refdb_", seq_along(data_other1$taxonomy), ";")
   data_other1$taxonomy <- paste0(data_other1$taxonomy, ";")
   
   data_other1$genus <- ifelse(
-    sapply(strsplit(data_other1$taxonomy, ";"), length) == 7,
+    sapply(strsplit(data_other1$taxonomy, ";"), length) == 8,
     sapply(strsplit(data_other1$taxonomy, ";"), function(x) x[6]),
     ifelse(
-      sapply(strsplit(data_other1$taxonomy, ";"), length) == 6,
+      sapply(strsplit(data_other1$taxonomy, ";"), length) == 7,
       sapply(strsplit(data_other1$taxonomy, ";"), function(x) x[6]),
       NA
     )
@@ -222,21 +228,20 @@ format_db_other2 <-function(data_tables, data_path, output_directory_path, temp_
   
   data_other2$taxonomy <- sapply(data_other2$taxonomy, function(tax) {
     tax_parts <- strsplit(tax, ";")[[1]]
-    while (length(tax_parts) < 7) {
+    while (length(tax_parts) < 8) {
       tax_parts <- c(tax_parts, "NA")
     }
     paste(tax_parts, collapse = ";")
   })
   
-  #These seems to mess up taxonomic assignments, unfortunately, but is necessary should we want to calculate PID
-  #data_other2$taxonomy <- paste0(data_other2$taxonomy, ";refdb_", seq_along(data_other2$taxonomy), ";")
+  data_other2$taxonomy <- paste0(data_other2$taxonomy, ";refdb_", seq_along(data_other2$taxonomy), ";")
   data_other2$taxonomy <- paste0(data_other2$taxonomy, ";")
   
   data_other2$genus <- ifelse(
-    sapply(strsplit(data_other2$taxonomy, ";"), length) == 7,
+    sapply(strsplit(data_other2$taxonomy, ";"), length) == 8,
     sapply(strsplit(data_other2$taxonomy, ";"), function(x) x[6]),
     ifelse(
-      sapply(strsplit(data_other2$taxonomy, ";"), length) == 6,
+      sapply(strsplit(data_other2$taxonomy, ";"), length) == 7,
       sapply(strsplit(data_other2$taxonomy, ";"), function(x) x[6]),
       NA
     )

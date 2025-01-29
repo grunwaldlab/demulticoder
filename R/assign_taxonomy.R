@@ -22,7 +22,7 @@ assign_taxonomyDada2<-function(asv_abund_matrix, temp_directory_path, minBoot=0,
   set.seed(1) #add parameter
   tax_results<- dada2::assignTaxonomy(asv_abund_matrix,
                                       refFasta = file.path(temp_directory_path, paste0(locus, "_reference_db.fa")),
-                                      #taxLevels = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
+                                      taxLevels = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
                                       minBoot = minBoot,
                                       tryRC = tryRC,
                                       outputBootstraps = TRUE,
