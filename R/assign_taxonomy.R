@@ -33,26 +33,27 @@ prep_abund_matrix <-function(cutadapt_data, asv_abund_matrix, data_tables, locus
     output <- file(refFasta, "w")
     
     for (line in fasta_lines) {
-      if (startsWith(line, ">")) {  
-        header <- substring(line, 2) 
+      if (startsWith(line, ">")) {
+        header <- substring(line, 2)
         
-        last_semicolon_pos <- max(gregexpr(";", header)[[1]])
-        species_name <- substring(header, last_semicolon_pos + 1)
-        
-        if (species_name %in% unique_headers) {
-          header_count[[species_name]] <- header_count[[species_name]] + 1
+        if (header %in% unique_headers) {
+          header_count[[header]] <- header_count[[header]] + 1
         } else {
-          unique_headers <- c(unique_headers, species_name)
-          header_count[[species_name]] <- 1
+          unique_headers <- c(unique_headers, header)
+          header_count[[header]] <- 1
         }
         
+        # Find the position of the last semicolon
+        last_semicolon_pos <- max(gregexpr(";", header)[[1]])
+        
+        # Append the count before the last semicolon and add a final semicolon
         new_header <- paste0(
           ">", 
-          substring(header, 1, last_semicolon_pos),  
+          substring(header, 1, last_semicolon_pos - 1), 
           "_", 
-          header_count[[species_name]],  
+          header_count[[header]], 
           ";", 
-          species_name 
+          substring(header, last_semicolon_pos + 1)
         )
         
         writeLines(new_header, output)

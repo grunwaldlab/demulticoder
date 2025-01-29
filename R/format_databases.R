@@ -69,9 +69,6 @@ format_db_its <- function(data_tables, data_path, output_directory_path, temp_di
   data_its$taxonomy <- gsub("[A-Za-z]__", "", data_its$taxonomy)
   data_its$taxonomy <- gsub(" ", "_", data_its$taxonomy)
   
-  data_its$taxonomy <- trimws(data_its$taxonomy)
-  data_rps10$taxonomy <- paste0(data_rps10$taxonomy, ';')
-  
   data_its$taxonomy <- sapply(data_its$taxonomy, function(tax) {
     tax_parts <- strsplit(tax, ";")[[1]]
     while (length(tax_parts) < 7) {
@@ -81,7 +78,10 @@ format_db_its <- function(data_tables, data_path, output_directory_path, temp_di
   })
   
   #data_its$taxonomy <- paste0(data_its$taxonomy, ";refdb_", seq_along(data_its$taxonomy), ";")
+  data_its$taxonomy <- trimws(data_its$taxonomy)
+  data_its$taxonomy <- paste0(data_its$taxonomy, ';')
   
+
   data_its$genus <- ifelse(
     sapply(strsplit(data_its$taxonomy, ";"), length) >= 7,
     sapply(strsplit(data_its$taxonomy, ";"), function(x) x[6]),
@@ -132,6 +132,8 @@ format_db_16S <- function(data_tables, data_path, output_directory_path, temp_di
   })
   
   #data_16S$taxonomy <- paste0(data_16S$taxonomy, ";refdb_", seq_along(data_16S$taxonomy), ";")
+  data_16S$taxonomy <- trimws(data_16S$taxonomy)
+  data_16S$taxonomy <- paste0(data_16S$taxonomy, ';')
   
   data_16S$genus <- ifelse(
     sapply(strsplit(data_16S$taxonomy, ";"), length) >= 7,
@@ -178,10 +180,12 @@ format_db_other1 <-function(data_tables, data_path, output_directory_path, temp_
     paste(tax_parts, collapse = ";")
   })
   
-  #These seems to mess up taxonomic assignments, unfortunately, but is necessary should we want to calculate PID
-  #data_other1$taxonomy <- paste0(data_other1$taxonomy, ";refdb_", seq_along(data_other1$taxonomy), ";")
+  
   data_other1$taxonomy <- paste0(data_other1$taxonomy, ";")
   
+  #These seems to mess up taxonomic assignments, unfortunately, but is necessary should we want to calculate PID
+  #data_other1$taxonomy <- paste0(data_other1$taxonomy, ";refdb_", seq_along(data_other1$taxonomy), ";")
+
   data_other1$genus <- ifelse(
     sapply(strsplit(data_other1$taxonomy, ";"), length) == 7,
     sapply(strsplit(data_other1$taxonomy, ";"), function(x) x[6]),
