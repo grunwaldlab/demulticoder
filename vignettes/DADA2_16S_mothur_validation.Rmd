@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Demonstration of how to use demulticoder on a dataset that is actually three separate datasets (RPS10, ITS, and 16S) at once
+### Demonstration of how to use demulticoder on a dataset that is actually three separate datasets (RPS10, ITS, and 16S) at once
 
 Input metadata and primerinfo_params files are in data folder  
 
