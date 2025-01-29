@@ -11,30 +11,29 @@ assign_taxonomyDada2(
   tryRC = FALSE,
   verbose = FALSE,
   multithread = TRUE,
-  locus = barcode
+  locus = "barcode"
 )
 }
 \arguments{
 \item{asv_abund_matrix}{The ASV abundance matrix}
 
-\item{minBoot}{(Optional). Default 50. 
-The minimum bootstrap confidence for assigning a taxonomic level.}
+\item{temp_directory_path}{The temporary directory path}
 
-\item{tryRC}{(Optional). Default FALSE. 
-If TRUE, the reverse-complement of each sequences will be used for classification if it is a better match to the reference
-sequences than the forward sequence.}
+\item{minBoot}{Minimum bootstrap value for taxonomy assignment (default 0)}
 
-\item{verbose}{(Optional). Default FALSE.
-If TRUE, print status to standard output.}
+\item{tryRC}{Try reverse complement (default FALSE)}
 
-\item{multithread}{(Optional). Default is FALSE.
-If TRUE, multithreading is enabled and the number of available threads is automatically determined.   
-If an integer is provided, the number of threads to use is set by passing the argument on to
-\code{\link{setThreadOptions}}.}
+\item{verbose}{Print additional information (default FALSE)}
+
+\item{multithread}{Use multiple threads (default TRUE)}
+
+\item{locus}{The locus for taxonomy assignment (e.g., rps10, other1, other2)}
 
 \item{ref_database}{The reference database used for taxonomic inference steps}
 }
 \description{
 Assign taxonomy
 }
+\keyword{Assign}
 \keyword{internal}
+\keyword{taxonomy}

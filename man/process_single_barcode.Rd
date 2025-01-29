@@ -19,20 +19,18 @@ process_single_barcode(
 \arguments{
 \item{data_tables}{The data tables containing the paths to read files, metadata, primer sequences}
 
+\item{temp_directory_path}{The temporary directory path}
+
 \item{asv_abund_matrix}{An abundance matrix containing amplified sequence
 variants}
 
-\item{tryRC}{(Optional). Default FALSE. 
-If TRUE, the reverse-complement of each sequences will be used for classification if it is a better match to the reference
-sequences than the forward sequence.}
+\item{tryRC}{Try reverse complement (default FALSE)}
 
-\item{verbose}{(Optional). Default FALSE.
-If TRUE, print status to standard output.}
+\item{verbose}{Print additional information (default FALSE)}
 
-\item{multithread}{(Optional). Default is FALSE.
-If TRUE, multithreading is enabled and the number of available threads is automatically determined.   
-If an integer is provided, the number of threads to use is set by passing the argument on to
-\code{\link{setThreadOptions}}.}
+\item{multithread}{Use multiple threads (default TRUE)}
+
+\item{locus}{The locus for taxonomy assignment (e.g., rps10, other1, other2)}
 }
 \description{
 Process the information from an ASV abundance matrix to run DADA2 for single

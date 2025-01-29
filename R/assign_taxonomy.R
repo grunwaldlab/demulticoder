@@ -19,17 +19,32 @@ prep_abund_matrix <-function(cutadapt_data, asv_abund_matrix, data_tables, locus
 #' @param ref_database The reference database used for taxonomic inference steps
 #' 
 #' @keywords internal
-  assign_taxonomyDada2 <- function(asv_abund_matrix, temp_directory_path, minBoot = 0, tryRC = FALSE, verbose = FALSE, multithread = TRUE, locus = barcode) {
-    set.seed(1) # Add parameter
-    refFasta_raw <- file.path(temp_directory_path, paste0(locus, "_reference_db.fa"))
-    refFasta <- file.path(temp_directory_path, paste0(locus, "_reference_db_unique.fa"))
+#' Assign taxonomy
+#' 
+#' @inheritParams dada2::assignTaxonomy
+#' @inheritParams RcppParallel::setThreadOptions
+#' @param asv_abund_matrix The ASV abundance matrix
+#' @param temp_directory_path The temporary directory path
+#' @param minBoot Minimum bootstrap value for taxonomy assignment (default 0)
+#' @param tryRC Try reverse complement (default FALSE)
+#' @param verbose Print additional information (default FALSE)
+#' @param multithread Use multiple threads (default TRUE)
+#' @param locus The locus for taxonomy assignment (e.g., rps10, other1, other2)
+#'
+#' @keywords internal
+assign_taxonomyDada2 <- function(asv_abund_matrix, temp_directory_path, minBoot = 0, tryRC = FALSE, verbose = FALSE, multithread = TRUE, locus = "barcode") {
+  
+  set.seed(1) #need to still generalize
+  refFasta_raw <- file.path(temp_directory_path, paste0(locus, "_reference_db.fa"))
+  refFasta <- file.path(temp_directory_path, paste0(locus, "_reference_db_unique.fa"))
+  
+  if (locus %in% c("rps10", "other1", "other2")) {
     
-    # Process the FASTA file to ensure unique headers
     fasta_lines <- readLines(refFasta_raw)
     
     unique_headers <- list()
     header_count <- list()
-    
+  
     output <- file(refFasta, "w")
     
     for (line in fasta_lines) {
@@ -64,19 +79,25 @@ prep_abund_matrix <-function(cutadapt_data, asv_abund_matrix, data_tables, locus
     
     close(output)
     
-    tax_results <- dada2::assignTaxonomy(asv_abund_matrix,
-                                         refFasta,
-                                         taxLevels = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"),
-                                         minBoot = minBoot,
-                                         tryRC = tryRC,
-                                         outputBootstraps = TRUE,
-                                         multithread = multithread)
-    
-    tax_matrix_path <- file.path(temp_directory_path, paste0("TaxMatrix_", locus, ".RData"))
-    save(tax_results, file = tax_matrix_path)
-    
-    return(tax_results)
+    cat("The reference database has been updated with unique headers for locus:", locus, "\n")
+  } else {
+    refFasta <- refFasta_raw
   }
+  
+  # Proceed with the dada2::assignTaxonomy function using the appropriate reference FASTA file
+  tax_results <- dada2::assignTaxonomy(asv_abund_matrix,
+                                       refFasta,
+                                       taxLevels = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"),
+                                       minBoot = minBoot,
+                                       tryRC = tryRC,
+                                       outputBootstraps = TRUE,
+                                       multithread = multithread)
+  
+  tax_matrix_path <- file.path(temp_directory_path, paste0("TaxMatrix_", locus, ".RData"))
+  save(tax_results, file = tax_matrix_path)
+  return(tax_results)
+}
+
 
 #' Align ASV sequences to reference sequences from database to get percent ID.
 #' Get percent identities.
