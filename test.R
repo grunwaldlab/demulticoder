@@ -1,7 +1,7 @@
 #devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
 
 devtools::clean_dll()
-#devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
+devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
 devtools::load_all("~/demulticoder")
 library("demulticoder")
 devtools::document()

@@ -2,7 +2,7 @@ pandoc: 3.1.1
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
-  01_getting_started: 01_getting_started.html
-  02_documentation: 02_documentation.html
-  03_16S_mothur_validation: 03_16S_mothur_validation.html
-last_built: 2025-01-27T22:18Z
+  DADA2_16S_mothur_validation: DADA2_16S_mothur_validation.html
+  Documentation: Documentation.html
+  Getting_started: Getting_started.html
+last_built: 2025-01-30T18:50Z

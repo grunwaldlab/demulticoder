@@ -51,7 +51,7 @@ R1 and R2 files.
 
 - [**metadata.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv)
   file (there will be a unique row for each sample, and samples will be
-  entered twice if they contain pooled amplicions, as in the example
+  entered twice if they contain pooled amplicons, as in the example
   template)
 
 - [**primerinfo_params.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv)

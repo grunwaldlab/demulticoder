@@ -16,8 +16,6 @@ navbar:
       menu:
         - text: 16S DADA2 Mothur SOP Validation
           href: articles/DADA2_16S_mothur_validation.html
-        - text: Pooled ITS1/rps10 barcode example
-          href: articles/Pooled_barcode_example.html
     reference:
       text: Main Functions
       href: reference/index.html
