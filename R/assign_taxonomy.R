@@ -13,15 +13,6 @@ prep_abund_matrix <-function(cutadapt_data, asv_abund_matrix, data_tables, locus
 
 #' Assign taxonomy
 #'
-#' @inheritParams dada2::assignTaxonomy
-#' @inheritParams RcppParallel::setThreadOptions
-#' @param asv_abund_matrix The ASV abundance matrix
-#' @param ref_database The reference database used for taxonomic inference steps
-#' 
-#' @keywords internal
-#' Assign taxonomy
-#' 
-#' @inheritParams dada2::assignTaxonomy
 #' @inheritParams RcppParallel::setThreadOptions
 #' @param asv_abund_matrix The ASV abundance matrix
 #' @param temp_directory_path The temporary directory path
@@ -34,42 +25,31 @@ prep_abund_matrix <-function(cutadapt_data, asv_abund_matrix, data_tables, locus
 #' @keywords internal
 assign_taxonomyDada2 <- function(asv_abund_matrix, temp_directory_path, minBoot = 0, tryRC = FALSE, verbose = FALSE, multithread = TRUE, locus = "barcode") {
   
-  set.seed(1) #need to still generalize
+  set.seed(1)
   refFasta_raw <- file.path(temp_directory_path, paste0(locus, "_reference_db.fa"))
   refFasta <- file.path(temp_directory_path, paste0(locus, "_reference_db_unique.fa"))
   
-  if (locus %in% c("rps10", "other1", "other2")) {
-    
+  if (locus %in% c("rps10")) {
     fasta_lines <- readLines(refFasta_raw)
-    
     unique_headers <- list()
-    header_count <- list()
-  
+    ref_id_counter <- 1
+    
     output <- file(refFasta, "w")
     
     for (line in fasta_lines) {
       if (startsWith(line, ">")) {
         header <- substring(line, 2)
         
-        if (header %in% unique_headers) {
-          header_count[[header]] <- header_count[[header]] + 1
+        # Keep everything up to the last semicolon (species level)
+        if (grepl(";", header)) {
+          base_taxonomy <- sub(";[^;]*$", "", header)
+          # Add reference ID after species
+          new_header <- paste0(">", base_taxonomy, ";oomycetedb_", ref_id_counter)
+          ref_id_counter <- ref_id_counter + 1
         } else {
-          unique_headers <- c(unique_headers, header)
-          header_count[[header]] <- 1
+          new_header <- paste0(">", header, ";oomycetedb_", ref_id_counter)
+          ref_id_counter <- ref_id_counter + 1
         }
-        
-        # Find the position of the last semicolon
-        last_semicolon_pos <- max(gregexpr(";", header)[[1]])
-        
-        # Append the count before the last semicolon and add a final semicolon
-        new_header <- paste0(
-          ">", 
-          substring(header, 1, last_semicolon_pos - 1), 
-          "_", 
-          header_count[[header]], 
-          ";", 
-          substring(header, last_semicolon_pos + 1)
-        )
         
         writeLines(new_header, output)
       } else {
@@ -79,25 +59,32 @@ assign_taxonomyDada2 <- function(asv_abund_matrix, temp_directory_path, minBoot 
     
     close(output)
     
-    cat("The reference database has been updated with unique headers for locus:", locus, "\n")
+    cat("The reference database has been updated with unique reference IDs for locus:", locus, "\n")
+    
+    # For rps10, include Reference in taxLevels
+    tax_results <- dada2::assignTaxonomy(asv_abund_matrix,
+                                         refFasta,
+                                         taxLevels = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
+                                         minBoot = minBoot,
+                                         tryRC = tryRC,
+                                         outputBootstraps = TRUE,
+                                         multithread = multithread)
   } else {
     refFasta <- refFasta_raw
+    # For other loci, use standard taxLevels
+    tax_results <- dada2::assignTaxonomy(asv_abund_matrix,
+                                         refFasta,
+                                         taxLevels = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"),
+                                         minBoot = minBoot,
+                                         tryRC = tryRC,
+                                         outputBootstraps = TRUE,
+                                         multithread = multithread)
   }
-  
-  # Proceed with the dada2::assignTaxonomy function using the appropriate reference FASTA file
-  tax_results <- dada2::assignTaxonomy(asv_abund_matrix,
-                                       refFasta,
-                                       taxLevels = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"),
-                                       minBoot = minBoot,
-                                       tryRC = tryRC,
-                                       outputBootstraps = TRUE,
-                                       multithread = multithread)
   
   tax_matrix_path <- file.path(temp_directory_path, paste0("TaxMatrix_", locus, ".RData"))
   save(tax_results, file = tax_matrix_path)
   return(tax_results)
 }
-
 
 #' Align ASV sequences to reference sequences from database to get percent ID.
 #' Get percent identities.
@@ -192,12 +179,19 @@ assignTax_as_char <- function(tax_results, temp_directory_path, locus) {
 format_abund_matrix <- function(data_tables, asv_abund_matrix, seq_tax_asv, output_directory_path, locus) {
   formatted_abund_asv <- t(asv_abund_matrix)
   #asv_id_column <- paste("asv_", seq_along(rownames(formatted_abund_asv)), sep = "")
-  formatted_abund_asv <- cbind(
-    #asv_id = asv_id_column,
-    sequence = rownames(formatted_abund_asv),
-    dada2_tax = stringr::str_match(seq_tax_asv[rownames(formatted_abund_asv)], pattern = "^(.+)--Species")[,1],
-    #dada2_pid = as.numeric(stringr_str_match(seq_tax_asv[rownames(formatted_abund_asv)], '--([0-9.]+)--ASV$')[, 2]),
-    formatted_abund_asv)
+  
+  if(locus == "rps10") {
+    formatted_abund_asv <- cbind(
+      sequence = rownames(formatted_abund_asv),
+      dada2_tax = stringr::str_match(seq_tax_asv[rownames(formatted_abund_asv)], pattern = "^(.+)--Reference")[,1],
+      formatted_abund_asv)
+  } else {
+    formatted_abund_asv <- cbind(
+      sequence = rownames(formatted_abund_asv),
+      dada2_tax = stringr::str_match(seq_tax_asv[rownames(formatted_abund_asv)], pattern = "^(.+)--Species")[,1],
+      formatted_abund_asv)
+  }
+  
   formatted_abund_asv <- tibble::as_tibble(formatted_abund_asv)
   
   primer_seqs <- apply(data_tables$primer_data[, 2:ncol(data_tables$primer_data)], 2, paste, collapse = "|")

@@ -28,12 +28,8 @@ assign_taxonomyDada2(
 \item{multithread}{Use multiple threads (default TRUE)}
 
 \item{locus}{The locus for taxonomy assignment (e.g., rps10, other1, other2)}
-
-\item{ref_database}{The reference database used for taxonomic inference steps}
 }
 \description{
 Assign taxonomy
 }
-\keyword{Assign}
 \keyword{internal}
-\keyword{taxonomy}
