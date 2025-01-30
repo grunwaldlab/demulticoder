@@ -3,9 +3,8 @@
 
 <img src="man/figures/demulticoder_logo_iteration1.png" align="right" height="139" alt="" />
 
-*This package is actively under development. Until this message has been
-removed, use with caution. Additional testing, documentation, and
-examples are in progress.*
+*This package is actively under development. Additional testing,
+documentation, and examples are in progress.*
 
 ### Introduction
 
@@ -16,7 +15,7 @@ nature of metabarcoding analyses.
 
 Here is a brief schematic of the general workflow:
 
-<img src="man/figures/rps10_fig1_smaller.drawio.png" width="60%" height="60%" style="display: block; margin: auto auto auto 0;" />
+<img src="man/figures/Figure1_ver_3.svg" width="60%" height="60%" style="display: block; margin: auto auto auto 0;" />
 
 ### Key features
 
@@ -27,11 +26,16 @@ Here is a brief schematic of the general workflow:
   denoised, merged, and given taxonomic assignments in one go (with
   different parameters for each dataset if desired)
 
-- The package handles not just 16S or ITS datasets when using default
-  UNITE fungal or Silva 16S databases but also oomycete rps10 analyses
-  using oomycetedb <https://grunwaldlab.github.io/OomyceteDB/>, or up to
-  two custom databases (provided they are formatted as described here:
-  <https://benjjneb.github.io/dada2/training.html>).
+- The package handles not just **16S** or **ITS** short read datasets
+  when using default UNITE fungal or Silva 16S databases but also
+  oomycete ***rps10*** metabarcode analyses using oomycetedbDB
+  <https://grunwaldlab.github.io/OomyceteDB/>
+
+- Depending on the robustness of custom databases, the package can also
+  handle up to two custom databases and/or metabarcodes. Some examples
+  include 18S or CO1 datasets. The requirement is that the databases are
+  formatted like the Silva database. More information on formatting is
+  here: <https://benjjneb.github.io/dada2/training.html>).
 
 ### Installation
 
@@ -49,17 +53,17 @@ After installing the package, make a data directory and add the
 following files:  
 - PE short read amplicon data. The files must end in either
 \*\_R1.fastq.gz\* , or \*\_R2.fastq.gz\* and each sample must have both
-R1 and R2 files.
+sets of reads.
 
 - [**metadata.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv)
   file (there will be a unique row for each sample, and samples will be
-  entered twice if they contain pooled amplicions, as in the example
+  entered twice if they contain pooled amplicons, as in the example
   template)
 
 - [**primerinfo_params.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv)
-  file (there will be a new row for each unique barcode and associated
-  primer sequences, and there are also optional Cutadapt, DADA2 or
-  filtering parameters that can be added or adjusted)
+  file (there is a new row for each unique barcode and associated primer
+  sequences, and there are also optional Cutadapt, DADA2 or filtering
+  parameters that can be added or adjusted)
 
 **2. Prepare reads**
 
@@ -101,6 +105,10 @@ objs<-convert_asv_matrix_to_objs(output)
 ### Check out the website to view the documentation and see more examples
 
 For more information on source code, check out the package repository:
+<https://grunwaldlab.github.io/demulticoder/>
+
+### For source code:
+
 <https://github.com/grunwaldlab/demulticoder/>
 
 ### Citation

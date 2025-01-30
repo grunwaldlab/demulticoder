@@ -47,7 +47,7 @@ assign_taxonomyDada2 <- function(asv_abund_matrix, temp_directory_path, minBoot 
           new_header <- paste0(">", base_taxonomy, ";oomycetedb_", ref_id_counter)
           ref_id_counter <- ref_id_counter + 1
         } else {
-          new_header <- paste0(">", header, ";oomycetedb_", ref_id_counter)
+          new_header <- paste0(">", header, ";oomycetedb_", ref_id_counter, ";")
           ref_id_counter <- ref_id_counter + 1
         }
         
@@ -58,8 +58,6 @@ assign_taxonomyDada2 <- function(asv_abund_matrix, temp_directory_path, minBoot 
     }
     
     close(output)
-    
-    cat("The reference database has been updated with unique reference IDs for locus:", locus, "\n")
     
     # For rps10, include Reference in taxLevels
     tax_results <- dada2::assignTaxonomy(asv_abund_matrix,
