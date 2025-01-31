@@ -40,26 +40,16 @@ assign_taxonomyDada2 <- function(asv_abund_matrix, temp_directory_path, minBoot 
       if (startsWith(line, ">")) {
         header <- substring(line, 2)
         
-        # Keep everything up to the last semicolon (species level)
-        if (grepl(";", header)) {
-          base_taxonomy <- sub(";[^;]*$", "", header)
-          # Add reference ID after species
-          new_header <- paste0(">", base_taxonomy, ";oomycetedb_", ref_id_counter)
-          ref_id_counter <- ref_id_counter + 1
-        } else {
-          new_header <- paste0(">", header, ";oomycetedb_", ref_id_counter, ";")
-          ref_id_counter <- ref_id_counter + 1
-        }
-        
+        base_taxonomy <- sub(";[^;]*$", "", header)
+        new_header <- paste0(">", base_taxonomy, ";oomycetedb_", ref_id_counter)
+        ref_id_counter <- ref_id_counter + 1
         writeLines(new_header, output)
       } else {
         writeLines(line, output)
       }
     }
-    
     close(output)
     
-    # For rps10, include Reference in taxLevels
     tax_results <- dada2::assignTaxonomy(asv_abund_matrix,
                                          refFasta,
                                          taxLevels = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
