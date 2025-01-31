@@ -41,7 +41,7 @@ assign_taxonomyDada2 <- function(asv_abund_matrix, temp_directory_path, minBoot 
         header <- substring(line, 2)
         
         base_taxonomy <- sub(";[^;]*$", "", header)
-        new_header <- paste0(">", base_taxonomy, ";oomycetedb_", ref_id_counter)
+        new_header <- paste0(">", base_taxonomy, ";oomycetedb_", ref_id_counter, ";")
         ref_id_counter <- ref_id_counter + 1
         writeLines(new_header, output)
       } else {
