@@ -12,7 +12,7 @@ navbar:
       text: Documentation
       href: articles/Documentation.html
     articles:
-      text: Example Workflows
+      text: Example Vignettes
       menu:
         - text: 16S DADA2 Mothur SOP Validation
           href: articles/DADA2_16S_mothur_validation.html

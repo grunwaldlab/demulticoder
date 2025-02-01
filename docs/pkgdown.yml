@@ -2,8 +2,7 @@ pandoc: 3.1.1
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
-  04_pooled_barcode_example: 04_pooled_barcode_example.html
   DADA2_16S_mothur_validation: DADA2_16S_mothur_validation.html
   Documentation: Documentation.html
   Getting_started: Getting_started.html
-last_built: 2025-01-30T22:42Z
+last_built: 2025-02-01T21:29Z
