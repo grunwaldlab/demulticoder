@@ -307,7 +307,7 @@ make_seqhist <- function(asv_abund_matrix, output_directory_path) {
 #' )
 #' cut_trim(
 #' analysis_setup,
-#' cutadapt_path="/usr/bin/cutadapt",
+#' cutadapt_path="/opt/homebrew/bin/cutadapt",
 #' overwrite_existing = TRUE
 #' )
 #' make_asv_abund_matrix(

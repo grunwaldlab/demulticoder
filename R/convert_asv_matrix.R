@@ -28,7 +28,7 @@
 #' )
 #' cut_trim(
 #' analysis_setup,
-#' cutadapt_path="/usr/bin/cutadapt",
+#' cutadapt_path="/opt/homebrew/bin/cutadapt",
 #' overwrite_existing = TRUE
 #' )
 #' make_asv_abund_matrix(
@@ -42,7 +42,8 @@
 #' overwrite_existing=TRUE
 #' )
 #' objs<-convert_asv_matrix_to_objs(
-#' analysis_setup
+#' analysis_setup,
+#' overwrite_existing=TRUE
 #' )
 
 convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minimum_bootstrap = 0, save_outputs = FALSE, overwrite_existing = FALSE) {
