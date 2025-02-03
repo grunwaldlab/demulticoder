@@ -11,8 +11,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-# *Demulticoder*-An R package to streamline metabarcoding analyses using DADA2
 <img src="man/figures/demulticoder_logo_iteration1.png" align="right" height="139" alt="" />  
+
+# *Demulticoder*-An R package to streamline metabarcoding analyses using DADA2  
 
 *This package is actively under development. Additional testing, documentation, and examples are in progress.*
 
@@ -22,8 +23,8 @@ The ***demulticoder*** package is a Cutadapt and DADA2 wrapper package for metab
 
 Here is a brief schematic of the general workflow:  
 
-```{r workflow-diagram, echo=FALSE, out.width="60%", out.height="60%", fig.align="left"}
-knitr::include_graphics("man/figures/Figure1_ver_3.svg")
+```{r workflow-diagram, echo=FALSE, out.width="35%", out.height="35%", fig.align="left"}
+knitr::include_graphics("man/figures/Figure1.svg")
 ```
 
 ### Key features
@@ -86,7 +87,7 @@ assign_tax(
 objs<-convert_asv_matrix_to_objs(output)
 ```
 
-### Check out the website to view the documentation and see more examples 
+### Check out the website to view the documentation and see more examples  
 For more information on source code, check out the package repository: 
 https://grunwaldlab.github.io/demulticoder/
 

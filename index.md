@@ -1,9 +1,9 @@
 
 # Demulticoder R package
 
-**This package is actively under development. Until this message has
-been removed, use with caution. Additional testing, documentation, and
-examples are in progress.**
+*This package is actively under development. Until this message has been
+removed, use with caution. Additional testing, documentation, and
+examples are in progress.*
 
 ### Introduction
 
@@ -14,7 +14,7 @@ nature of metabarcoding analyses.
 
 Here is a brief schematic of the general workflow:
 
-<img src="man/figures/rps10_fig1_smaller.drawio.png" width="40%" height="40%" style="display: block; margin: auto;" />
+<img src="man/figures/Figure1.svg" width="35%" height="35%" style="display: block; margin: auto auto auto 0;" />
 
 ### Key features
 
@@ -96,11 +96,10 @@ assign_tax(
 objs<-convert_asv_matrix_to_objs(output)
 ```
 
-### Check out the website to view the documentation and see more examples
+### Check out the associated Github repository to view source code
 
-For more information, key functions, inputs, and example vignettes,
-check out the documentation at:
-<https://grunwaldlab.github.io/demulticoder>
+For more information, to see source code, or submit issue, check out:  
+<https://github.com/grunwaldlab/demulticoder/>
 
 ### Citation
 
@@ -108,3 +107,7 @@ The package was developed by Martha Sudermann, Zachary Foster, Samantha
 Dawson, Hung Phan, Jeff Chang, and Niklaus Grünwald
 
 Stay tuned for associated manuscript.
+
+### Acknowledgements
+
+The demulticoder logo was created with BioRender.com

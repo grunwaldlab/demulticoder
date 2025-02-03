@@ -277,11 +277,8 @@ make_seqhist <- function(asv_abund_matrix, output_directory_path) {
   }
 }
 
-#' Make an amplified sequence variant (ASV) abundance matrix This function
-#' generates an ASV abundance matrix using raw reads processed during previous
-#' steps, including read preparation, removing primers, and using DADA2 core
-#' denoising alogrithm to infer ASVs.
-#'
+#' Make an amplified sequence variant (ASV) abundance matrix for each of the input barcodes    
+#' 
 #' @importFrom utils modifyList read.table stack
 #' 
 #' @param analysis_setup analysis_setup An object containing directory paths and
@@ -290,8 +287,9 @@ make_seqhist <- function(asv_abund_matrix, output_directory_path) {
 #'   results. Default is FALSE.
 #' 
 #' @details The function processes data for each unique barcode separately,
-#'   inferring ASVs, merging reads, and creating an ASV abundance matrix 
-#' 
+#' inferring ASVs, merging reads, and creating an ASV abundance matrix. 
+#' To do this, the DADA2 core denoising alogrithm is used to infer ASVs.
+#'
 #' @return The ASV abundance matrix (`asv_abund_matrix`)
 #' 
 #' @export make_asv_abund_matrix

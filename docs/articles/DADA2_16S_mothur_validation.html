@@ -22,7 +22,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top bg-dark" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="../index.html">demulticoder</a>
 
@@ -35,7 +35,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="../articles/Getting_started.html">Get Started</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/Getting_started.html">Getting Started</a></li>
 <li class="nav-item"><a class="nav-link" href="../articles/Documentation.html">Documentation</a></li>
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-example-vignettes" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Example Vignettes</button>
@@ -46,7 +46,9 @@
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Main Functions</a></li>
       </ul>
 <ul class="navbar-nav">
-<li class="nav-item"><h6 class="dropdown-header" data-toc-skip>Search</h6></li>
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/grunwaldlab/demulticoder/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
@@ -60,8 +62,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>16S Mothur SOP Validation</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>16S Mothur SOP Validation</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/grunwaldlab/demulticoder/blob/HEAD/vignettes/DADA2_16S_mothur_validation.Rmd" class="external-link"><code>vignettes/DADA2_16S_mothur_validation.Rmd</code></a></small>
@@ -306,7 +307,8 @@ steps<a class="anchor" aria-label="anchor" href="#step-1-remove-ns-and-create-di
 <span>  output_directory <span class="op">=</span> <span class="st">"~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs"</span>,</span>
 <span>  tempdir_path <span class="op">=</span> <span class="st">"~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp"</span>,</span>
 <span>  tempdir_id <span class="op">=</span> <span class="st">"temp_files"</span>,</span>
-<span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  overwrite_existing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Existing data detected: Primer counts and N's may have been removed from previous runs. Loading existing output. To perform a new analysis, specify overwrite_existing = TRUE.</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">1</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">22</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
@@ -336,7 +338,14 @@ steps<a class="anchor" aria-label="anchor" href="#step-1-remove-ns-and-create-di
 <span><span class="co">#&gt; Warning in get_read_names(paired_file_paths[1]) ==</span></span>
 <span><span class="co">#&gt; get_read_names(paired_file_paths[2]): longer object length is not a multiple of</span></span>
 <span><span class="co">#&gt; shorter object length</span></span>
-<span><span class="co">#&gt; Creating output directory: /Users/masudermann/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/prefiltered_sequences</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">8</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">43</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span>  (3): primer_name, orientation, sequence</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (40): F3D0_R1, F3D0_R2, F3D1_R1, F3D1_R2, F3D141_R1, F3D141_R2, F3D142_R...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span></code></pre></div>
 <p><img src="prepare_reads-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -347,69 +356,8 @@ filterAndTrim function<a class="anchor" aria-label="anchor" href="#step-2-run-cu
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cut_trim.html">cut_trim</a></span><span class="op">(</span></span>
 <span>  <span class="va">outputs</span>,</span>
 <span>  cutadapt_path<span class="op">=</span><span class="st">"/opt/homebrew/bin/cutadapt"</span>,</span>
-<span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Running Cutadapt 4.1 for r16S sequence data </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D0_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D0_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D1_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D1_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D141_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D141_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D142_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D142_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D143_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D143_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D144_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D144_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D145_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D145_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D146_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D146_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D147_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D147_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D148_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D148_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D149_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D149_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D150_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D150_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D2_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D2_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D3_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D3_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D5_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D5_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D6_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D6_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D7_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D7_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D8_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D8_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D9_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/F3D9_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/Mock_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/trimmed_sequences/Mock_R2_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Read in 7733 paired-sequences, output 7112 (92%) filtered paired-sequences.</span></span>
-<span><span class="co">#&gt; Read in 5829 paired-sequences, output 5299 (90.9%) filtered paired-sequences.</span></span>
-<span><span class="co">#&gt; Read in 5926 paired-sequences, output 5463 (92.2%) filtered paired-sequences.</span></span>
-<span><span class="co">#&gt; Read in 3158 paired-sequences, output 2914 (92.3%) filtered paired-sequences.</span></span>
-<span><span class="co">#&gt; Read in 3164 paired-sequences, output 2941 (93%) filtered paired-sequences.</span></span>
-<span><span class="co">#&gt; Read in 4798 paired-sequences, output 4312 (89.9%) filtered paired-sequences.</span></span>
-<span><span class="co">#&gt; Read in 7331 paired-sequences, output 6741 (92%) filtered paired-sequences.</span></span>
-<span><span class="co">#&gt; Read in 4993 paired-sequences, output 4560 (91.3%) filtered paired-sequences.</span></span>
-<span><span class="co">#&gt; Read in 16956 paired-sequences, output 15636 (92.2%) filtered paired-sequences.</span></span>
-<span><span class="co">#&gt; Read in 12332 paired-sequences, output 11412 (92.5%) filtered paired-sequences.</span></span>
-<span><span class="co">#&gt; Read in 13006 paired-sequences, output 12017 (92.4%) filtered paired-sequences.</span></span>
-<span><span class="co">#&gt; Read in 5474 paired-sequences, output 5032 (91.9%) filtered paired-sequences.</span></span>
-<span><span class="co">#&gt; Read in 19489 paired-sequences, output 18075 (92.7%) filtered paired-sequences.</span></span>
-<span><span class="co">#&gt; Read in 6726 paired-sequences, output 6250 (92.9%) filtered paired-sequences.</span></span>
-<span><span class="co">#&gt; Read in 4418 paired-sequences, output 4052 (91.7%) filtered paired-sequences.</span></span>
-<span><span class="co">#&gt; Read in 7933 paired-sequences, output 7369 (92.9%) filtered paired-sequences.</span></span>
-<span><span class="co">#&gt; Read in 5103 paired-sequences, output 4765 (93.4%) filtered paired-sequences.</span></span>
-<span><span class="co">#&gt; Read in 5274 paired-sequences, output 4871 (92.4%) filtered paired-sequences.</span></span>
-<span><span class="co">#&gt; Read in 7023 paired-sequences, output 6504 (92.6%) filtered paired-sequences.</span></span>
-<span><span class="co">#&gt; Read in 4748 paired-sequences, output 4314 (90.9%) filtered paired-sequences.</span></span></code></pre></div>
-<p><img src="Remove_primers_and_trim_reads-1.png" width="576"></p>
+<span>  overwrite_existing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Existing data detected: Primer counts and N's may have been removed from previous runs. Loading existing output. To perform a new analysis, specify overwrite_existing = TRUE.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="step-3-core-asv-inference-step">Step 3-Core ASV inference step<a class="anchor" aria-label="anchor" href="#step-3-core-asv-inference-step"></a>
@@ -417,138 +365,30 @@ filterAndTrim function<a class="anchor" aria-label="anchor" href="#step-2-run-cu
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make_asv_abund_matrix.html">make_asv_abund_matrix</a></span><span class="op">(</span></span>
 <span>  <span class="va">outputs</span>,</span>
-<span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 33513360 total bases in 139639 reads from 20 samples will be used for learning the error rates.</span></span>
-<span><span class="co">#&gt; Initializing error rates to maximum possible estimate.</span></span>
-<span><span class="co">#&gt; selfConsist step 1 ....................</span></span>
-<span><span class="co">#&gt;    selfConsist step 2</span></span>
-<span><span class="co">#&gt;    selfConsist step 3</span></span>
-<span><span class="co">#&gt;    selfConsist step 4</span></span>
-<span><span class="co">#&gt;    selfConsist step 5</span></span>
-<span><span class="co">#&gt; Convergence after  5  rounds.</span></span>
-<span><span class="co">#&gt; Error rate plot for the Forward read of primer pair r16S</span></span>
-<span><span class="co">#&gt; Warning in scale_y_log10(): <span style="color: #00BB00;">log-10</span> transformation introduced</span></span>
-<span><span class="co">#&gt; infinite values.</span></span>
-<span><span class="co">#&gt; Sample 1 - 7112 reads in 1978 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 2 - 5299 reads in 1639 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 3 - 5463 reads in 1477 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 4 - 2914 reads in 904 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 5 - 2941 reads in 939 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 6 - 4312 reads in 1267 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 7 - 6741 reads in 1756 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 8 - 4560 reads in 1438 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 9 - 15636 reads in 3589 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 10 - 11412 reads in 2761 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 11 - 12017 reads in 3021 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 12 - 5032 reads in 1566 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 13 - 18075 reads in 3707 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 14 - 6250 reads in 1479 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 15 - 4052 reads in 1195 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 16 - 7369 reads in 1832 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 17 - 4765 reads in 1183 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 18 - 4871 reads in 1382 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 19 - 6504 reads in 1709 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 20 - 4314 reads in 897 unique sequences.</span></span>
-<span><span class="co">#&gt; 22342240 total bases in 139639 reads from 20 samples will be used for learning the error rates.</span></span>
-<span><span class="co">#&gt; Initializing error rates to maximum possible estimate.</span></span>
-<span><span class="co">#&gt; selfConsist step 1 ....................</span></span>
-<span><span class="co">#&gt;    selfConsist step 2</span></span>
-<span><span class="co">#&gt;    selfConsist step 3</span></span>
-<span><span class="co">#&gt;    selfConsist step 4</span></span>
-<span><span class="co">#&gt;    selfConsist step 5</span></span>
-<span><span class="co">#&gt;    selfConsist step 6</span></span>
-<span><span class="co">#&gt;    selfConsist step 7</span></span>
-<span><span class="co">#&gt; Convergence after  7  rounds.</span></span>
-<span><span class="co">#&gt; Error rate plot for the Reverse read of primer pair r16S</span></span>
-<span><span class="co">#&gt; Warning in scale_y_log10(): <span style="color: #00BB00;">log-10</span> transformation introduced</span></span>
-<span><span class="co">#&gt; infinite values.</span></span>
-<span><span class="co">#&gt; Sample 1 - 7112 reads in 1659 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 2 - 5299 reads in 1349 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 3 - 5463 reads in 1335 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 4 - 2914 reads in 853 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 5 - 2941 reads in 880 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 6 - 4312 reads in 1286 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 7 - 6741 reads in 1803 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 8 - 4560 reads in 1265 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 9 - 15636 reads in 3413 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 10 - 11412 reads in 2522 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 11 - 12017 reads in 2771 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 12 - 5032 reads in 1415 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 13 - 18075 reads in 3290 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 14 - 6250 reads in 1390 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 15 - 4052 reads in 1134 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 16 - 7369 reads in 1635 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 17 - 4765 reads in 1084 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 18 - 4871 reads in 1161 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 19 - 6504 reads in 1502 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 20 - 4314 reads in 732 unique sequences.</span></span>
-<span><span class="co">#&gt; 6540 paired-reads (in 107 unique pairings) successfully merged out of 6891 (in 197 pairings) input.</span></span>
-<span><span class="co">#&gt; 5027 paired-reads (in 101 unique pairings) successfully merged out of 5189 (in 157 pairings) input.</span></span>
-<span><span class="co">#&gt; 4986 paired-reads (in 81 unique pairings) successfully merged out of 5267 (in 166 pairings) input.</span></span>
-<span><span class="co">#&gt; 2595 paired-reads (in 52 unique pairings) successfully merged out of 2754 (in 108 pairings) input.</span></span>
-<span><span class="co">#&gt; 2553 paired-reads (in 60 unique pairings) successfully merged out of 2785 (in 119 pairings) input.</span></span>
-<span><span class="co">#&gt; 3646 paired-reads (in 55 unique pairings) successfully merged out of 4109 (in 157 pairings) input.</span></span>
-<span><span class="co">#&gt; 6079 paired-reads (in 81 unique pairings) successfully merged out of 6514 (in 198 pairings) input.</span></span>
-<span><span class="co">#&gt; 3968 paired-reads (in 91 unique pairings) successfully merged out of 4388 (in 187 pairings) input.</span></span>
-<span><span class="co">#&gt; 14233 paired-reads (in 143 unique pairings) successfully merged out of 15355 (in 352 pairings) input.</span></span>
-<span><span class="co">#&gt; 10529 paired-reads (in 120 unique pairings) successfully merged out of 11165 (in 277 pairings) input.</span></span>
-<span><span class="co">#&gt; 11154 paired-reads (in 137 unique pairings) successfully merged out of 11797 (in 298 pairings) input.</span></span>
-<span><span class="co">#&gt; 4349 paired-reads (in 85 unique pairings) successfully merged out of 4802 (in 179 pairings) input.</span></span>
-<span><span class="co">#&gt; 17431 paired-reads (in 153 unique pairings) successfully merged out of 17812 (in 272 pairings) input.</span></span>
-<span><span class="co">#&gt; 5850 paired-reads (in 81 unique pairings) successfully merged out of 6095 (in 159 pairings) input.</span></span>
-<span><span class="co">#&gt; 3713 paired-reads (in 86 unique pairings) successfully merged out of 3891 (in 147 pairings) input.</span></span>
-<span><span class="co">#&gt; 6865 paired-reads (in 99 unique pairings) successfully merged out of 7191 (in 187 pairings) input.</span></span>
-<span><span class="co">#&gt; 4428 paired-reads (in 68 unique pairings) successfully merged out of 4605 (in 128 pairings) input.</span></span>
-<span><span class="co">#&gt; 4576 paired-reads (in 101 unique pairings) successfully merged out of 4739 (in 174 pairings) input.</span></span>
-<span><span class="co">#&gt; 6092 paired-reads (in 109 unique pairings) successfully merged out of 6315 (in 173 pairings) input.</span></span>
-<span><span class="co">#&gt; 4269 paired-reads (in 20 unique pairings) successfully merged out of 4281 (in 28 pairings) input.</span></span></code></pre></div>
-<p><img src="ASV_inference-1.png" width="576"></p>
-<pre><code><span><span class="co">#&gt; Identified 61 bimeras out of 293 input sequences.</span></span></code></pre>
-<p><img src="ASV_inference-2.png" width="576"></p>
-<pre><code><span><span class="co">#&gt; $r16S</span></span>
-<span><span class="co">#&gt; [1] "~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/asvabund_matrixDADA2_r16S.RData"</span></span></code></pre>
+<span>  overwrite_existing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Existing files found. The following ASV abundance matrices are saved in the tempdir path:</span></span>
+<span><span class="co">#&gt; /Users/masudermann/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp/temp_files/asvabund_matrixDADA2_r16S.RData</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; NULL</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="step-4-assign-taxonomy-step">Step 4-Assign taxonomy step<a class="anchor" aria-label="anchor" href="#step-4-assign-taxonomy-step"></a>
 </h3>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/assign_tax.html">assign_tax</a></span><span class="op">(</span></span>
 <span>  <span class="va">outputs</span>,</span>
 <span>  <span class="va">asv_abund_matrix</span>,</span>
 <span>  db_16S<span class="op">=</span><span class="st">"silva_nr99_v138.2_toSpecies_trainset.fa.gz"</span>,</span>
 <span>  retrieve_files<span class="op">=</span><span class="cn">FALSE</span>,</span>
 <span>  overwrite_existing<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in assign_tax(outputs, asv_abund_matrix, db_16S =</span></span>
-<span><span class="co">#&gt; "silva_nr99_v138.2_toSpecies_trainset.fa.gz", : No existing files found. The</span></span>
-<span><span class="co">#&gt; analysis will be run.</span></span>
-<span><span class="co">#&gt;    samplename_barcode input filtered denoisedF denoisedR merged nonchim</span></span>
-<span><span class="co">#&gt; 1           F3D0_r16S  7733     7112      6976      6979   6540    6528</span></span>
-<span><span class="co">#&gt; 2           F3D1_r16S  5829     5299      5226      5239   5027    5016</span></span>
-<span><span class="co">#&gt; 3         F3D141_r16S  5926     5463      5331      5357   4986    4863</span></span>
-<span><span class="co">#&gt; 4         F3D142_r16S  3158     2914      2799      2830   2595    2521</span></span>
-<span><span class="co">#&gt; 5         F3D143_r16S  3164     2941      2822      2868   2553    2519</span></span>
-<span><span class="co">#&gt; 6         F3D144_r16S  4798     4312      4150      4228   3646    3507</span></span>
-<span><span class="co">#&gt; 7         F3D145_r16S  7331     6741      6592      6627   6079    5820</span></span>
-<span><span class="co">#&gt; 8         F3D146_r16S  4993     4560      4450      4470   3968    3879</span></span>
-<span><span class="co">#&gt; 9         F3D147_r16S 16956    15636     15433     15505  14233   13006</span></span>
-<span><span class="co">#&gt; 10        F3D148_r16S 12332    11412     11250     11267  10529    9935</span></span>
-<span><span class="co">#&gt; 11        F3D149_r16S 13006    12017     11857     11898  11154   10653</span></span>
-<span><span class="co">#&gt; 12        F3D150_r16S  5474     5032      4879      4925   4349    4240</span></span>
-<span><span class="co">#&gt; 13          F3D2_r16S 19489    18075     17907     17939  17431   16835</span></span>
-<span><span class="co">#&gt; 14          F3D3_r16S  6726     6250      6145      6176   5850    5486</span></span>
-<span><span class="co">#&gt; 15          F3D5_r16S  4418     4052      3930      3991   3713    3713</span></span>
-<span><span class="co">#&gt; 16          F3D6_r16S  7933     7369      7231      7294   6865    6678</span></span>
-<span><span class="co">#&gt; 17          F3D7_r16S  5103     4765      4646      4673   4428    4217</span></span>
-<span><span class="co">#&gt; 18          F3D8_r16S  5274     4871      4786      4802   4576    4547</span></span>
-<span><span class="co">#&gt; 19          F3D9_r16S  7023     6504      6341      6442   6092    6015</span></span>
-<span><span class="co">#&gt; 20          Mock_r16S  4748     4314      4287      4286   4269    4269</span></span></code></pre></div>
+<span><span class="co">#&gt; Existing files found. Specify overwrite=TRUE, to rerun analysis</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="step-5-convert-asv-matrix-to-taxmap-and-phyloseq-objects-with-one-function">Step 5-convert asv matrix to taxmap and phyloseq objects with one
 function<a class="anchor" aria-label="anchor" href="#step-5-convert-asv-matrix-to-taxmap-and-phyloseq-objects-with-one-function"></a>
 </h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">objs</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/convert_asv_matrix_to_objs.html">convert_asv_matrix_to_objs</a></span><span class="op">(</span><span class="va">outputs</span>, save_outputs<span class="op">=</span><span class="cn">TRUE</span>, overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">objs</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/convert_asv_matrix_to_objs.html">convert_asv_matrix_to_objs</a></span><span class="op">(</span><span class="va">outputs</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">232</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">23</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
@@ -568,7 +408,7 @@ function<a class="anchor" aria-label="anchor" href="#step-5-convert-asv-matrix-t
 <h3 id="step-6-evaluate-accuracy-using-mock-community-as-shown-in-dada2-tutorial">Step 6-evaluate accuracy using mock community, as shown in dada2
 tutorial<a class="anchor" aria-label="anchor" href="#step-6-evaluate-accuracy-using-mock-community-as-shown-in-dada2-tutorial"></a>
 </h3>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">track_reads_demulticoder</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/track_reads_r16S.csv"</span>, row.names <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">track_reads_demulticoder</span><span class="op">)</span></span>
 <span><span class="co">#&gt;      input          filtered       denoisedF       denoisedR    </span></span>
@@ -607,7 +447,7 @@ described previously.</p>
 <h3 id="step-7-follow-up-work-using-phyloseq-to-do-side-by-side-comparison-with-dada2-example-and-to-examine-alpha-diversity-results">Step 7-Follow-up work using phyloseq to do side-by-side comparison
 with dada2 example and to examine alpha diversity results<a class="anchor" aria-label="anchor" href="#step-7-follow-up-work-using-phyloseq-to-do-side-by-side-comparison-with-dada2-example-and-to-examine-alpha-diversity-results"></a>
 </h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/prune_samples-methods.html" class="external-link">prune_samples</a></span><span class="op">(</span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html" class="external-link">sample_names</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span><span class="op">)</span> <span class="op">!=</span> <span class="st">"Mock_r16S"</span>, <span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span><span class="op">)</span> <span class="co"># Remove mock sample</span></span>
 <span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/plot_richness.html" class="external-link">plot_richness</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span>, x<span class="op">=</span><span class="st">"Day"</span>, measures<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Shannon"</span>, <span class="st">"Simpson"</span><span class="op">)</span>, color<span class="op">=</span><span class="st">"When"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in estimate_richness(physeq, split = TRUE, measures = measures): The data you have provided does not have</span></span>
@@ -622,39 +462,43 @@ with dada2 example and to examine alpha diversity results<a class="anchor" aria-
 <h3 id="step-8-examine-ordination-plots-as-additional-point-of-comparison-with-dada2-tutorial">Step 8-Examine ordination plots as additional point of comparison
 with DADA2 tutorial<a class="anchor" aria-label="anchor" href="#step-8-examine-ordination-plots-as-additional-point-of-comparison-with-dada2-tutorial"></a>
 </h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Transform data to proportions as appropriate for Bray-Curtis distances</span></span>
 <span><span class="va">ps.prop</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span>, <span class="kw">function</span><span class="op">(</span><span class="va">otu</span><span class="op">)</span> <span class="va">otu</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">otu</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">ord.nmds.bray</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/ordinate.html" class="external-link">ordinate</a></span><span class="op">(</span><span class="va">ps.prop</span>, method<span class="op">=</span><span class="st">"NMDS"</span>, distance<span class="op">=</span><span class="st">"bray"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Run 0 stress 0.0808378 </span></span>
-<span><span class="co">#&gt; Run 1 stress 0.09061366 </span></span>
-<span><span class="co">#&gt; Run 2 stress 0.1231378 </span></span>
-<span><span class="co">#&gt; Run 3 stress 0.121153 </span></span>
-<span><span class="co">#&gt; Run 4 stress 0.08635462 </span></span>
-<span><span class="co">#&gt; Run 5 stress 0.0808378 </span></span>
-<span><span class="co">#&gt; ... Procrustes: rmse 5.812942e-06  max resid 1.554258e-05 </span></span>
+<span><span class="co">#&gt; Run 1 stress 0.1334385 </span></span>
+<span><span class="co">#&gt; Run 2 stress 0.0809639 </span></span>
+<span><span class="co">#&gt; ... Procrustes: rmse 0.009219366  max resid 0.02824555 </span></span>
+<span><span class="co">#&gt; Run 3 stress 0.09466618 </span></span>
+<span><span class="co">#&gt; Run 4 stress 0.3744204 </span></span>
+<span><span class="co">#&gt; Run 5 stress 0.09061366 </span></span>
+<span><span class="co">#&gt; Run 6 stress 0.0808378 </span></span>
+<span><span class="co">#&gt; ... Procrustes: rmse 2.017452e-06  max resid 4.726435e-06 </span></span>
 <span><span class="co">#&gt; ... Similar to previous best</span></span>
-<span><span class="co">#&gt; Run 6 stress 0.1231378 </span></span>
-<span><span class="co">#&gt; Run 7 stress 0.09061366 </span></span>
-<span><span class="co">#&gt; Run 8 stress 0.08096389 </span></span>
-<span><span class="co">#&gt; ... Procrustes: rmse 0.009176341  max resid 0.02810282 </span></span>
-<span><span class="co">#&gt; Run 9 stress 0.1433231 </span></span>
-<span><span class="co">#&gt; Run 10 stress 0.0808378 </span></span>
-<span><span class="co">#&gt; ... Procrustes: rmse 5.646215e-06  max resid 1.499963e-05 </span></span>
+<span><span class="co">#&gt; Run 7 stress 0.08635462 </span></span>
+<span><span class="co">#&gt; Run 8 stress 0.0808378 </span></span>
+<span><span class="co">#&gt; ... Procrustes: rmse 6.420168e-06  max resid 1.573833e-05 </span></span>
 <span><span class="co">#&gt; ... Similar to previous best</span></span>
-<span><span class="co">#&gt; Run 11 stress 0.1231378 </span></span>
-<span><span class="co">#&gt; Run 12 stress 0.0809639 </span></span>
-<span><span class="co">#&gt; ... Procrustes: rmse 0.009215858  max resid 0.02823353 </span></span>
-<span><span class="co">#&gt; Run 13 stress 0.121153 </span></span>
-<span><span class="co">#&gt; Run 14 stress 0.1320722 </span></span>
-<span><span class="co">#&gt; Run 15 stress 0.08635462 </span></span>
-<span><span class="co">#&gt; Run 16 stress 0.121153 </span></span>
-<span><span class="co">#&gt; Run 17 stress 0.08096389 </span></span>
-<span><span class="co">#&gt; ... Procrustes: rmse 0.009186834  max resid 0.02813753 </span></span>
-<span><span class="co">#&gt; Run 18 stress 0.08635462 </span></span>
-<span><span class="co">#&gt; Run 19 stress 0.08635462 </span></span>
-<span><span class="co">#&gt; Run 20 stress 0.09466617 </span></span>
-<span><span class="co">#&gt; *** Best solution repeated 2 times</span></span>
+<span><span class="co">#&gt; Run 9 stress 0.08096389 </span></span>
+<span><span class="co">#&gt; ... Procrustes: rmse 0.00914913  max resid 0.02801434 </span></span>
+<span><span class="co">#&gt; Run 10 stress 0.09061366 </span></span>
+<span><span class="co">#&gt; Run 11 stress 0.09061366 </span></span>
+<span><span class="co">#&gt; Run 12 stress 0.08096392 </span></span>
+<span><span class="co">#&gt; ... Procrustes: rmse 0.009240612  max resid 0.02831497 </span></span>
+<span><span class="co">#&gt; Run 13 stress 0.08635462 </span></span>
+<span><span class="co">#&gt; Run 14 stress 0.08635462 </span></span>
+<span><span class="co">#&gt; Run 15 stress 0.0808378 </span></span>
+<span><span class="co">#&gt; ... Procrustes: rmse 1.076163e-06  max resid 3.172951e-06 </span></span>
+<span><span class="co">#&gt; ... Similar to previous best</span></span>
+<span><span class="co">#&gt; Run 16 stress 0.09466618 </span></span>
+<span><span class="co">#&gt; Run 17 stress 0.08635462 </span></span>
+<span><span class="co">#&gt; Run 18 stress 0.0809639 </span></span>
+<span><span class="co">#&gt; ... Procrustes: rmse 0.009215314  max resid 0.02823148 </span></span>
+<span><span class="co">#&gt; Run 19 stress 0.0809639 </span></span>
+<span><span class="co">#&gt; ... Procrustes: rmse 0.009213734  max resid 0.02822652 </span></span>
+<span><span class="co">#&gt; Run 20 stress 0.09466621 </span></span>
+<span><span class="co">#&gt; *** Best solution repeated 3 times</span></span>
 <span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/plot_ordination.html" class="external-link">plot_ordination</a></span><span class="op">(</span><span class="va">ps.prop</span>, <span class="va">ord.nmds.bray</span>, color<span class="op">=</span><span class="st">"When"</span>, title<span class="op">=</span><span class="st">"Bray NMDS"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="phyloseq_beta_diversity_analysis-1.png" width="576"></p>
 </div>
@@ -662,7 +506,7 @@ with DADA2 tutorial<a class="anchor" aria-label="anchor" href="#step-8-examine-o
 <h3 id="step-9-lets-look-at-what-the-top-20-taxa-are-in-the-early-vs--late-samples-time-points-as-shown-in-the-dada2-tutorial">Step 9-Let’s look at what the top 20 taxa are in the early vs. late
 samples time points, as shown in the dada2 tutorial<a class="anchor" aria-label="anchor" href="#step-9-lets-look-at-what-the-top-20-taxa-are-in-the-early-vs--late-samples-time-points-as-shown-in-the-dada2-tutorial"></a>
 </h3>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">top20</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_sums.html" class="external-link">taxa_sums</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span><span class="op">)</span>, decreasing<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span></span>
 <span><span class="va">ps.top20</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span>, <span class="kw">function</span><span class="op">(</span><span class="va">OTU</span><span class="op">)</span> <span class="va">OTU</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">OTU</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">ps.top20</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/prune_taxa-methods.html" class="external-link">prune_taxa</a></span><span class="op">(</span><span class="va">top20</span>, <span class="va">ps.top20</span><span class="op">)</span></span>

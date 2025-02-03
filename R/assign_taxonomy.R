@@ -320,6 +320,8 @@ process_single_barcode <-
 #' @return Taxonomic assignments of each unique ASV sequence
 #'
 #' @export assign_tax
+#' 
+#' @details At this point DADA2 assignTaxonomy is used to assign taxonomy to the inferred ASVs. 
 #'
 #' @examples
 #' # Assign taxonomies to ASVs on a per barcode basis

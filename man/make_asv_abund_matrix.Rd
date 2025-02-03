@@ -2,10 +2,7 @@
 % Please edit documentation in R/make_asv_abund_matrix.R
 \name{make_asv_abund_matrix}
 \alias{make_asv_abund_matrix}
-\title{Make an amplified sequence variant (ASV) abundance matrix This function
-generates an ASV abundance matrix using raw reads processed during previous
-steps, including read preparation, removing primers, and using DADA2 core
-denoising alogrithm to infer ASVs.}
+\title{Make an amplified sequence variant (ASV) abundance matrix for each of the input barcodes}
 \usage{
 make_asv_abund_matrix(analysis_setup, overwrite_existing = FALSE)
 }
@@ -20,14 +17,12 @@ results. Default is FALSE.}
 The ASV abundance matrix (\code{asv_abund_matrix})
 }
 \description{
-Make an amplified sequence variant (ASV) abundance matrix This function
-generates an ASV abundance matrix using raw reads processed during previous
-steps, including read preparation, removing primers, and using DADA2 core
-denoising alogrithm to infer ASVs.
+Make an amplified sequence variant (ASV) abundance matrix for each of the input barcodes
 }
 \details{
 The function processes data for each unique barcode separately,
-inferring ASVs, merging reads, and creating an ASV abundance matrix
+inferring ASVs, merging reads, and creating an ASV abundance matrix.
+To do this, the DADA2 core denoising alogrithm is used to infer ASVs.
 }
 \examples{
 # The primary wrapper function for DADA2 ASV inference steps

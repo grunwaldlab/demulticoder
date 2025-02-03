@@ -87,7 +87,7 @@ outputs<-prepare_reads(
   output_directory = "~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs",
   tempdir_path = "~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp",
   tempdir_id = "temp_files",
-  overwrite_existing = TRUE)
+  overwrite_existing = FALSE)
 ```
 
 ### Step 2-Run Cutadapt to remove primers and then trim reads with DADA2 filterAndTrim function 
@@ -95,14 +95,14 @@ outputs<-prepare_reads(
 cut_trim(
   outputs,
   cutadapt_path="/opt/homebrew/bin/cutadapt",
-  overwrite_existing = TRUE)
+  overwrite_existing = FALSE)
 ```
 
 ### Step 3-Core ASV inference step
 ```{r ASV_inference, fig.height=6, fig.width=6}
 make_asv_abund_matrix(
   outputs,
-  overwrite_existing = TRUE)
+  overwrite_existing = FALSE)
 ```
 
 ### Step 4-Assign taxonomy step
@@ -117,7 +117,7 @@ assign_tax(
 
 ### Step 5-convert asv matrix to taxmap and phyloseq objects with one function
 ```{r convert_matrix_to_other_formats, fig.height=6, fig.width=6}
-objs<-convert_asv_matrix_to_objs(outputs, save_outputs=TRUE, overwrite_existing = TRUE)
+objs<-convert_asv_matrix_to_objs(outputs)
 ```
 
 ### Step 6-evaluate accuracy using mock community, as shown in dada2 tutorial

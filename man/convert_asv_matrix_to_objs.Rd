@@ -8,8 +8,7 @@ convert_asv_matrix_to_objs(
   analysis_setup,
   min_read_depth = 0,
   minimum_bootstrap = 0,
-  save_outputs = FALSE,
-  overwrite_existing = FALSE
+  save_outputs = FALSE
 )
 }
 \arguments{
@@ -22,12 +21,6 @@ samples is less than this threshold, ASV will be filtered.}
 \item{minimum_bootstrap}{Threshold for bootstrap support value for taxonomic
 assignments. Below designated minimum bootstrap threshold, taxnomoic
 assignments will be set to N/A}
-
-\item{save_outputs}{Logical, indicating whether to save the taxmap object.
-Default is FALSE.}
-
-\item{overwrite_existing}{Logical, indicating whether to overwrite existing
-results. Default is FALSE.}
 }
 \value{
 ASV matrix converted to taxmap object
@@ -60,7 +53,6 @@ retrieve_files=FALSE,
 overwrite_existing=TRUE
 )
 objs<-convert_asv_matrix_to_objs(
-analysis_setup,
-overwrite_existing=TRUE
+analysis_setup
 )
 }

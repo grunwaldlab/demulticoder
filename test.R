@@ -1,5 +1,4 @@
 #devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
-
 devtools::clean_dll()
 devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
 devtools::load_all("~/demulticoder")
@@ -19,5 +18,7 @@ library("pkgdown")
 
 pkgdown::build_site()
 pkgdown::preview_site()
+
+pkgdown::build_favicons(overwrite=TRUE)
 
 rcmdcheck::rcmdcheck(args = "--as-cran")

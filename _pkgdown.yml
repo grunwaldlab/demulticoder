@@ -1,12 +1,16 @@
 template:
   bootstrap: 5
+  bslib:
+    bootswatch: sandstone
+    
 navbar:
+  bg: dark
   structure:
     left:  [intro, documentation, articles, reference]
     right: [search, github]
   components:
     intro:
-      text: Get Started
+      text: Getting Started
       href: articles/Getting_started.html
     documentation:
       text: Documentation
@@ -19,6 +23,5 @@ navbar:
     reference:
       text: Main Functions
       href: reference/index.html
-    search:
-      # Enables a search bar in the navbar
-      text: Search
+    url:
+      https://grunwaldlab.github.io/demulticoder/

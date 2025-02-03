@@ -2,8 +2,7 @@
 % Please edit documentation in R/cut_primers_trim_reads.R
 \name{cut_trim}
 \alias{cut_trim}
-\title{Main command to trim primers using Cutadapt and core DADA2 functions. If
-samples contain pooled barcodes, reads will also be demultiplexed}
+\title{Main command to trim primers using Cutadapt and core DADA2 functions}
 \usage{
 cut_trim(analysis_setup, cutadapt_path, overwrite_existing = FALSE)
 }
@@ -20,8 +19,10 @@ existing files and directories from previous runs. Default is \code{FALSE}.}
 Trimmed reads, primer counts, quality plots, and ASV matrix.
 }
 \description{
-Main command to trim primers using Cutadapt and core DADA2 functions. If
-samples contain pooled barcodes, reads will also be demultiplexed
+Main command to trim primers using Cutadapt and core DADA2 functions
+}
+\details{
+If samples are comprised of two different barcodes (like ITS1 and rps10), reads will also be demultiplexed prior to DADA2 trimming steps.
 }
 \examples{
 # Remove remaining primers from raw reads, demultiplex pooled barcoded samples, 

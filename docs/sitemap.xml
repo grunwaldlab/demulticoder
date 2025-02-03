@@ -1,9 +1,6 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>/404.html</loc></url>
 <url><loc>/LICENSE-text.html</loc></url>
-<url><loc>/articles/01_getting_started.html</loc></url>
-<url><loc>/articles/02_documentation.html</loc></url>
-<url><loc>/articles/03_16S_mothur_validation.html</loc></url>
 <url><loc>/articles/DADA2_16S_mothur_validation.html</loc></url>
 <url><loc>/articles/Documentation.html</loc></url>
 <url><loc>/articles/Getting_started.html</loc></url>

@@ -269,8 +269,7 @@ plot_post_trim_qc <- function(cutadapt_data, output_directory_path, n = 500000) 
   }
 }
 
-#' Main command to trim primers using Cutadapt and core DADA2 functions. If
-#' samples contain pooled barcodes, reads will also be demultiplexed
+#' Main command to trim primers using Cutadapt and core DADA2 functions   
 #' 
 #' @importFrom utils modifyList read.table stack
 #' 
@@ -281,6 +280,8 @@ plot_post_trim_qc <- function(cutadapt_data, output_directory_path, n = 500000) 
 #'   existing files and directories from previous runs. Default is `FALSE`.
 #'   
 #' @return Trimmed reads, primer counts, quality plots, and ASV matrix.
+#' 
+#' @details If samples are comprised of two different barcodes (like ITS1 and rps10), reads will also be demultiplexed prior to DADA2 trimming steps. 
 #'
 #' @export
 #'

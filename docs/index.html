@@ -19,12 +19,13 @@
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="An R Package for the Integrated Analysis of Multiplex Metabarcodes">
 <meta name="description" content="The demulticoder package provides a workflow for analyzing multiplex metabarcoding data. It includes functions for filtering, trimming primers, and denoising data using Cutadapt and the dada2 package. The package can handle datasets with pooled amplicons and simple experimental designs.">
 <meta property="og:description" content="The demulticoder package provides a workflow for analyzing multiplex metabarcoding data. It includes functions for filtering, trimming primers, and denoising data using Cutadapt and the dada2 package. The package can handle datasets with pooled amplicons and simple experimental designs.">
+<meta property="og:image" content="/logo.png">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top bg-dark" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="index.html">demulticoder</a>
 
@@ -37,7 +38,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="articles/Getting_started.html">Get Started</a></li>
+<li class="nav-item"><a class="nav-link" href="articles/Getting_started.html">Getting Started</a></li>
 <li class="nav-item"><a class="nav-link" href="articles/Documentation.html">Documentation</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-example-vignettes" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Example Vignettes</button>
@@ -48,7 +49,9 @@
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Main Functions</a></li>
       </ul>
 <ul class="navbar-nav">
-<li class="nav-item"><h6 class="dropdown-header" data-toc-skip>Search</h6></li>
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
+</form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/grunwaldlab/demulticoder/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
@@ -58,15 +61,17 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="demulticoder-r-package">Demulticoder R package<a class="anchor" aria-label="anchor" href="#demulticoder-r-package"></a>
-</h1></div>
-<p><strong>This package is actively under development. Until this message has been removed, use with caution. Additional testing, documentation, and examples are in progress.</strong></p>
+<div class="page-header">
+<img src="logo.png" class="logo" alt=""><h1 id="demulticoder-r-package">Demulticoder R package<a class="anchor" aria-label="anchor" href="#demulticoder-r-package"></a>
+</h1>
+</div>
+<p><em>This package is actively under development. Until this message has been removed, use with caution. Additional testing, documentation, and examples are in progress.</em></p>
 <div class="section level3">
 <h3 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h3>
 <p>The <strong><em>demulticoder</em></strong> package is a Cutadapt and DADA2 wrapper package for metabarcodng analyses. The main commands and outputs are intuitive and comprehensive, which helps to account for the complex and iterative nature of metabarcoding analyses.</p>
 <p>Here is a brief schematic of the general workflow:</p>
-<p><img src="reference/figures/rps10_fig1_smaller.drawio.png" width="40%" height="40%" style="display: block; margin: auto;"></p>
+<p><img src="reference/figures/Figure1.svg" width="35%" height="35%" style="display: block; margin: auto auto auto 0;"></p>
 </div>
 <div class="section level3">
 <h3 id="key-features">Key features<a class="anchor" aria-label="anchor" href="#key-features"></a>
@@ -118,15 +123,20 @@
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">&lt;-</span><span class="fu"><a href="reference/convert_asv_matrix_to_objs.html">convert_asv_matrix_to_objs</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="check-out-the-website-to-view-the-documentation-and-see-more-examples">Check out the website to view the documentation and see more examples<a class="anchor" aria-label="anchor" href="#check-out-the-website-to-view-the-documentation-and-see-more-examples"></a>
+<h3 id="check-out-the-associated-github-repository-to-view-source-code">Check out the associated Github repository to view source code<a class="anchor" aria-label="anchor" href="#check-out-the-associated-github-repository-to-view-source-code"></a>
 </h3>
-<p>For more information, key functions, inputs, and example vignettes, check out the documentation at: <a href="https://grunwaldlab.github.io/demulticoder" class="external-link uri">https://grunwaldlab.github.io/demulticoder</a></p>
+<p>For more information, to see source code, or submit issue, check out:<br><a href="https://github.com/grunwaldlab/demulticoder/" class="external-link uri">https://github.com/grunwaldlab/demulticoder/</a></p>
 </div>
 <div class="section level3">
 <h3 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h3>
 <p>The package was developed by Martha Sudermann, Zachary Foster, Samantha Dawson, Hung Phan, Jeff Chang, and Niklaus Grünwald</p>
 <p>Stay tuned for associated manuscript.</p>
+</div>
+<div class="section level3">
+<h3 id="acknowledgements">Acknowledgements<a class="anchor" aria-label="anchor" href="#acknowledgements"></a>
+</h3>
+<p>The demulticoder logo was created with BioRender.com</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

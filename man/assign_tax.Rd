@@ -54,6 +54,9 @@ Taxonomic assignments of each unique ASV sequence
 \description{
 Assign taxonomy functions
 }
+\details{
+At this point DADA2 assignTaxonomy is used to assign taxonomy to the inferred ASVs.
+}
 \examples{
 # Assign taxonomies to ASVs on a per barcode basis
 analysis_setup <- prepare_reads(
