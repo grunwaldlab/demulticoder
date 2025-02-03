@@ -9,16 +9,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "./",
-  fig.width = 6,
-  fig.height = 6
+  fig.path = "./"
 )
-
-library(dplyr) 
 ```
 
 ### Before You Start

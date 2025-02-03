@@ -1,5 +1,5 @@
 
-<img src="man/figures/demulticoder_logo_iteration1.png" align="right" height="139" alt="" />
+<img src="man/figures/demulticoder_logo_iteration1.png" align="right" height="90" alt="" />
 
 # *Demulticoder*-An R package to streamline metabarcoding analyses using DADA2
 
