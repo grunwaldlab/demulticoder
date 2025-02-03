@@ -1,10 +1,11 @@
 
-<img src="man/figures/demulticoder_logo_iteration1.png" align="right" height="90" alt="" />
+<img src="man/figures/demulticoder_logo_iteration1.png" align="right" height="100" alt="" />
 
-# *Demulticoder*-An R package to streamline metabarcoding analyses using DADA2
+# **demulticoder**
 
-*This package is actively under development. Additional testing,
-documentation, and examples are in progress.*
+### *An R package to streamline metabarcoding analyses using DADA2*
+
+*Additional examples are in progress.*
 
 ### Introduction
 
@@ -114,6 +115,6 @@ For more information on source code, check out the package repository:
 ### Citation
 
 The package was developed by Martha Sudermann, Zachary Foster, Samantha
-Dawson, Hung Phan, Niklaus Grnwald, Jeff Chang.
+Dawson, Hung Phan, Jeff Chang, and Niklaus Grünwald
 
-Stay tuned for associated manuscript.
+An associated manuscript is currently under review.
