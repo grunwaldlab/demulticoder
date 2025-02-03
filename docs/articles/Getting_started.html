@@ -323,7 +323,7 @@ reorganized in preparation for running Cutadapt to remove primers.</p>
 <span>  tempdir_path <span class="op">=</span> <span class="st">"~/temp_test_dataset"</span>,</span>
 <span>  tempdir_id <span class="op">=</span> <span class="st">"test_dataset"</span>,</span>
 <span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="prepare_for_analysis-1.png" width="576"></p>
+<p><img src="prepare_for_analysis-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="remove-primers-with-cutadapt">Remove primers with Cutadapt<a class="anchor" aria-label="anchor" href="#remove-primers-with-cutadapt"></a>
@@ -342,7 +342,7 @@ it.</p>
 <span><span class="co">#&gt; Running Cutadapt 4.1 for rps10 sequence data</span></span>
 <span><span class="co">#&gt; Read in 1830 paired-sequences, output 1429 (78.1%) filtered paired-sequences.</span></span>
 <span><span class="co">#&gt; Read in 2090 paired-sequences, output 1506 (72.1%) filtered paired-sequences.</span></span></code></pre></div>
-<p><img src="remove_primers_with_cut_trim_function-1.png" width="576"></p>
+<p><img src="remove_primers_with_cut_trim_function-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="asv-inference-step">ASV inference step<a class="anchor" aria-label="anchor" href="#asv-inference-step"></a>
@@ -377,7 +377,7 @@ it.</p>
 <span><span class="co">#&gt; 1315 paired-reads (in 21 unique pairings) successfully merged out of 1416 (in 32 pairings) input.</span></span>
 <span><span class="co">#&gt; Duplicate sequences in merged output.</span></span>
 <span><span class="co">#&gt; 1063 paired-reads (in 25 unique pairings) successfully merged out of 1108 (in 28 pairings) input.</span></span></code></pre></div>
-<p><img src="ASV_inference-1.png" width="576"></p>
+<p><img src="ASV_inference-1.png" width="700"></p>
 <pre><code><span><span class="co">#&gt; Duplicate sequences detected and merged.</span></span>
 <span><span class="co">#&gt; Identified 0 bimeras out of 38 input sequences.</span></span>
 <span><span class="co">#&gt; 824778 total bases in 2935 reads from 2 samples will be used for learning the error rates.</span></span>
@@ -399,14 +399,14 @@ it.</p>
 <span><span class="co">#&gt; Error rate plot for the Reverse read of primer pair rps10</span></span>
 <span><span class="co">#&gt; Warning in scale_y_log10(): <span style="color: #00BB00;">log-10</span> transformation introduced</span></span>
 <span><span class="co">#&gt; infinite values.</span></span></code></pre>
-<p><img src="ASV_inference-2.png" width="576"></p>
+<p><img src="ASV_inference-2.png" width="700"></p>
 <pre><code><span><span class="co">#&gt; Sample 1 - 1429 reads in 1044 unique sequences.</span></span>
 <span><span class="co">#&gt; Sample 2 - 1506 reads in 1284 unique sequences.</span></span>
 <span><span class="co">#&gt; 1420 paired-reads (in 2 unique pairings) successfully merged out of 1422 (in 4 pairings) input.</span></span>
 <span><span class="co">#&gt; 1503 paired-reads (in 5 unique pairings) successfully merged out of 1504 (in 6 pairings) input.</span></span></code></pre>
-<p><img src="ASV_inference-3.png" width="576"></p>
+<p><img src="ASV_inference-3.png" width="700"></p>
 <pre><code><span><span class="co">#&gt; Identified 0 bimeras out of 5 input sequences.</span></span></code></pre>
-<p><img src="ASV_inference-4.png" width="576"></p>
+<p><img src="ASV_inference-4.png" width="700"></p>
 <pre><code><span><span class="co">#&gt; $its</span></span>
 <span><span class="co">#&gt; [1] "~/temp_test_dataset/test_dataset/asvabund_matrixDADA2_its.RData"</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -487,7 +487,7 @@ filtering of low abundance ASVs<a class="anchor" aria-label="anchor" href="#refo
 <span>                       node_color_axis_label <span class="op">=</span> <span class="st">"ASV count"</span>,</span>
 <span>                       node_size_axis_label <span class="op">=</span> <span class="st">"Total Abundance of Taxa"</span>,</span>
 <span>                       layout <span class="op">=</span> <span class="st">"da"</span>, initial_layout <span class="op">=</span> <span class="st">"re"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Heatree_demonstration_its-1.png" width="576"></p>
+<p><img src="Heatree_demonstration_its-1.png" width="700"></p>
 <p>Now we make a heat tree for our rps10-barcoded samples</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">$</span><span class="va">taxmap_rps10</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -500,7 +500,7 @@ filtering of low abundance ASVs<a class="anchor" aria-label="anchor" href="#refo
 <span>                       node_color_axis_label <span class="op">=</span> <span class="st">"ASV count"</span>,</span>
 <span>                       node_size_axis_label <span class="op">=</span> <span class="st">"Total Abundance of Taxa"</span>,</span>
 <span>                       layout <span class="op">=</span> <span class="st">"da"</span>, initial_layout <span class="op">=</span> <span class="st">"re"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Heatree_demonstration_rps10-1.png" width="576"></p>
+<p><img src="Heatree_demonstration_rps10-1.png" width="700"></p>
 <p>We can also do a variety of analyses, if we convert to phyloseq
 object</p>
 <p>Here we demonstrate how to make a stacked bar plot of the relative
@@ -548,7 +548,7 @@ abundance of taxa by sample for the ITS-barcoded samples</p>
 <span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">abund_plot</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Phyloseq_demonstration_ITS-1.png" width="576"></p>
+<p><img src="Phyloseq_demonstration_ITS-1.png" width="700"></p>
 <p>Finally,we demonstrate how to make a stacked bar plot of the relative
 abundance of taxa by sample for the rps10-barcoded samples</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -589,7 +589,7 @@ abundance of taxa by sample for the rps10-barcoded samples</p>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">abund_plot</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Phyloseq_demonstration_rps10-1.png" width="576"></p>
+<p><img src="Phyloseq_demonstration_rps10-1.png" width="700"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
