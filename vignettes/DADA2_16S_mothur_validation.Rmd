@@ -104,10 +104,9 @@ primer_info <- data.frame(
   min_asv_length = 50
 )
 
-# Use knitr::kable() and kableExtra to create the table with scrolling
 kable(primer_info, row.names = FALSE) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  scroll_box(width = "100%", height = "100px")
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", full_width = F, font_size = 6)) %>%
+  scroll_box(width = "90%", height = "80px", extra_css = "thead th { white-space: nowrap; }")
 ```
 
 ```{r setup, include=FALSE}
