@@ -16,15 +16,18 @@ knitr::opts_chunk$set(
   out.width = "50%",
   fig.retina = 1
 )
+
+library(dplyr)
+library(kableExtra)
 ```
 
 ```{r overwrite_existing_or_ont, echo=FALSE}
 overwrite_existing <- FALSE
 ```
 
-# This vignette shows how demulticoder was used to analyze the mothur 16S SOP dataset featured in DADA2 tutorials
+## This vignette shows how demulticoder was used to analyze the mothur 16S SOP dataset featured in DADA2 tutorials
 
-Input metadata and primerinfo_params files are in data folder  
+First, make sure input metadata and primerinfo_params files are in data folder  
 
 The only required columns are the first with sample names, and the second with the primer name/barcode used. The subsequent columns are user-specific columns for downstream steps
 *metadata.csv file*
@@ -75,7 +78,36 @@ primer_info <- data.frame(
 )
 
 # Use knitr::kable() to create the table
-knitr::kable(primer_info, row.names = FALSE)
+# Create the data frame
+primer_info <- data.frame(
+  primer_name = "r16S",
+  forward = "GTGYCAGCMGCCGCGGTAA",
+  reverse = "GGACTACNVGGGTWTCTAAT",
+  already_trimmed = TRUE,
+  minCutadaptlength = 50,
+  multithread = TRUE,
+  verbose = TRUE,
+  maxN = 0,
+  maxEE_forward = 2,
+  maxEE_reverse = 2,
+  truncLen_forward = 240,
+  truncLen_reverse = 160,
+  truncQ = 2,
+  minLen = 20,
+  maxLen = Inf,
+  minQ = 0,
+  trimLeft = 0,
+  trimRight = 0,
+  rm.lowcomplex = 0,
+  minOverlap = 12,
+  maxMismatch = 0,
+  min_asv_length = 50
+)
+
+# Use knitr::kable() and kableExtra to create the table with scrolling
+kable(primer_info, row.names = FALSE) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  scroll_box(width = "100%", height = "100px")
 ```
 
 ```{r setup, include=FALSE}
@@ -102,10 +134,13 @@ cut_trim(
   cutadapt_path="/opt/homebrew/bin/cutadapt")
 ```
 
+We can now visualize the outputs from the primer removal and trimming steps. A CSV files is output showing which samples still have primer sequences and the barplot below summarizes the outputs. 
+
+There are circumstances where a few primer sequences may still remain. If so, any ASVs with any residual primer sequences will be filtered at the end.  
+
 ```{r visualize_outputs_cut_trim, echo=FALSE, fig.height=6, fig.width=6}
 if (!overwrite_existing) {
-  cat("Primer Removal-a few primer sequences may still remain, and if so, any ASVs with primer sequences will be filtered at the end\n")
-  knitr::include_graphics("./posttrim_primer_plot.png")
+  knitr::include_graphics("./posttrim_primer_plot_16S.png")
 }
 ```
 
@@ -116,20 +151,29 @@ make_asv_abund_matrix(
   outputs)
 ```
 
-```{r visualize_outputs_asv_inf, fig.height=10, fig.width=10, echo=FALSE}
-if (!overwrite_existing) {
-  cat("Plots showing info on how well forward and reverse reads were merged \n")
-  knitr::include_graphics("~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/read_merging_info_r16S.pdf")
-}
+We can now visualize the outputs from the ASV inference step.  
 
+The first plot shows the how reads were merged in terms of mismatches and indels. 
+
+The plot to the right shows the overlap lengths across the inferred ASVs.  
+
+```{r visualize_outputs_asv_inf1, fig.height=10, fig.width=10, echo=FALSE}
 if (!overwrite_existing) {
-  cat("Plot showing ASV length distribution \n")
-  knitr::include_graphics("~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/asv_seqlength_plot_r16S.pdf")
+  knitr::include_graphics("./read_merging_info_r16S.png")
+}
+```
+
+We can also look at the distribution of ASV lengths  
+
+```{r visualize_outputs_asv_inf2, fig.height=10, fig.width=10, echo=FALSE}
+if (!overwrite_existing) {
+  knitr::include_graphics("./asv_seqlength_plot_r16S.png")
 }
 ```
 
 ### Step 4  
-Assign taxonomy step
+Assign taxonomy step  
+
 ```{r assign_taxonomy_step, fig.height=6, fig.width=6, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 assign_tax(
   outputs,
@@ -138,23 +182,26 @@ assign_tax(
   retrieve_files=FALSE)
 ```
 
+As a check we can take a look at read counts across the workflow. If there are sudden drops, we should reconsider our adjusting certain DADA2 parameters and re-running the analysis.  
+
 ```{r view_read_counts, fig.height=10, fig.width=10, echo=FALSE}
 if (!overwrite_existing) {
   cat("Tables showing read counts throughout the demulticoder DADA2 workflow\n")
- track_path <- "~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/track_reads_r16S.csv"
+ track_path <- "./track_reads_r16S.csv"
    read_track_file<-read.csv(track_path)
    print(read_track_file)
 }
 ```
 
 ### Step 5  
-Convert asv matrix to taxmap and phyloseq objects with one function
+Convert asv matrix to taxmap and phyloseq objects with one function  
+
 ```{r convert_matrix_to_other_formats, fig.height=6, fig.width=6}
 objs<-convert_asv_matrix_to_objs(outputs)
 ```
 
 ### Step 6  
-Evaluate accuracy using mock community, as shown in dada2 tutorial
+Evaluate accuracy using mock community, as shown in dada2 tutorial  
 ```{r examine_accuracy, fig.height=6, fig.width=6}
 track_reads_demulticoder<-read.csv("~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/track_reads_r16S.csv", row.names = 1)
 summary(track_reads_demulticoder)
