@@ -1,8 +1,7 @@
 ---
 title: "16S Mothur SOP Validation"
 output: 
-  rmarkdown::html_vignette:
-    fig_path: "vignettes"
+  rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{16S Mothur SOP Validation}
   %\VignetteEngine{knitr::rmarkdown}
@@ -48,7 +47,7 @@ I then included the necessary second file with the name of the barcode selected,
 
 Note, primers were already trimmed from reads, but just to be certain, I included the Earth Microbiome primers described [here](https://earthmicrobiome.org/protocols-and-standards/16s/), and a few primer sequences were still found within a small number of reads. 
 *primerinfo_params.csv*
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.height=6, fig.width=6}
 # Create the data frame
 primer_info <- data.frame(
   primer_name = "r16S",
@@ -76,7 +75,7 @@ primer_info <- data.frame(
 )
 
 # Use knitr::kable() to create the table
-knitr::kable(primer_info, row.names = TRUE)
+knitr::kable(primer_info, row.names = FALSE)
 ```
 
 ```{r setup, include=FALSE}
