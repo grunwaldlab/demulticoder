@@ -106,7 +106,8 @@ cut_trim(
 ```{r visualize_outputs_cut_trim, echo=FALSE}
 if (!overwrite_existing) {
   cat("Primer Removal-a few primer sequences may still remain, and if so, any ASVs with primer sequences will be filtered at the end\n")
-  knitr::include_graphics("man/figures/posttrim_primer_plot_16S.pdf")
+  file_path <- system.file("man/figures", "posttrim_primer_plot_16S.pdf", package = "demulticoder")
+  knitr::include_graphics(file_path)
 }
 ```
 
