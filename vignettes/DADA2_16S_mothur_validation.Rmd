@@ -14,8 +14,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "./",
-  out.width = "60%",
-  out.height = "550px"
+  out.width = "50%",
+  fig.retina = 1
 )
 ```
 
@@ -103,11 +103,10 @@ cut_trim(
   cutadapt_path="/opt/homebrew/bin/cutadapt")
 ```
 
-```{r visualize_outputs_cut_trim, echo=FALSE}
+```{r visualize_outputs_cut_trim, echo=FALSE, fig.height=6, fig.width=6}
 if (!overwrite_existing) {
   cat("Primer Removal-a few primer sequences may still remain, and if so, any ASVs with primer sequences will be filtered at the end\n")
-  file_path <- system.file("extdata", "figures", "posttrim_primer_plot_16S.pdf", package = "demulticoder")
-  knitr::include_graphics(file_path)
+  knitr::include_graphics("./posttrim_primer_plot.png")
 }
 ```
 

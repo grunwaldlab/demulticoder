@@ -305,7 +305,7 @@ reads. <em>primerinfo_params.csv</em></p>
 <span>  output_directory <span class="op">=</span> <span class="st">"~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs"</span>,</span>
 <span>  tempdir_path <span class="op">=</span> <span class="st">"~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp"</span>,</span>
 <span>  tempdir_id <span class="op">=</span> <span class="st">"temp_files"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="prepare_reads-1.png" width="60%" height="550px"></p>
+<p><img src="prepare_reads-1.png" width="50%"></p>
 </div>
 <div class="section level4">
 <h4 id="step-2">Step 2<a class="anchor" aria-label="anchor" href="#step-2"></a>
@@ -317,7 +317,7 @@ filterAndTrim function</p>
 <span>  <span class="va">outputs</span>,</span>
 <span>  cutadapt_path<span class="op">=</span><span class="st">"/opt/homebrew/bin/cutadapt"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt; Primer Removal-a few primer sequences may still remain, and if so, any ASVs with primer sequences will be filtered at the end</span></span></code></pre>
-<embed src="/Users/masudermann/demulticoder/inst/extdata/Figures/posttrim_primer_plot_16S.pdf" width="60%" height="550px" type="application/pdf"></embed>
+<p><img src="posttrim_primer_plot.png" width="50%"></p>
 </div>
 <div class="section level4">
 <h4 id="step-3">Step 3<a class="anchor" aria-label="anchor" href="#step-3"></a>
@@ -327,8 +327,8 @@ filterAndTrim function</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make_asv_abund_matrix.html">make_asv_abund_matrix</a></span><span class="op">(</span></span>
 <span>  <span class="va">outputs</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt; Plots showing info on how well forward and reverse reads were merged</span></span></code></pre>
-<embed src="/Users/masudermann/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/read_merging_info_r16S.pdf" width="60%" height="550px" type="application/pdf"></embed><pre><code><span><span class="co">#&gt; Plot showing ASV length distribution</span></span></code></pre>
-<embed src="/Users/masudermann/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/asv_seqlength_plot_r16S.pdf" width="60%" height="550px" type="application/pdf"></embed>
+<embed src="/Users/masudermann/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/read_merging_info_r16S.pdf" width="50%" type="application/pdf"></embed><pre><code><span><span class="co">#&gt; Plot showing ASV length distribution</span></span></code></pre>
+<embed src="/Users/masudermann/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/asv_seqlength_plot_r16S.pdf" width="50%" type="application/pdf"></embed>
 </div>
 <div class="section level4">
 <h4 id="step-4">Step 4<a class="anchor" aria-label="anchor" href="#step-4"></a>
@@ -433,7 +433,7 @@ dada2 example and to examine alpha diversity results</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/prune_samples-methods.html" class="external-link">prune_samples</a></span><span class="op">(</span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html" class="external-link">sample_names</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span><span class="op">)</span> <span class="op">!=</span> <span class="st">"Mock_r16S"</span>, <span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span><span class="op">)</span> <span class="co"># Remove mock sample</span></span>
 <span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/plot_richness.html" class="external-link">plot_richness</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span>, x<span class="op">=</span><span class="st">"Day"</span>, measures<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Shannon"</span>, <span class="st">"Simpson"</span><span class="op">)</span>, color<span class="op">=</span><span class="st">"When"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="phyloseq_alpha_diversity_analysis-1.png" width="60%" height="550px"></p>
+<p><img src="phyloseq_alpha_diversity_analysis-1.png" width="50%"></p>
 </div>
 <div class="section level4">
 <h4 id="step-8">Step 8<a class="anchor" aria-label="anchor" href="#step-8"></a>
@@ -445,7 +445,7 @@ tutorial</p>
 <span><span class="va">ps.prop</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span>, <span class="kw">function</span><span class="op">(</span><span class="va">otu</span><span class="op">)</span> <span class="va">otu</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">otu</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">ord.nmds.bray</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/ordinate.html" class="external-link">ordinate</a></span><span class="op">(</span><span class="va">ps.prop</span>, method<span class="op">=</span><span class="st">"NMDS"</span>, distance<span class="op">=</span><span class="st">"bray"</span><span class="op">)</span></span>
 <span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/plot_ordination.html" class="external-link">plot_ordination</a></span><span class="op">(</span><span class="va">ps.prop</span>, <span class="va">ord.nmds.bray</span>, color<span class="op">=</span><span class="st">"When"</span>, title<span class="op">=</span><span class="st">"Bray NMDS"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="phyloseq_beta_diversity_analysis-1.png" width="60%" height="550px"></p>
+<p><img src="phyloseq_beta_diversity_analysis-1.png" width="50%"></p>
 </div>
 <div class="section level4">
 <h4 id="step-9">Step 9<a class="anchor" aria-label="anchor" href="#step-9"></a>
@@ -457,7 +457,7 @@ time points, as shown in the dada2 tutorial</p>
 <span><span class="va">ps.top20</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span>, <span class="kw">function</span><span class="op">(</span><span class="va">OTU</span><span class="op">)</span> <span class="va">OTU</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">OTU</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">ps.top20</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/prune_taxa-methods.html" class="external-link">prune_taxa</a></span><span class="op">(</span><span class="va">top20</span>, <span class="va">ps.top20</span><span class="op">)</span></span>
 <span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/plot_bar.html" class="external-link">plot_bar</a></span><span class="op">(</span><span class="va">ps.top20</span>, x<span class="op">=</span><span class="st">"Day"</span>, fill<span class="op">=</span><span class="st">"Family"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">When</span>, scales<span class="op">=</span><span class="st">"free_x"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="phyloseq_community_analysis-1.png" width="60%" height="550px"></p>
+<p><img src="phyloseq_community_analysis-1.png" width="50%"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
