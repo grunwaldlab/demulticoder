@@ -2,7 +2,7 @@
 title: "16S Mothur SOP Validation"
 output: 
   rmarkdown::html_vignette:
-    fig_path: "man/figures"
+    fig_path: "vignettes"
 vignette: >
   %\VignetteIndexEntry{16S Mothur SOP Validation}
   %\VignetteEngine{knitr::rmarkdown}
