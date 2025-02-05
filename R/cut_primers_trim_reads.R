@@ -438,4 +438,4 @@ cut_trim <- function(analysis_setup,
   quality_plots <- plot_qc(data_tables$cutadapt_data, output_directory_path)
   post_primer_hit_data <- get_post_trim_hits(data_tables$primer_data, data_tables$cutadapt_data, output_directory_path)
   quality_plots2 <- plot_post_trim_qc(data_tables$cutadapt_data, output_directory_path)
-}
+  }

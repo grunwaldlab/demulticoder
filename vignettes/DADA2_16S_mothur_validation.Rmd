@@ -13,11 +13,17 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "./"
+  fig.path = "./",
+  out.width = "60%",
+  out.height = "550px"
 )
 ```
 
-### Demonstration of how to use demulticoder on a dataset that is actually three separate datasets (RPS10, ITS, and 16S) at once
+```{r overwrite_existing_or_ont, echo=FALSE}
+overwrite_existing <- FALSE
+```
+
+# This vignette shows how demulticoder was used to analyze the mothur 16S SOP dataset featured in DADA2 tutorials
 
 Input metadata and primerinfo_params files are in data folder  
 
@@ -79,48 +85,77 @@ devtools::load_all("~/demulticoder")
 library("demulticoder")
 ```
 
-### Step 1-Remove N's and create directory structure for downstream steps
-```{r prepare_reads, fig.height=6, fig.width=6}
-options(mc.cores = 1) 
+### Step 1  
+Remove N's and create directory structure for downstream steps
+```{r prepare_reads, fig.height=6, fig.width=6, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 outputs<-prepare_reads(
   data_directory = "~/benchmark_demulticoder/mothur_16S_sop/data", 
   output_directory = "~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs",
   tempdir_path = "~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp",
-  tempdir_id = "temp_files",
-  overwrite_existing = FALSE)
+  tempdir_id = "temp_files")
 ```
 
-### Step 2-Run Cutadapt to remove primers and then trim reads with DADA2 filterAndTrim function 
-```{r Remove_primers_and_trim_reads, fig.height=6, fig.width=6}
+### Step 2  
+Run Cutadapt to remove primers and then trim reads with DADA2 filterAndTrim function 
+```{r Remove_primers_and_trim_reads, fig.height=6, fig.width=6, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 cut_trim(
   outputs,
-  cutadapt_path="/opt/homebrew/bin/cutadapt",
-  overwrite_existing = FALSE)
+  cutadapt_path="/opt/homebrew/bin/cutadapt")
 ```
 
-### Step 3-Core ASV inference step
-```{r ASV_inference, fig.height=6, fig.width=6}
+```{r visualize_outputs_cut_trim, echo=FALSE}
+if (!overwrite_existing) {
+  cat("Primer Removal-a few primer sequences may still remain, and if so, any ASVs with primer sequences will be filtered at the end\n")
+  knitr::include_graphics("~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/posttrim_primer_plot.pdf")
+}
+```
+
+### Step 3  
+Core ASV inference step
+```{r ASV_inference, fig.height=6, fig.width=6, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 make_asv_abund_matrix(
-  outputs,
-  overwrite_existing = FALSE)
+  outputs)
 ```
 
-### Step 4-Assign taxonomy step
-```{r assign_taxonomy_step, fig.height=6, fig.width=6}
+```{r visualize_outputs_asv_inf, fig.height=10, fig.width=10, echo=FALSE}
+if (!overwrite_existing) {
+  cat("Plots showing info on how well forward and reverse reads were merged \n")
+  knitr::include_graphics("~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/read_merging_info_r16S.pdf")
+}
+
+if (!overwrite_existing) {
+  cat("Plot showing ASV length distribution \n")
+  knitr::include_graphics("~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/asv_seqlength_plot_r16S.pdf")
+}
+```
+
+### Step 4  
+Assign taxonomy step
+```{r assign_taxonomy_step, fig.height=6, fig.width=6, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 assign_tax(
   outputs,
   asv_abund_matrix,
   db_16S="silva_nr99_v138.2_toSpecies_trainset.fa.gz",
-  retrieve_files=FALSE,
-  overwrite_existing=FALSE)
+  retrieve_files=FALSE)
 ```
 
-### Step 5-convert asv matrix to taxmap and phyloseq objects with one function
+```{r view_read_counts, fig.height=10, fig.width=10, echo=FALSE}
+if (!overwrite_existing) {
+  cat("Tables showing read counts throughout the demulticoder DADA2 workflow\n")
+ track_path <- "~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/track_reads_r16S.csv"
+   read_track_file<-read.csv(track_path)
+   print(read_track_file)
+}
+```
+
+### Step 5  
+Convert asv matrix to taxmap and phyloseq objects with one function
 ```{r convert_matrix_to_other_formats, fig.height=6, fig.width=6}
 objs<-convert_asv_matrix_to_objs(outputs)
 ```
 
-### Step 6-evaluate accuracy using mock community, as shown in dada2 tutorial
+### Step 6  
+Evaluate accuracy using mock community, as shown in dada2 tutorial
 ```{r examine_accuracy, fig.height=6, fig.width=6}
 track_reads_demulticoder<-read.csv("~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/track_reads_r16S.csv", row.names = 1)
 summary(track_reads_demulticoder)
@@ -140,22 +175,25 @@ cat("Of those,", sum(match.ref), "were exact matches to the expected reference s
 
 When looking at mock community sample, we were able to extract 20 bacterial sequences with 0% mismatch, and this matched what was described previously. 
 
-### Step 7-Follow-up work using phyloseq to do side-by-side comparison with dada2 example and to examine alpha diversity results
-```{r phyloseq_alpha_diversity_analysis, fig.height=6, fig.width=6}
+### Step 7  
+Follow-up work using phyloseq to do side-by-side comparison with dada2 example and to examine alpha diversity results
+```{r phyloseq_alpha_diversity_analysis, fig.height=6, fig.width=6, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 objs$phyloseq_r16S <- phyloseq::prune_samples(phyloseq::sample_names(objs$phyloseq_r16S) != "Mock_r16S", objs$phyloseq_r16S) # Remove mock sample
 phyloseq::plot_richness(objs$phyloseq_r16S, x="Day", measures=c("Shannon", "Simpson"), color="When")
 ```
 
-### Step 8-Examine ordination plots as additional point of comparison with DADA2 tutorial
-```{r phyloseq_beta_diversity_analysis, fig.height=6, fig.width=6}
+### Step 8  
+Examine ordination plots as additional point of comparison with DADA2 tutorial
+```{r phyloseq_beta_diversity_analysis, fig.height=8, fig.width=8, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 # Transform data to proportions as appropriate for Bray-Curtis distances
 ps.prop <- phyloseq::transform_sample_counts(objs$phyloseq_r16S, function(otu) otu/sum(otu))
 ord.nmds.bray <- phyloseq::ordinate(ps.prop, method="NMDS", distance="bray")
 phyloseq::plot_ordination(ps.prop, ord.nmds.bray, color="When", title="Bray NMDS")
 ```
 
-### Step 9-Let's look at what the top 20 taxa are in the early vs. late samples  time points, as shown in the dada2 tutorial
-```{r phyloseq_community_analysis, fig.height=5, fig.width=8}
+### Step 9  
+Let's look at what the top 20 taxa are in the early vs. late samples  time points, as shown in the dada2 tutorial
+```{r phyloseq_community_analysis, fig.height=8, fig.width=8, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 top20 <- names(sort(phyloseq::taxa_sums(objs$phyloseq_r16S), decreasing=TRUE))[1:20]
 ps.top20 <- phyloseq::transform_sample_counts(objs$phyloseq_r16S, function(OTU) OTU/sum(OTU))
 ps.top20 <- phyloseq::prune_taxa(top20, ps.top20)
