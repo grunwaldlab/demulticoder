@@ -21,18 +21,6 @@ process_single_barcode(
 
 \item{asv_abund_matrix}{An abundance matrix containing amplified sequence
 variants}
-
-\item{tryRC}{(Optional). Default FALSE. 
-If TRUE, the reverse-complement of each sequences will be used for classification if it is a better match to the reference
-sequences than the forward sequence.}
-
-\item{verbose}{(Optional). Default FALSE.
-If TRUE, print status to standard output.}
-
-\item{multithread}{(Optional). Default is FALSE.
-If TRUE, multithreading is enabled and the number of available threads is automatically determined.   
-If an integer is provided, the number of threads to use is set by passing the argument on to
-\code{\link{setThreadOptions}}.}
 }
 \description{
 Process the information from an ASV abundance matrix to run DADA2 for single
