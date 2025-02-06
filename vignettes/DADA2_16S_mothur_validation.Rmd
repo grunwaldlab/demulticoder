@@ -16,13 +16,11 @@ knitr::opts_chunk$set(
   out.width = "70%",
   fig.retina = 1
 )
-
-library(dplyr)
-library(kableExtra)
 ```
 
-
-```{r overwrite_existing_or_ont, echo=FALSE}
+```{r overwrite_existing_or_ont, include=FALSE, echo=FALSE}
+library(dplyr)
+library(kableExtra)
 overwrite_existing <- FALSE
 ```
 
@@ -87,8 +85,8 @@ kable(primer_info, row.names = FALSE) %>%
 For now, the package will be loaded by retrieving it from GitHub. 
 We are submitting package to CRAN. 
 ```{r setup, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
-#devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
-devtools::load_all("~/demulticoder")
+devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
+#devtools::load_all("~/demulticoder")
 library("demulticoder")
 library(dplyr)
 library(kableExtra)
@@ -109,7 +107,7 @@ Run Cutadapt to remove primers and then trim reads with DADA2 filterAndTrim func
 ```{r Remove_primers_and_trim_reads, fig.height=6, fig.width=6, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 cut_trim(
   outputs,
-  cutadapt_path="/opt/homebrew/bin/cutadapt")
+  cutadapt_path="/usr/bin/cutadapt")
 ```
 
 We can now visualize the outputs from the primer removal and trimming steps. A CSV files is output showing which samples still have primer sequences and the barplot below summarizes the outputs. 

@@ -127,8 +127,8 @@ For now, the package will be loaded by retrieving it from GitHub.
 We are submitting package to CRAN. 
 
 ```{r installation, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
-#devtools::install_github("grunwaldlab/demulticoder")
-devtools::load_all("~/demulticoder")
+devtools::install_github("grunwaldlab/demulticoder")
+#devtools::load_all("~/demulticoder")
 library("demulticoder")
 library("metacoder")
 library("dplyr")
@@ -151,7 +151,7 @@ Before running Cutadapt, please ensure that you have installed it.
 ```{r remove_primers_with_cut_trim_function, message=TRUE}
 demulticoder::cut_trim(
   analysis_setup,
-  cutadapt_path = "/opt/homebrew/bin/cutadapt",
+  cutadapt_path = "/usr/bin/cutadapt",
   #cutadapt_path = "/usr/bin/cutadapt",
   overwrite_existing = TRUE)
 ```
@@ -175,7 +175,7 @@ assign_tax(
 ```
 
 ### Reformat ASV matrix as taxmap and phyloseq objects after optional filtering of low abundance ASVs
-```{r Reformat_final_matrix, message=TRUE}
+```{r Reformat_final_matrix, message=TRUE, warning=FALSE}
 objs<-convert_asv_matrix_to_objs(analysis_setup, minimum_bootstrap = 0, save_outputs = TRUE)
 ```
 
@@ -185,7 +185,7 @@ objs<-convert_asv_matrix_to_objs(analysis_setup, minimum_bootstrap = 0, save_out
 Here we make heattrees using taxmap object.  
 
 First we make a heat tree for our ITS-barcoded samples 
-```{r Heatree_demonstration_its, message=FALSE}
+```{r Heatree_demonstration_its, message=FALSE, warning=FALSE}
 objs$taxmap_its %>%
   filter_taxa(! grepl(x = taxon_names, "_sp$"), reassign_obs = FALSE) %>%
   filter_taxa(! grepl(x = taxon_names, "incertae_sedis", ignore.case = TRUE), reassign_obs = FALSE) %>%
@@ -199,7 +199,7 @@ objs$taxmap_its %>%
 ```
 
 Now we make a heat tree for our rps10-barcoded samples
-```{r Heatree_demonstration_rps10, message=FALSE}
+```{r Heatree_demonstration_rps10, message=FALSE, warning=FALSE}
 objs$taxmap_rps10 %>%
   filter_taxa(! grepl(x = taxon_names, "_sp$"), reassign_obs = FALSE) %>%
   filter_taxa(! grepl(x = taxon_names, "incertae_sedis", ignore.case = TRUE), reassign_obs = FALSE) %>%
@@ -215,7 +215,7 @@ objs$taxmap_rps10 %>%
 We can also do a variety of analyses, if we convert to phyloseq object
 
 Here we demonstrate how to make a stacked bar plot of the relative abundance of taxa by sample for the ITS-barcoded samples
-```{r Phyloseq_demonstration_ITS, message=FALSE}
+```{r Phyloseq_demonstration_ITS, message=FALSE, warning=FALSE}
 data <- objs$phyloseq_its %>%
   phyloseq::transform_sample_counts(function(x) {x/sum(x)} ) %>% 
   phyloseq::psmelt() %>%                                        
@@ -256,7 +256,7 @@ print(abund_plot)
 ```
 
 Finally,we demonstrate how to make a stacked bar plot of the relative abundance of taxa by sample for the rps10-barcoded samples
-```{r Phyloseq_demonstration_rps10, message=FALSE}
+```{r Phyloseq_demonstration_rps10, message=FALSE, warning=FALSE}
 data <- objs$phyloseq_rps10 %>%
   phyloseq::transform_sample_counts(function(x) {x/sum(x)} ) %>% 
   phyloseq::psmelt() %>%                                        

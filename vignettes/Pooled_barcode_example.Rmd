@@ -25,19 +25,10 @@ knitr::opts_chunk$set(
 
 This is example shows how an analysis is done with the full rhododendron dataset showcased in the [Getting Started](https://grunwaldlab.github.io/demulticoder/articles/Getting_started.html) vignette. Reads and databases are not sub-sampled as they were for that test dataset.  
 
-### Loading the Package  
 
-For now, the package will be loaded by retrieving it from GitHub. 
-We are submitting package to CRAN
-```{r setup, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
-#devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
-devtools::load_all("~/demulticoder")
-library("demulticoder")
+```{r overwrite_existing_or_ont, include=FALSE, echo=FALSE}
 library(dplyr)
 library(kableExtra)
-```
-
-```{r overwrite_existing_or_ont, echo=FALSE}
 overwrite_existing <- FALSE
 ```
 
@@ -67,7 +58,7 @@ knitr::kable(data, row.names = FALSE) %>%
 
 *For the purposes of this example, I will just show the first few rows of metadata.csv* file
 
-I then included the necessary second file with the name of the barcode selected, primer sequences, and the optional DADA2 parameter options. I referenced the DADA2 [tutorial](https://benjjneb.github.io/dada2/tutorial.html) to select the proper parameter options.  
+I then included the necessary second file with the name of the barcode selected, primer sequences, and the optional DADA2 parameter options. I referenced the DADA2 [tutorial](https://benjjneb.github.io/dada2/tutorial.html) to select the proper parameter options.
 
 *primerinfo_params.csv*
 ```{r primer_info, echo=FALSE}
@@ -100,4 +91,101 @@ primer_info <- data.frame(
 kable(primer_info, row.names = FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = F, font_size = 12) %>%
   scroll_box(width = "100%", height = "100px", extra_css = "thead th { white-space: nowrap; }")
+```
+
+### Loading the Package  
+
+For now, the package will be loaded by retrieving it from GitHub. 
+We are submitting package to CRAN
+```{r setup, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
+devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
+#devtools::load_all("~/demulticoder")
+library("demulticoder")
+```
+
+
+### Step 1  
+Remove N's and create directory structure for downstream steps
+```{r prepare_reads, fig.height=6, fig.width=6, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
+outputs <- prepare_reads(
+  data_directory = "~/benchmark_demulticoder/demulticoder/data", 
+  output_directory = "~/benchmark_demulticoder/demulticoder/vignette_outputs",
+  tempdir_path = "~/benchmark_demulticoder/demulticoder/vignette_temp",
+  tempdir_id = "temp_files")
+```
+
+### Step 2  
+Run Cutadapt to remove primers and then trim reads with DADA2 filterAndTrim function 
+```{r Remove_primers_and_trim_reads, fig.height=6, fig.width=6, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
+cut_trim(
+  outputs,
+  cutadapt_path="/usr/bin/cutadapt")
+```
+
+We can now visualize the outputs from the primer removal and trimming steps. A CSV files is output showing which samples still have primer sequences and the barplot below summarizes the outputs. 
+
+There are circumstances where a few primer sequences may still remain. If so, any ASVs with any residual primer sequences will be filtered at the end.  
+
+```{r visualize_outputs_cut_trim, echo=FALSE, fig.height=6, fig.width=6}
+if (!overwrite_existing) {
+  knitr::include_graphics("./posttrim_primer_plot_pooled.png")
+}
+```
+
+### Step 3  
+Core ASV inference step
+```{r ASV_inference, fig.height=6, fig.width=6, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
+make_asv_abund_matrix(
+  outputs)
+```
+
+We can now visualize the outputs from the ASV inference step.  
+
+The first plot shows the how reads were merged in terms of mismatches and indels. 
+
+The plot to the right shows the overlap lengths across the inferred ASVs.  
+
+```{r visualize_outputs_asv_inf1, fig.height=10, fig.width=10, echo=FALSE}
+if (!overwrite_existing) {
+  knitr::include_graphics("./read_merging_info_r16S.png")
+}
+```
+
+We can also look at the distribution of ASV lengths  
+
+```{r visualize_outputs_asv_inf2, fig.height=10, fig.width=10, echo=FALSE}
+if (!overwrite_existing) {
+  knitr::include_graphics("./asv_seqlength_plot_r16S.png")
+}
+```
+
+### Step 4  
+Assign taxonomy step  
+```{r assign_taxonomy_step, fig.height=6, fig.width=6, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
+assign_tax(
+  outputs,
+  asv_abund_matrix,
+  db_its = "sh_general_release_dynamic_18.07.2023.fasta",
+  db_rps10 = "oomycetedb_release2.fasta",
+  retrieve_files=TRUE,
+  tryRC = TRUE,
+  overwrite_existing=TRUE)
+```
+
+As a check we can take a look at read counts across the workflow. If there are sudden drops, we should reconsider our adjusting certain DADA2 parameters and re-running the analysis.  
+
+```{r view_read_counts, fig.height=10, fig.width=10, echo=FALSE}
+if (!overwrite_existing) {
+  cat("Tables showing read counts throughout the demulticoder DADA2 workflow\n")
+ track_path <- "./track_reads_r16S.csv"
+   read_track_file<-read.csv(track_path)
+   print(read_track_file)
+}
+```
+
+### Step 5  
+Convert asv matrix to taxmap and phyloseq objects with one function  
+
+```{r convert_matrix_to_other_formats, fig.height=6, fig.width=6}
+objs<-convert_asv_matrix_to_objs(outputs)
 ```
