@@ -1,0 +1,105 @@
+---
+title: "Pooled barcode example"
+output: 
+  rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Pooled barcode example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "./",
+  out.width = "70%",
+  fig.retina = 1
+)
+
+
+```
+
+
+## This vignette shows how demulticoder can be used when you have pooled rps10 and ITS1 amplicons within each sample.  
+
+This is example shows how an analysis is done with the full rhododendron dataset showcased in the [Getting Started](https://grunwaldlab.github.io/demulticoder/articles/Getting_started.html) vignette. Reads and databases are not sub-sampled as they were for that test dataset.  
+
+### Loading the Package  
+
+For now, the package will be loaded by retrieving it from GitHub. 
+We are submitting package to CRAN
+```{r setup, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
+#devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
+devtools::load_all("~/demulticoder")
+library("demulticoder")
+library(dplyr)
+library(kableExtra)
+```
+
+```{r overwrite_existing_or_ont, echo=FALSE}
+overwrite_existing <- FALSE
+```
+
+### Prepare input files
+First, make sure input metadata and primerinfo_params files are in data folder  
+
+The only required columns are the first with sample names, and the second with the primer name/barcode used. The subsequent columns are user-specific columns for downstream steps  
+
+***metadata.csv* file**
+```{r, echo=FALSE}
+data <- data.frame(
+  sample_name = c("S1", "S1", "S10", "S10", "S100", "S100"),
+  primer_name = c("rps10", "its", "rps10", "its", "rps10", "its"),
+  plate = c(1, 1, 1, 1, 2, 2),
+  well = c("A01", "A01", "B02", "B02", "B02", "B02"), 
+  organism = c("Cry", "Cry", "Cry", "Cry", "Cin", "Cin"),
+  flooded = c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
+  path_conc = c(100, 100, 1, 1, 1, 1), 
+  experiment = c(1, 1, 1, 1, 2, 2),
+  sample_type = c("Sample", "Sample", "Sample", "Sample", "Sample", "Sample"), 
+  is_ambiguous = c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)
+)
+
+knitr::kable(data, row.names = FALSE) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", full_width = F, font_size = 6))
+```
+
+*For the purposes of this example, I will just show the first few rows of metadata.csv* file
+
+I then included the necessary second file with the name of the barcode selected, primer sequences, and the optional DADA2 parameter options. I referenced the DADA2 [tutorial](https://benjjneb.github.io/dada2/tutorial.html) to select the proper parameter options.  
+
+*primerinfo_params.csv*
+```{r primer_info, echo=FALSE}
+primer_info <- data.frame(
+  primer_name = c("rps10", "its"),
+  forward = c("CTTGGTCATTTAGAGGAAGTAA", "GTTGGTTAGAGYARAAGACT"), 
+  reverse = c("GCTGCGTTCTTCATCGATGC", "ATRYYTAGAAAGAYTYGAACT"),
+  already_trimmed = c(FALSE, FALSE), 
+  minCutadaptlength = c(0, 0),
+  multithread = c(TRUE, TRUE), 
+  verbose = c(TRUE, TRUE), 
+  maxN = c(0, 0), 
+  maxEE_forward = c(5, 5),
+  maxEE_reverse = c(5, 5),
+  truncLen_forward = c(0, 0),
+  truncLen_reverse = c(0, 0),
+  truncQ = c(5, 5), 
+  minLen = c(150, 50),
+  maxLen = c(Inf, Inf), 
+  minQ = c(0, 0), 
+  trimLeft = c(0, 0),
+  trimRight = c(0, 0),
+  rm.lowcomplex = c(0, 0), 
+  minOverlap = c(15, 15), 
+  maxMismatch = c(2, 2),
+  min_asv_length = c(50, 50)
+)
+
+# Use knitr::kable() to create the table with styling and scrolling
+kable(primer_info, row.names = FALSE) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = F, font_size = 12) %>%
+  scroll_box(width = "100%", height = "100px", extra_css = "thead th { white-space: nowrap; }")
+```
+
+

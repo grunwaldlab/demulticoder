@@ -121,13 +121,12 @@ Users need to upload their own databases to their input data folder. If computer
 
 Please also ensure that you have enough storage to save intermediate files in a temporary directory (default) or user-specified directory before proceeding.
 
-### Loading the Package
+### Loading the Package  
 
 For now, the package will be loaded by retrieving it from GitHub. 
+We are submitting package to CRAN. 
 
-Eventually, the package will be uploaded to CRAN or Bioconductor.
-
-```{r installation, warning=FALSE, message=FALSE}
+```{r installation, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 #devtools::install_github("grunwaldlab/demulticoder")
 devtools::load_all("~/demulticoder")
 library("demulticoder")

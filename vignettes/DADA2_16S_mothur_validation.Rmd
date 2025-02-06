@@ -13,13 +13,14 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "./",
-  out.width = "50%",
+  out.width = "70%",
   fig.retina = 1
 )
 
 library(dplyr)
 library(kableExtra)
 ```
+
 
 ```{r overwrite_existing_or_ont, echo=FALSE}
 overwrite_existing <- FALSE
@@ -29,10 +30,9 @@ overwrite_existing <- FALSE
 
 First, make sure input metadata and primerinfo_params files are in data folder  
 
-The only required columns are the first with sample names, and the second with the primer name/barcode used. The subsequent columns are user-specific columns for downstream steps
+The only required columns are the first with sample names, and the second with the primer name/barcode used. The subsequent columns are user-specific columns for downstream steps    
 *metadata.csv file*
 ```{r, echo=FALSE}
-# First, create your data frame
 data <- data.frame(
   sample_name = c("F3D0", "F3D1", "F3D141", "F3D142", "F3D143", "F3D144", "F3D145", 
                   "F3D146", "F3D147", "F3D148", "F3D149", "F3D150", "F3D2", "F3D3", 
@@ -42,8 +42,8 @@ data <- data.frame(
   When = c(rep("Early", 2), rep("Late", 10), rep("Early", 7), NA)
 )
 
-# Now use knitr::kable() to create the table
-knitr::kable(data, row.names = FALSE)
+knitr::kable(data, row.names = FALSE) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", full_width = F, font_size = 6))
 ```
 
 I then included the necessary second file with the name of the barcode selected, primer sequences, and the optional DADA2 parameter options. I referenced the DADA2 [tutorial](https://benjjneb.github.io/dada2/tutorial.html) to select the proper parameter options.  
@@ -77,42 +77,21 @@ primer_info <- data.frame(
   min_asv_length = 50
 )
 
-# Use knitr::kable() to create the table
-# Create the data frame
-primer_info <- data.frame(
-  primer_name = "r16S",
-  forward = "GTGYCAGCMGCCGCGGTAA",
-  reverse = "GGACTACNVGGGTWTCTAAT",
-  already_trimmed = TRUE,
-  minCutadaptlength = 50,
-  multithread = TRUE,
-  verbose = TRUE,
-  maxN = 0,
-  maxEE_forward = 2,
-  maxEE_reverse = 2,
-  truncLen_forward = 240,
-  truncLen_reverse = 160,
-  truncQ = 2,
-  minLen = 20,
-  maxLen = Inf,
-  minQ = 0,
-  trimLeft = 0,
-  trimRight = 0,
-  rm.lowcomplex = 0,
-  minOverlap = 12,
-  maxMismatch = 0,
-  min_asv_length = 50
-)
-
 kable(primer_info, row.names = FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", full_width = F, font_size = 6)) %>%
-  scroll_box(width = "90%", height = "80px", extra_css = "thead th { white-space: nowrap; }")
+  scroll_box(width = "100%", height = "70px", extra_css = "thead th { white-space: nowrap; }")
 ```
 
-```{r setup, include=FALSE}
+### Loading the Package  
+
+For now, the package will be loaded by retrieving it from GitHub. 
+We are submitting package to CRAN. 
+```{r setup, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 #devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
 devtools::load_all("~/demulticoder")
 library("demulticoder")
+library(dplyr)
+library(kableExtra)
 ```
 
 ### Step 1  

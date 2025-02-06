@@ -41,6 +41,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-example-vignettes" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Example Vignettes</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-example-vignettes">
 <li><a class="dropdown-item" href="../articles/DADA2_16S_mothur_validation.html">16S DADA2 Mothur SOP Validation</a></li>
+    <li><a class="dropdown-item" href="../articles/Pooled_barcode_example.html">Pooled barcode example</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Main Functions</a></li>
@@ -78,137 +79,304 @@
 </h2>
 <p>First, make sure input metadata and primerinfo_params files are in
 data folder</p>
-<p>The only required columns are the first with sample names, and the
+The only required columns are the first with sample names, and the
 second with the primer name/barcode used. The subsequent columns are
-user-specific columns for downstream steps <em>metadata.csv
-file</em></p>
-<table class="table">
-<thead><tr class="header">
-<th align="left">sample_name</th>
-<th align="left">primer_name</th>
-<th align="right">Day</th>
-<th align="left">When</th>
+user-specific columns for downstream steps<br><em>metadata.csv file</em>
+<table class="table table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead><tr>
+<th style="text-align:left;">
+sample_name
+</th>
+<th style="text-align:left;">
+primer_name
+</th>
+<th style="text-align:right;">
+Day
+</th>
+<th style="text-align:left;">
+When
+</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td align="left">F3D0</td>
-<td align="left">r16S</td>
-<td align="right">0</td>
-<td align="left">Early</td>
+<tr>
+<td style="text-align:left;">
+F3D0
+</td>
+<td style="text-align:left;">
+r16S
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+Early
+</td>
 </tr>
-<tr class="even">
-<td align="left">F3D1</td>
-<td align="left">r16S</td>
-<td align="right">1</td>
-<td align="left">Early</td>
+<tr>
+<td style="text-align:left;">
+F3D1
+</td>
+<td style="text-align:left;">
+r16S
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Early
+</td>
 </tr>
-<tr class="odd">
-<td align="left">F3D141</td>
-<td align="left">r16S</td>
-<td align="right">141</td>
-<td align="left">Late</td>
+<tr>
+<td style="text-align:left;">
+F3D141
+</td>
+<td style="text-align:left;">
+r16S
+</td>
+<td style="text-align:right;">
+141
+</td>
+<td style="text-align:left;">
+Late
+</td>
 </tr>
-<tr class="even">
-<td align="left">F3D142</td>
-<td align="left">r16S</td>
-<td align="right">142</td>
-<td align="left">Late</td>
+<tr>
+<td style="text-align:left;">
+F3D142
+</td>
+<td style="text-align:left;">
+r16S
+</td>
+<td style="text-align:right;">
+142
+</td>
+<td style="text-align:left;">
+Late
+</td>
 </tr>
-<tr class="odd">
-<td align="left">F3D143</td>
-<td align="left">r16S</td>
-<td align="right">143</td>
-<td align="left">Late</td>
+<tr>
+<td style="text-align:left;">
+F3D143
+</td>
+<td style="text-align:left;">
+r16S
+</td>
+<td style="text-align:right;">
+143
+</td>
+<td style="text-align:left;">
+Late
+</td>
 </tr>
-<tr class="even">
-<td align="left">F3D144</td>
-<td align="left">r16S</td>
-<td align="right">144</td>
-<td align="left">Late</td>
+<tr>
+<td style="text-align:left;">
+F3D144
+</td>
+<td style="text-align:left;">
+r16S
+</td>
+<td style="text-align:right;">
+144
+</td>
+<td style="text-align:left;">
+Late
+</td>
 </tr>
-<tr class="odd">
-<td align="left">F3D145</td>
-<td align="left">r16S</td>
-<td align="right">145</td>
-<td align="left">Late</td>
+<tr>
+<td style="text-align:left;">
+F3D145
+</td>
+<td style="text-align:left;">
+r16S
+</td>
+<td style="text-align:right;">
+145
+</td>
+<td style="text-align:left;">
+Late
+</td>
 </tr>
-<tr class="even">
-<td align="left">F3D146</td>
-<td align="left">r16S</td>
-<td align="right">146</td>
-<td align="left">Late</td>
+<tr>
+<td style="text-align:left;">
+F3D146
+</td>
+<td style="text-align:left;">
+r16S
+</td>
+<td style="text-align:right;">
+146
+</td>
+<td style="text-align:left;">
+Late
+</td>
 </tr>
-<tr class="odd">
-<td align="left">F3D147</td>
-<td align="left">r16S</td>
-<td align="right">147</td>
-<td align="left">Late</td>
+<tr>
+<td style="text-align:left;">
+F3D147
+</td>
+<td style="text-align:left;">
+r16S
+</td>
+<td style="text-align:right;">
+147
+</td>
+<td style="text-align:left;">
+Late
+</td>
 </tr>
-<tr class="even">
-<td align="left">F3D148</td>
-<td align="left">r16S</td>
-<td align="right">148</td>
-<td align="left">Late</td>
+<tr>
+<td style="text-align:left;">
+F3D148
+</td>
+<td style="text-align:left;">
+r16S
+</td>
+<td style="text-align:right;">
+148
+</td>
+<td style="text-align:left;">
+Late
+</td>
 </tr>
-<tr class="odd">
-<td align="left">F3D149</td>
-<td align="left">r16S</td>
-<td align="right">149</td>
-<td align="left">Late</td>
+<tr>
+<td style="text-align:left;">
+F3D149
+</td>
+<td style="text-align:left;">
+r16S
+</td>
+<td style="text-align:right;">
+149
+</td>
+<td style="text-align:left;">
+Late
+</td>
 </tr>
-<tr class="even">
-<td align="left">F3D150</td>
-<td align="left">r16S</td>
-<td align="right">150</td>
-<td align="left">Late</td>
+<tr>
+<td style="text-align:left;">
+F3D150
+</td>
+<td style="text-align:left;">
+r16S
+</td>
+<td style="text-align:right;">
+150
+</td>
+<td style="text-align:left;">
+Late
+</td>
 </tr>
-<tr class="odd">
-<td align="left">F3D2</td>
-<td align="left">r16S</td>
-<td align="right">2</td>
-<td align="left">Early</td>
+<tr>
+<td style="text-align:left;">
+F3D2
+</td>
+<td style="text-align:left;">
+r16S
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+Early
+</td>
 </tr>
-<tr class="even">
-<td align="left">F3D3</td>
-<td align="left">r16S</td>
-<td align="right">3</td>
-<td align="left">Early</td>
+<tr>
+<td style="text-align:left;">
+F3D3
+</td>
+<td style="text-align:left;">
+r16S
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+Early
+</td>
 </tr>
-<tr class="odd">
-<td align="left">F3D5</td>
-<td align="left">r16S</td>
-<td align="right">5</td>
-<td align="left">Early</td>
+<tr>
+<td style="text-align:left;">
+F3D5
+</td>
+<td style="text-align:left;">
+r16S
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+Early
+</td>
 </tr>
-<tr class="even">
-<td align="left">F3D6</td>
-<td align="left">r16S</td>
-<td align="right">6</td>
-<td align="left">Early</td>
+<tr>
+<td style="text-align:left;">
+F3D6
+</td>
+<td style="text-align:left;">
+r16S
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+Early
+</td>
 </tr>
-<tr class="odd">
-<td align="left">F3D7</td>
-<td align="left">r16S</td>
-<td align="right">7</td>
-<td align="left">Early</td>
+<tr>
+<td style="text-align:left;">
+F3D7
+</td>
+<td style="text-align:left;">
+r16S
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+Early
+</td>
 </tr>
-<tr class="even">
-<td align="left">F3D8</td>
-<td align="left">r16S</td>
-<td align="right">8</td>
-<td align="left">Early</td>
+<tr>
+<td style="text-align:left;">
+F3D8
+</td>
+<td style="text-align:left;">
+r16S
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+Early
+</td>
 </tr>
-<tr class="odd">
-<td align="left">F3D9</td>
-<td align="left">r16S</td>
-<td align="right">9</td>
-<td align="left">Early</td>
+<tr>
+<td style="text-align:left;">
+F3D9
+</td>
+<td style="text-align:left;">
+r16S
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:left;">
+Early
+</td>
 </tr>
-<tr class="even">
-<td align="left">Mock</td>
-<td align="left">r16S</td>
-<td align="right">NA</td>
-<td align="left">NA</td>
+<tr>
+<td style="text-align:left;">
+Mock
+</td>
+<td style="text-align:left;">
+r16S
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 </tbody>
 </table>
@@ -220,7 +388,7 @@ Note, primers were already trimmed from reads, but just to be certain, I
 included the Earth Microbiome primers described <a href="https://earthmicrobiome.org/protocols-and-standards/16s/" class="external-link">here</a>,
 and a few primer sequences were still found within a small number of
 reads. <em>primerinfo_params.csv</em>
-<div style="border: 1px solid #ddd; padding: 0px; thead th { white-space: nowrap; }overflow-y: scroll; height:80px; overflow-x: scroll; width:90%; ">
+<div style="border: 1px solid #ddd; padding: 0px; thead th { white-space: nowrap; }overflow-y: scroll; height:70px; overflow-x: scroll; width:100%; ">
 <table class="table table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead><tr>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
@@ -361,23 +529,35 @@ Inf
 </table>
 </div>
 <div class="section level3">
+<h3 id="loading-the-package">Loading the Package<a class="anchor" aria-label="anchor" href="#loading-the-package"></a>
+</h3>
+<p>For now, the package will be loaded by retrieving it from GitHub. We
+are submitting package to CRAN.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#devtools::install_github("grunwaldlab/demulticoder", force=TRUE)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/load_all.html" class="external-link">load_all</a></span><span class="op">(</span><span class="st">"~/demulticoder"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/demulticoder/" class="external-link">"demulticoder"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://haozhu233.github.io/kableExtra/" class="external-link">kableExtra</a></span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
 <h3 id="step-1">Step 1<a class="anchor" aria-label="anchor" href="#step-1"></a>
 </h3>
 <p>Remove N’s and create directory structure for downstream steps</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">outputs</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/prepare_reads.html">prepare_reads</a></span><span class="op">(</span></span>
 <span>  data_directory <span class="op">=</span> <span class="st">"~/benchmark_demulticoder/mothur_16S_sop/data"</span>, </span>
 <span>  output_directory <span class="op">=</span> <span class="st">"~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs"</span>,</span>
 <span>  tempdir_path <span class="op">=</span> <span class="st">"~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp"</span>,</span>
 <span>  tempdir_id <span class="op">=</span> <span class="st">"temp_files"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="prepare_reads-1.png" width="50%"></p>
+<p><img src="prepare_reads-1.png" width="70%"></p>
 </div>
 <div class="section level3">
 <h3 id="step-2">Step 2<a class="anchor" aria-label="anchor" href="#step-2"></a>
 </h3>
 <p>Run Cutadapt to remove primers and then trim reads with DADA2
 filterAndTrim function</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cut_trim.html">cut_trim</a></span><span class="op">(</span></span>
 <span>  <span class="va">outputs</span>,</span>
 <span>  cutadapt_path<span class="op">=</span><span class="st">"/opt/homebrew/bin/cutadapt"</span><span class="op">)</span></span></code></pre></div>
@@ -387,13 +567,13 @@ sequences and the barplot below summarizes the outputs.</p>
 <p>There are circumstances where a few primer sequences may still
 remain. If so, any ASVs with any residual primer sequences will be
 filtered at the end.</p>
-<p><img src="posttrim_primer_plot_16S.png" width="50%"></p>
+<p><img src="posttrim_primer_plot_16S.png" width="70%"></p>
 </div>
 <div class="section level3">
 <h3 id="step-3">Step 3<a class="anchor" aria-label="anchor" href="#step-3"></a>
 </h3>
 <p>Core ASV inference step</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make_asv_abund_matrix.html">make_asv_abund_matrix</a></span><span class="op">(</span></span>
 <span>  <span class="va">outputs</span><span class="op">)</span></span></code></pre></div>
 <p>We can now visualize the outputs from the ASV inference step.</p>
@@ -401,15 +581,15 @@ filtered at the end.</p>
 and indels.</p>
 <p>The plot to the right shows the overlap lengths across the inferred
 ASVs.</p>
-<p><img src="read_merging_info_r16S.png" width="50%"></p>
+<p><img src="read_merging_info_r16S.png" width="70%"></p>
 <p>We can also look at the distribution of ASV lengths</p>
-<p><img src="asv_seqlength_plot_r16S.png" width="50%"></p>
+<p><img src="asv_seqlength_plot_r16S.png" width="70%"></p>
 </div>
 <div class="section level3">
 <h3 id="step-4">Step 4<a class="anchor" aria-label="anchor" href="#step-4"></a>
 </h3>
 <p>Assign taxonomy step</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/assign_tax.html">assign_tax</a></span><span class="op">(</span></span>
 <span>  <span class="va">outputs</span>,</span>
 <span>  <span class="va">asv_abund_matrix</span>,</span>
@@ -446,7 +626,7 @@ parameters and re-running the analysis.</p>
 </h3>
 <p>Convert asv matrix to taxmap and phyloseq objects with one
 function</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/convert_asv_matrix_to_objs.html">convert_asv_matrix_to_objs</a></span><span class="op">(</span><span class="va">outputs</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">232</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">23</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
@@ -468,7 +648,7 @@ function</p>
 </h3>
 <p>Evaluate accuracy using mock community, as shown in dada2
 tutorial</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">track_reads_demulticoder</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/track_reads_r16S.csv"</span>, row.names <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">track_reads_demulticoder</span><span class="op">)</span></span>
 <span><span class="co">#&gt;      input          filtered       denoisedF       denoisedR    </span></span>
@@ -508,34 +688,34 @@ described previously.</p>
 </h3>
 <p>Follow-up work using phyloseq to do side-by-side comparison with
 dada2 example and to examine alpha diversity results</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/prune_samples-methods.html" class="external-link">prune_samples</a></span><span class="op">(</span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html" class="external-link">sample_names</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span><span class="op">)</span> <span class="op">!=</span> <span class="st">"Mock_r16S"</span>, <span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span><span class="op">)</span> <span class="co"># Remove mock sample</span></span>
 <span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/plot_richness.html" class="external-link">plot_richness</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span>, x<span class="op">=</span><span class="st">"Day"</span>, measures<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Shannon"</span>, <span class="st">"Simpson"</span><span class="op">)</span>, color<span class="op">=</span><span class="st">"When"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="phyloseq_alpha_diversity_analysis-1.png" width="50%"></p>
+<p><img src="phyloseq_alpha_diversity_analysis-1.png" width="70%"></p>
 </div>
 <div class="section level3">
 <h3 id="step-8">Step 8<a class="anchor" aria-label="anchor" href="#step-8"></a>
 </h3>
 <p>Examine ordination plots as additional point of comparison with DADA2
 tutorial</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Transform data to proportions as appropriate for Bray-Curtis distances</span></span>
 <span><span class="va">ps.prop</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span>, <span class="kw">function</span><span class="op">(</span><span class="va">otu</span><span class="op">)</span> <span class="va">otu</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">otu</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">ord.nmds.bray</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/ordinate.html" class="external-link">ordinate</a></span><span class="op">(</span><span class="va">ps.prop</span>, method<span class="op">=</span><span class="st">"NMDS"</span>, distance<span class="op">=</span><span class="st">"bray"</span><span class="op">)</span></span>
 <span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/plot_ordination.html" class="external-link">plot_ordination</a></span><span class="op">(</span><span class="va">ps.prop</span>, <span class="va">ord.nmds.bray</span>, color<span class="op">=</span><span class="st">"When"</span>, title<span class="op">=</span><span class="st">"Bray NMDS"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="phyloseq_beta_diversity_analysis-1.png" width="50%"></p>
+<p><img src="phyloseq_beta_diversity_analysis-1.png" width="70%"></p>
 </div>
 <div class="section level3">
 <h3 id="step-9">Step 9<a class="anchor" aria-label="anchor" href="#step-9"></a>
 </h3>
 <p>Let’s look at what the top 20 taxa are in the early vs. late samples
 time points, as shown in the dada2 tutorial</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">top20</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_sums.html" class="external-link">taxa_sums</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span><span class="op">)</span>, decreasing<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span></span>
 <span><span class="va">ps.top20</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span>, <span class="kw">function</span><span class="op">(</span><span class="va">OTU</span><span class="op">)</span> <span class="va">OTU</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">OTU</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">ps.top20</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/prune_taxa-methods.html" class="external-link">prune_taxa</a></span><span class="op">(</span><span class="va">top20</span>, <span class="va">ps.top20</span><span class="op">)</span></span>
 <span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/plot_bar.html" class="external-link">plot_bar</a></span><span class="op">(</span><span class="va">ps.top20</span>, x<span class="op">=</span><span class="st">"Day"</span>, fill<span class="op">=</span><span class="st">"Family"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">When</span>, scales<span class="op">=</span><span class="st">"free_x"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="phyloseq_community_analysis-1.png" width="50%"></p>
+<p><img src="phyloseq_community_analysis-1.png" width="70%"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

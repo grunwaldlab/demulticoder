@@ -13,9 +13,6 @@ knitr::opts_chunk$set(
 
 # Demulticoder R package
 
-*This package is actively under development. Until this message has been removed, use with caution. Additional testing, documentation, and examples are in progress.*  
-
-
 ### Introduction  
 
 The ***demulticoder*** package is a Cutadapt and DADA2 wrapper package for metabarcodng analyses. The main commands and outputs are intuitive and comprehensive, which helps to account for the complex and iterative nature of metabarcoding analyses. 

@@ -1,10 +1,6 @@
 
 # Demulticoder R package
 
-*This package is actively under development. Until this message has been
-removed, use with caution. Additional testing, documentation, and
-examples are in progress.*
-
 ### Introduction
 
 The ***demulticoder*** package is a Cutadapt and DADA2 wrapper package
@@ -110,4 +106,4 @@ Stay tuned for associated manuscript.
 
 ### Acknowledgements
 
-The demulticoder logo was created with BioRender.com
+The demulticoder logo was created with <https://BioRender.com/>
