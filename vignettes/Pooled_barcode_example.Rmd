@@ -136,7 +136,8 @@ if (!overwrite_existing) {
 Core ASV inference step
 ```{r ASV_inference, fig.height=6, fig.width=6, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 make_asv_abund_matrix(
-  outputs)
+  outputs,
+  overwrite_existing = TRUE)
 ```
 
 We can now visualize the outputs from the ASV inference step.  
@@ -168,7 +169,6 @@ assign_tax(
   db_its = "sh_general_release_dynamic_18.07.2023.fasta",
   db_rps10 = "oomycetedb_release2.fasta",
   retrieve_files=TRUE, 
-  tryRC = FALSE,
   overwrite_existing=TRUE)
 ```
 
