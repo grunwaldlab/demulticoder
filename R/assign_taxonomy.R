@@ -260,7 +260,6 @@ get_read_counts <- function(asv_abund_matrix, temp_directory_path, output_direct
 #' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
 #' @param asv_abund_matrix An abundance matrix containing amplified sequence
 #'   variants
-#' @inheritParams assign_taxonomyDada2
 #' @inheritParams dada2::assignTaxonomy
 #' @inheritParams RcppParallel::setThreadOptions
 #'
