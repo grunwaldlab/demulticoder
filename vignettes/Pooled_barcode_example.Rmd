@@ -167,8 +167,8 @@ assign_tax(
   asv_abund_matrix,
   db_its = "sh_general_release_dynamic_18.07.2023.fasta",
   db_rps10 = "oomycetedb_release2.fasta",
-  retrieve_files=TRUE,
-  tryRC = TRUE,
+  retrieve_files=TRUE, 
+  tryRC = FALSE,
   overwrite_existing=TRUE)
 ```
 
