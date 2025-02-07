@@ -26,15 +26,23 @@ Here is a brief schematic of the general workflow:
 
 ### Installation
 
-**Dependencies**:
+**Dependencies**: For demulticoder to work properly, make sure the
+following R packages are installed first:
 
-- DADA2 (TODO-add information on installation)
+- DADA2 (Latest version is 3.20)
+  - To install, follow these instructions:
+    <https://www.bioconductor.org/packages/release/bioc/html/dada2.html>  
+- phyloseq
+  - To install:
+    <https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html>  
+- metacoder (Available through CRAN)
 
 To install the development version of package:
 
 ``` r
 library("devtools")
 library("DADA2")
+library("phyloseq")
 
 devtools::install_github("grunwaldlab/demulticoder")
 library("demulticoder")
