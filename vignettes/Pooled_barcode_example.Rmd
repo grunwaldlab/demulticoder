@@ -102,9 +102,11 @@ library("demulticoder")
 ```
 
 ### Step 1  
-Remove N's and create directory structure for downstream steps
+Remove N's and create directory structure for downstream steps  
+
 ```{r prepare_reads, fig.height=6, fig.width=6, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 outputs <- prepare_reads(
+  
   data_directory = "~/benchmark_demulticoder/demulticoder/data", 
   output_directory = "~/benchmark_demulticoder/demulticoder/vignette_outputs",
   tempdir_path = "~/benchmark_demulticoder/demulticoder/vignette_temp",
@@ -113,6 +115,7 @@ outputs <- prepare_reads(
 
 ### Step 2  
 Run Cutadapt to remove primers and then trim reads with DADA2 filterAndTrim function 
+
 ```{r Remove_primers_and_trim_reads, fig.height=6, fig.width=6, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 cut_trim(
   outputs,
@@ -125,12 +128,13 @@ There are circumstances where a few primer sequences may still remain. If so, an
 
 ```{r visualize_outputs_cut_trim, echo=FALSE, fig.height=6, fig.width=6}
 if (!overwrite_existing) {
-  knitr::include_graphics("./posttrim_primer_plot_pooled.png")
+  knitr::include_graphics("./posttrim_primer_plot_pooled.pdf")
 }
 ```
 
 ### Step 3  
-Core ASV inference step
+Core ASV inference step  
+
 ```{r ASV_inference, fig.height=6, fig.width=6, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 make_asv_abund_matrix(
   outputs,
@@ -143,14 +147,16 @@ The first plot shows the how reads were merged in terms of mismatches and indels
 
 The plot to the right shows the overlap lengths across the inferred ASVs.  
 
-First we see the *rps10* plots
+First we see the *rps10* plots  
+
 ```{r visualize_outputs_asv_inf1, fig.height=10, fig.width=10, echo=FALSE}
 if (!overwrite_existing) {
   knitr::include_graphics("./read_merging_info_rps10.png")
 }
 ```
 
-Second, we see the ITS plots
+Second, we see the ITS plots  
+
 ```{r visualize_outputs_asv_inf2, fig.height=10, fig.width=10, echo=FALSE}
 if (!overwrite_existing) {
   knitr::include_graphics("./read_merging_info_its.png")
@@ -159,14 +165,16 @@ if (!overwrite_existing) {
 
 We can also look at the distribution of ASV lengths  
 
-First we see the *rps10* plots
+First we see the *rps10* plots  
+
 ```{r visualize_outputs_asv_inf3, fig.height=10, fig.width=10, echo=FALSE}
 if (!overwrite_existing) {
   knitr::include_graphics("./asv_seqlength_plot_rps10.png")
 }
 ```
 
-Then we see the ITS plots
+Then we see the ITS plots  
+
 ```{r visualize_outputs_asv_inf4, fig.height=10, fig.width=10, echo=FALSE}
 if (!overwrite_existing) {
   knitr::include_graphics("./asv_seqlength_plot_its.png")
@@ -174,7 +182,9 @@ if (!overwrite_existing) {
 ```
 
 ### Step 4  
+
 Assign taxonomy step  
+
 ```{r assign_taxonomy_step, fig.height=6, fig.width=6, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 assign_tax(
   outputs,
@@ -191,17 +201,18 @@ First we track the *rps10* reads through the demulticoder DADA2 workflow
 if (!overwrite_existing) {
   track_path <- "./track_reads_rps10.csv"
    read_track_file<-read.csv(track_path)
-   print(read_track_file)
+   head(read_track_file)
 }
 ```
 
-Then we track *ITS1* reads
+Then we track *ITS1* reads  
+
 ```{r view_read_counts2, fig.height=10, fig.width=10, echo=FALSE}
 if (!overwrite_existing) {
   cat("Tables showing read counts throughout the demulticoder DADA2 workflow\n")
  track_path <- "./track_reads_its.csv"
    read_track_file<-read.csv(track_path)
-   print(read_track_file)
+   head(read_track_file)
 }
 ```
 
@@ -217,7 +228,8 @@ objs<-convert_asv_matrix_to_objs(outputs)
 
 At this point the rps10 and ITS1 analyses are separate. Given the greater complexity of this dataset, more robust analyses are detailed in the associated package manuscript and the analyses code is also linked.  
 
-First we make a heat tree for our ITS-barcoded samples 
+First we make a heat tree for our ITS-barcoded samples  
+
 ```{r Heatree_demonstration_its, message=FALSE}
 min_bootstrap <- 80
 
@@ -241,7 +253,8 @@ obj_subset_its %>%
                        layout = "da", initial_layout = "re")
 ```
 
-Now we make a heat tree for our rps10-barcoded samples
+Now we make a heat tree for our rps10-barcoded samples  
+
 ```{r Heatree_demonstration_rps10, message=FALSE}
 min_bootstrap <- 80
 
