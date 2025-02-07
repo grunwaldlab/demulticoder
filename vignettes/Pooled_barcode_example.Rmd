@@ -25,7 +25,6 @@ knitr::opts_chunk$set(
 
 This is example shows how an analysis is done with the full rhododendron dataset showcased in the [Getting Started](https://grunwaldlab.github.io/demulticoder/articles/Getting_started.html) vignette. Reads and databases are not sub-sampled as they were for that test dataset.  
 
-
 ```{r overwrite_existing_or_ont, include=FALSE, echo=FALSE}
 library(dplyr)
 library(kableExtra)
@@ -137,7 +136,7 @@ Core ASV inference step
 ```{r ASV_inference, fig.height=6, fig.width=6, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 make_asv_abund_matrix(
   outputs,
-  overwrite_existing = TRUE)
+  overwrite_existing = FALSE)
 ```
 
 We can now visualize the outputs from the ASV inference step.  
@@ -168,8 +167,7 @@ assign_tax(
   asv_abund_matrix,
   db_its = "sh_general_release_dynamic_18.07.2023.fasta",
   db_rps10 = "oomycetedb_release2.fasta",
-  retrieve_files=TRUE, 
-  overwrite_existing=TRUE)
+  retrieve_files=TRUE)
 ```
 
 As a check we can take a look at read counts across the workflow. If there are sudden drops, we should reconsider our adjusting certain DADA2 parameters and re-running the analysis.  
@@ -186,6 +184,57 @@ if (!overwrite_existing) {
 ### Step 5  
 Convert asv matrix to taxmap and phyloseq objects with one function  
 
-```{r convert_matrix_to_other_formats, fig.height=6, fig.width=6}
+```{r convert_matrix_to_other_formats, fig.height=6, fig.width=6, warning=FALSE}
 objs<-convert_asv_matrix_to_objs(outputs)
+```
+
+### Step 6-let's make some quick visuals (heat trees) to take a look at outputs of the analyses   
+
+At this point the rps10 and ITS1 analyses are separate. Given the greater complexity of this dataset, more robust analyses are detailed in the associated package manuscript and the analyses code is also linked.  
+
+First we make a heat tree for our ITS-barcoded samples 
+```{r Heatree_demonstration_its, message=FALSE}
+min_bootstrap <- 80
+
+objs$taxmap_its$data$score$boot <- as.numeric(objs$taxmap_its$data$score$boot)
+max_boot <- objs$taxmap_its$data$score %>%
+  dplyr::group_by(taxon_id) %>%
+  dplyr::summarise(max = max(boot))
+max_boot <- setNames(max_boot$max, max_boot$taxon_id)
+obj_subset_its <- filter_taxa(objs$taxmap_its, max_boot[taxon_ids] >= min_bootstrap | taxon_ranks %in% c("ASV", "Reference"), reassign_obs = c(abund = TRUE, score = FALSE))
+
+obj_subset_its %>%
+  filter_taxa(! is_stem) %>%
+  filter_taxa(! grepl(x = taxon_names, "_sp$"), reassign_obs = FALSE) %>%
+  filter_taxa(! grepl(x = taxon_names, "incertae_sedis", ignore.case = TRUE), reassign_obs = FALSE) %>%
+  filter_taxa(! grepl(x = taxon_names, "NA", ignore.case = TRUE), reassign_obs = FALSE) %>%
+  metacoder::heat_tree(node_label = taxon_names,
+                       node_size = n_obs,
+                       node_color = n_obs,
+                       node_color_axis_label = "ASV count",
+                       node_size_axis_label = "Total Abundance of Taxa",
+                       layout = "da", initial_layout = "re")
+```
+
+Now we make a heat tree for our rps10-barcoded samples
+```{r Heatree_demonstration_rps10, message=FALSE}
+min_bootstrap <- 80
+
+objs$taxmap_rps10$data$score$boot <- as.numeric(objs$taxmap_rps10$data$score$boot)
+max_boot <- objs$taxmap_rps10$data$score %>%
+  dplyr::group_by(taxon_id) %>%
+  dplyr::summarise(max = max(boot))
+max_boot <- setNames(max_boot$max, max_boot$taxon_id)
+obj_subset_rps10 <- filter_taxa(objs$taxmap_rps10, max_boot[taxon_ids] >= min_bootstrap | taxon_ranks %in% c("ASV", "Reference"), reassign_obs = c(abund = TRUE, score = FALSE))
+
+obj_subset_rps10 %>%
+  filter_taxa(! grepl(x = taxon_names, "_sp$"), reassign_obs = FALSE) %>%
+  filter_taxa(! grepl(x = taxon_names, "incertae_sedis", ignore.case = TRUE), reassign_obs = FALSE) %>%
+  filter_taxa(! grepl(x = taxon_names, "NA", ignore.case = TRUE), reassign_obs = FALSE) %>%
+  metacoder::heat_tree(node_label = taxon_names,
+                       node_size = n_obs,
+                       node_color = n_obs,
+                       node_color_axis_label = "ASV count",
+                       node_size_axis_label = "Total Abundance of Taxa",
+                       layout = "da", initial_layout = "re")
 ```
