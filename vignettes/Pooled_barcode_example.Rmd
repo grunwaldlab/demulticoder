@@ -16,8 +16,6 @@ knitr::opts_chunk$set(
   out.width = "70%",
   fig.retina = 1
 )
-
-
 ```
 
 
@@ -28,6 +26,7 @@ This is example shows how an analysis is done with the full rhododendron dataset
 ```{r overwrite_existing_or_ont, include=FALSE, echo=FALSE}
 library(dplyr)
 library(kableExtra)
+library(metacoder)
 overwrite_existing <- FALSE
 ```
 
@@ -66,7 +65,7 @@ primer_info <- data.frame(
   forward = c("CTTGGTCATTTAGAGGAAGTAA", "GTTGGTTAGAGYARAAGACT"), 
   reverse = c("GCTGCGTTCTTCATCGATGC", "ATRYYTAGAAAGAYTYGAACT"),
   already_trimmed = c(FALSE, FALSE), 
-  minCutadaptlength = c(0, 0),
+  minCutadaptlength = c(150, 50),
   multithread = c(TRUE, TRUE), 
   verbose = c(TRUE, TRUE), 
   maxN = c(0, 0), 
@@ -101,7 +100,6 @@ devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
 #devtools::load_all("~/demulticoder")
 library("demulticoder")
 ```
-
 
 ### Step 1  
 Remove N's and create directory structure for downstream steps
@@ -145,17 +143,33 @@ The first plot shows the how reads were merged in terms of mismatches and indels
 
 The plot to the right shows the overlap lengths across the inferred ASVs.  
 
+First we see the *rps10* plots
 ```{r visualize_outputs_asv_inf1, fig.height=10, fig.width=10, echo=FALSE}
 if (!overwrite_existing) {
-  knitr::include_graphics("./read_merging_info_r16S.png")
+  knitr::include_graphics("./read_merging_info_rps10.png")
+}
+```
+
+Second, we see the ITS plots
+```{r visualize_outputs_asv_inf2, fig.height=10, fig.width=10, echo=FALSE}
+if (!overwrite_existing) {
+  knitr::include_graphics("./read_merging_info_its.png")
 }
 ```
 
 We can also look at the distribution of ASV lengths  
 
-```{r visualize_outputs_asv_inf2, fig.height=10, fig.width=10, echo=FALSE}
+First we see the *rps10* plots
+```{r visualize_outputs_asv_inf3, fig.height=10, fig.width=10, echo=FALSE}
 if (!overwrite_existing) {
-  knitr::include_graphics("./asv_seqlength_plot_r16S.png")
+  knitr::include_graphics("./asv_seqlength_plot_rps10.png")
+}
+```
+
+Then we see the ITS plots
+```{r visualize_outputs_asv_inf4, fig.height=10, fig.width=10, echo=FALSE}
+if (!overwrite_existing) {
+  knitr::include_graphics("./asv_seqlength_plot_its.png")
 }
 ```
 
@@ -172,14 +186,25 @@ assign_tax(
 
 As a check we can take a look at read counts across the workflow. If there are sudden drops, we should reconsider our adjusting certain DADA2 parameters and re-running the analysis.  
 
+First we track the *rps10* reads through the demulticoder DADA2 workflow
 ```{r view_read_counts, fig.height=10, fig.width=10, echo=FALSE}
 if (!overwrite_existing) {
-  cat("Tables showing read counts throughout the demulticoder DADA2 workflow\n")
- track_path <- "./track_reads_r16S.csv"
+  track_path <- "./track_reads_rps10.csv"
    read_track_file<-read.csv(track_path)
    print(read_track_file)
 }
 ```
+
+Then we track *ITS1* reads
+```{r view_read_counts2, fig.height=10, fig.width=10, echo=FALSE}
+if (!overwrite_existing) {
+  cat("Tables showing read counts throughout the demulticoder DADA2 workflow\n")
+ track_path <- "./track_reads_its.csv"
+   read_track_file<-read.csv(track_path)
+   print(read_track_file)
+}
+```
+
 
 ### Step 5  
 Convert asv matrix to taxmap and phyloseq objects with one function  
@@ -226,7 +251,6 @@ max_boot <- objs$taxmap_rps10$data$score %>%
   dplyr::summarise(max = max(boot))
 max_boot <- setNames(max_boot$max, max_boot$taxon_id)
 obj_subset_rps10 <- filter_taxa(objs$taxmap_rps10, max_boot[taxon_ids] >= min_bootstrap | taxon_ranks %in% c("ASV", "Reference"), reassign_obs = c(abund = TRUE, score = FALSE))
-
 obj_subset_rps10 %>%
   filter_taxa(! grepl(x = taxon_names, "_sp$"), reassign_obs = FALSE) %>%
   filter_taxa(! grepl(x = taxon_names, "incertae_sedis", ignore.case = TRUE), reassign_obs = FALSE) %>%
