@@ -28,6 +28,10 @@ Here is a brief schematic of the general workflow:
 
 ### Installation
 
+**Dependencies**:
+
+- DADA2 (TODO-add information on installation)
+
 To install the development version of package:
 
 ``` r

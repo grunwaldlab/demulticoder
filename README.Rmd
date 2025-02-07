@@ -35,8 +35,11 @@ knitr::include_graphics("man/figures/Figure1.svg")
 
 ### Installation  
 
-To install the development version of package: 
+**Dependencies**: 
 
+* DADA2 (TODO-add information on installation)
+
+To install the development version of package:
 ```{r, eval=FALSE, echo=TRUE}
 devtools::install_github("grunwaldlab/demulticoder")
 ```

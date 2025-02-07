@@ -26,6 +26,10 @@ Here is a brief schematic of the general workflow:
 
 ### Installation
 
+**Dependencies**:
+
+- DADA2
+
 To install the development version of package:
 
 ``` r
@@ -60,15 +64,17 @@ See
 [**Documentation**](https://grunwaldlab.github.io/demulticoder/articles/Documentation.html)
 for how to format databases and input files.
 
-**2. Prepare reads**
+To demonstrate how to use the package, we have a small test dataset that
+comes loaded with the package. **2. Prepare reads**
 
 ``` r
 output<-prepare_reads(
   data_directory = "<DATADIR>",
-  output_directory = "<OUTDIR>")
+  output_directory = "<OUTDIR>") 
 ```
 
-**3. Cut and trim reads**
+**3. Cut and trim reads** User must install cutadapt on their local
+machine and append the path to the executable.
 
 ``` r
 cut_trim(

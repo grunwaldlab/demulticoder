@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 * Please note, for speed, the test dataset is comprised of randomly subset reads for the samples (S1 and S2). For demonstration purposes only, an abridged version of the full UNITE database is also included, rather than the full one.
 
-### Format of the PE amplicon files
+### Format of the PE read files
 
 * The package takes forward and reverse Illumina short read sequence data.
 
@@ -121,12 +121,10 @@ Please also ensure that you have enough storage to save intermediate files in a 
 
 ### Loading the Package  
 
-For now, the package will be loaded by retrieving it from GitHub. 
-We are submitting package to CRAN. 
+For now, the package will be loaded by retrieving it from GitHub. Submissionto CRAN is in progress.  
 
 ```{r installation, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 devtools::install_github("grunwaldlab/demulticoder")
-#devtools::load_all("~/demulticoder")
 library("demulticoder")
 library("metacoder")
 library("dplyr")
