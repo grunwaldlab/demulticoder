@@ -74,66 +74,6 @@ assign_taxonomyDada2 <- function(asv_abund_matrix, temp_directory_path, minBoot 
   return(tax_results)
 }
 
-#' Align ASV sequences to reference sequences from database to get percent ID.
-#' Get percent identities.
-#'
-#' @param tax_results The data frame containing taxonomic assignments
-#'
-#' @keywords internal
-get_pids <- function(tax_results, temp_directory_path, output_directory_path, db, locus) {
-  db_seqs <- metacoder::read_fasta(file.path(temp_directory_path, db))
-  ref_seqs <- get_ref_seq(tax_results, db_seqs)
-  asv_seqs <- rownames(tax_results$tax)
-  # Calculate pids for normal alignment
-  asv_ref_align_normal <- mapply(pairwiseAlignment, asv_seqs, ref_seqs, MoreArgs = list(type = 'global-local'))
-  asv_pids_normal <- sapply(asv_ref_align_normal, function(align) {
-    pid(align, type = "PID1")
-  })
-  # Calculate pids for reverse complement alignment
-  asv_ref_align_revcomp <- mapply(pairwiseAlignment, asv_seqs, rev_comp(ref_seqs), MoreArgs = list(type = 'global-local'))
-  asv_pids_revcomp <- sapply(asv_ref_align_revcomp, function(align) {
-    pid(align, type = "PID1")
-  })
-  # Choose the higher pid value
-  asv_pids <- ifelse(asv_pids_normal >= asv_pids_revcomp, asv_pids_normal, asv_pids_revcomp)
-  # Format the alignment results
-  alignment_text <- paste0(map_chr(seq_along(asv_ref_align_normal), function(i) {
-    paste0('ASV Sequence: ', asv_seqs[[i]], '\n',
-           'Reference Sequence: ', unlist(ref_seqs[[i]]),'\n',
-           'Percent Identity: ', asv_pids[[i]],'\n',
-           'Aligned ASV Sequence: ', asv_ref_align_normal[[i]]@pattern,'\n',
-           'Aligned Reference Sequence: ',asv_ref_align_normal[[i]]@subject,'\n')
-  }), 
-  collapse = '==================================================\n')
-  # Write the alignment results to a text file
-  readr::write_lines(alignment_text, file = file.path(output_directory_path, paste0("dada2_asv_alignments_", locus, ".txt")))
-  return(asv_pids)
-}
-
-#' Align ASV sequences to reference sequences from database to get percent ID.
-#' Start by retrieving reference sequences.
-#'
-#' @param tax_results The dataframe containing taxonomic assignments
-#' @param db The reference database
-#'
-#' @keywords internal
-get_ref_seq <- function(tax_results, db) {
-  ref_i <- as.integer(stringr_str_match(tax_results$tax[, 'Reference'], '^.+_([0-9]+)$')[ ,2])
-  db[ref_i]
-}
-
-#' Add PID and bootstrap values to tax result.
-#'
-#' @param tax_results The dataframe containing taxonomic assignments
-#' @param asv_pid Percent identity information for each ASV relative to
-#'   reference database sequence
-#' @keywords internal
-add_pid_to_tax <- function(tax_results, asv_pid) {
-  tax_results$tax <- cbind(tax_results$tax, ASV = rownames(tax_results$tax))
-  tax_results$boot <- cbind(tax_results$boot, ASV = asv_pid)
-  return(tax_results)
-}
-
 #' Combine taxonomic assignments and bootstrap values for each locus into single
 #' falsification vector
 #'
