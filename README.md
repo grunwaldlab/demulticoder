@@ -1,11 +1,11 @@
 
 <img src="man/figures/demulticoder_logo_iteration1.png" align="right" height="95" alt="" />
 
-# **demulticoder**: An R package to streamline metabarcoding analyses using DADA2
+## **demulticoder**: An R package for the simultaneous analysis of multiplexed metabarcodes
 
 ### Introduction
 
-The ***demulticoder*** package is a Cutadapt and DADA2 wrapper package
+The ***demulticoder*** package is a cutadapt and DADA2 wrapper package
 for metabarcodng analyses. The main commands and outputs are intuitive
 and comprehensive, which helps to account for the complex and iterative
 nature of metabarcoding analyses.
@@ -14,25 +14,17 @@ Here is a brief schematic of the general workflow:
 
 <img src="man/figures/Figure1.svg" width="35%" height="35%" style="display: block; margin: auto auto auto 0;" />
 
-### Key features
+### Key Features
 
-- The ability to do analysis on either demultiplexed or pooled amplicons
-  within samples
-
-- Amplicons from multiple datasets be trimmed of primers, filtered,
-  denoised, merged, and given taxonomic assignments in one go (with
-  different parameters for each dataset if desired)
-
-- The package handles not just **16S** or **ITS** short read datasets
-  when using default UNITE fungal or Silva 16S databases but also
-  oomycete ***rps10*** metabarcode analyses using oomycetedbDB
-  <https://grunwaldlab.github.io/OomyceteDB/>
-
-- Depending on the robustness of custom databases, the package can also
-  handle up to two custom databases and/or metabarcodes. Some examples
-  include 18S or CO1 datasets. The requirement is that the databases are
-  formatted like the Silva database. More information on formatting is
-  here: <https://benjjneb.github.io/dada2/training.html>).
+- It automates the use of DADA2 to analyze data derived from multiple
+  metabarcodes.  
+- It reduces the number of manual input steps  
+- Handles analysis of two metabarcodes multiplexed into the same
+  sequencing batch  
+- Analyze different types of metabarcodes simultaneously  
+- Reproducible workflows for oomycetes
+- Supported metabarcodes: 16S rDNA, ITS1, *rps10*, and up to two
+  additional metabarcodes
 
 ### Installation
 
@@ -46,21 +38,31 @@ devtools::install_github("grunwaldlab/demulticoder")
 
 **1. Set-up input directory and files**
 
-After installing the package, make a data directory and add the
-following files:  
-- PE short read amplicon data. The files must end in either
-\*\_R1.fastq.gz\* , or \*\_R2.fastq.gz\* and each sample must have both
-sets of reads.
+After installing the package, make a **data directory**.
 
+Within this directory you’ll need:
+
+- **PE short read amplicon data**
+  - The files must end in either ’\_R1.fastq.gz’ , or ’\_R2.fastq.gz’
+    and each sample must have both R1 and R2 files.
 - [**metadata.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv)
-  file (there will be a unique row for each sample, and samples will be
-  entered twice if they contain pooled amplicons, as in the example
-  template)
-
+  - New row for each unique sample
+  - Samples entered twice if samples contain two pooled metabarcodes, as
+    in the example template
 - [**primerinfo_params.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv)
-  file (there is a new row for each unique barcode and associated primer
-  sequences, and there are also optional Cutadapt, DADA2 or filtering
-  parameters that can be added or adjusted)
+  - New row for each unique barcode and associated primer sequence
+  - Optional cutadapt and DADA2 parameters
+  - See
+    [**Documentation**](https://grunwaldlab.github.io/demulticoder/articles/Documentation.html)
+    for more information
+- **Taxonomy databases**
+  - UNITE fungal database
+  - Silva 16S rDNA
+  - oomyceteDB
+  - Up two custom databases
+    - See
+      [**Documentation**](https://grunwaldlab.github.io/demulticoder/articles/Documentation.html)
+      for how to format.
 
 **2. Prepare reads**
 

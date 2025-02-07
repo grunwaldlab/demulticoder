@@ -19,19 +19,17 @@ knitr::opts_chunk$set(
 
 ### Before You Start
 
-In the following example, we demonstrate key package functionality using a subset of reads from two samples containing pooled ITS1 fungal and rps10 oomycete amplicons. The databases used in the assign taxonomy step are also abridged versions of the full UNITE and oomyceteDB databases.
+* In the following example, we demonstrate key package functionality using a subset of reads from two samples containing pooled ITS1 fungal and *rps10* oomycete amplicons. 
 
-You can follow along because all test data and associated CSV input files are loaded with the package. Additional examples are also available on the website. 
+* You can follow along because all test data and associated CSV input files are loaded with the package. Additional examples are also available on the website. 
 
-*Please note, for speed, the test dataset is comprised of randomly subset reads for the samples (S1 and S2), and due to database size, the full UNITE database is included in the package, but is also a smaller subset of the larger database.* 
-
-You will need to prepare your raw read files and fill in the [**metadata.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv) and [**primerinfo_params.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv) templates.
+* Please note, for speed, the test dataset is comprised of randomly subset reads for the samples (S1 and S2). For demonstration purposes only, an abridged version of the full UNITE database is also included, rather than the full one.
 
 ### Format of the PE amplicon files
 
-The package takes forward and reverse Illumina short read sequence data.
+* The package takes forward and reverse Illumina short read sequence data.
 
-To avoid errors, the only characters that are acceptable in sample names are letters and numbers. Characters can be separated by underscores, but no other symbols. The files must end with the suffix **R1.fastq.gz** or **R2.fastq.gz**.
+* **Format of file names** To avoid errors, the only characters that are acceptable in sample names are letters and numbers. Characters can be separated by underscores, but no other symbols. The files must end with the suffix **R1.fastq.gz** or **R2.fastq.gz**.
 
 ### Format of metadata file (*metadata.csv*)
 
