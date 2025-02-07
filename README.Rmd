@@ -57,13 +57,13 @@ Within this directory you'll need:
 * [**primerinfo_params.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv)
   * New row for each unique barcode and associated primer sequence
   * Optional cutadapt and DADA2 parameters
-  * See [**Documentation**](https://grunwaldlab.github.io/demulticoder/articles/Documentation.html) for more information
 * **Taxonomy databases**  
   * UNITE fungal database
   * Silva 16S rDNA
   * oomyceteDB 
   * Up two custom databases
-    * See [**Documentation**](https://grunwaldlab.github.io/demulticoder/articles/Documentation.html) for how to format. 
+
+See [**Documentation**](https://grunwaldlab.github.io/demulticoder/articles/Documentation.html) for how to format databases and input files. 
   
   
 **2. Prepare reads** 

@@ -1,10 +1,12 @@
 
-## *demulticoder*: An R package
+## **demulticoder**: An R package for the simultaneous analysis of multiplexed metabarcodes
 
 ### Introduction
 
-The **demulticoder** package allows for the simultaneous analysis of
-multiplexed metabarcodes
+The ***demulticoder*** package is a cutadapt and DADA2 wrapper package
+for metabarcodng analyses. The main commands and outputs are intuitive
+and comprehensive, which helps to account for the complex and iterative
+nature of metabarcoding analyses.
 
 Here is a brief schematic of the general workflow:
 
@@ -12,7 +14,6 @@ Here is a brief schematic of the general workflow:
 
 ### Key Features
 
-- The main commands and outputs are intuitive and comprehensive
 - It automates the use of DADA2 to analyze data derived from multiple
   metabarcodes.  
 - It reduces the number of manual input steps  
@@ -49,17 +50,15 @@ Within this directory you’ll need:
 - [**primerinfo_params.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv)
   - New row for each unique barcode and associated primer sequence
   - Optional cutadapt and DADA2 parameters
-  - See
-    [**Documentation**](https://grunwaldlab.github.io/demulticoder/articles/Documentation.html)
-    for more information
 - **Taxonomy databases**
   - UNITE fungal database
   - Silva 16S rDNA
   - oomyceteDB
   - Up two custom databases
-    - See
-      [**Documentation**](https://grunwaldlab.github.io/demulticoder/articles/Documentation.html)
-      for how to format.
+
+See
+[**Documentation**](https://grunwaldlab.github.io/demulticoder/articles/Documentation.html)
+for how to format databases and input files.
 
 **2. Prepare reads**
 
