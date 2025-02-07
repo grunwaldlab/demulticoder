@@ -76,31 +76,31 @@
 <div class="section level3">
 <h3 id="before-you-start">Before You Start<a class="anchor" aria-label="anchor" href="#before-you-start"></a>
 </h3>
-<p>In the following example, we demonstrate key package functionality
-using a subset of reads from two samples containing pooled ITS1 fungal
-and rps10 oomycete amplicons. The databases used in the assign taxonomy
-step are also abridged versions of the full UNITE and oomyceteDB
-databases.</p>
-<p>You can follow along because all test data and associated CSV input
-files are loaded with the package. Additional examples are also
-available on the website.</p>
-<p><em>Please note, for speed, the test dataset is comprised of randomly
-subset reads for the samples (S1 and S2), and due to database size, the
-full UNITE database is included in the package, but is also a smaller
-subset of the larger database.</em></p>
-<p>You will need to prepare your raw read files and fill in the <a href="https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv" class="external-link"><strong>metadata.csv</strong></a>
-and <a href="https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv" class="external-link"><strong>primerinfo_params.csv</strong></a>
-templates.</p>
+<ul>
+<li><p>In the following example, we demonstrate key package
+functionality using a subset of reads from two samples containing pooled
+ITS1 fungal and <em>rps10</em> oomycete amplicons.</p></li>
+<li><p>You can follow along because all test data and associated CSV
+input files are loaded with the package. Additional examples are also
+available on the website.</p></li>
+<li><p>Please note, for speed, the test dataset is comprised of randomly
+subset reads for the samples (S1 and S2). For demonstration purposes
+only, an abridged version of the full UNITE database is also included,
+rather than the full one.</p></li>
+</ul>
 </div>
 <div class="section level3">
-<h3 id="format-of-the-pe-amplicon-files">Format of the PE amplicon files<a class="anchor" aria-label="anchor" href="#format-of-the-pe-amplicon-files"></a>
+<h3 id="format-of-the-pe-read-files">Format of the PE read files<a class="anchor" aria-label="anchor" href="#format-of-the-pe-read-files"></a>
 </h3>
-<p>The package takes forward and reverse Illumina short read sequence
-data.</p>
-<p>To avoid errors, the only characters that are acceptable in sample
-names are letters and numbers. Characters can be separated by
-underscores, but no other symbols. The files must end with the suffix
-<strong>R1.fastq.gz</strong> or <strong>R2.fastq.gz</strong>.</p>
+<ul>
+<li><p>The package takes forward and reverse Illumina short read
+sequence data.</p></li>
+<li><p><strong>Format of file names</strong> To avoid errors, the only
+characters that are acceptable in sample names are letters and numbers.
+Characters can be separated by underscores, but no other symbols. The
+files must end with the suffix <strong>R1.fastq.gz</strong> or
+<strong>R2.fastq.gz</strong>.</p></li>
+</ul>
 </div>
 <div class="section level3">
 <h3 id="format-of-metadata-file-metadata-csv">Format of metadata file (<em>metadata.csv</em>)<a class="anchor" aria-label="anchor" href="#format-of-metadata-file-metadata-csv"></a>
@@ -304,11 +304,10 @@ before proceeding.</p>
 <div class="section level3">
 <h3 id="loading-the-package">Loading the Package<a class="anchor" aria-label="anchor" href="#loading-the-package"></a>
 </h3>
-<p>For now, the package will be loaded by retrieving it from GitHub. We
-are submitting package to CRAN.</p>
+<p>For now, the package will be loaded by retrieving it from GitHub.
+Submissionto CRAN is in progress.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"grunwaldlab/demulticoder"</span><span class="op">)</span></span>
-<span><span class="co">#devtools::load_all("~/demulticoder")</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/demulticoder/" class="external-link">"demulticoder"</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/metacoder_documentation/" class="external-link">"metacoder"</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://dplyr.tidyverse.org" class="external-link">"dplyr"</a></span><span class="op">)</span></span></code></pre></div>
