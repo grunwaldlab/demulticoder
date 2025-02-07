@@ -128,7 +128,7 @@ There are circumstances where a few primer sequences may still remain. If so, an
 
 ```{r visualize_outputs_cut_trim, echo=FALSE, fig.height=6, fig.width=6}
 if (!overwrite_existing) {
-  knitr::include_graphics("./posttrim_primer_plot_pooled.pdf")
+  knitr::include_graphics("./posttrim_primer_plot_pooled.png")
 }
 ```
 

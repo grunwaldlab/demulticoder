@@ -23,7 +23,6 @@ Here is a brief schematic of the general workflow:
 knitr::include_graphics("man/figures/Figure1.svg")
 ```
 
-
 ### Key features  
 
 - The ability to do analysis on either demultiplexed or pooled amplicons within samples  
