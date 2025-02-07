@@ -35,51 +35,62 @@ Here is a brief schematic of the general workflow:
 To install the development version of package:
 
 ``` r
+library("devtools")
+library("DADA2")
+
 devtools::install_github("grunwaldlab/demulticoder")
+library("demulticoder")
 ```
 
 ### Quick start
 
 **1. Set-up input directory and files**
 
-After installing the package, make a **data directory**.
+To demonstrate how to use the package, we have a small test dataset that
+comes loaded with the package. This dataset will be used in the workflow
+example below.
 
-Within this directory you’ll need:
+Already loaded in the test dataset directory are the following files:
 
 - **PE short read amplicon data**
-  - The files must end in either ’\_R1.fastq.gz’ , or ’\_R2.fastq.gz’
-    and each sample must have both R1 and R2 files.
+  - Files: S1_R1.fastq.gz, S1_R2.fastq.gz, S2_R1.fastq.gz,
+    S2_R1.fastq.gz  
+  - The files must end in either *R1.fastq.gz* , or *R2.fastq.gz* and
+    each sample must have both R1 and R2 files.
 - [**metadata.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv)
   - New row for each unique sample
   - Samples entered twice if samples contain two pooled metabarcodes, as
-    in the example template
+    in the test data template
 - [**primerinfo_params.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv)
   - New row for each unique barcode and associated primer sequence
   - Optional cutadapt and DADA2 parameters
 - **Taxonomy databases**
-  - UNITE fungal database
-  - Silva 16S rDNA
+  - UNITE fungal database (abridged version)
   - oomyceteDB
-  - Up two custom databases
 
 See
 [**Documentation**](https://grunwaldlab.github.io/demulticoder/articles/Documentation.html)
 for how to format databases and input files.
 
+For more details on each step, check out the [**Getting
+Started**](https://grunwaldlab.github.io/demulticoder/articles/Getting_Started.html)
+tab on the package website
+
 **2. Prepare reads**
 
 ``` r
 output<-prepare_reads(
-  data_directory = "<DATADIR>",
-  output_directory = "<OUTDIR>")
+  data_directory = system.file("extdata", package = "demulticoder"), # This allows us to use the test directory located within the package
+  output_directory = "<OUTDIR>") # Change to you preferred location on your local computer (Example: "~/demulticoder_test")
 ```
 
-**3. Cut and trim reads**
+**3. Cut and trim reads** User must install cutadapt on their local
+machine and append the path to the executable.
 
 ``` r
 cut_trim(
   output,
-  cutadapt_path="<CUTADAPTPATH>")
+  cutadapt_path="<CUTADAPTPATH>") # Change to the location on your computer. (Example: "/usr/bin/cutadapt")
 ```
 
 **4. Make ASV abundance matrix**
