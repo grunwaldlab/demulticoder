@@ -91,14 +91,87 @@
 <h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h3>
 <p><strong>Dependencies</strong>:</p>
+<p>For <strong>demulticoder</strong> to work properly, make sure the following R packages are installed first:</p>
 <ul>
-<li>DADA2 (TODO-add information on installation)</li>
+<li>
+<strong>DADA2</strong> (Latest version is 3.20)
+<ul>
+<li>To install, follow these instructions: <a href="https://www.bioconductor.org/packages/release/bioc/html/dada2.html" class="external-link uri">https://www.bioconductor.org/packages/release/bioc/html/dada2.html</a><br>
+</li>
 </ul>
-<p>To install the development version of package:</p>
+</li>
+<li>
+<strong>phyloseq</strong>
+<ul>
+<li>To install: <a href="https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html" class="external-link uri">https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html</a><br>
+</li>
+</ul>
+</li>
+<li>
+<strong>metacoder</strong> (Available through CRAN)
+<ul>
+<li>If you are using the latest version of R (4.4.2) and R studio (2024.12.0+467), you may temporarily need to install metacoder through Github, until CRAN approves the latest version.</li>
+</ul>
+</li>
+</ul>
+<p>To install the development version of package (while submission to CRAN is in progress):</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://devtools.r-lib.org/" class="external-link">"devtools"</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"DADA2"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://dx.plos.org/10.1371/journal.pone.0061217" class="external-link">"phyloseq"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/metacoder_documentation/" class="external-link">"metacoder"</a></span><span class="op">)</span></span>
 <span></span>
+<span><span class="co">#If you need to install metacoder but latest version of R and R studio, you can </span></span>
+<span><span class="co">#temporarily install metacoder as follows. </span></span>
+<span><span class="co">#This message will be removed once updates to CRAN are made.  </span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"grunwaldlab/metacoder"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#Now we'll install demulticoder (instructions will be updated once available </span></span>
+<span><span class="co">#through CRAN)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"grunwaldlab/demulticoder"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/demulticoder/" class="external-link">"demulticoder"</a></span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="installation-1">Installation<a class="anchor" aria-label="anchor" href="#installation-1"></a>
+</h3>
+<p><strong>Dependencies</strong>:</p>
+<p>For <strong>demulticoder</strong> to work properly, make sure the following R packages are installed first:</p>
+<ul>
+<li>
+<strong>DADA2</strong> (Latest version is 3.20)
+<ul>
+<li>To install, follow these instructions: <a href="https://www.bioconductor.org/packages/release/bioc/html/dada2.html" class="external-link uri">https://www.bioconductor.org/packages/release/bioc/html/dada2.html</a><br>
+</li>
+</ul>
+</li>
+<li>
+<strong>phyloseq</strong>
+<ul>
+<li>To install: <a href="https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html" class="external-link uri">https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html</a><br>
+</li>
+</ul>
+</li>
+<li>
+<strong>metacoder</strong> (Available through CRAN)
+<ul>
+<li>If you are using the latest version of R (4.4.2) and R studio (2024.12.0+467), you may temporarily need to install metacoder through Github, until CRAN approves the latest version.</li>
+</ul>
+</li>
+</ul>
+<p>To install the development version of package (while submission to CRAN is in progress):</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://devtools.r-lib.org/" class="external-link">"devtools"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"DADA2"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://dx.plos.org/10.1371/journal.pone.0061217" class="external-link">"phyloseq"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/metacoder_documentation/" class="external-link">"metacoder"</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#If you need to install metacoder but latest version of R and R studio, you can </span></span>
+<span><span class="co">#temporarily install metacoder as follows. </span></span>
+<span><span class="co">#This message will be removed once updates to CRAN are made.  </span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"grunwaldlab/metacoder"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#Now we'll install demulticoder (instructions will be updated once available </span></span>
+<span><span class="co">#through CRAN)</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"grunwaldlab/demulticoder"</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/demulticoder/" class="external-link">"demulticoder"</a></span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -142,26 +215,26 @@
 <p>See <a href="https://grunwaldlab.github.io/demulticoder/articles/Documentation.html" class="external-link"><strong>Documentation</strong></a> for how to format databases and input files.</p>
 <p>For more details on each step, check out the <a href="https://grunwaldlab.github.io/demulticoder/articles/Getting_Started.html" class="external-link"><strong>Getting Started</strong></a> tab on the package website</p>
 <p><strong>2. Prepare reads</strong></p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">output</span><span class="op">&lt;-</span><span class="fu"><a href="reference/prepare_reads.html">prepare_reads</a></span><span class="op">(</span></span>
 <span>  data_directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"demulticoder"</span><span class="op">)</span>, <span class="co"># This allows us to use the test directory located within the package</span></span>
 <span>  output_directory <span class="op">=</span> <span class="st">"&lt;OUTDIR&gt;"</span><span class="op">)</span> <span class="co"># Change to you preferred location on your local computer (Example: "~/demulticoder_test")</span></span></code></pre></div>
 <p><strong>3. Cut and trim reads</strong> User must install cutadapt on their local machine and append the path to the executable.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cut_trim.html">cut_trim</a></span><span class="op">(</span></span>
 <span>  <span class="va">output</span>,</span>
 <span>  cutadapt_path<span class="op">=</span><span class="st">"&lt;CUTADAPTPATH&gt;"</span><span class="op">)</span> <span class="co"># Change to the location on your computer. (Example: "/usr/bin/cutadapt")</span></span></code></pre></div>
 <p><strong>4. Make ASV abundance matrix</strong></p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/make_asv_abund_matrix.html">make_asv_abund_matrix</a></span><span class="op">(</span></span>
 <span>  <span class="va">output</span><span class="op">)</span></span></code></pre></div>
 <p><strong>5. Assign taxonomy</strong></p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/assign_tax.html">assign_tax</a></span><span class="op">(</span></span>
 <span>  <span class="va">output</span>,</span>
 <span>  <span class="va">asv_abund_matrix</span><span class="op">)</span></span></code></pre></div>
 <p><strong>6. Convert ASV matrix to taxmap and phyloseq objects</strong></p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">&lt;-</span><span class="fu"><a href="reference/convert_asv_matrix_to_objs.html">convert_asv_matrix_to_objs</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
