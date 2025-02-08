@@ -30,16 +30,39 @@ Here is a brief schematic of the general workflow:
 
 **Dependencies**:
 
-- DADA2 (TODO-add information on installation)
+For **demulticoder** to work properly, make sure the following R
+packages are installed first:
 
-To install the development version of package:
+- **DADA2** (Latest version is 3.20)
+  - To install, follow these instructions:
+    <https://www.bioconductor.org/packages/release/bioc/html/dada2.html>  
+- **phyloseq**
+  - To install:
+    <https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html>  
+- **metacoder** (Available through CRAN)
+  - If you are using the latest version of R (4.4.2) and R studio
+    (2024.12.0+467), you may temporarily need to install metacoder
+    through Github, until CRAN approves the latest version.
+
+To install the development version of package (while submission to CRAN
+is in progress):
 
 ``` r
-library("devtools")
-library("DADA2")
-
+#Here we install demulticoder (instructions will be updated once available 
+#through CRAN)
 devtools::install_github("grunwaldlab/demulticoder")
 library("demulticoder")
+
+#If you need to install metacoder but latest version of R and R studio, you can 
+#temporarily install metacoder as follows. 
+#This message will be removed once updates to CRAN are made.  
+devtools::install_github("grunwaldlab/metacoder")
+
+#Let's make sure other packages are loaded:
+library("devtools")
+library("DADA2")
+library("phyloseq")
+library("metacoder")
 ```
 
 ### Quick start
@@ -80,7 +103,8 @@ tab on the package website
 
 ``` r
 output<-prepare_reads(
-  data_directory = system.file("extdata", package = "demulticoder"), # This allows us to use the test directory located within the package
+  data_directory = system.file("extdata", package = "demulticoder"), # This 
+  #allows us to use the test directory located within the package
   output_directory = "<OUTDIR>") # Change to you preferred location on your local computer (Example: "~/demulticoder_test")
 ```
 
