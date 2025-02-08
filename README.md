@@ -53,9 +53,9 @@ is in progress):
 devtools::install_github("grunwaldlab/demulticoder")
 library("demulticoder")
 
-#If you need to install metacoder but latest version of R and R studio, you can 
-#temporarily install metacoder as follows. 
-#This message will be removed once updates to CRAN are made.  
+#If you need to install metacoder but have the latest version of R and R studio, 
+#you can temporarily install metacoder as follows. 
+#This message will be removed once updates to CRAN are made. 
 devtools::install_github("grunwaldlab/metacoder")
 
 #Let's make sure other packages are loaded:
