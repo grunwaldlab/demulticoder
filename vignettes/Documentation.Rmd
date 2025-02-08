@@ -70,7 +70,7 @@ To avoid errors, the only characters that are acceptable in sample names are let
 The metadata.csv file contains information about the samples and primers (and associated barcodes) used in the experiment. It has the following two required columns:
 
 * **sample_name**: Identifier for each sample (e.g., S1, S2)
-* **primer_name**: Name of the primer used (e.g., rps10, its, r16S, other1, oteher2)
+* **primer_name**: Name of the primer used (e.g., rps10, its, r16S, other1, other2)
 
 Please add your associated metadata to the file after these two required columns. This can then be used for your downstream exploratory or diversity analyses, as the sample data will be incorporated into the final phyloseq and taxmap objects.
 
