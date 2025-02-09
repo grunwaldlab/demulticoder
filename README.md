@@ -105,7 +105,8 @@ tab on the package website
 output<-prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"), # This 
   #allows us to use the test directory located within the package
-  output_directory = "<OUTDIR>") # Change to you preferred location on your local computer (Example: "~/demulticoder_test")
+  output_directory = "<OUTDIR>", # Change to you preferred location on your local computer (Example: "~/demulticoder_test")
+  overwrite_existing = TRUE)
 ```
 
 **3. Cut and trim reads** User must install cutadapt on their local
@@ -114,14 +115,16 @@ machine and append the path to the executable.
 ``` r
 cut_trim(
   output,
-  cutadapt_path="<CUTADAPTPATH>") # Change to the location on your computer. (Example: "/usr/bin/cutadapt")
+  cutadapt_path="<CUTADAPTPATH>",
+  overwrite_existing = TRUE)) # Change to the location on your computer. (Example: "/usr/bin/cutadapt")
 ```
 
 **4. Make ASV abundance matrix**
 
 ``` r
 make_asv_abund_matrix(
-  output)
+  output,
+  overwrite_existing = TRUE))
 ```
 
 **5. Assign taxonomy**
@@ -129,7 +132,8 @@ make_asv_abund_matrix(
 ``` r
 assign_tax(
   output,
-  asv_abund_matrix)
+  asv_abund_matrix,
+  overwrite_existing = TRUE))
 ```
 
 **6. Convert ASV matrix to taxmap and phyloseq objects**

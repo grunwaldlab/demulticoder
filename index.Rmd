@@ -96,7 +96,8 @@ For more details on each step, check out the [**Getting Started**](https://grunw
 ```{r, eval=FALSE, echo=TRUE}
 output<-prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"), # This allows us to use the test directory located within the package
-  output_directory = "<OUTDIR>") # Change to you preferred location on your local computer (Example: "~/demulticoder_test")
+  output_directory = "<OUTDIR>",
+  overwrite_existing = TRUE)) # Change to you preferred location on your local computer (Example: "~/demulticoder_test")
 ```
 
 **3. Cut and trim reads** 
@@ -104,14 +105,16 @@ User must install cutadapt on their local machine and append the path to the exe
 ```{r, eval=FALSE, echo=TRUE}
 cut_trim(
   output,
-  cutadapt_path="<CUTADAPTPATH>") # Change to the location on your computer. (Example: "/usr/bin/cutadapt")
+  cutadapt_path="<CUTADAPTPATH>",) # Change to the location on your computer. (Example: "/usr/bin/cutadapt")
+  overwrite_existing = TRUE)
 ```
  
   
 **4. Make ASV abundance matrix** 
 ```{r, eval=FALSE, echo=TRUE}
 make_asv_abund_matrix(
-  output)
+  output,
+  overwrite_existing = TRUE))
 ```
   
   
@@ -119,7 +122,8 @@ make_asv_abund_matrix(
 ```{r, eval=FALSE, echo=TRUE}
 assign_tax(
   output,
-  asv_abund_matrix)
+  asv_abund_matrix,
+  overwrite_existing = TRUE))
 ```
 
   
