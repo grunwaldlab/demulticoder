@@ -13,8 +13,16 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "./"
+  fig.path = "./",
+  out.width = "70%",
+  fig.retina = 1
 )
+```
+
+```{r overwrite_existing_or_ont, include=FALSE, echo=FALSE}
+library(dplyr)
+library(kableExtra)
+overwrite_existing <- FALSE
 ```
 
 ### Before You Start
@@ -66,11 +74,13 @@ knitr::opts_chunk$set(
 Here is what the *metadata.csv* looks like for this test dataset:  
 
 ```{r, echo=FALSE}
-knitr::kable(data.frame(
+data <- data.frame(
   sample_name = c("S1", "S2", "S1", "S2"),
   primer_name = c("rps10", "rps10", "its", "its"),
-  organism = c("Cry", "Cin", "Cry", "Cin")
-), row.names = FALSE)
+  organism = c("Cry", "Cin", "Cry", "Cin"))
+
+knitr::kable(data, row.names = FALSE) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", full_width = F, font_size = 6))
 ```
 
 ### Format of primer and parameters file (*primerinfo_parms.csv*)
@@ -91,7 +101,7 @@ DADA2 Primer sequence information and user-defined parameters are placed in *pri
 Example template for 'primerinfo_params.csv'
 
 ```{r, echo=FALSE}
-knitr::kable(data.frame(
+primer_info <-data.frame(
   primer_name = c("rps10", "its"),
   forward = c("GTTGGTTAGAGYARAAGACT", "CTTGGTCATTTAGAGGAAGTAA"),
   reverse = c("ATRYYTAGAAAGAYTYGAACT", "GCTGCGTTCTTCATCGATGC"),
@@ -113,8 +123,11 @@ knitr::kable(data.frame(
   rm.lowcomplex = c(0, 0),
   minOverlap = c(15, 15),
   maxMismatch = c(0, 0),
-  min_asv_length = c(50, 50)
-), row.names = FALSE)
+  min_asv_length = c(50, 50))
+
+kable(primer_info, row.names = FALSE) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", full_width = F, font_size = 12)) %>%
+  scroll_box(width = "100%", height = "100px", extra_css = "thead th { white-space: nowrap; }")
 ```
 
 For more info on parameter specifics, see [Documentation](https://grunwaldlab.github.io/demulticoder/articles/Documentation.html)   
@@ -145,7 +158,6 @@ For now, the package will be loaded by retrieving it from GitHub. Submission to 
 devtools::install_github("grunwaldlab/demulticoder")
 library("demulticoder")
 library("metacoder")
-library("dplyr")
 ```
 
 ### Reorganize data tables and set-up data directory structure 
@@ -197,21 +209,36 @@ assign_tax(
 ### Format of output matrices
 The default output is a CSV file per metabarcode with the inferred ASVs and sequences, taxonomic assignments, and bootstrap supports provided by DADA2. These data can then be used as input for downstream steps.
 
-```{r Reformat_final_matrix, message=TRUE, warning=FALSE}
-objs<-convert_asv_matrix_to_objs(analysis_setup, minimum_bootstrap = 0, save_outputs = TRUE)
+Here we show the first rows of the *rps10* matrix checking that ASV sequences look to be the correct length and taxonomic assignments seem reasonable.  
+```{r Show_rps10_matrix, message=TRUE, warning=FALSE}
+rps10_matrix<-read.csv("final_asv_abundance_matrix_rps10.csv", header=TRUE)
+
+kable(rps10_matrix, row.names = TRUE) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", full_width = F, font_size = 6)) %>%
+  scroll_box(width = "100%", height = "100px", extra_css = "thead th { white-space: nowrap; }")
+```
+
+We can also inspect the first rows of the *ITS1* matrix
+```{r Show_its_matrix, message=TRUE, warning=FALSE}
+its_matrix<-read.csv("final_asv_abundance_matrix_its.csv", header=TRUE)
+
+kable(its_matrix, row.names = TRUE) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", full_width = F, font_size = 6)) %>%
+  scroll_box(width = "100%", height = "100px", extra_css = "thead th { white-space: nowrap; }")
 ```
 
 ### Reformat ASV matrix as taxmap and phyloseq objects after optional filtering of low abundance ASVs  
 
+We will only consider assignments that have a bootstrap score of 60
 ```{r Reformat_final_matrix, message=TRUE, warning=FALSE}
-objs<-convert_asv_matrix_to_objs(analysis_setup, minimum_bootstrap = 0, save_outputs = TRUE)
+objs<-convert_asv_matrix_to_objs(analysis_setup, minimum_bootstrap = 60, save_outputs = TRUE)
 ```
 
 ### Objects can now be used for downstream data analysis  
 Here we make heattrees using taxmap object.  
 
-First we make a heat tree for our ITS-barcoded samples 
-```{r Heatree_demonstration_its, message=FALSE, warning=FALSE}
+First we make a heat tree for our **ITS1**-barcoded samples 
+```{r Heatree_demonstration_its, fig.height=8, fig.width=8, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 objs$taxmap_its %>%
   filter_taxa(! grepl(x = taxon_names, "_sp$"), reassign_obs = FALSE) %>%
   filter_taxa(! grepl(x = taxon_names, "incertae_sedis", ignore.case = TRUE), reassign_obs = FALSE) %>%
@@ -225,7 +252,7 @@ objs$taxmap_its %>%
 ```
 
 Now we make a heat tree for our rps10-barcoded samples
-```{r Heatree_demonstration_rps10, message=FALSE, warning=FALSE}
+```{r Heatree_demonstration_rps10, fig.height=8, fig.width=8, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 objs$taxmap_rps10 %>%
   filter_taxa(! grepl(x = taxon_names, "_sp$"), reassign_obs = FALSE) %>%
   filter_taxa(! grepl(x = taxon_names, "incertae_sedis", ignore.case = TRUE), reassign_obs = FALSE) %>%
@@ -238,10 +265,10 @@ objs$taxmap_rps10 %>%
                        layout = "da", initial_layout = "re")
 ```
 
-We can also do a variety of analyses, if we convert to phyloseq object
+We can also do a variety of analyses, if we convert to **phyloseq** object
 
-Here we demonstrate how to make a stacked bar plot of the relative abundance of taxa by sample for the ITS-barcoded samples
-```{r Phyloseq_demonstration_ITS, message=FALSE, warning=FALSE}
+Here we demonstrate how to make a stacked bar plot of the relative abundance of taxa by sample for the ITS1-barcoded samples
+```{r Phyloseq_demonstration_ITS, fig.height=8, fig.width=8, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 data <- objs$phyloseq_its %>%
   phyloseq::transform_sample_counts(function(x) {x/sum(x)} ) %>% 
   phyloseq::psmelt() %>%                                        
@@ -281,8 +308,8 @@ abund_plot <- ggplot2::ggplot(data, ggplot2::aes(x = Sample, y = Abundance, fill
 print(abund_plot)
 ```
 
-Finally,we demonstrate how to make a stacked bar plot of the relative abundance of taxa by sample for the rps10-barcoded samples
-```{r Phyloseq_demonstration_rps10, message=FALSE, warning=FALSE}
+Finally, we demonstrate how to make a stacked bar plot of the relative abundance of taxa by sample for the rps10-barcoded samples  
+```{r Phyloseq_demonstration_rps10, fig.height=8, fig.width=8, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 data <- objs$phyloseq_rps10 %>%
   phyloseq::transform_sample_counts(function(x) {x/sum(x)} ) %>% 
   phyloseq::psmelt() %>%                                        
