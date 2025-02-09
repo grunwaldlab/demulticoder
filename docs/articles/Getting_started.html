@@ -60,7 +60,7 @@
 
 
 
-
+<script src="Getting_started_files/kePrint-0.0.1/kePrint.js"></script><link href="Getting_started_files/lightable-0.0.1/lightable.css" rel="stylesheet">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
@@ -77,16 +77,51 @@
 <h3 id="before-you-start">Before You Start<a class="anchor" aria-label="anchor" href="#before-you-start"></a>
 </h3>
 <ul>
-<li><p>In the following example, we demonstrate key package
-functionality using a subset of reads from two samples containing pooled
-ITS1 fungal and <em>rps10</em> oomycete amplicons.</p></li>
-<li><p>You can follow along because all test data and associated CSV
-input files are loaded with the package. Additional examples are also
-available on the website.</p></li>
-<li><p>Please note, for speed, the test dataset is comprised of randomly
-subset reads for the samples (S1 and S2). For demonstration purposes
-only, an abridged version of the full UNITE database is also included,
-rather than the full one.</p></li>
+<li>In the following example, we demonstrate key package functionality
+using the test dataset that is included in the package</li>
+<li>You can follow along because all test data and associated CSV input
+files are contained in the package.</li>
+<li>Additional examples are also available under the [Example
+vignettes]tab</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="components-of-the-test-dataset">Components of the test dataset<a class="anchor" aria-label="anchor" href="#components-of-the-test-dataset"></a>
+</h3>
+<ul>
+<li>
+<strong>PE short read amplicon data</strong>
+<ul>
+<li>Files: S1_R1.fastq.gz, S1_R2.fastq.gz, S2_R1.fastq.gz,
+S2_R1.fastq.gz<br>
+</li>
+<li>The files must end in either <em>R1.fastq.gz</em> , or
+<em>R2.fastq.gz</em> and each sample must have both R1 and R2
+files.</li>
+</ul>
+</li>
+<li>
+<a href="https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv" class="external-link"><strong>metadata.csv</strong></a>
+<ul>
+<li>New row for each unique sample</li>
+<li>Samples entered twice if samples contain two pooled metabarcodes, as
+in the test data template</li>
+</ul>
+</li>
+<li>
+<a href="https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv" class="external-link"><strong>primerinfo_params.csv</strong></a>
+<ul>
+<li>New row for each unique barcode and associated primer sequence</li>
+<li>Optional cutadapt and DADA2 parameters</li>
+</ul>
+</li>
+<li>
+<strong>Taxonomy databases</strong>
+<ul>
+<li>UNITE fungal database (abridged version)</li>
+<li>oomyceteDB</li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="section level3">
@@ -105,48 +140,97 @@ files must end with the suffix <strong>R1.fastq.gz</strong> or
 <div class="section level3">
 <h3 id="format-of-metadata-file-metadata-csv">Format of metadata file (<em>metadata.csv</em>)<a class="anchor" aria-label="anchor" href="#format-of-metadata-file-metadata-csv"></a>
 </h3>
-<p>The format of the CSV file is simple. A template is <a href="https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv" class="external-link">here</a>.</p>
-<p>The only two necessary columns (with these names) are:</p>
-<ol style="list-style-type: decimal">
-<li>sample_name column</li>
-<li>primer_info column</li>
-</ol>
-<p>Any additional metadata should then be pasted after these two
-columns. They can be referenced later during the analysis steps and save
-a step of loading metadata later.</p>
-<p>S1 and S2 are come from a rhododendron rhizobiome dataset and are a
-random subset of reads.</p>
-<p>You will notice S1 and S2 are included twice in the ‘metadata.csv’
-sheet. This is because these two samples contain pooled reads (ITS and
-rps10). To demultiplex and run both analyses in tandem, include the same
-sample twice under sample_name, and then change the primer_name.</p>
-<p>Example using test dataset:</p>
-<table class="table">
-<thead><tr class="header">
-<th align="left">sample_name</th>
-<th align="left">primer_name</th>
-<th align="left">organism</th>
+<ul>
+<li>The format of the CSV file is simple.<br>
+</li>
+<li>A template is <a href="https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv" class="external-link">here</a>.<br>
+</li>
+<li>The only two <strong>required</strong> columns (with these headers)
+are:
+<ul>
+<li>Column 1. <strong>sample_name</strong><br>
+</li>
+<li>Column 2. <strong>primer_info</strong>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Additional columns</strong></p>
+<ul>
+<li>Other columns should be pasted after these two columns.</li>
+<li>They can be referenced later during the analysis steps and save a
+step of loading metadata later.</li>
+</ul>
+<p><strong>Notes</strong></p>
+<ul>
+<li>S1 and S2 are come from a rhododendron rhizobiome dataset and are a
+random subset of the full set of reads.<br>
+</li>
+<li>S1 and S2 are included twice in the ‘metadata.csv’ sheet. This is
+because these two samples contain pooled metabarcodes (ITS1 and
+<em>rps10</em>).<br>
+</li>
+<li>To demultiplex and run both analyses in tandem, include the same
+sample twice under sample_name, and then change the primer_name.</li>
+</ul>
+<p>Here is what the <em>metadata.csv</em> looks like for this test
+dataset:</p>
+<table class="table table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead><tr>
+<th style="text-align:left;">
+sample_name
+</th>
+<th style="text-align:left;">
+primer_name
+</th>
+<th style="text-align:left;">
+organism
+</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td align="left">S1</td>
-<td align="left">rps10</td>
-<td align="left">Cry</td>
+<tr>
+<td style="text-align:left;">
+S1
+</td>
+<td style="text-align:left;">
+rps10
+</td>
+<td style="text-align:left;">
+Cry
+</td>
 </tr>
-<tr class="even">
-<td align="left">S2</td>
-<td align="left">rps10</td>
-<td align="left">Cin</td>
+<tr>
+<td style="text-align:left;">
+S2
+</td>
+<td style="text-align:left;">
+rps10
+</td>
+<td style="text-align:left;">
+Cin
+</td>
 </tr>
-<tr class="odd">
-<td align="left">S1</td>
-<td align="left">its</td>
-<td align="left">Cry</td>
+<tr>
+<td style="text-align:left;">
+S1
+</td>
+<td style="text-align:left;">
+its
+</td>
+<td style="text-align:left;">
+Cry
+</td>
 </tr>
-<tr class="even">
-<td align="left">S2</td>
-<td align="left">its</td>
-<td align="left">Cin</td>
+<tr>
+<td style="text-align:left;">
+S2
+</td>
+<td style="text-align:left;">
+its
+</td>
+<td style="text-align:left;">
+Cin
+</td>
 </tr>
 </tbody>
 </table>
@@ -156,161 +240,294 @@ sample twice under sample_name, and then change the primer_name.</p>
 (<em>primerinfo_parms.csv</em>)<a class="anchor" aria-label="anchor" href="#format-of-primer-and-parameters-file-primerinfo_parms-csv"></a>
 </h3>
 <p>DADA2 Primer sequence information and user-defined parameters are
-placed in <em>primerinfo_params.csv</em>.</p>
-<p>To simplify how functions are called, user will provide parameters
-within this input file. We recommend using the template linked <a href="https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv" class="external-link">here</a>.
-Remember to add any additional optional DADA2 parameters you want to
-use.</p>
-<p>The only required columns user must fill in are: 1.primer_name
-compatible options are currently (add to cells as written as this is
-crucial during database formatting step): rps10, its, r16S, other1,
-other2 2.forward-forward sequence 3.reverse-reverse sequence</p>
+placed in *primerinfo_params.csv</p>
+<ul>
+<li>To simplify how functions are called, user will provide parameters
+within this input file.</li>
+<li>We recommend using the template linked <a href="https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv" class="external-link">here</a>.</li>
+<li>Remember to add any additional optional DADA2 parameters you want to
+use.</li>
+</ul>
+<p><strong>Required columns</strong>:</p>
+<ol style="list-style-type: decimal">
+<li>primer_name</li>
+</ol>
+<ul>
+<li>Compatible options: rps10, its, r16S, other1, other2</li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li>forward primer sequence</li>
+<li>reverse primer sequence</li>
+</ol>
 <p>Example template for ‘primerinfo_params.csv’</p>
-<table style="width:100%;" class="table">
-<colgroup>
-<col width="4%">
-<col width="8%">
-<col width="7%">
-<col width="5%">
-<col width="6%">
-<col width="4%">
-<col width="2%">
-<col width="3%">
-<col width="5%">
-<col width="5%">
-<col width="6%">
-<col width="6%">
-<col width="2%">
-<col width="2%">
-<col width="2%">
-<col width="1%">
-<col width="3%">
-<col width="3%">
-<col width="5%">
-<col width="3%">
-<col width="4%">
-<col width="5%">
-</colgroup>
-<thead><tr class="header">
-<th align="left">primer_name</th>
-<th align="left">forward</th>
-<th align="left">reverse</th>
-<th align="left">already_trimmed</th>
-<th align="right">minCutadaptlength</th>
-<th align="left">multithread</th>
-<th align="left">verbose</th>
-<th align="left">maxN</th>
-<th align="right">maxEE_forward</th>
-<th align="right">maxEE_reverse</th>
-<th align="right">truncLen_forward</th>
-<th align="right">truncLen_reverse</th>
-<th align="right">truncQ</th>
-<th align="right">minLen</th>
-<th align="left">maxLen</th>
-<th align="right">minQ</th>
-<th align="right">trimLeft</th>
-<th align="right">trimRight</th>
-<th align="right">rm.lowcomplex</th>
-<th align="right">minOverlap</th>
-<th align="right">maxMismatch</th>
-<th align="right">min_asv_length</th>
+<div style="border: 1px solid #ddd; padding: 0px; thead th { white-space: nowrap; }overflow-y: scroll; height:100px; overflow-x: scroll; width:100%; ">
+<table class="table table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
+<thead><tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+primer_name
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+forward
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+reverse
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+already_trimmed
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+minCutadaptlength
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+multithread
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+verbose
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+maxN
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+maxEE_forward
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+maxEE_reverse
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+truncLen_forward
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+truncLen_reverse
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+truncQ
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+minLen
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+maxLen
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+minQ
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+trimLeft
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+trimRight
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+rm.lowcomplex
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+minOverlap
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+maxMismatch
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+min_asv_length
+</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td align="left">rps10</td>
-<td align="left">GTTGGTTAGAGYARAAGACT</td>
-<td align="left">ATRYYTAGAAAGAYTYGAACT</td>
-<td align="left">FALSE</td>
-<td align="right">100</td>
-<td align="left">TRUE</td>
-<td align="left">FALSE</td>
-<td align="left">1.00E+05</td>
-<td align="right">5</td>
-<td align="right">5</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">5</td>
-<td align="right">150</td>
-<td align="left">Inf</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">15</td>
-<td align="right">0</td>
-<td align="right">50</td>
+<tr>
+<td style="text-align:left;">
+rps10
+</td>
+<td style="text-align:left;">
+GTTGGTTAGAGYARAAGACT
+</td>
+<td style="text-align:left;">
+ATRYYTAGAAAGAYTYGAACT
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+1.00E+05
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+150
+</td>
+<td style="text-align:left;">
+Inf
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+50
+</td>
 </tr>
-<tr class="even">
-<td align="left">its</td>
-<td align="left">CTTGGTCATTTAGAGGAAGTAA</td>
-<td align="left">GCTGCGTTCTTCATCGATGC</td>
-<td align="left">FALSE</td>
-<td align="right">50</td>
-<td align="left">TRUE</td>
-<td align="left">FALSE</td>
-<td align="left">1.00E+05</td>
-<td align="right">5</td>
-<td align="right">5</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">5</td>
-<td align="right">50</td>
-<td align="left">Inf</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">15</td>
-<td align="right">0</td>
-<td align="right">50</td>
+<tr>
+<td style="text-align:left;">
+its
+</td>
+<td style="text-align:left;">
+CTTGGTCATTTAGAGGAAGTAA
+</td>
+<td style="text-align:left;">
+GCTGCGTTCTTCATCGATGC
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:right;">
+50
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+1.00E+05
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+50
+</td>
+<td style="text-align:left;">
+Inf
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+50
+</td>
 </tr>
 </tbody>
 </table>
-<p>For more info on parameter specifics, see Documentation tab.</p>
+</div>
+<p>For more info on parameter specifics, see <a href="https://grunwaldlab.github.io/demulticoder/articles/Documentation.html" class="external-link">Documentation</a></p>
 </div>
 <div class="section level3">
 <h3 id="reference-database-format">Reference Database Format<a class="anchor" aria-label="anchor" href="#reference-database-format"></a>
 </h3>
-<p>For now, the package is compatible with the following databases:</p>
 <ul>
-<li><p>oomycetedb from: <a href="https://grunwaldlab.github.io/OomyceteDB/" class="external-link">https://grunwaldlab.github.io/OomyceteDB/</a></p></li>
-<li><p>SILVA 16S database with species assignments: <a href="https://www.arb-silva.de/" class="external-link">https://www.arb-silva.de/</a></p></li>
-<li><p>UNITE fungal database from <a href="https://unite.ut.ee/repository.php" class="external-link">https://unite.ut.ee/repository.php</a></p></li>
+<li>For now, the package is compatible with the following databases:
+<ul>
+<li>oomycetedb from: <a href="https://grunwaldlab.github.io/OomyceteDB/" class="external-link">https://grunwaldlab.github.io/OomyceteDB/</a><br>
+</li>
+<li>SILVA 16S database with species assignments: <a href="https://www.arb-silva.de/" class="external-link">https://www.arb-silva.de/</a>
+</li>
+<li>UNITE fungal database from <a href="https://unite.ut.ee/repository.php" class="external-link">https://unite.ut.ee/repository.php</a>
+</li>
+<li>A user can select up to two other databases, but will first need to
+reformat headers exactly like the SILVA database headers.
+<ul>
+<li>See more in the ‘Documentation’ tab.</li>
 </ul>
-<p>A user can select up to two other databases, but will first need to
-reformat headers exactly like the SILVA database. See more in the
-‘Documentation’ tab.</p>
-<p>Databases will be copied into the user-specified data folder where
-raw data files and csv files are located. The names will be parameters
-in the <em>assignTax</em> function</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>Databases are downloaded from these sources and then placed in the
+from the user-specified data folder where raw data files and csv files
+are located.</p>
 </div>
 <div class="section level3">
 <h3 id="additional-notes">Additional Notes<a class="anchor" aria-label="anchor" href="#additional-notes"></a>
 </h3>
-<p>Computer specifications may be a limiting factor. If you are using
-the SILVA or UNITE databases for taxonomic assignment steps, an ordinary
-personal computer (unless it has sufficient RAM) may not have enough
-memory for the taxonomic assignment steps, even with few samples. The
-test databases are comprised of randomly subset reads. The following
-example, should run on a personal computer with at least 16 GB of
-RAM.</p>
-<p>Users need to upload their own databases to their input data folder.
-If computer crashes during the taxonomic assignment step, you will need
-to switch to a computer with sufficient memory.</p>
-<p>Please also ensure that you have enough storage to save intermediate
+<ul>
+<li>Computer specifications may be a limiting factor.<br>
+</li>
+<li>If you are using the SILVA or UNITE databases for taxonomic
+assignment steps, an ordinary personal computer (unless it has
+sufficient RAM) may not have enough memory for the taxonomic assignment
+steps, even with few samples.<br>
+</li>
+<li>The test databases and reads are subsetted and the following example
+should run on a personal computer with at least 16 GB of RAM.<br>
+</li>
+<li>If computer crashes during the taxonomic assignment step, you will
+need to switch to a computer with sufficient memory.<br>
+</li>
+<li>You must ensure that you have enough storage to save intermediate
 files in a temporary directory (default) or user-specified directory
-before proceeding.</p>
+before proceeding.</li>
+</ul>
 </div>
 <div class="section level3">
 <h3 id="loading-the-package">Loading the Package<a class="anchor" aria-label="anchor" href="#loading-the-package"></a>
 </h3>
 <p>For now, the package will be loaded by retrieving it from GitHub.
-Submissionto CRAN is in progress.</p>
+Submission to CRAN is in progress.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"grunwaldlab/demulticoder"</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/demulticoder/" class="external-link">"demulticoder"</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/metacoder_documentation/" class="external-link">"metacoder"</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://dplyr.tidyverse.org" class="external-link">"dplyr"</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/metacoder_documentation/" class="external-link">"metacoder"</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="reorganize-data-tables-and-set-up-data-directory-structure">Reorganize data tables and set-up data directory structure<a class="anchor" aria-label="anchor" href="#reorganize-data-tables-and-set-up-data-directory-structure"></a>
@@ -324,18 +541,16 @@ reorganized in preparation for running Cutadapt to remove primers.</p>
 <span>  tempdir_path <span class="op">=</span> <span class="st">"~/temp_test_dataset"</span>,</span>
 <span>  tempdir_id <span class="op">=</span> <span class="st">"test_dataset"</span>,</span>
 <span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="prepare_for_analysis-1.png" width="700"></p>
+<p><img src="prepare_for_analysis-1.png" width="70%"></p>
 </div>
 <div class="section level3">
 <h3 id="remove-primers-with-cutadapt">Remove primers with Cutadapt<a class="anchor" aria-label="anchor" href="#remove-primers-with-cutadapt"></a>
 </h3>
-<p>Before running Cutadapt, please ensure that you have installed
-it.</p>
+<p>Before running Cutadapt, please ensure that you have installed it</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">demulticoder</span><span class="fu">::</span><span class="fu"><a href="../reference/cut_trim.html">cut_trim</a></span><span class="op">(</span></span>
 <span>  <span class="va">analysis_setup</span>,</span>
 <span>  cutadapt_path <span class="op">=</span> <span class="st">"/usr/bin/cutadapt"</span>,</span>
-<span>  <span class="co">#cutadapt_path = "/usr/bin/cutadapt",</span></span>
 <span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running Cutadapt 3.5 for its sequence data</span></span>
 <span><span class="co">#&gt; Read in 2564 paired-sequences, output 1479 (57.7%) filtered paired-sequences.</span></span>
@@ -343,7 +558,7 @@ it.</p>
 <span><span class="co">#&gt; Running Cutadapt 3.5 for rps10 sequence data</span></span>
 <span><span class="co">#&gt; Read in 1830 paired-sequences, output 1429 (78.1%) filtered paired-sequences.</span></span>
 <span><span class="co">#&gt; Read in 2090 paired-sequences, output 1506 (72.1%) filtered paired-sequences.</span></span></code></pre></div>
-<p><img src="remove_primers_with_cut_trim_function-1.png" width="700"></p>
+<p><img src="remove_primers_with_cut_trim_function-1.png" width="70%"></p>
 </div>
 <div class="section level3">
 <h3 id="asv-inference-step">ASV inference step<a class="anchor" aria-label="anchor" href="#asv-inference-step"></a>
@@ -378,7 +593,7 @@ it.</p>
 <span><span class="co">#&gt; 1315 paired-reads (in 21 unique pairings) successfully merged out of 1416 (in 32 pairings) input.</span></span>
 <span><span class="co">#&gt; Duplicate sequences in merged output.</span></span>
 <span><span class="co">#&gt; 1063 paired-reads (in 25 unique pairings) successfully merged out of 1108 (in 28 pairings) input.</span></span></code></pre></div>
-<p><img src="ASV_inference-1.png" width="700"></p>
+<p><img src="ASV_inference-1.png" width="70%"></p>
 <pre><code><span><span class="co">#&gt; Duplicate sequences detected and merged.</span></span>
 <span><span class="co">#&gt; Identified 0 bimeras out of 38 input sequences.</span></span>
 <span><span class="co">#&gt; 824778 total bases in 2935 reads from 2 samples will be used for learning the error rates.</span></span>
@@ -400,14 +615,14 @@ it.</p>
 <span><span class="co">#&gt; Error rate plot for the Reverse read of primer pair rps10</span></span>
 <span><span class="co">#&gt; Warning in scale_y_log10(): <span style="color: #00BB00;">log-10</span> transformation introduced</span></span>
 <span><span class="co">#&gt; infinite values.</span></span></code></pre>
-<p><img src="ASV_inference-2.png" width="700"></p>
+<p><img src="ASV_inference-2.png" width="70%"></p>
 <pre><code><span><span class="co">#&gt; Sample 1 - 1429 reads in 1044 unique sequences.</span></span>
 <span><span class="co">#&gt; Sample 2 - 1506 reads in 1284 unique sequences.</span></span>
 <span><span class="co">#&gt; 1420 paired-reads (in 2 unique pairings) successfully merged out of 1422 (in 4 pairings) input.</span></span>
 <span><span class="co">#&gt; 1503 paired-reads (in 5 unique pairings) successfully merged out of 1504 (in 6 pairings) input.</span></span></code></pre>
-<p><img src="ASV_inference-3.png" width="700"></p>
+<p><img src="ASV_inference-3.png" width="70%"></p>
 <pre><code><span><span class="co">#&gt; Identified 0 bimeras out of 5 input sequences.</span></span></code></pre>
-<p><img src="ASV_inference-4.png" width="700"></p>
+<p><img src="ASV_inference-4.png" width="70%"></p>
 <pre><code><span><span class="co">#&gt; $its</span></span>
 <span><span class="co">#&gt; [1] "~/temp_test_dataset/test_dataset/asvabund_matrixDADA2_its.RData"</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -434,11 +649,947 @@ assignments will be given to ASVs.</p>
 <span><span class="co">#&gt; 2           S2_rps10  2090     1506      1505      1505   1503    1503</span></span></code></pre></div>
 </div>
 <div class="section level3">
+<h3 id="format-of-output-matrices">Format of output matrices<a class="anchor" aria-label="anchor" href="#format-of-output-matrices"></a>
+</h3>
+<p>The default output is a CSV file per metabarcode with the inferred
+ASVs and sequences, taxonomic assignments, and bootstrap supports
+provided by DADA2. These data can then be used as input for downstream
+steps.</p>
+<p>Here we show the first rows of the <em>rps10</em> matrix checking
+that ASV sequences look to be the correct length and taxonomic
+assignments seem reasonable.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rps10_matrix</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"final_asv_abundance_matrix_rps10.csv"</span>, header<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">rps10_matrix</span>, row.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html" class="external-link">kable_styling</a></span><span class="op">(</span>bootstrap_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>, <span class="st">"responsive"</span>, full_width <span class="op">=</span> <span class="cn">F</span>, font_size <span class="op">=</span> <span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/scroll_box.html" class="external-link">scroll_box</a></span><span class="op">(</span>width <span class="op">=</span> <span class="st">"100%"</span>, height <span class="op">=</span> <span class="st">"100px"</span>, extra_css <span class="op">=</span> <span class="st">"thead th { white-space: nowrap; }"</span><span class="op">)</span></span></code></pre></div>
+<div style="border: 1px solid #ddd; padding: 0px; thead th { white-space: nowrap; }overflow-y: scroll; height:100px; overflow-x: scroll; width:100%; ">
+<table class="table table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
+<thead><tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+asv_id
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+sequence
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+dada2_tax
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+S1_rps10
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+S2_rps10
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+asv_1
+</td>
+<td style="text-align:left;">
+GAAAATCTTTGTGTCGGTGGTTCAAATCCACCTCCAGACAAATTAATTTTTTAAAACTTATGTTTATATTAAGAATTACATTTAAATCTATTAAAAAAATAAATAACATTAAACCTATTTTATTAAATCAAAAAAATTTAAATAAATTTAATAATATTAAAATAAATGGAATATTTAAAACAAAAAATAAAAATAAAATTTTTACAGTATTAAAATCACCACATGTTAATAAAAAAGCACGTGAACATTTTATTTATAAAAATTTTACACAAAAAGTTGAAATTAAATGTTTAAATATTTTTCAATTATTAAATTTTTTAATTTTGATTAAAAAAATCTTAACAGAAAATTTTATTATTACTACAAAAATAATTAAACAATAATTAATATATGCTTATAGCTTAATGGATAAAGCATTAGATTGCGGATCTACAAAATGAA
+</td>
+<td style="text-align:left;">
+Stramenopila–100–Kingdom;Oomycota–100–Phylum;Oomycetes–100–Class;Peronosporales–26–Order;Peronosporaceae–26–Family;Phytophthora–23–Genus;Phytophthora_sp.kununurra–13–Species;oomycetedb_650–13–Reference
+</td>
+<td style="text-align:right;">
+842
+</td>
+<td style="text-align:right;">
+17
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+asv_2
+</td>
+<td style="text-align:left;">
+GAAAATCTTTGTGTCGGTGGTTCAAGTCCGCCTCCAAACATCTTATAAAAATGTATGTATATTTTACGAATTAGTTTTAAATCAGTAGAAAAAATAAATGAATTAAAAAAAAATATCTCAAAAATAAAAAAAATATATAATTTTAAAAATTTAAAAGTAAATGGTATTTTTAGAACAAAAAATAAAAATAAAATTTTTACATTATTAAAATCACCCCATGTTAATAAAAAATCACGTGAACATTTTATATATAAAAATTATATTCAAAAAATTGATTTAAATTTTTCAAATTTTTTTCAATTATTAAATTTTTTAGTAATTTTAAAAAAAATATTATCTAAAGATTTTTTAATCAATATCAAAATTATTAAAAAAAATAAAAAAAATATGCTTATAGCTTAATGGATAAAGCGTTAGATTGCGGATCTATAAAATGAA
+</td>
+<td style="text-align:left;">
+Stramenopila–100–Kingdom;Oomycota–100–Phylum;Oomycetes–100–Class;Pythiales–100–Order;Pythiaceae–100–Family;Pythium–100–Genus;Pythium_dissotocum–54–Species;oomycetedb_750–25–Reference
+</td>
+<td style="text-align:right;">
+578
+</td>
+<td style="text-align:right;">
+220
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+asv_3
+</td>
+<td style="text-align:left;">
+GAAAATCTTTGTGTCGGTGGTTCAAGTCCACCTCCAGACAAAAATAATAACTATGTATATTTTAAGAATAACTTTTAAATCAATACAAAAAATAAATAATATTAAAAAAAATTTATTAAAATTAAAAAAAATAAATAAATTTAAAAATATTCAAATAAAAGGAATATTTAAAATAAAAGATAAAAATAAAATTTTTACTTTATTAAAATCACCTCACGTAAATAAAAAATCTCGTGAACATTTTATTTATAAAAATTATACTCAAAAAATAGATGTAAAATTTTCAAATATTATTGAATTATTTAATTTTATAATACTTATTAAAAAAGTTTTAACTAAAAATTTTATAATAAATTTTAAAATTATAAAATATAATAAAAAAAAAATGCTTATAGCTTAATGGATAAAGCGTTAGATTGCGGATCTATAAAATGAA
+</td>
+<td style="text-align:left;">
+Stramenopila–100–Kingdom;Oomycota–100–Phylum;Oomycetes–100–Class;Pythiales–100–Order;Pythiaceae–100–Family;Globisporangium–100–Genus;Globisporangium_cryptoirregulare–20–Species;oomycetedb_40–20–Reference
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+587
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:left;">
+asv_4
+</td>
+<td style="text-align:left;">
+GAAAATCTTTGTGTCGGTGGTTCAAATCCGCCTCCAAACAAAAATATAAATTATTTTATATGTATATTTTAAGAATAAGTTTTAAATCTGTATCAAAAATAGATAAAATTAAAAAAGAATTATCAAGATTAAAAAAAATATATAATTTTAAAAATATAACAATTAATGGTATTTTTAAAACAAAAAATAAAGATAAAATTTTTACATTATTAAAATCACCTCATGTTAATAAAAAATCTCGCGAACATTTTATTTATAAAAATTATGTACAAAAAATAGATTTAAATTTTATTAATATTTTTCAATTAATAAATTTTTTAATAATTTTAAAAAAAAAATTATCAAAAAATGTATTAATAAATGTAAAAATAATTAAAAAATAAAAAAATATGCTTATAGCTTAATGGATAAAGCGTTAGATTGCGGATCTATAAAATGAA
+</td>
+<td style="text-align:left;">
+Stramenopila–100–Kingdom;Oomycota–100–Phylum;Oomycetes–100–Class;Pythiales–94–Order;Pythiaceae–94–Family;Pythium–89–Genus;Pythium_aphanidermatum–19–Species;oomycetedb_727–19–Reference
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+516
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+asv_5
+</td>
+<td style="text-align:left;">
+GAAAATCTTTGTGTCGGTGGTTCAAGTCCGCCTCCAAACATCTTATAAAAATGTATGTATATTTTACGAATTAGTTTTAAATCAGTAGAAAAAATAAATGAATTAAAAAAAAATATCTCAAAAATAAAAAAAATATATAATTTTAAAAATTTAAAAGTAAAATGGTATTTTTAGAACAAAAAATAAAAATAAAATTTTTACATTATTAAAATCACCCCATGTTAATAAAAAATCACGTGAACATTTTATATATAAAAATTATATTCAAAAAATTGATTTAAATTTTTCAAATTTTTTTCAATTATTAAATTTTTTAGTAATTTTAAAAAAAACATTATCTAAAGATTTTTTAATCAATATTAAAATTATTAAAAAAAATAAAAAAATATGCTTATAGCTTAATGGATAAAGCGTTAGATTGCGGATCTATAAAATGAA
+</td>
+<td style="text-align:left;">
+Stramenopila–100–Kingdom;Oomycota–100–Phylum;Oomycetes–100–Class;Pythiales–100–Order;Pythiaceae–100–Family;Pythium–100–Genus;Pythium_oopapillum–70–Species;oomycetedb_771–70–Reference
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+163
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>We can also inspect the first rows of the <em>ITS1</em> matrix</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">its_matrix</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"final_asv_abundance_matrix_its.csv"</span>, header<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">its_matrix</span>, row.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html" class="external-link">kable_styling</a></span><span class="op">(</span>bootstrap_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>, <span class="st">"responsive"</span>, full_width <span class="op">=</span> <span class="cn">F</span>, font_size <span class="op">=</span> <span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/scroll_box.html" class="external-link">scroll_box</a></span><span class="op">(</span>width <span class="op">=</span> <span class="st">"100%"</span>, height <span class="op">=</span> <span class="st">"100px"</span>, extra_css <span class="op">=</span> <span class="st">"thead th { white-space: nowrap; }"</span><span class="op">)</span></span></code></pre></div>
+<div style="border: 1px solid #ddd; padding: 0px; thead th { white-space: nowrap; }overflow-y: scroll; height:100px; overflow-x: scroll; width:100%; ">
+<table class="table table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
+<thead><tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+asv_id
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+sequence
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+dada2_tax
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+S1_its
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+S2_its
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+asv_1
+</td>
+<td style="text-align:left;">
+AAAAAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAGTGAATCTTCAAAGTCGGCTCGTCAGATTGTGCTGGTGGAGACACATGTGCACGTCTACGAGTCGCAAACCCACACACCTGTGCATCTATGACTCTGAGTGCCGCTTTGCATGGCCCCTTGATTTGGGCCTGGCGCTCGAGTACTTTCACACACTCTCGAATGTAATGGAATGTCTTCTTGTGCATAACGTACAAACAGAAACAACTTTCAACAACGGATCTCTTGGCTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Basidiomycota–100–Phylum;Agaricomycetes–100–Class;Sebacinales–100–Order;unidentified–98–Family;unidentified–98–Genus;Sebacinales_sp–98–Species
+</td>
+<td style="text-align:right;">
+436
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+asv_2
+</td>
+<td style="text-align:left;">
+AAAAAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAGTGAATCTTCAAAGTCGGCTCGTCGGATTGTGCTGGTGGAGACACATGTGCACGTCTACGAGTCGCAAACCCACACACCTGTGCATCTATGACTCTGAGTGCCGCTTTGCATGGCCCCTTGATTTGGGCCTGGCGCTCGAGTACTTTCACACACTCTCGAATGTAATGGAATGTCTTGTTGTGCATAACGTACAAACAGAAACAACTTTCAACAACGGATCTCTTGGCTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Basidiomycota–100–Phylum;Agaricomycetes–100–Class;Sebacinales–100–Order;unidentified–97–Family;unidentified–97–Genus;Sebacinales_sp–97–Species
+</td>
+<td style="text-align:right;">
+405
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+asv_3
+</td>
+<td style="text-align:left;">
+AAAAAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAGTGAATCTTCAAAGTCGGCTCGTCGGATTGTGCTGGTGGAGACACATGTGCACGTCTACGAGTCGCAAACCCACACACCTGTGCATCTATGACTCTGAGTGCCGCTTTGCATGGCCCCTTGATTTGGGCCTGGCGCTCGAGTACTTTCACACACTCTCGAATGTAATGGAATGACTTGTTGTGCATAACGTACAAACAGAAACAACTTTCAACAACGGATCTCTTGGCTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Basidiomycota–100–Phylum;Agaricomycetes–100–Class;Sebacinales–100–Order;unidentified–99–Family;unidentified–99–Genus;Sebacinales_sp–99–Species
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+299
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:left;">
+asv_4
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAACGAGTTCAACTGGGGTCTGTGGGGATTCGATGCTGGCCTCCGGGCATGTGCTCGTCCCCCGGACCTCACATCCACTCACAACCCCTGTGCATCATGAGAGGTGTGGTCCTCCGTCATGGGAGCAGCTCCCCTCCGGGCGTGTTTGTACACCCCGGGCGGTCGAGCCGGGACTGCACTTCGACGCCTTTACACAAACCTTTGAATCAGTGATGTAGAATGTCATGGCCAGCGATGGTCGAACTTTAAATACAACTTTCAACAACGGATCTCTTGGCTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Basidiomycota–62–Phylum;Agaricomycetes–59–Class;Hymenochaetales–21–Order;Repetobasidiaceae–8–Family;Rickenella–8–Genus;Rickenella_sp–8–Species
+</td>
+<td style="text-align:right;">
+209
+</td>
+<td style="text-align:right;">
+65
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+asv_5
+</td>
+<td style="text-align:left;">
+AAAAAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAGTGAATCTTCAAAGTCGGCTCGTCGGATTGTGCTGGTGGAGACACATGTGCACATCTACGAGTCGCAAACCCACACACCTGTGCATCTATGACTCTGAGTGCCGCTTTGCATGGCCCCTTGATTTGGGCCTGGCGCTCGAGTACTTTCACACACTCTCGAATGTAATGGAATGTCTTGTTGTGCATAACGTACAAACAGAAACAACTTTCAACAACGGATCTCTTGGCTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Basidiomycota–100–Phylum;Agaricomycetes–100–Class;Sebacinales–100–Order;unidentified–96–Family;unidentified–96–Genus;Sebacinales_sp–96–Species
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+200
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+6
+</td>
+<td style="text-align:left;">
+asv_6
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAAAAATGAAGCCGGGAAACCGGTCCTTCTAACCCTTGATTATCTTAATTTGTTGCTTTGGTGGGCCGCGCAAGCACCGGCTTCGGCTGGATCGTGCCCGCCAGAGGACCACAACTCTGTATCAAATGTCGTCTGAGTACTATATAATAGTTAAAACTTTCAACAACGGATCTCTTGGTTCTG
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Ascomycota–100–Phylum;Leotiomycetes–98–Class;Helotiales–98–Order;unidentified–86–Family;unidentified–86–Genus;Helotiales_sp–86–Species
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+116
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+7
+</td>
+<td style="text-align:left;">
+asv_7
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTACTGGGTAAAGGCTTTTCGCCTCCAACCCCACCCTCTGTAACTGCGGCCCGGATTCGGCGCCTGGCGGGAAACCCCTCTGTTCGCGGAGGCTCCTCGCCTGCCGGAATCAGCCAACACTGTCTCAAAAATTGAAGTCTGAGAACAAGTTTAAAACTAAACAAAACTTTCAACAACGGATCTCTTGGTTCTG
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Ascomycota–95–Phylum;Dothideomycetes–78–Class;Venturiales–75–Order;Venturiaceae–75–Family;Venturia–75–Genus;Venturia_sp–75–Species
+</td>
+<td style="text-align:right;">
+34
+</td>
+<td style="text-align:right;">
+43
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+8
+</td>
+<td style="text-align:left;">
+asv_8
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTCTCCGTAGGTGAACCTGCGGAGGGATCATTACAGAGAACATCGCCCTCACGGGTGACTCTCCAACCCTATGTTATACAACCTTTGTTGCTTTGGCGAGCCGCCTCGGCCGCTGGCTTCGGCTAGCGAGTGCTCGCCAGAGGACCCCAAACTCTGAATATTTTAATGTCGTCTGAGTACTATATAATAGTTAAAACTTTCAACAACGGATCTCTTGGTTCTG
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Ascomycota–99–Phylum;Leotiomycetes–92–Class;Helotiales–91–Order;Hyaloscyphaceae–21–Family;unidentified–18–Genus;Hyaloscyphaceae_sp–18–Species
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+40
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9
+</td>
+<td style="text-align:left;">
+asv_9
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAACGAGTTCAGTCCCGGGATTGATGCTGGCGGCCCCTCTCGGGGAGGCATGTGCTCGTCCTGTGGGCCATCCACACTCACCAACCCCCTTTGTGCACCATGAGAGGTGTGGGTCCCCCTTAACCCCGGGGATCAACACTTCGAACGCATATACACACACTTCTATTCAGTTCTGTAGAATGTAATGACCGGGTAGCCGGTCGAACCTAAATACAACTTTCAACAACGGATCTCTTGGCTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Ascomycota–39–Phylum;Lecanoromycetes–32–Class;Teloschistales–26–Order;Physciaceae–26–Family;Phaeophyscia–25–Genus;Phaeophyscia_ciliata–22–Species
+</td>
+<td style="text-align:right;">
+47
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+asv_10
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTCTCCGTTGGTGAACCAGCGGAGGGATCATTACCGGGTCTAGCGACTGCCCGAACCACTACACTGTGCACTATTCCAAAACAAATTTCTACGCTGCGGCGGGCCGCTCGCTGGAGGGGCCCCGGGCCGAAAGGCTGGCCTGCCAAAGCAACCCTTAAAATATTTTGAAGCACTTCTGAGAGGCGCCGATAGCCTTTTTATCAAAGGTGATCACAACCCACAACAATGGATCTCTTGGCTCTG
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Ascomycota–59–Phylum;Eurotiomycetes–20–Class;Eurotiales–12–Order;Trichocomaceae–8–Family;Chromocleista–5–Genus;Chromocleista_sp–5–Species
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+43
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+11
+</td>
+<td style="text-align:left;">
+asv_11
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAATGAAAACTTCAGGAGTTGCTGCTGGCCTCTCGAGGCACTTGTGCACGCTCCGTTTTTCATCCACCCACACCTGTGCACAATCCATTTTTTGAGAGGGAAAACGGGACTTCTTCGGAATTGTCCCTCTTTTCCTCCAAAAAATCAATCACACACTCTACGCAATCGTCAGAACGAACTTGTTTTTTTGTAAACAAACTTAACAACTTTCAACAACGGATCTCTTGGCTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Basidiomycota–60–Phylum;Agaricomycetes–49–Class;Agaricales–42–Order;Entolomataceae–5–Family;Entoloma–5–Genus;Entoloma_shandongense–3–Species
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+41
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:left;">
+asv_12
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTCTCCGTAGGTGAACCTGCGGAGGGATCATTAACGAATGGCCTTAGGCCTTCAACCTTGTAAACCTGTGGAAGCAAAACGTGCTTTGGCGCTTTCGGGCGCCAACTTTATGCTTAGATCAGTCTTGATGTCTGAATCAAAAACAAGAAATAAAACTTTCAACAAAGGATCTCTTGGCTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Ascomycota–75–Phylum;Archaeorhizomycetes–40–Class;Archaeorhizomycetales–40–Order;Archaeorhizomycetaceae–40–Family;Archaeorhizomyces–40–Genus;Archaeorhizomyces_sp–40–Species
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+40
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+13
+</td>
+<td style="text-align:left;">
+asv_13
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAATGAAAACTTCAGGAGTTGCTGCTGGCCTCTCGAGGCACTCGTGCACGCTCCGTTTTTCATCCACCCACACCTGTGCACAATCCTTTTTTGAGAGGGAAAATGGGATTTCTTCGGAATGTCCCTCTTTTCCTCCAAAAAATCAATCACACACTCTACGCAATCGTCAGAACGAACTTGTTTTTTTGTAAACAAACTTAACAACTTTCAACAACGGATCTCTTGGCTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Basidiomycota–71–Phylum;Agaricomycetes–53–Class;Agaricales–36–Order;Entolomataceae–7–Family;Entoloma–7–Genus;Entoloma_shandongense–4–Species
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+40
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+14
+</td>
+<td style="text-align:left;">
+asv_14
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTATCGAGTTTGTGGGGGGTGGATTGATGCTGGCCGCACTTGTGTGGCATGTGCTCGTCTCCCTCTTCGTCCCACTCTCAACCCCATGTGCACCGTGAGGGGTGTTGGTCCCGCCAGTCGGGACGGACGCCTCGAACCCCCCTACACACACAAACCAGTATGAACCGAATGTAATAATTTGATAAATCATTACAACTTTCAACAACGGATCTCTTGGCTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Basidiomycota–58–Phylum;Agaricomycetes–39–Class;Agaricales–24–Order;Tricholomataceae–17–Family;Cantharellopsis–10–Genus;Cantharellopsis_prescotii–10–Species
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+15
+</td>
+<td style="text-align:left;">
+asv_15
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAACGAGTTCAGTCCCGGGATTGATGCTGGCGGCCCCTCTCGGGGAGGCATGTGCTCGTCCTGTGGGCCATCCACACTCACAACCCCTTTGTGCACCATGAGAGGTGTGGGTCCTCCCTTAACCCGGGGGGGATCAACACTTCGAACGCATATACACACACTTCTATTCAGTTCTGTAGAATGTAATGACCGGGTAGCCGGTCGAACCTATATACAACTTTCAACAACGGATCTCTTGGCTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Ascomycota–49–Phylum;Lecanoromycetes–38–Class;Teloschistales–33–Order;Physciaceae–33–Family;Phaeophyscia–33–Genus;Phaeophyscia_ciliata–27–Species
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+26
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+16
+</td>
+<td style="text-align:left;">
+asv_16
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAAAGAATCGCCCCGTTTTTCGAAATGGGTTCTATTCCCAAACCGTGTATACATACCTTTGTTGCTTTGGCAGGCCGCCTTCTAGGCGTCGGCTTCGGCGGACTGCGCCTGCCAGAAGACCCAAACTCGTTTGTTTAGTGATGTCTGAGTACTATATAATAGTTAAAACTTTCAACAACGGATCTCTTGGTTCTG
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Ascomycota–100–Phylum;Leotiomycetes–100–Class;Leotiomycetes_ord_Incertae_sedis–30–Order;Leotiomycetes_fam_Incertae_sedis–30–Family;Meliniomyces–30–Genus;Meliniomyces_vraolstadiae–30–Species
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+14
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+17
+</td>
+<td style="text-align:left;">
+asv_17
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAGTGAATCTTCAAAGTCGGCTCGTCGGATTGTGCTGGTGGAGACACATGTGCACGTCTGCGAGTCGCAAACCCACACACCTGTGCATCTATGACTCTGAGTGCCGCTTTGTGTGGCCCTTGATTGGGCCTGGTGCTCGAGTACTTTCACACACTCTCGAATGTAATGGAATGTCTTGTTGTGCATAAATGTACAAACAGAAACAACTTTCAACAACGGATCTCTTGGCTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Basidiomycota–99–Phylum;Agaricomycetes–99–Class;Sebacinales–99–Order;unidentified–98–Family;unidentified–98–Genus;Sebacinales_sp–98–Species
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+18
+</td>
+<td style="text-align:left;">
+asv_18
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTATTGAAAAAGACAAGACGCCCCGTTTTTTCGTAAAATGGGTTCAATACCCACAACCGTGTATACCTTACCTTTGTTGCTTTGGCAGGCCGCCTCCGGGCGTTGGCTTCGGCTGACAGCGCCTGCCAGAGGACCCAAACTCTGTGTTTAGTGATGTCTGAGTAATATATAATATTTTAAAACTTTCAACAACGGATCTCTTGGTTCTG
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Ascomycota–100–Phylum;Leotiomycetes–88–Class;Helotiales–69–Order;Hyaloscyphaceae–55–Family;Pseudaegerita–37–Genus;Pseudaegerita_corticalis–37–Species
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+19
+</td>
+<td style="text-align:left;">
+asv_19
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAGTGAATCTTCAAAAGTCGGCTCGTCGGATTGTGCTGGTGGAGACACATGTGCACGTCTTGCGAGTCGCAAACCCACACACCTGTGCATCTATGACTCTGAGTGCCACTTTGCATGGCCTTGACCGGCCTGGCGCTCGAGTACTTTTCACACACTCGAATGTAATGGAATGTCTTGTTGTGCGTAATGTACAAACTGAAACAACTTTCAACAACGGATCTCTTGGCTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Basidiomycota–100–Phylum;Agaricomycetes–100–Class;Sebacinales–100–Order;unidentified–95–Family;unidentified–95–Genus;Sebacinales_sp–95–Species
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+20
+</td>
+<td style="text-align:left;">
+asv_20
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTCTCCGTTGGTGAACCAGCGGAGGGATCATTACAGAGTTCTAAAAGACTCCCAAACCATTGTGAACATACCCGTCAGCGTTGCTTCGGCGGGCGTCCCCTCCCTGGGGACGCTGCCCTTCGGGGTGCCCGCCGGTGCTTACGAAACTCTTTTGTATTTTAGTGGCCTCTCTGAGAAAACAAACAAATAAGTTAAAACTTTCAACAACGGATCTCTTGGTTCTG
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Ascomycota–97–Phylum;Sordariomycetes–75–Class;Sordariales–29–Order;Chaetomiaceae–21–Family;Humicola–21–Genus;Humicola_sp–21–Species
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+18
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+21
+</td>
+<td style="text-align:left;">
+asv_21
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAAAGAATGCCCCGTTTTTTGAAACGGGTTCTATTCCCAAACCGTGTATACATACCTTTGTTGCTTTGGCAGGCCGCCTTCGGGCGTTGGCTCACGCTGACCGCGCCTGCCAGAGGACCCAAACTCGTTTGTTTAGTGATGTCTGAGTACTATATAATAGTTAAAACTTTCAACAACGGATCTCTTGGTTCTG
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Ascomycota–100–Phylum;Leotiomycetes–100–Class;Helotiales–61–Order;Helotiaceae–43–Family;unidentified–43–Genus;Helotiaceae_sp–43–Species
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+22
+</td>
+<td style="text-align:left;">
+asv_22
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTCTCCGTAGGTGAACCTGCGGAGGGATCATTACAGAGAACATCGCCCTCACGGGTGACTCTCCAACCCTTATGTTATTAAAACCTTTGTTGCTTTGGCGAGCCGCTTCGGCCACCGGCGTCTTGCTGGTGTGCGCTCGCCAGAGGACCCCAAACTCTTGTTTATTAATGTCGTCTGAGTACTATATAATAGTTAAAACTTTCAACAACGGATCTCTTGGTTCTG
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Ascomycota–96–Phylum;Leotiomycetes–85–Class;Helotiales–82–Order;Sclerotiniaceae–19–Family;Monilinia–19–Genus;Monilinia_sp–19–Species
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+23
+</td>
+<td style="text-align:left;">
+asv_23
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAATGAAATACAAGTCGGCGGATTGTGCTGGCGCGCAAGCGTATGTGCACGTCTGTTGCAAATCCACACACCTGTGCACCTTAGACTCTGAGTGAGCTTTCGTAATCGATTGCACCTCGGAGTATTTTACACACGCTGAATGTAAAAGGATGTTGTAGTGCCTAGCACAAAAAAACTTACAACTTTCAACAACGGATCTCTTGGCTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Basidiomycota–61–Phylum;Agaricomycetes–55–Class;Agaricales–29–Order;Physalacriaceae–9–Family;Armillaria–8–Genus;Armillaria_ectypa–8–Species
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+24
+</td>
+<td style="text-align:left;">
+asv_24
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAACAGTAACATGGTTATGCTTCTAGCATAGACTGAATGAAACCCACCCTGAGTACCTTTGCCTGTTGCTTCCGTAGGGCATGACATCTGTCACTCTTGAGCTTAAAAACCTCAAGGGAGTCCTTACGGGAGGTATACTATTGAAACTCTTGCACTTCAATGTCTTCTGTCTGAACTTGTTTACAGCAAACATTAAAACTTTCAACAACGGATCTCTTGGTTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Ascomycota–100–Phylum;Pezizomycetes–100–Class;Pezizales–100–Order;Pyronemataceae–100–Family;unidentified–100–Genus;Pyronemataceae_sp–100–Species
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+11
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+25
+</td>
+<td style="text-align:left;">
+asv_25
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAGTGATTGCCCTAGTGGCTTAAAACTATATCCATTTACACCTGTGAACCGTTTGATTGACACTCTGTGTTGATTTTACAAACAATATGTAAAGAAAGTCAAGTTATTATAACAAAAAATAACTTTCAACAACGGATCTCTTGGCTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Basidiomycota–80–Phylum;Tremellomycetes–60–Class;Trichosporonales–54–Order;Trichosporonaceae–54–Family;Trichosporon–54–Genus;Trichosporon_vadense–29–Species
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+26
+</td>
+<td style="text-align:left;">
+asv_26
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAACAGTAACATGGTTATGCTTCTAGCATAGACTGAATGAAACCCACTCTGAGTACCTCTGCCTGTTGCTTCCGTAGGGCATGACATCCGTCACTCTTGACTTTAATATTCTCAAGGGAGTCCTTACGGGAGGTATACTATTGAAACTCTTGCACTTCAATGTCTTCTGTCTGAAACTGTTTACAGCAAACATTAAAACTTTCAACAACGGATCTCTTGGTTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Ascomycota–100–Phylum;Pezizomycetes–100–Class;Pezizales–100–Order;Pyronemataceae–100–Family;unidentified–100–Genus;Pyronemataceae_sp–100–Species
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+27
+</td>
+<td style="text-align:left;">
+asv_27
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAGTGATTGCCCTAGTGGCTTAAAACTATATCCATTTACACCTGTGAACCGTTTGATTGACACTCTGTGTTGATTTTACAAACAATATGTAAAGAAAGTCAAGTTATAATAACAAAAAATAACTTTCAACAACGGATCTCTTGGCTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Basidiomycota–75–Phylum;Tremellomycetes–51–Class;Trichosporonales–49–Order;Trichosporonaceae–49–Family;Trichosporon–49–Genus;Trichosporon_vadense–29–Species
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+28
+</td>
+<td style="text-align:left;">
+asv_28
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAACAAATCTTTAACCGTTCTGAACATGCTGGCGCAAGCCAGCATGCCAGAATCATCGCCCCGGGCGCGAGCCCGTGACACATTGCACCGACTGACTGACTGATCAATAACTTAAACAAACTTTTAACAACGGATCTCTAGGCTCCC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Ascomycota–63–Phylum;Lecanoromycetes–34–Class;Teloschistales–30–Order;Physciaceae–30–Family;Phaeophyscia–30–Genus;Phaeophyscia_ciliata–23–Species
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+29
+</td>
+<td style="text-align:left;">
+asv_29
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAACGAATTACAAAGTCGGCCTTGCTGTTGCTGGTGGAAACACATGTGCACGCTCGGTTGCAAATCCACACACCTGTGCATCTATGACTCGAGGTTGTTGTCGTATGACCGAGAGTAACTTTTACACACTCTTGAATGTAATGGAATGTCTACTGTGCATAATGTACAATTAAACAACTTTCAACAACGGATCTCTTGGCTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Basidiomycota–88–Phylum;Agaricomycetes–87–Class;Sebacinales–75–Order;unidentified–75–Family;unidentified–75–Genus;Sebacinales_sp–75–Species
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+asv_30
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTCATAATCAAGTGTTTTTATGGCACTTTCAAAAATCCATATCCACCTTGTGTGCAATGTCATCTCACTGGAGGTCAACGGCTGTAAAAATCCGTTTGGTCACCTTTGGGATTTATATCTACTCAGAACTTTAGTGATTTTGTCTGAAACATATTATGAATACTTAATTCAAAATACAACTTTCAACAACGGATCTCTTGGCTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Zygomycota–91–Phylum;Mortierellomycotina_cls_Incertae_sedis–90–Class;Mortierellales–90–Order;Mortierellaceae–88–Family;Mortierella–88–Genus;Mortierella_acrotona–66–Species
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+31
+</td>
+<td style="text-align:left;">
+asv_31
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTCTCCGTAGGTGAACCTGCGGAGGGATCATTACTGAATGGCCCCTCGGGGCCTTCAACCCTTCAAACCTGTGGAAGCAAACTCCGTGCTTCGGCGCCGCGTGCGTCGCTTTTATGCAGAAGGCTTTGCGTCTGAATCATAAACAAGAATTAAAACTTTCAACAAAGGATCTCTTGGCTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Ascomycota–89–Phylum;Archaeorhizomycetes–55–Class;Archaeorhizomycetales–55–Order;Archaeorhizomycetaceae–55–Family;Archaeorhizomyces–55–Genus;Archaeorhizomyces_sp–55–Species
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+32
+</td>
+<td style="text-align:left;">
+asv_32
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTCATAATAAAGTGTTTTATGGCACTTTTTAAAAAAAATCCATATCCACCTTGTGTGCAATGTATTTTAGATCTCGCCAAATTATTTTTTGATAATTTGGCAAGGTTTTATTATATTACATCAACTCTTTTTTAATATGATTTGTCTGAAAAATATTATGAATTGTCAACTTAATTCAAAATACAACTTTCAACAACGGATCTCTTGGCTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Zygomycota–91–Phylum;Mortierellomycotina_cls_Incertae_sedis–89–Class;Mortierellales–89–Order;Mortierellaceae–87–Family;Mortierella–87–Genus;Mortierella_sp–48–Species
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+33
+</td>
+<td style="text-align:left;">
+asv_33
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTCTCCGTTGGTGAACCAGCGGAGGGATCATTATAGAGTTTTCTAAACTCCCAACCCATGTGAACTTACCTTTTGTTGCCTCGGCAGAAGTTATAGGTCTTCTTATAGCTGCTGCCGGTGGACCATTAAACTCTTGTTATTTTATGTAATCTGAGCGTCTTATTTTAATAAGTCAAAACTTTCAACAACGGATCTCTTGGTTCTG
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Ascomycota–100–Phylum;Sordariomycetes–100–Class;Xylariales–100–Order;Amphisphaeriaceae–100–Family;Pestalotiopsis–100–Genus;Pestalotiopsis_sp–89–Species
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+34
+</td>
+<td style="text-align:left;">
+asv_34
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTACAAGTGAGGCTACCGAACGTTGGAAACAGCGGTTAGGAGCTTACACCCACCCGTGTTTACATACTATTGTTGCTTTGGCGGGCCGTGGCCTCCACTGCGGGCTCTGCTCGTGTGTGCCCGCCAGAGGACCAAACTCTGAATGTTAGTGATGTCTGAGTACTATCTAATAGTTAAAACTTTCAACAACGGATCTCTTGGTTCTG
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Ascomycota–100–Phylum;Leotiomycetes–93–Class;Helotiales–90–Order;Vibrisseaceae–85–Family;Vibrissea–85–Genus;Vibrissea_truncorum–85–Species
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+35
+</td>
+<td style="text-align:left;">
+asv_35
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAATGAATATAGGACGTTTGCTCGTAAAACAGCAAGGTCCGACCTCCATTTTCTTACACTGTGCATTTATTGGCGAGATTATTGAAGAAGCTTGCTTTTTCGATCGTCTTGCGGCTCATTTATTAACACCAGTCAAAGTATGTAACGAAATATCGAAATAAAATAAAACTTTCAACAACGGATCTCTTGGCTCTC
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Basidiomycota–69–Phylum;Microbotryomycetes–36–Class;unidentified–28–Order;unidentified–28–Family;unidentified–28–Genus;Microbotryomycetes_sp–28–Species
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+36
+</td>
+<td style="text-align:left;">
+asv_36
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTACTGAGTGAGGGCCCTCTGGGTCCAACCTCCCACCCGTGTTTATTGTACCTTGTTGCTTCGGTGCGCCCGCCTCACGGCCGCCGGGGGGCTTCTGCCCCCGGGTCCGCGCGCACCGGAGACACCATTGAACTCTGTCTGAAGATTGCAGTCTGAGCATAAACTAAATAAGTTAAAACTTTCAACAACGGATCTCTTGGTTCCG
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Ascomycota–100–Phylum;Eurotiomycetes–100–Class;Eurotiales–100–Order;Trichocomaceae–100–Family;Penicillium–100–Genus;Penicillium_vanderhammenii–86–Species
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+37
+</td>
+<td style="text-align:left;">
+asv_37
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTACCTAGAGTTTGTGGGCTTTGCCTGCTATCTCTTACCCATGTCTTTTGAGTACTTACGTTTCCTCGGTGGGTTCGCCCGCCGATTGGACAATTTAAACCCTTTGCAGTTGCAATCAGCGTCTGAAAAACATAATAGTTACAACTTTCAACAACGGATCTCTTGGTTCTG
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Ascomycota–100–Phylum;Dothideomycetes–100–Class;Pleosporales–100–Order;Pleosporales_fam_Incertae_sedis–100–Family;unidentified–97–Genus;Pleosporales_fam_Incertae_sedis_sp–97–Species
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+38
+</td>
+<td style="text-align:left;">
+asv_38
+</td>
+<td style="text-align:left;">
+AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTACAAATCTTTGGGGTCTGGCTGCCGTGCAAACGGTGTGCTGACTCACATTAGCACAAGGTCGCAAGGCCTTGATGTTTACGCTTGTTTGTTTGACAGAGTTAGTTGAGAATAATAAAGACAACTTTTAACAATGGATCTCTTGGCTCTT
+</td>
+<td style="text-align:left;">
+Fungi–100–Kingdom;Ascomycota–36–Phylum;Lecanoromycetes–17–Class;Teloschistales–14–Order;Physciaceae–14–Family;Phaeophyscia–14–Genus;Phaeophyscia_ciliata–11–Species
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section level3">
 <h3 id="reformat-asv-matrix-as-taxmap-and-phyloseq-objects-after-optional-filtering-of-low-abundance-asvs">Reformat ASV matrix as taxmap and phyloseq objects after optional
 filtering of low abundance ASVs<a class="anchor" aria-label="anchor" href="#reformat-asv-matrix-as-taxmap-and-phyloseq-objects-after-optional-filtering-of-low-abundance-asvs"></a>
 </h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">objs</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/convert_asv_matrix_to_objs.html">convert_asv_matrix_to_objs</a></span><span class="op">(</span><span class="va">analysis_setup</span>, minimum_bootstrap <span class="op">=</span> <span class="fl">0</span>, save_outputs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<p>We will only consider assignments that have a bootstrap score of
+60</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">objs</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/convert_asv_matrix_to_objs.html">convert_asv_matrix_to_objs</a></span><span class="op">(</span><span class="va">analysis_setup</span>, minimum_bootstrap <span class="op">=</span> <span class="fl">60</span>, save_outputs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">38</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">5</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
@@ -451,7 +1602,7 @@ filtering of low abundance ASVs<a class="anchor" aria-label="anchor" href="#refo
 <span><span class="co">#&gt; Taxmap object saved in: ~/output_test_dataset/taxmap_obj_its.RData </span></span>
 <span><span class="co">#&gt; Phyloseq object saved in: ~/output_test_dataset/phylo_obj_its.RData </span></span>
 <span><span class="co">#&gt; ASVs filtered by minimum read depth: 0 </span></span>
-<span><span class="co">#&gt; For taxonomic assignments, if minimum bootstrap was set to: 0 assignments were set to 'Unsupported' </span></span>
+<span><span class="co">#&gt; For taxonomic assignments, if minimum bootstrap was set to: 60 assignments were set to 'Unsupported' </span></span>
 <span><span class="co">#&gt; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">5</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">5</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
@@ -465,19 +1616,16 @@ filtering of low abundance ASVs<a class="anchor" aria-label="anchor" href="#refo
 <span><span class="co">#&gt; Taxmap object saved in: ~/output_test_dataset/taxmap_obj_rps10.RData </span></span>
 <span><span class="co">#&gt; Phyloseq object saved in: ~/output_test_dataset/phylo_obj_rps10.RData </span></span>
 <span><span class="co">#&gt; ASVs filtered by minimum read depth: 0 </span></span>
-<span><span class="co">#&gt; For taxonomic assignments, if minimum bootstrap was set to: 0 assignments were set to 'Unsupported' </span></span>
+<span><span class="co">#&gt; For taxonomic assignments, if minimum bootstrap was set to: 60 assignments were set to 'Unsupported' </span></span>
 <span><span class="co">#&gt; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="format-of-output-matrix">Format of output matrix<a class="anchor" aria-label="anchor" href="#format-of-output-matrix"></a>
-</h3>
 </div>
 <div class="section level3">
 <h3 id="objects-can-now-be-used-for-downstream-data-analysis">Objects can now be used for downstream data analysis<a class="anchor" aria-label="anchor" href="#objects-can-now-be-used-for-downstream-data-analysis"></a>
 </h3>
 <p>Here we make heattrees using taxmap object.</p>
-<p>First we make a heat tree for our ITS-barcoded samples</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<p>First we make a heat tree for our <strong>ITS1</strong>-barcoded
+samples</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">$</span><span class="va">taxmap_its</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/metacoder/man/filter_taxa.html" class="external-link">filter_taxa</a></span><span class="op">(</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">taxon_names</span>, <span class="st">"_sp$"</span><span class="op">)</span>, reassign_obs <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/metacoder/man/filter_taxa.html" class="external-link">filter_taxa</a></span><span class="op">(</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">taxon_names</span>, <span class="st">"incertae_sedis"</span>, ignore.case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, reassign_obs <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -488,9 +1636,9 @@ filtering of low abundance ASVs<a class="anchor" aria-label="anchor" href="#refo
 <span>                       node_color_axis_label <span class="op">=</span> <span class="st">"ASV count"</span>,</span>
 <span>                       node_size_axis_label <span class="op">=</span> <span class="st">"Total Abundance of Taxa"</span>,</span>
 <span>                       layout <span class="op">=</span> <span class="st">"da"</span>, initial_layout <span class="op">=</span> <span class="st">"re"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Heatree_demonstration_its-1.png" width="700"></p>
+<p><img src="Heatree_demonstration_its-1.png" width="70%"></p>
 <p>Now we make a heat tree for our rps10-barcoded samples</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">$</span><span class="va">taxmap_rps10</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/metacoder/man/filter_taxa.html" class="external-link">filter_taxa</a></span><span class="op">(</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">taxon_names</span>, <span class="st">"_sp$"</span><span class="op">)</span>, reassign_obs <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/metacoder/man/filter_taxa.html" class="external-link">filter_taxa</a></span><span class="op">(</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">taxon_names</span>, <span class="st">"incertae_sedis"</span>, ignore.case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, reassign_obs <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -501,12 +1649,12 @@ filtering of low abundance ASVs<a class="anchor" aria-label="anchor" href="#refo
 <span>                       node_color_axis_label <span class="op">=</span> <span class="st">"ASV count"</span>,</span>
 <span>                       node_size_axis_label <span class="op">=</span> <span class="st">"Total Abundance of Taxa"</span>,</span>
 <span>                       layout <span class="op">=</span> <span class="st">"da"</span>, initial_layout <span class="op">=</span> <span class="st">"re"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Heatree_demonstration_rps10-1.png" width="700"></p>
-<p>We can also do a variety of analyses, if we convert to phyloseq
-object</p>
+<p><img src="Heatree_demonstration_rps10-1.png" width="70%"></p>
+<p>We can also do a variety of analyses, if we convert to
+<strong>phyloseq</strong> object</p>
 <p>Here we demonstrate how to make a stacked bar plot of the relative
-abundance of taxa by sample for the ITS-barcoded samples</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+abundance of taxa by sample for the ITS1-barcoded samples</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_its</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="va">x</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">}</span> <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/psmelt.html" class="external-link">psmelt</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>                                        </span>
@@ -544,10 +1692,10 @@ abundance of taxa by sample for the ITS-barcoded samples</p>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">abund_plot</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Phyloseq_demonstration_ITS-1.png" width="700"></p>
-<p>Finally,we demonstrate how to make a stacked bar plot of the relative
-abundance of taxa by sample for the rps10-barcoded samples</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<p><img src="Phyloseq_demonstration_ITS-1.png" width="70%"></p>
+<p>Finally, we demonstrate how to make a stacked bar plot of the
+relative abundance of taxa by sample for the rps10-barcoded samples</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_rps10</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="va">x</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">}</span> <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/psmelt.html" class="external-link">psmelt</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>                                        </span>
@@ -585,7 +1733,7 @@ abundance of taxa by sample for the rps10-barcoded samples</p>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">abund_plot</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Phyloseq_demonstration_rps10-1.png" width="700"></p>
+<p><img src="Phyloseq_demonstration_rps10-1.png" width="70%"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
