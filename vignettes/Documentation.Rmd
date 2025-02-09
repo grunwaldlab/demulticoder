@@ -15,14 +15,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
-
-# Introduction
+### Introduction
 
 This documentation provides comprehensive information on how to use the *Demulticoder* R package for processing and analyzing metabarcode sequencing data. It covers input file requirements, parameter settings, and key parameters.  
 

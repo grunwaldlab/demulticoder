@@ -80,7 +80,7 @@ kable(primer_info, row.names = FALSE) %>%
   scroll_box(width = "100%", height = "100px", extra_css = "thead th { white-space: nowrap; }")
 ```
 
-### Loading the Package  
+### Loading the Package 
 
 For now, the package will be loaded by retrieving it from GitHub. 
 We are submitting package to CRAN. 
