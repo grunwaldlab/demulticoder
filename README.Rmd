@@ -107,7 +107,7 @@ User must install cutadapt on their local machine and append the path to the exe
 cut_trim(
   output,
   cutadapt_path="<CUTADAPTPATH>",
-  overwrite_existing = TRUE)) # Change to the location on your computer. (Example: "/usr/bin/cutadapt")
+  overwrite_existing = TRUE) # Change to the location on your computer. (Example: "/usr/bin/cutadapt")
 ```
  
   
@@ -115,7 +115,7 @@ cut_trim(
 ```{r, eval=FALSE, echo=TRUE}
 make_asv_abund_matrix(
   output,
-  overwrite_existing = TRUE))
+  overwrite_existing = TRUE)
 ```
   
   
@@ -124,7 +124,7 @@ make_asv_abund_matrix(
 assign_tax(
   output,
   asv_abund_matrix,
-  overwrite_existing = TRUE))
+  overwrite_existing = TRUE)
 ```
 
   

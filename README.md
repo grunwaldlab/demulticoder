@@ -116,7 +116,7 @@ machine and append the path to the executable.
 cut_trim(
   output,
   cutadapt_path="<CUTADAPTPATH>",
-  overwrite_existing = TRUE)) # Change to the location on your computer. (Example: "/usr/bin/cutadapt")
+  overwrite_existing = TRUE) # Change to the location on your computer. (Example: "/usr/bin/cutadapt")
 ```
 
 **4. Make ASV abundance matrix**
@@ -124,7 +124,7 @@ cut_trim(
 ``` r
 make_asv_abund_matrix(
   output,
-  overwrite_existing = TRUE))
+  overwrite_existing = TRUE)
 ```
 
 **5. Assign taxonomy**
@@ -133,7 +133,7 @@ make_asv_abund_matrix(
 assign_tax(
   output,
   asv_abund_matrix,
-  overwrite_existing = TRUE))
+  overwrite_existing = TRUE)
 ```
 
 **6. Convert ASV matrix to taxmap and phyloseq objects**
