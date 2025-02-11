@@ -30,6 +30,26 @@ Here is a brief schematic of the general workflow:
 First install **cutadapt** program following the instructions here:
 <https://cutadapt.readthedocs.io/en/stable/installation.html>
 
+Let’s locate where the cutadapt executable is. You must do this from a
+**Terminal** window:
+
+``` sh
+#If you installed with pip or pipx, or homebrew, run this command in R: 
+which cutadapt
+cutadapt --version
+```
+
+If you followed the cutadapt installation instructions to create a conda
+environment called cutadapt (change to whatever you named your
+environment), to install it in, open up a **Terminal** window and type
+these commands:
+
+``` sh
+conda activate cutadapt
+which cutadapt
+cutadapt --version
+```
+
 Second, make sure the following R packages are installed:
 
 - **DADA2** (Latest version is 3.20)
@@ -47,14 +67,12 @@ To install the development version of package (while submission to CRAN
 is in progress):
 
 ``` r
-#Here we install demulticoder (instructions will be updated once available 
-#through CRAN)
+#Here we install demulticoder (instructions will be updated once available through CRAN)
 devtools::install_github("grunwaldlab/demulticoder")
 library("demulticoder")
 
-#If you need to install metacoder but have the latest version of R and R studio, 
-#you can temporarily install metacoder as follows. 
-#This message will be removed once updates to CRAN are made.  
+#If you need to install metacoder but have the latest version of R and R studio, you can temporarily install metacoder as follows. 
+#This message will be removed once updates to CRAN are made. 
 devtools::install_github("grunwaldlab/metacoder")
 
 #Let's make sure other packages are loaded:
@@ -68,27 +86,27 @@ library("metacoder")
 
 **1. Set-up input directory and files**
 
-To demonstrate how to use the package, we have a small test dataset that
-comes loaded with the package. This dataset will be used in the workflow
-example below.
+To demonstrate how to use the package, we have a small test data set
+that comes loaded with the package. This data set will be used in the
+workflow example below.
 
-Already loaded in the test dataset directory are the following files:
+Already loaded in the test data set directory are the following files:
 
-- **PE short read amplicon data**
+- **PE short read amplification data**
   - Files: S1_R1.fastq.gz, S1_R2.fastq.gz, S2_R1.fastq.gz,
     S2_R1.fastq.gz  
   - The files must end in either *R1.fastq.gz* , or *R2.fastq.gz* and
     each sample must have both R1 and R2 files.
 - [**metadata.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv)
   - New row for each unique sample
-  - Samples entered twice if samples contain two pooled metabarcodes, as
+  - Samples entered twice if samples contain two pooled metabolites, as
     in the test data template
 - [**primerinfo_params.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv)
   - New row for each unique barcode and associated primer sequence
   - Optional cutadapt and DADA2 parameters
 - **Taxonomy databases**
   - UNITE fungal database (abridged version)
-  - oomyceteDB
+  - completed
 
 See
 [**Documentation**](https://grunwaldlab.github.io/demulticoder/articles/Documentation.html)
@@ -103,18 +121,18 @@ tab on the package website
 ``` r
 output<-prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"), # This allows us to use the test directory located within the package
-  output_directory = "<OUTDIR>",
-  overwrite_existing = TRUE) # Change to you preferred location on your local computer (Example: "~/demulticoder_test")
+  output_directory = "~/demulticoder_test", # Change to you preferred location on your local computer (Example: "~/demulticoder_test")
+  overwrite_existing = TRUE)
 ```
 
-**3. Cut and trim reads** User must install cutadapt on their local
+**3. Cut and trim reads** User **must install cutadapt** on their local
 machine and append the path to the executable.
 
 ``` r
 cut_trim(
   output,
-  cutadapt_path="<CUTADAPTPATH>",) # Change to the location on your computer. (Example: "/usr/bin/cutadapt")
-  overwrite_existing = TRUE)
+  cutadapt_path="/usr/bin/cutadapt", # Change to the location on your computer. (Example: "/usr/bin/cutadapt")
+  overwrite_existing = TRUE) 
 ```
 
 **4. Make ASV abundance matrix**
@@ -140,9 +158,13 @@ assign_tax(
 objs<-convert_asv_matrix_to_objs(output)
 ```
 
-### Check out the associated Github repository to view source code
+### Check out the website to view the documentation and see more examples
 
-For more information, to see source code, or submit issue, check out:  
+For more information on source code, check out the package repository:
+<https://grunwaldlab.github.io/demulticoder/>
+
+### For source code:
+
 <https://github.com/grunwaldlab/demulticoder/>
 
 ### Citation
@@ -150,8 +172,4 @@ For more information, to see source code, or submit issue, check out:
 The package was developed by Martha Sudermann, Zachary Foster, Samantha
 Dawson, Hung Phan, Jeff Chang, and Niklaus Grünwald
 
-Stay tuned for associated manuscript.
-
-### Acknowledgements
-
-The demulticoder logo was created with <https://BioRender.com/>
+An associated manuscript is currently under review.
