@@ -28,10 +28,11 @@ Here is a brief schematic of the general workflow:
 
 ### Installation
 
-**Dependencies**:
+**Dependencies**:  
+First install **cutadapt** program following the instructions here:
+<https://cutadapt.readthedocs.io/en/stable/installation.html>
 
-For **demulticoder** to work properly, make sure the following R
-packages are installed first:
+Second, make sure the following R packages are installed:
 
 - **DADA2** (Latest version is 3.20)
   - To install, follow these instructions:
@@ -96,7 +97,7 @@ See
 for how to format databases and input files.
 
 For more details on each step, check out the [**Getting
-Started**](https://grunwaldlab.github.io/demulticoder/articles/Getting_Started.html)
+Started**](https://grunwaldlab.github.io/demulticoder/articles/Getting_started.html)
 tab on the package website
 
 **2. Prepare reads**
