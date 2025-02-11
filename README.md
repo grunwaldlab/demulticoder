@@ -36,7 +36,7 @@ Let’s locate where the cutadapt executable is. You must do this from a
 **Terminal** window:
 
 ``` sh
-#If you installed with pip or pipx, or homebrew, run this command in R: 
+#If you installed with pip or pipx, or homebrew, run this command from a Terminal window
 which cutadapt
 cutadapt --version
 ```
@@ -47,6 +47,7 @@ environment), to install it in, open up a **Terminal** window and type
 these commands:
 
 ``` sh
+#Run commands from a Terminal window
 conda activate cutadapt
 which cutadapt
 cutadapt --version
@@ -69,13 +70,11 @@ To install the development version of package (while submission to CRAN
 is in progress):
 
 ``` r
-#Here we install demulticoder (instructions will be updated once available 
-#through CRAN)
+#Here we install demulticoder (instructions will be updated once available through CRAN)
 devtools::install_github("grunwaldlab/demulticoder")
 library("demulticoder")
 
-#If you need to install metacoder but have the latest version of R and R studio, 
-#you can temporarily install metacoder as follows. 
+#If you need to install metacoder but have the latest version of R and R studio, you can temporarily install metacoder as follows. 
 #This message will be removed once updates to CRAN are made. 
 devtools::install_github("grunwaldlab/metacoder")
 

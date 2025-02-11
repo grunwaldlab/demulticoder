@@ -39,13 +39,14 @@ First install **cutadapt** program following the instructions here: https://cuta
 
 Let's locate where the cutadapt executable is. You must do this from a **Terminal** window:  
 ```{sh, eval=FALSE, echo=TRUE}
-#If you installed with pip or pipx, or homebrew, run this command in R: 
+#If you installed with pip or pipx, or homebrew, run this command from a Terminal window
 which cutadapt
 cutadapt --version
 ```
 
 If you followed the cutadapt installation instructions to create a conda environment called cutadapt (change to whatever you named your environment), to install it in, open up a **Terminal** window and type these commands:
 ```{sh, eval=FALSE, echo=TRUE}
+#Run commands from a Terminal window
 conda activate cutadapt
 which cutadapt
 cutadapt --version

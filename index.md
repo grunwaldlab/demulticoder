@@ -34,7 +34,7 @@ Let’s locate where the cutadapt executable is. You must do this from a
 **Terminal** window:
 
 ``` sh
-#If you installed with pip or pipx, or homebrew, run this command in R: 
+#If you installed with pip or pipx, or homebrew, run this command from a Terminal window
 which cutadapt
 cutadapt --version
 ```
@@ -45,6 +45,7 @@ environment), to install it in, open up a **Terminal** window and type
 these commands:
 
 ``` sh
+#Run commands from a Terminal window
 conda activate cutadapt
 which cutadapt
 cutadapt --version
