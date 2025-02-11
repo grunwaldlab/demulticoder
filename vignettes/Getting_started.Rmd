@@ -175,12 +175,12 @@ analysis_setup<-demulticoder::prepare_reads(
 
 ### Remove primers with Cutadapt  
 
-Before running Cutadapt, please ensure that you have installed it
+Before running Cutadapt, **please ensure that you have installed it** 
 
 ```{r remove_primers_with_cut_trim_function, message=TRUE}
 demulticoder::cut_trim(
   analysis_setup,
-  cutadapt_path = "/usr/bin/cutadapt",
+  cutadapt_path = "/usr/bin/cutadapt", #CHANGE LOCATION TO YOUR LOCAL INSTALLATION
   overwrite_existing = TRUE)
 ```
 

@@ -90,8 +90,9 @@
 <div class="section level3">
 <h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h3>
-<p><strong>Dependencies</strong>:</p>
-<p>For <strong>demulticoder</strong> to work properly, make sure the following R packages are installed first:</p>
+<p><strong>Dependencies</strong>:<br>
+First install <strong>cutadapt</strong> program following the instructions here: <a href="https://cutadapt.readthedocs.io/en/stable/installation.html" class="external-link uri">https://cutadapt.readthedocs.io/en/stable/installation.html</a></p>
+<p>Second, make sure the following R packages are installed:</p>
 <ul>
 <li>
 <strong>DADA2</strong> (Latest version is 3.20)
@@ -170,26 +171,29 @@
 </li>
 </ul>
 <p>See <a href="https://grunwaldlab.github.io/demulticoder/articles/Documentation.html" class="external-link"><strong>Documentation</strong></a> for how to format databases and input files.</p>
-<p>For more details on each step, check out the <a href="https://grunwaldlab.github.io/demulticoder/articles/Getting_Started.html" class="external-link"><strong>Getting Started</strong></a> tab on the package website</p>
+<p>For more details on each step, check out the <a href="https://grunwaldlab.github.io/demulticoder/articles/Getting_started.html" class="external-link"><strong>Getting Started</strong></a> tab on the package website</p>
 <p><strong>2. Prepare reads</strong></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>output<span class="ot">&lt;-</span><span class="fu">prepare_reads</span>(</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="at">data_directory =</span> <span class="fu">system.file</span>(<span class="st">"extdata"</span>, <span class="at">package =</span> <span class="st">"demulticoder"</span>), <span class="co"># This allows us to use the test directory located within the package</span></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="at">output_directory =</span> <span class="st">"&lt;OUTDIR&gt;"</span>,</span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="at">overwrite_existing =</span> <span class="cn">TRUE</span>)<span class="er">)</span> <span class="co"># Change to you preferred location on your local computer (Example: "~/demulticoder_test")</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">output</span><span class="op">&lt;-</span><span class="fu"><a href="reference/prepare_reads.html">prepare_reads</a></span><span class="op">(</span></span>
+<span>  data_directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"demulticoder"</span><span class="op">)</span>, <span class="co"># This allows us to use the test directory located within the package</span></span>
+<span>  output_directory <span class="op">=</span> <span class="st">"&lt;OUTDIR&gt;"</span>,</span>
+<span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Change to you preferred location on your local computer (Example: "~/demulticoder_test")</span></span></code></pre></div>
 <p><strong>3. Cut and trim reads</strong> User must install cutadapt on their local machine and append the path to the executable.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">cut_trim</span>(</span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  output,</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="at">cutadapt_path=</span><span class="st">"&lt;CUTADAPTPATH&gt;"</span>,) <span class="co"># Change to the location on your computer. (Example: "/usr/bin/cutadapt")</span></span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  overwrite_existing <span class="ot">=</span> <span class="cn">TRUE</span><span class="er">)</span></span></code></pre></div>
 <p><strong>4. Make ASV abundance matrix</strong></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">make_asv_abund_matrix</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  output,</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">overwrite_existing =</span> <span class="cn">TRUE</span>)<span class="er">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/make_asv_abund_matrix.html">make_asv_abund_matrix</a></span><span class="op">(</span></span>
+<span>  <span class="va">output</span>,</span>
+<span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><strong>5. Assign taxonomy</strong></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">assign_tax</span>(</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  output,</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  asv_abund_matrix,</span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="at">overwrite_existing =</span> <span class="cn">TRUE</span>)<span class="er">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/assign_tax.html">assign_tax</a></span><span class="op">(</span></span>
+<span>  <span class="va">output</span>,</span>
+<span>  <span class="va">asv_abund_matrix</span>,</span>
+<span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><strong>6. Convert ASV matrix to taxmap and phyloseq objects</strong></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">&lt;-</span><span class="fu"><a href="reference/convert_asv_matrix_to_objs.html">convert_asv_matrix_to_objs</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span></code></pre></div>
