@@ -93,7 +93,7 @@ library("demulticoder")
 ### Step 1  
 Remove N's and create directory structure for downstream steps
 ```{r prepare_reads, fig.height=6, fig.width=6, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
-outputs<-prepare_reads(
+output<-prepare_reads(
   data_directory = "~/benchmark_demulticoder/mothur_16S_sop/data", 
   output_directory = "~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs",
   tempdir_path = "~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp",
@@ -104,7 +104,7 @@ outputs<-prepare_reads(
 Run Cutadapt to remove primers and then trim reads with DADA2 filterAndTrim function 
 ```{r Remove_primers_and_trim_reads, fig.height=6, fig.width=6, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 cut_trim(
-  outputs,
+  output,
   cutadapt_path="/usr/bin/cutadapt")
 ```
 
@@ -122,7 +122,7 @@ if (!overwrite_existing) {
 Core ASV inference step
 ```{r ASV_inference, fig.height=6, fig.width=6, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 make_asv_abund_matrix(
-  outputs)
+  output)
 ```
 
 We can now visualize the outputs from the ASV inference step.  
@@ -150,7 +150,7 @@ Assign taxonomy step
 
 ```{r assign_taxonomy_step, fig.height=6, fig.width=6, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 assign_tax(
-  outputs,
+  output,
   asv_abund_matrix,
   db_16S="silva_nr99_v138.2_toSpecies_trainset.fa.gz",
   retrieve_files=FALSE)
@@ -171,7 +171,7 @@ if (!overwrite_existing) {
 Convert asv matrix to taxmap and phyloseq objects with one function  
 
 ```{r convert_matrix_to_other_formats, fig.height=6, fig.width=6}
-objs<-convert_asv_matrix_to_objs(outputs)
+objs<-convert_asv_matrix_to_objs(output)
 ```
 
 ### Step 6  

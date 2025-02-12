@@ -41,7 +41,6 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-example-vignettes" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Example Vignettes</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-example-vignettes">
 <li><a class="dropdown-item" href="../articles/DADA2_16S_mothur_validation.html">16S DADA2 Mothur SOP Validation</a></li>
-    <li><a class="dropdown-item" href="../articles/Pooled_barcode_example.html">Pooled barcode example</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Main Functions</a></li>
@@ -536,16 +535,14 @@ are submitting package to CRAN.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"grunwaldlab/demulticoder"</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#devtools::load_all("~/demulticoder")</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/demulticoder/" class="external-link">"demulticoder"</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://haozhu233.github.io/kableExtra/" class="external-link">kableExtra</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/demulticoder/" class="external-link">"demulticoder"</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="step-1">Step 1<a class="anchor" aria-label="anchor" href="#step-1"></a>
 </h3>
 <p>Remove N’s and create directory structure for downstream steps</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">outputs</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/prepare_reads.html">prepare_reads</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">output</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/prepare_reads.html">prepare_reads</a></span><span class="op">(</span></span>
 <span>  data_directory <span class="op">=</span> <span class="st">"~/benchmark_demulticoder/mothur_16S_sop/data"</span>, </span>
 <span>  output_directory <span class="op">=</span> <span class="st">"~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs"</span>,</span>
 <span>  tempdir_path <span class="op">=</span> <span class="st">"~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp"</span>,</span>
@@ -559,7 +556,7 @@ are submitting package to CRAN.</p>
 filterAndTrim function</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cut_trim.html">cut_trim</a></span><span class="op">(</span></span>
-<span>  <span class="va">outputs</span>,</span>
+<span>  <span class="va">output</span>,</span>
 <span>  cutadapt_path<span class="op">=</span><span class="st">"/usr/bin/cutadapt"</span><span class="op">)</span></span></code></pre></div>
 <p>We can now visualize the outputs from the primer removal and trimming
 steps. A CSV files is output showing which samples still have primer
@@ -575,7 +572,7 @@ filtered at the end.</p>
 <p>Core ASV inference step</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make_asv_abund_matrix.html">make_asv_abund_matrix</a></span><span class="op">(</span></span>
-<span>  <span class="va">outputs</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="va">output</span><span class="op">)</span></span></code></pre></div>
 <p>We can now visualize the outputs from the ASV inference step.</p>
 <p>The first plot shows the how reads were merged in terms of mismatches
 and indels.</p>
@@ -591,7 +588,7 @@ ASVs.</p>
 <p>Assign taxonomy step</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/assign_tax.html">assign_tax</a></span><span class="op">(</span></span>
-<span>  <span class="va">outputs</span>,</span>
+<span>  <span class="va">output</span>,</span>
 <span>  <span class="va">asv_abund_matrix</span>,</span>
 <span>  db_16S<span class="op">=</span><span class="st">"silva_nr99_v138.2_toSpecies_trainset.fa.gz"</span>,</span>
 <span>  retrieve_files<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
@@ -627,7 +624,7 @@ parameters and re-running the analysis.</p>
 <p>Convert asv matrix to taxmap and phyloseq objects with one
 function</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">objs</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/convert_asv_matrix_to_objs.html">convert_asv_matrix_to_objs</a></span><span class="op">(</span><span class="va">outputs</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">objs</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/convert_asv_matrix_to_objs.html">convert_asv_matrix_to_objs</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">232</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">23</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>

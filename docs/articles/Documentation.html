@@ -41,7 +41,6 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-example-vignettes" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Example Vignettes</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-example-vignettes">
 <li><a class="dropdown-item" href="../articles/DADA2_16S_mothur_validation.html">16S DADA2 Mothur SOP Validation</a></li>
-    <li><a class="dropdown-item" href="../articles/Pooled_barcode_example.html">Pooled barcode example</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Main Functions</a></li>
@@ -73,32 +72,29 @@
 
     
     
-<div class="section level4">
-<h4 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h4>
-<p>This documentation provides comprehensive information on how to use
-the <em>Demulticoder</em> R package for processing and analyzing
-metabarcode sequencing data. It covers input file requirements,
-parameter settings, and key parameters.</p>
-</div>
 <div class="section level2">
-<h2 id="quick-start-guide">Quick Start Guide<a class="anchor" aria-label="anchor" href="#quick-start-guide"></a>
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
+<p>This documentation provides comprehensive information on how to use
+the <em>demulticoder</em> R package for processing and analyzing
+metabarcode sequencing data. It covers input directory and file
+requirements, parameter settings, and key parameters.</p>
+<div class="section level3">
+<h3 id="package-workflow">Package workflow<a class="anchor" aria-label="anchor" href="#package-workflow"></a>
+</h3>
 <ol style="list-style-type: decimal">
 <li>Prepare your input files (metadata.csv, primerinfo_params.csv,
 unformatted reference databases, and PE Illumina read files).</li>
 <li>Place all input files in a single directory.</li>
 <li>Ensure your file names comply with the specified format.</li>
-<li>Run the pipeline with default settings or adjust parameters as
-needed.</li>
+<li>Run the four steps/functions of pipeline with default settings or
+adjust parameters as needed.</li>
 </ol>
 </div>
-<div class="section level2">
-<h2 id="input-files">Input Files<a class="anchor" aria-label="anchor" href="#input-files"></a>
-</h2>
 <div class="section level3">
-<h3 id="directory-structure">Directory Structure<a class="anchor" aria-label="anchor" href="#directory-structure"></a>
+<h3 id="inputs">Inputs<a class="anchor" aria-label="anchor" href="#inputs"></a>
 </h3>
+<p><strong>Directory Structure</strong></p>
 <p>Place all your input files into a single directory. The directory
 should contain the following files:</p>
 <ul>
@@ -107,13 +103,8 @@ should contain the following files:</p>
 <li><strong>PE Illumina read files</strong></li>
 <li><strong>Unformatted reference databases</strong></li>
 </ul>
-</div>
-<div class="section level3">
-<h3 id="file-naming-conventions">File Naming Conventions<a class="anchor" aria-label="anchor" href="#file-naming-conventions"></a>
-</h3>
-<div class="section level4">
-<h4 id="read-name-format">Read Name Format<a class="anchor" aria-label="anchor" href="#read-name-format"></a>
-</h4>
+<p><strong>File Naming Conventions</strong></p>
+<p><strong>Read Name Format</strong></p>
 <p>To avoid errors, the only characters that are acceptable in sample
 names are letters and numbers. Characters can be separated by
 underscores, but no other symbols. The files must end with the suffix
@@ -134,11 +125,7 @@ follows:</strong></p>
 <li>Sample1_001_R1_001.fastq.gz</li>
 <li>Sample1_001_R2_001.fastq.gz</li>
 </ul>
-</div>
-</div>
-<div class="section level3">
-<h3 id="metadata-csv">metadata.csv<a class="anchor" aria-label="anchor" href="#metadata-csv"></a>
-</h3>
+<p><strong>metadata.csv file</strong></p>
 <p>The metadata.csv file contains information about the samples and
 primers (and associated barcodes) used in the experiment. It has the
 following two required columns:</p>
@@ -160,10 +147,7 @@ S1,rps10,Cry
 S2,rps10,Cin
 S1,its,Cry
 S2,its,Cin</code></pre>
-</div>
-<div class="section level3">
-<h3 id="primerinfo_params-csv">primerinfo_params.csv<a class="anchor" aria-label="anchor" href="#primerinfo_params-csv"></a>
-</h3>
+<p><strong>primerinfo_params.csv file</strong></p>
 <p>The primerinfo_params.csv file contains information about the primer
 sequences used in the experiment, along with optional additional
 parameters that are part of the DADA2 pipeline. If anything is not
@@ -310,7 +294,7 @@ rps10,GTTGGTTAGAGYARAAGACT,ATRYYTAGAAAGAYTYGAACT,FALSE,100,TRUE,FALSE,1.00E+05,5
 its,CTTGGTCATTTAGAGGAAGTAA,GCTGCGTTCTTCATCGATGC,FALSE,50,TRUE,FALSE,1.00E+05,5,5,0,0,5,50,Inf,0,0,0,0,15,0,50</code></pre>
 </div>
 <div class="section level3">
-<h3 id="reference-database">Reference Database<a class="anchor" aria-label="anchor" href="#reference-database"></a>
+<h3 id="reference-databases">Reference Databases<a class="anchor" aria-label="anchor" href="#reference-databases"></a>
 </h3>
 <p>Databases will be copied into the user-specified data folder where
 raw data files and csv files are located. The names will be parameters
@@ -327,16 +311,6 @@ specify the path to the database in the input file. The database should
 be in fasta format.</p></li>
 </ul>
 </div>
-</div>
-<div class="section level2">
-<h2 id="faq">FAQ<a class="anchor" aria-label="anchor" href="#faq"></a>
-</h2>
-<p>In progress</p>
-</div>
-<div class="section level2">
-<h2 id="troubleshooting">Troubleshooting<a class="anchor" aria-label="anchor" href="#troubleshooting"></a>
-</h2>
-<p>In progress</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

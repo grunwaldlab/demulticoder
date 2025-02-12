@@ -43,7 +43,6 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-example-vignettes" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Example Vignettes</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-example-vignettes">
 <li><a class="dropdown-item" href="articles/DADA2_16S_mothur_validation.html">16S DADA2 Mothur SOP Validation</a></li>
-    <li><a class="dropdown-item" href="articles/Pooled_barcode_example.html">Pooled barcode example</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Main Functions</a></li>
@@ -92,6 +91,15 @@
 </h3>
 <p><strong>Dependencies</strong>:<br>
 First install <strong>cutadapt</strong> program following the instructions here: <a href="https://cutadapt.readthedocs.io/en/stable/installation.html" class="external-link uri">https://cutadapt.readthedocs.io/en/stable/installation.html</a></p>
+<p>Let’s locate where the cutadapt executable is. You must do this from a <strong>Terminal</strong> window:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co">#If you installed with pip or pipx, or homebrew, run this command from a Terminal window</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">which</span> cutadapt</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="ex">cutadapt</span> <span class="at">--version</span></span></code></pre></div>
+<p>If you followed the cutadapt installation instructions to create a conda environment called cutadapt (change to whatever you named your environment), to install it in, open up a <strong>Terminal</strong> window and type these commands:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">#Run commands from a Terminal window</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="ex">conda</span> activate cutadapt</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="fu">which</span> cutadapt</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="ex">cutadapt</span> <span class="at">--version</span></span></code></pre></div>
 <p>Second, make sure the following R packages are installed:</p>
 <ul>
 <li>
@@ -116,15 +124,13 @@ First install <strong>cutadapt</strong> program following the instructions here:
 </li>
 </ul>
 <p>To install the development version of package (while submission to CRAN is in progress):</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#Here we install demulticoder (instructions will be updated once available </span></span>
-<span><span class="co">#through CRAN)</span></span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#Here we install demulticoder (instructions will be updated once available through CRAN)</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"grunwaldlab/demulticoder"</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/demulticoder/" class="external-link">"demulticoder"</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">#If you need to install metacoder but have the latest version of R and R studio, </span></span>
-<span><span class="co">#you can temporarily install metacoder as follows. </span></span>
-<span><span class="co">#This message will be removed once updates to CRAN are made.  </span></span>
+<span><span class="co">#If you need to install metacoder but have the latest version of R and R studio, you can temporarily install metacoder as follows. </span></span>
+<span><span class="co">#This message will be removed once updates to CRAN are made. </span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"grunwaldlab/metacoder"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#Let's make sure other packages are loaded:</span></span>
@@ -137,11 +143,11 @@ First install <strong>cutadapt</strong> program following the instructions here:
 <h3 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h3>
 <p><strong>1. Set-up input directory and files</strong></p>
-<p>To demonstrate how to use the package, we have a small test dataset that comes loaded with the package. This dataset will be used in the workflow example below.</p>
-<p>Already loaded in the test dataset directory are the following files:</p>
+<p>To demonstrate how to use the package, we have a small test data set that comes loaded with the package. This data set will be used in the workflow example below.</p>
+<p>Already loaded in the test data set directory are the following files:</p>
 <ul>
 <li>
-<strong>PE short read amplicon data</strong>
+<strong>PE short read amplification data</strong>
 <ul>
 <li>Files: S1_R1.fastq.gz, S1_R2.fastq.gz, S2_R1.fastq.gz, S2_R1.fastq.gz<br>
 </li>
@@ -152,7 +158,7 @@ First install <strong>cutadapt</strong> program following the instructions here:
 <a href="https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv" class="external-link"><strong>metadata.csv</strong></a>
 <ul>
 <li>New row for each unique sample</li>
-<li>Samples entered twice if samples contain two pooled metabarcodes, as in the test data template</li>
+<li>Samples entered twice if samples contain two pooled metabolites, as in the test data template</li>
 </ul>
 </li>
 <li>
@@ -166,53 +172,54 @@ First install <strong>cutadapt</strong> program following the instructions here:
 <strong>Taxonomy databases</strong>
 <ul>
 <li>UNITE fungal database (abridged version)</li>
-<li>oomyceteDB</li>
+<li>completed</li>
 </ul>
 </li>
 </ul>
 <p>See <a href="https://grunwaldlab.github.io/demulticoder/articles/Documentation.html" class="external-link"><strong>Documentation</strong></a> for how to format databases and input files.</p>
 <p>For more details on each step, check out the <a href="https://grunwaldlab.github.io/demulticoder/articles/Getting_started.html" class="external-link"><strong>Getting Started</strong></a> tab on the package website</p>
 <p><strong>2. Prepare reads</strong></p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">output</span><span class="op">&lt;-</span><span class="fu"><a href="reference/prepare_reads.html">prepare_reads</a></span><span class="op">(</span></span>
 <span>  data_directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"demulticoder"</span><span class="op">)</span>, <span class="co"># This allows us to use the test directory located within the package</span></span>
-<span>  output_directory <span class="op">=</span> <span class="st">"&lt;OUTDIR&gt;"</span>,</span>
-<span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Change to you preferred location on your local computer (Example: "~/demulticoder_test")</span></span></code></pre></div>
-<p><strong>3. Cut and trim reads</strong> User must install cutadapt on their local machine and append the path to the executable.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">cut_trim</span>(</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  output,</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="at">cutadapt_path=</span><span class="st">"&lt;CUTADAPTPATH&gt;"</span>,) <span class="co"># Change to the location on your computer. (Example: "/usr/bin/cutadapt")</span></span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  overwrite_existing <span class="ot">=</span> <span class="cn">TRUE</span><span class="er">)</span></span></code></pre></div>
+<span>  output_directory <span class="op">=</span> <span class="st">"~/demulticoder_test"</span>, <span class="co"># Change to you preferred location on your local computer (Example: "~/demulticoder_test")</span></span>
+<span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p><strong>3. Cut and trim reads</strong> User <strong>must install cutadapt</strong> on their local machine and append the path to the executable.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/cut_trim.html">cut_trim</a></span><span class="op">(</span></span>
+<span>  <span class="va">output</span>,</span>
+<span>  cutadapt_path<span class="op">=</span><span class="st">"/usr/bin/cutadapt"</span>, <span class="co"># Change to the location on your computer. (Example: "/usr/bin/cutadapt")</span></span>
+<span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span></code></pre></div>
 <p><strong>4. Make ASV abundance matrix</strong></p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/make_asv_abund_matrix.html">make_asv_abund_matrix</a></span><span class="op">(</span></span>
 <span>  <span class="va">output</span>,</span>
 <span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><strong>5. Assign taxonomy</strong></p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/assign_tax.html">assign_tax</a></span><span class="op">(</span></span>
 <span>  <span class="va">output</span>,</span>
 <span>  <span class="va">asv_abund_matrix</span>,</span>
 <span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><strong>6. Convert ASV matrix to taxmap and phyloseq objects</strong></p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">&lt;-</span><span class="fu"><a href="reference/convert_asv_matrix_to_objs.html">convert_asv_matrix_to_objs</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="check-out-the-associated-github-repository-to-view-source-code">Check out the associated Github repository to view source code<a class="anchor" aria-label="anchor" href="#check-out-the-associated-github-repository-to-view-source-code"></a>
+<h3 id="check-out-the-website-to-view-the-documentation-and-see-more-examples">Check out the website to view the documentation and see more examples<a class="anchor" aria-label="anchor" href="#check-out-the-website-to-view-the-documentation-and-see-more-examples"></a>
 </h3>
-<p>For more information, to see source code, or submit issue, check out:<br><a href="https://github.com/grunwaldlab/demulticoder/" class="external-link uri">https://github.com/grunwaldlab/demulticoder/</a></p>
+<p>For more information on source code, check out the package repository: <a href="https://grunwaldlab.github.io/demulticoder/" class="external-link uri">https://grunwaldlab.github.io/demulticoder/</a></p>
+</div>
+<div class="section level3">
+<h3 id="for-source-code">For source code:<a class="anchor" aria-label="anchor" href="#for-source-code"></a>
+</h3>
+<p><a href="https://github.com/grunwaldlab/demulticoder/" class="external-link uri">https://github.com/grunwaldlab/demulticoder/</a></p>
 </div>
 <div class="section level3">
 <h3 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h3>
 <p>The package was developed by Martha Sudermann, Zachary Foster, Samantha Dawson, Hung Phan, Jeff Chang, and Niklaus Grünwald</p>
-<p>Stay tuned for associated manuscript.</p>
-</div>
-<div class="section level3">
-<h3 id="acknowledgements">Acknowledgements<a class="anchor" aria-label="anchor" href="#acknowledgements"></a>
-</h3>
-<p>The demulticoder logo was created with <a href="https://BioRender.com/" class="external-link uri">https://BioRender.com/</a></p>
+<p>An associated manuscript is currently under review.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
