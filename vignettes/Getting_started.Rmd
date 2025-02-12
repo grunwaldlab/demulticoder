@@ -17,12 +17,9 @@ knitr::opts_chunk$set(
   out.width = "70%",
   fig.retina = 1
 )
-```
 
-```{r overwrite_existing_or_ont, include=FALSE, echo=FALSE}
-library(dplyr)
-library(kableExtra)
-overwrite_existing <- FALSE
+library("dplyr")
+library("kableExtra")
 ```
 
 ### Before You Start
@@ -33,28 +30,27 @@ overwrite_existing <- FALSE
 
 ### Components of the test dataset  
 
-* **PE short read amplicon data**
-  * Files: S1_R1.fastq.gz, S1_R2.fastq.gz, S2_R1.fastq.gz, S2_R1.fastq.gz  
-  * The files must end in either *R1.fastq.gz* , or *R2.fastq.gz* and each sample must have both R1 and R2 files.
-* [**metadata.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv)
-  * New row for each unique sample
-  * Samples entered twice if samples contain two pooled metabarcodes, as in the test data template
-* [**primerinfo_params.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv)
-  * New row for each unique barcode and associated primer sequence
-  * Optional cutadapt and DADA2 parameters
-* **Taxonomy databases**  
-  * UNITE fungal database (abridged version)
-  * oomyceteDB 
+1. **Paired-end short read amplicon data**
+  - Files: S1_R1.fastq.gz, S1_R2.fastq.gz, S2_R1.fastq.gz, S2_R1.fastq.gz  
+  - The files must be zipped and end in either *R1.fastq.gz* , or *R2.fastq.gz* and each sample must have both R1 and R2 files.
+2. [**metadata.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv)
+  - New row for each unique sample
+  - Samples entered twice if samples contain two pooled metabarcodes, as in the test data template
+3. [**primerinfo_params.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv)
+  - New row for each unique barcode and associated primer sequence
+  - Optional cutadapt and DADA2 parameters
+4. **Taxonomy databases**  
+  - UNITE fungal database (abridged version)
+  - oomyceteDB 
 
-### Format of the PE read files
+### 1. Format of the paired-end read files  
 
 * The package takes forward and reverse Illumina short read sequence data.
-
 * **Format of file names** To avoid errors, the only characters that are acceptable in sample names are letters and numbers. Characters can be separated by underscores, but no other symbols. The files must end with the suffix **R1.fastq.gz** or **R2.fastq.gz**.
 
-### Format of metadata file (*metadata.csv*)  
+### 2. Format of metadata file   
 
-* The format of the CSV file is simple.  
+* The format of the CSV file named **metadata.csv** is simple.  
 * A template is [here](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv).  
 * The only two **required** columns (with these headers) are:  
   * Column 1. **sample_name**  
@@ -83,22 +79,21 @@ knitr::kable(data, row.names = FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", full_width = F, font_size = 6))
 ```
 
-### Format of primer and parameters file (*primerinfo_parms.csv*)
+### 3. Format of primer and parameters file (*primerinfo_parms.csv*)
 
-DADA2 Primer sequence information and user-defined parameters are placed in *primerinfo_params.csv  
+DADA2 Primer sequence information and user-defined parameters are placed in **primerinfo_params.csv**  
 
-* To simplify how functions are called, user will provide parameters within this input file. 
-* We recommend using the template linked [here](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv). 
-* Remember to add any additional optional DADA2 parameters you want to use.
+* To simplify how functions are called, user will provide parameters within this input file.   
+* We recommend using the template linked   [here](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv).   
+* Remember to add any additional optional DADA2 parameters you want to use.  
 
 **Required columns**:  
-
-1. primer_name 
+* primer_name 
   * Compatible options: rps10, its, r16S, other1, other2
-2. forward primer sequence
-3. reverse primer sequence
+* forward primer sequence
+* reverse primer sequence
 
-Example template for 'primerinfo_params.csv'
+Example template for 'primerinfo_params.csv'  
 
 ```{r, echo=FALSE}
 primer_info <-data.frame(
@@ -132,7 +127,8 @@ kable(primer_info, row.names = FALSE) %>%
 
 For more info on parameter specifics, see [Documentation](https://grunwaldlab.github.io/demulticoder/articles/Documentation.html)   
 
-### Reference Database Format  
+### 4. Reference Database Format  
+
 * For now, the package is compatible with the following databases:  
   * oomycetedb from: [https://grunwaldlab.github.io/OomyceteDB/](https://grunwaldlab.github.io/OomyceteDB/)  
   * SILVA 16S database with species assignments: [https://www.arb-silva.de/](https://www.arb-silva.de/)
@@ -150,6 +146,53 @@ Databases are downloaded from these sources and then placed in the from the user
 * If computer crashes during the taxonomic assignment step, you will need to switch to a computer with sufficient memory.  
 * You must ensure that you have enough storage to save intermediate files in a temporary directory (default) or user-specified directory before proceeding.
 
+### Installation  
+
+**Dependencies**:  
+First install **cutadapt** program following the instructions here: https://cutadapt.readthedocs.io/en/stable/installation.html  
+
+Let's locate where the cutadapt executable is. You must do this from a **Terminal** window:  
+```{sh, eval=FALSE, echo=TRUE}
+#If you installed with pip or pipx, or homebrew, run this command from a Terminal window
+which cutadapt
+cutadapt --version
+```
+
+If you followed the cutadapt installation instructions to create a conda environment called cutadapt (change to whatever you named your environment), to install it in, open up a **Terminal** window and type these commands:
+```{sh, eval=FALSE, echo=TRUE}
+#Run commands from a Terminal window
+conda activate cutadapt
+which cutadapt
+cutadapt --version
+```
+
+Second, make sure the following R packages are installed:
+
+* **DADA2** (Latest version is 3.20)  
+  * To install, follow these instructions: https://www.bioconductor.org/packages/release/bioc/html/dada2.html  
+* **phyloseq**  
+  * To install: https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html  
+* **metacoder** (Available through CRAN)  
+  * If you are using the latest version of R (4.4.2) and R studio (2024.12.0+467), you may temporarily need to install metacoder through Github, until CRAN approves the latest version.
+
+To install the development version of package (while submission to CRAN is in progress):  
+
+```{r, eval=FALSE, echo=TRUE}
+#Here we install demulticoder (instructions will be updated once available through CRAN)
+devtools::install_github("grunwaldlab/demulticoder")
+library("demulticoder")
+
+#If you need to install metacoder but have the latest version of R and R studio, you can temporarily install metacoder as follows. 
+#This message will be removed once updates to CRAN are made. 
+devtools::install_github("grunwaldlab/metacoder")
+
+#Let's make sure other packages are loaded:
+library("devtools")
+library("DADA2")
+library("phyloseq")
+library("metacoder")
+```
+
 ### Loading the Package  
 
 For now, the package will be loaded by retrieving it from GitHub. Submission to CRAN is in progress.  
@@ -158,6 +201,8 @@ For now, the package will be loaded by retrieving it from GitHub. Submission to 
 devtools::install_github("grunwaldlab/demulticoder")
 library("demulticoder")
 library("metacoder")
+library("dplyr")
+library("metacoder")
 ```
 
 ### Reorganize data tables and set-up data directory structure 
@@ -165,11 +210,9 @@ library("metacoder")
 The sample names, primer sequences, and other metadata are reorganized in preparation for running Cutadapt to remove primers.  
 
 ```{r prepare_for_analysis, warning=FALSE, message=FALSE}
-analysis_setup<-demulticoder::prepare_reads(
+output<-prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
-  output_directory = "~/output_test_dataset", 
-  tempdir_path = "~/temp_test_dataset",
-  tempdir_id = "test_dataset",
+  output_directory = "~/demulticoder_test", #Run commands from a Terminal window", 
   overwrite_existing = TRUE)
 ```
 
@@ -178,8 +221,8 @@ analysis_setup<-demulticoder::prepare_reads(
 Before running Cutadapt, **please ensure that you have installed it** 
 
 ```{r remove_primers_with_cut_trim_function, message=TRUE}
-demulticoder::cut_trim(
-  analysis_setup,
+cut_trim(
+  output,
   cutadapt_path = "/usr/bin/cutadapt", #CHANGE LOCATION TO YOUR LOCAL INSTALLATION
   overwrite_existing = TRUE)
 ```
@@ -190,7 +233,7 @@ Raw reads will be merged and ASVs will be inferred
 
 ```{r ASV_inference, message=TRUE}
 make_asv_abund_matrix(
-  analysis_setup,
+  output,
   overwrite_existing = TRUE)
 ```
 
@@ -200,49 +243,45 @@ Using the core assignTaxonomy function from DADA2, taxonomic assignments will be
 
 ```{r Assign_taxonomy, message=TRUE}
 assign_tax(
-  analysis_setup,
+  output,
   asv_abund_matrix,
   retrieve_files=TRUE,
   overwrite_existing = TRUE)
 ```
 
-### Format of output matrices
-The default output is a CSV file per metabarcode with the inferred ASVs and sequences, taxonomic assignments, and bootstrap supports provided by DADA2. These data can then be used as input for downstream steps.
+### Format of output matrices  
 
-Here we show the first rows of the *rps10* matrix checking that ASV sequences look to be the correct length and taxonomic assignments seem reasonable.  
+* The default output is a CSV file per metabarcode with the inferred ASVs and sequences, taxonomic assignments, and bootstrap supports provided by DADA2. These data can then be used as input for downstream steps.  
+* To view these files, locate the files with the prefix **final_asv_abundance_matrix** in your specified output directory.  
+* In this example, it will be in the home directory within **demulticoder_test**. 
+* You can then open your matrices using Excl We recommend checking the column with the ASV sequences and also the column showing the taxonomic assignments of each ASV and their associated bootstrap supports. 
+
+We can also load the matrices into our R environment and view then from R Studio. We do that here.  
 ```{r Show_rps10_matrix, message=TRUE, warning=FALSE}
-rps10_matrix<-read.csv("final_asv_abundance_matrix_rps10.csv", header=TRUE)
-
-kable(rps10_matrix, row.names = TRUE) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", full_width = F, font_size = 6)) %>%
-  scroll_box(width = "100%", height = "100px", extra_css = "thead th { white-space: nowrap; }")
+rps10_matrix<-read.csv("~/demulticoder_test/final_asv_abundance_matrix_rps10.csv", header=TRUE)
+head(rps10_matrix)
 ```
 
 We can also inspect the first rows of the *ITS1* matrix
 ```{r Show_its_matrix, message=TRUE, warning=FALSE}
-its_matrix<-read.csv("final_asv_abundance_matrix_its.csv", header=TRUE)
-
-kable(its_matrix, row.names = TRUE) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", full_width = F, font_size = 6)) %>%
-  scroll_box(width = "100%", height = "100px", extra_css = "thead th { white-space: nowrap; }")
+its_matrix<-read.csv("~/demulticoder_test/final_asv_abundance_matrix_its.csv", header=TRUE)
+head(its_matrix)
 ```
 
 ### Reformat ASV matrix as taxmap and phyloseq objects after optional filtering of low abundance ASVs  
 
-We will only consider assignments that have a bootstrap score of 60
 ```{r Reformat_final_matrix, message=TRUE, warning=FALSE}
-objs<-convert_asv_matrix_to_objs(analysis_setup, minimum_bootstrap = 60, save_outputs = TRUE)
+objs<-convert_asv_matrix_to_objs(output, minimum_bootstrap = 0, save_outputs = TRUE)
 ```
 
 ### Objects can now be used for downstream data analysis  
 Here we make heattrees using taxmap object.  
 
-First we make a heat tree for our **ITS1**-barcoded samples 
+First we make a heat tree for our **ITS1**-barcoded samples. We retain only taxa that have bootstrap supports > 60 and filter out any with the classification 'Unsupported' or that didn't have an assignment and are marked as 'NA'.   
+
 ```{r Heatree_demonstration_its, fig.height=8, fig.width=8, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 objs$taxmap_its %>%
-  filter_taxa(! grepl(x = taxon_names, "_sp$"), reassign_obs = FALSE) %>%
-  filter_taxa(! grepl(x = taxon_names, "incertae_sedis", ignore.case = TRUE), reassign_obs = FALSE) %>%
-  filter_taxa(! grepl(x = taxon_names, "NA", ignore.case = TRUE), reassign_obs = FALSE) %>%
+  filter_taxa(! grepl(x = taxon_names, "NA", ignore.case = TRUE)) %>%
   metacoder::heat_tree(node_label = taxon_names,
                        node_size = n_obs,
                        node_color = n_obs,
@@ -254,9 +293,7 @@ objs$taxmap_its %>%
 Now we make a heat tree for our rps10-barcoded samples
 ```{r Heatree_demonstration_rps10, fig.height=8, fig.width=8, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 objs$taxmap_rps10 %>%
-  filter_taxa(! grepl(x = taxon_names, "_sp$"), reassign_obs = FALSE) %>%
-  filter_taxa(! grepl(x = taxon_names, "incertae_sedis", ignore.case = TRUE), reassign_obs = FALSE) %>%
-  filter_taxa(! grepl(x = taxon_names, "NA", ignore.case = TRUE), reassign_obs = FALSE) %>%
+  filter_taxa(! grepl(x = taxon_names, "NA", ignore.case = TRUE)) %>%
   metacoder::heat_tree(node_label = taxon_names,
                        node_size = n_obs,
                        node_color = n_obs,

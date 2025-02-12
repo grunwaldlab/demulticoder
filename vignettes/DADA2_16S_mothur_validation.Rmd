@@ -88,8 +88,6 @@ We are submitting package to CRAN.
 devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
 #devtools::load_all("~/demulticoder")
 library("demulticoder")
-library(dplyr)
-library(kableExtra)
 ```
 
 ### Step 1  

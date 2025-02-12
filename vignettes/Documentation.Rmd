@@ -15,20 +15,20 @@ knitr::opts_chunk$set(
 )
 ```
 
-### Introduction
+## Introduction
 
-This documentation provides comprehensive information on how to use the *Demulticoder* R package for processing and analyzing metabarcode sequencing data. It covers input file requirements, parameter settings, and key parameters.  
+This documentation provides comprehensive information on how to use the *demulticoder* R package for processing and analyzing metabarcode sequencing data. It covers input directory and file requirements, parameter settings, and key parameters.  
 
-# Quick Start Guide
+### Package workflow
 
 1. Prepare your input files (metadata.csv, primerinfo_params.csv, unformatted reference databases, and PE Illumina read files).
 2. Place all input files in a single directory.
 3. Ensure your file names comply with the specified format.
-4. Run the pipeline with default settings or adjust parameters as needed.
+4. Run the four steps/functions of pipeline with default settings or adjust parameters as needed.
 
-# Input Files
+### Inputs
 
-## Directory Structure
+**Directory Structure**
 
 Place all your input files into a single directory. The directory should contain the following files:
 
@@ -37,9 +37,9 @@ Place all your input files into a single directory. The directory should contain
 * **PE Illumina read files**
 * **Unformatted reference databases**
 
-## File Naming Conventions
+**File Naming Conventions**
 
-### Read Name Format
+**Read Name Format**
 
 To avoid errors, the only characters that are acceptable in sample names are letters and numbers. Characters can be separated by underscores, but no other symbols. The files must end with the suffix **R1.fastq.gz** or **R2.fastq.gz**
 
@@ -58,7 +58,7 @@ To avoid errors, the only characters that are acceptable in sample names are let
 * Sample1_001_R1_001.fastq.gz
 * Sample1_001_R2_001.fastq.gz
 
-## metadata.csv
+**metadata.csv file**
 
 The metadata.csv file contains information about the samples and primers (and associated barcodes) used in the experiment. It has the following two required columns:
 
@@ -77,7 +77,7 @@ S1,its,Cry
 S2,its,Cin
 ```
 
-## primerinfo_params.csv
+**primerinfo_params.csv file**
 
 The primerinfo_params.csv file contains information about the primer sequences used in the experiment, along with optional additional parameters that are part of the DADA2 pipeline. If anything is not specified, the default values will be used.  
 
@@ -150,7 +150,7 @@ rps10,GTTGGTTAGAGYARAAGACT,ATRYYTAGAAAGAYTYGAACT,FALSE,100,TRUE,FALSE,1.00E+05,5
 its,CTTGGTCATTTAGAGGAAGTAA,GCTGCGTTCTTCATCGATGC,FALSE,50,TRUE,FALSE,1.00E+05,5,5,0,0,5,50,Inf,0,0,0,0,15,0,50
 ```
 
-## Reference Database   
+### Reference Databases   
 
 Databases will be copied into the user-specified data folder where raw data files and csv files are located. The names will be parameters in the *assignTax* function.  
 
@@ -163,12 +163,3 @@ For now, the package is compatible with the following databases:
 * UNITE fungal database from [https://unite.ut.ee/repository.php](https://unite.ut.ee/repository.php)
 
 * Up to two other reference databases. The user will need to reformat headers exactly as outlined in the [DADA2 database format ](https://benjjneb.github.io/dada2/training.html), and similar to the SILVA database format. The user can then specify the path to the database in the input file. The database should be in fasta format.
-
-
-# FAQ
-
-In progress
-
-# Troubleshooting
-
-In progress
