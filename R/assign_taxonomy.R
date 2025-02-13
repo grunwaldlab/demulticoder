@@ -185,9 +185,7 @@ get_read_counts <- function(asv_abund_matrix, temp_directory_path, output_direct
   track <- cbind(filter_results, sapply(dada_forward, getN), sapply(dada_reverse, getN), sapply(merged_reads, getN), rowSums(asv_abund_matrix))
   track <- cbind(rownames(track), data.frame(track, row.names=NULL))
   colnames(track) <- c("samplename_barcode", "input", "filtered", "denoisedF", "denoisedR", "merged", "nonchim")
-  track$samplename_barcode <- gsub(".fastq.gz", "",
-                                   gsub("R1_", "", track$samplename_barcode, fixed = TRUE))
-  
+  track$samplename_barcode <- track$samplename_barcode <- gsub("(R1_|.fastq(.gz)?)$", "", track$samplename_barcode)
   output_format <- knitr::opts_knit$get("rmarkdown.pandoc.to")
   print(track)
   track_read_counts_path <- file.path(output_directory_path, paste0("track_reads_", locus, ".csv"))

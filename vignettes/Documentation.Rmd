@@ -17,29 +17,25 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-This documentation provides comprehensive information on how to use the *demulticoder* R package for processing and analyzing metabarcode sequencing data. It covers input directory and file requirements, parameter settings, and key parameters.  
+This documentation page provides additional information on to use the *demulticoder* R package for processing and analyzing metabarcode sequencing data. Specifically, it provides more detail on input directory and file requirements, and key parameters.
 
-### Package workflow
+## Package workflow
 
 1. Prepare your input files (metadata.csv, primerinfo_params.csv, unformatted reference databases, and PE Illumina read files).
 2. Place all input files in a single directory.
 3. Ensure your file names comply with the specified format.
 4. Run the four steps/functions of pipeline with default settings or adjust parameters as needed.
 
-### Inputs
-
-**Directory Structure**
+## Data directory structure
 
 Place all your input files into a single directory. The directory should contain the following files:
 
+* **PE Illumina read files**
 * **metadata.csv**
 * **primerinfo_params.csv**
-* **PE Illumina read files**
-* **Unformatted reference databases**
+* **Reference databases**
 
-**File Naming Conventions**
-
-**Read Name Format**
+### Read Name Format
 
 To avoid errors, the only characters that are acceptable in sample names are letters and numbers. Characters can be separated by underscores, but no other symbols. The files must end with the suffix **R1.fastq.gz** or **R2.fastq.gz**
 
@@ -58,9 +54,9 @@ To avoid errors, the only characters that are acceptable in sample names are let
 * Sample1_001_R1_001.fastq.gz
 * Sample1_001_R2_001.fastq.gz
 
-**metadata.csv file**
+### Metadata file components
 
-The metadata.csv file contains information about the samples and primers (and associated barcodes) used in the experiment. It has the following two required columns:
+The **metadata.csv** file contains information about the samples and primers (and associated barcodes) used in the experiment. It has the following two required columns:
 
 * **sample_name**: Identifier for each sample (e.g., S1, S2)
 * **primer_name**: Name of the primer used (e.g., rps10, its, r16S, other1, other2)
@@ -77,15 +73,17 @@ S1,its,Cry
 S2,its,Cin
 ```
 
-**primerinfo_params.csv file**
+### Primer and parameter file components
 
-The primerinfo_params.csv file contains information about the primer sequences used in the experiment, along with optional additional parameters that are part of the DADA2 pipeline. If anything is not specified, the default values will be used.  
+The **primerinfo_params.csv** file contains information about the primer sequences used in the experiment, along with optional additional parameters that are part of the DADA2 pipeline. If anything is not specified, the default values will be used.  
 
 **Required columns:**  
 
 * **primer_name**: Name of the primer/barcode (e.g., its, rps10)
 * **forward**: Forward primer sequence
 * **reverse**: Reverse primer sequence
+
+Below are the parameters that can be input into the **primerinfo_params.csv** file along with the defaults. Refer to the DADA2 documentation and [manual](https://www.bioconductor.org/packages/release/bioc/manuals/dada2/man/dada2.pdf) for additional information. 
 
 **DADA2 filterAndTrim function parameters:**  
 
@@ -159,7 +157,8 @@ For now, the package is compatible with the following databases:
 * oomycetedb from: [https://grunwaldlab.github.io/OomyceteDB/](https://grunwaldlab.github.io/OomyceteDB/)
 
 * SILVA 16S database **with** species assignments: [https://www.arb-silva.de/](https://www.arb-silva.de/)
+  * An easily accessible download is found here: [https://zenodo.org/records/14169026](https://zenodo.org/records/14169026)
 
-* UNITE fungal database from [https://unite.ut.ee/repository.php](https://unite.ut.ee/repository.php)
+* UNITE fungal database from [https://zenodo.org/records/14169026](https://zenodo.org/records/14169026)
 
-* Up to two other reference databases. The user will need to reformat headers exactly as outlined in the [DADA2 database format ](https://benjjneb.github.io/dada2/training.html), and similar to the SILVA database format. The user can then specify the path to the database in the input file. The database should be in fasta format.
+* Up to two other reference databases. The user will need to reformat headers exactly as outlined [here](https://benjjneb.github.io/dada2/training.html). The user can then specify the path to the database in the input file. The database should be in FASTA format.

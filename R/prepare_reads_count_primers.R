@@ -160,18 +160,20 @@ read_parameters <- function(primers_params_path) {
 #' @keywords internal
 read_fastq <- function(data_directory_path,
                        temp_directory_path) {
-  fastq_paths <-
-    list.files(data_directory_path, pattern = "\\.fastq(|\\.gz)$")
   
-  file_id <- sub("\\.fastq(|\\.gz)$", "", fastq_paths)
-  sample_name = gsub(fastq_paths, pattern = "_R1|_R2\\.fastq|.fastq\\.gz|.gz$", replacement = "")
+  fastq_paths <- list.files(data_directory_path, pattern = "\\.fastq(\\.gz)?$", full.names = TRUE)
+  
+  file_id <- sub("\\.fastq(\\.gz)?$", "", basename(fastq_paths))
+  
+  sample_name <- gsub("_R[12]|\\.fastq|\\.gz", "", basename(fastq_paths))
   
   direction <-
     ifelse(grepl("_R1", fastq_paths), "Forward", "Reverse")
   
   fastq_data_directory_paths <-
-    file.path(data_directory_path, fastq_paths)
-  temp_data_path <- file.path(temp_directory_path, fastq_paths)
+    file.path(fastq_paths)
+  
+  temp_data_path <- file.path(temp_directory_path, basename(fastq_paths))
   
   fastq_data <-
     data.frame(file_id,
@@ -400,54 +402,57 @@ make_cutadapt_tibble <-
            temp_directory_path) {
     cutadapt_data <- merge(metadata, fastq_data, by = "sample_name")
     
-    trimmed_read_dir <-
-      file.path(temp_directory_path, "trimmed_sequences")
+    # Directory for trimmed sequences
+    trimmed_read_dir <- file.path(temp_directory_path, "trimmed_sequences")
     if (!dir.exists(trimmed_read_dir)) {
       dir.create(trimmed_read_dir)
     }
     
-    cutadapt_data$trimmed_path <-
-      file.path(
-        trimmed_read_dir,
-        paste0(
-          cutadapt_data$file_id,
-          "_",
-          cutadapt_data$primer_name,
-          ".fastq.gz"
-        )
+    # Construct the path for trimmed files
+    cutadapt_data$trimmed_path <- file.path(
+      trimmed_read_dir,
+      paste0(
+        cutadapt_data$file_id,
+        "_",
+        cutadapt_data$primer_name,
+        ".fastq.gz"
       )
+    )
     
-    untrimmed_read_dir <-
-      file.path(temp_directory_path, "untrimmed_sequences")
+    # Directory for untrimmed sequences
+    untrimmed_read_dir <- file.path(temp_directory_path, "untrimmed_sequences")
     if (!dir.exists(untrimmed_read_dir)) {
       dir.create(untrimmed_read_dir)
     }
-    cutadapt_data$untrimmed_path <-
-      file.path(
-        untrimmed_read_dir,
-        paste0(
-          cutadapt_data$file_id,
-          "_",
-          cutadapt_data$primer_name,
-          ".fastq.gz"
-        )
-      )
     
-    filtered_read_dir <-
-      file.path(temp_directory_path, "filtered_sequences")
+    # Construct the path for untrimmed files
+    cutadapt_data$untrimmed_path <- file.path(
+      untrimmed_read_dir,
+      paste0(
+        cutadapt_data$file_id,
+        "_",
+        cutadapt_data$primer_name,
+        ifelse(grepl("\\.gz$", cutadapt_data$fastq_data_directory_paths), ".fastq.gz", ".fastq")
+      )
+    )
+    
+    # Directory for filtered sequences
+    filtered_read_dir <- file.path(temp_directory_path, "filtered_sequences")
     if (!dir.exists(filtered_read_dir)) {
       dir.create(filtered_read_dir)
     }
-    cutadapt_data$filtered_path <-
-      file.path(
-        filtered_read_dir,
-        paste0(
-          cutadapt_data$file_id,
-          "_",
-          cutadapt_data$primer_name,
-          ".fastq.gz"
-        )
+    
+    # Construct the path for filtered files
+    cutadapt_data$filtered_path <- file.path(
+      filtered_read_dir,
+      paste0(
+        cutadapt_data$file_id,
+        "_",
+        cutadapt_data$primer_name,
+        ".fastq.gz"
       )
+    )
+    
     return(cutadapt_data)
   }
 
