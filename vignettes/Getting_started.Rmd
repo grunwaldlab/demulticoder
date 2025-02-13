@@ -79,22 +79,18 @@ knitr::kable(data, row.names = FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", full_width = F, font_size = 6))
 ```
 
-### 3. Format of primer and parameters file (*primerinfo_parms.csv*)
+### 3. Format of primer and parameters file 
 
 DADA2 Primer sequence information and user-defined parameters are placed in **primerinfo_params.csv**  
-
 * To simplify how functions are called, user will provide parameters within this input file.   
 * We recommend using the template linked   [here](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv).   
 * Remember to add any additional optional DADA2 parameters you want to use.  
+* The only three **required** columns (with these headers) are:  
+  * Column 1. **sample_name** 
+  * Column 2. **forward** (primer sequence)
+  * Column 3. **reverse**(primer sequence)  
 
-**Required columns**:  
-* primer_name 
-  * Compatible options: rps10, its, r16S, other1, other2
-* forward primer sequence
-* reverse primer sequence
-
-Example template for 'primerinfo_params.csv'  
-
+Example template for **primerinfo_params.csv**  
 ```{r, echo=FALSE}
 primer_info <-data.frame(
   primer_name = c("rps10", "its"),
@@ -151,14 +147,18 @@ Databases are downloaded from these sources and then placed in the from the user
 **Dependencies**:  
 First install **cutadapt** program following the instructions here: https://cutadapt.readthedocs.io/en/stable/installation.html  
 
-Let's locate where the cutadapt executable is. You must do this from a **Terminal** window:  
+Let's locate where the cutadapt executable is.  
+
+You must do this from a **Terminal** window:  
 ```{sh, eval=FALSE, echo=TRUE}
 #If you installed with pip or pipx, or homebrew, run this command from a Terminal window
 which cutadapt
 cutadapt --version
 ```
 
-If you followed the cutadapt installation instructions to create a conda environment called cutadapt (change to whatever you named your environment), to install it in, open up a **Terminal** window and type these commands:
+If you followed the cutadapt installation instructions to create a conda environment called cutadapt (change to whatever you named your environment), to install it in. 
+
+Open up a **Terminal** window and type these commands:
 ```{sh, eval=FALSE, echo=TRUE}
 #Run commands from a Terminal window
 conda activate cutadapt
@@ -173,22 +173,17 @@ Second, make sure the following R packages are installed:
 * **phyloseq**  
   * To install: https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html  
 * **metacoder** (Available through CRAN)  
-  * If you are using the latest version of R (4.4.2) and R studio (2024.12.0+467), you may temporarily need to install metacoder through Github, until CRAN approves the latest version.
 
 To install the development version of package (while submission to CRAN is in progress):  
 
-```{r, eval=FALSE, echo=TRUE}
+```{r, echo=TRUE, message=FALSE, warning=FALSE, cache=FALSE}
 #Here we install demulticoder (instructions will be updated once available through CRAN)
 devtools::install_github("grunwaldlab/demulticoder")
 library("demulticoder")
 
-#If you need to install metacoder but have the latest version of R and R studio, you can temporarily install metacoder as follows. 
-#This message will be removed once updates to CRAN are made. 
-devtools::install_github("grunwaldlab/metacoder")
-
 #Let's make sure other packages are loaded:
 library("devtools")
-library("DADA2")
+library("dada2")
 library("phyloseq")
 library("metacoder")
 ```
@@ -196,8 +191,7 @@ library("metacoder")
 ### Loading the Package  
 
 For now, the package will be loaded by retrieving it from GitHub. Submission to CRAN is in progress.  
-
-```{r installation, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
+```{r installation, message=FALSE, warning=FALSE}
 devtools::install_github("grunwaldlab/demulticoder")
 library("demulticoder")
 library("metacoder")
@@ -209,7 +203,7 @@ library("metacoder")
 
 The sample names, primer sequences, and other metadata are reorganized in preparation for running Cutadapt to remove primers.  
 
-```{r prepare_for_analysis, warning=FALSE, message=FALSE}
+```{r prepare_for_analysis, warning=FALSE, message=FALSE, cache=FALSE}
 output<-prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
   output_directory = "~/demulticoder_test", #Run commands from a Terminal window", 
@@ -220,7 +214,7 @@ output<-prepare_reads(
 
 Before running Cutadapt, **please ensure that you have installed it** 
 
-```{r remove_primers_with_cut_trim_function, message=TRUE}
+```{r remove_primers_with_cut_trim_function, warning=FALSE, message=FALSE, cache=FALSE}
 cut_trim(
   output,
   cutadapt_path = "/usr/bin/cutadapt", #CHANGE LOCATION TO YOUR LOCAL INSTALLATION
@@ -231,7 +225,7 @@ cut_trim(
 
 Raw reads will be merged and ASVs will be inferred  
 
-```{r ASV_inference, message=TRUE}
+```{r ASV_inference, warning=FALSE, message=FALSE, cache=FALSE}
 make_asv_abund_matrix(
   output,
   overwrite_existing = TRUE)
@@ -241,7 +235,7 @@ make_asv_abund_matrix(
 
 Using the core assignTaxonomy function from DADA2, taxonomic assignments will be given to ASVs.  
 
-```{r Assign_taxonomy, message=TRUE}
+```{r Assign_taxonomy, warning=FALSE, message=FALSE, cache=FALSE}
 assign_tax(
   output,
   asv_abund_matrix,
@@ -254,32 +248,34 @@ assign_tax(
 * The default output is a CSV file per metabarcode with the inferred ASVs and sequences, taxonomic assignments, and bootstrap supports provided by DADA2. These data can then be used as input for downstream steps.  
 * To view these files, locate the files with the prefix **final_asv_abundance_matrix** in your specified output directory.  
 * In this example, it will be in the home directory within **demulticoder_test**. 
-* You can then open your matrices using Excl We recommend checking the column with the ASV sequences and also the column showing the taxonomic assignments of each ASV and their associated bootstrap supports. 
+* You can then open your matrices using Excel  
+* We recommend checking the column with the ASV sequences to make sure there aren't truncated sequences 
+*It is important to also review the column showing the taxonomic assignments of each ASV and their associated bootstrap supports. 
 
-We can also load the matrices into our R environment and view then from R Studio. We do that here.  
-```{r Show_rps10_matrix, message=TRUE, warning=FALSE}
+We can also load the matrices into our R environment and view then from R Studio.  
+
+We do that here with the *rps10* matrix 
+```{r Show_rps10_matrix, warning=FALSE, message=FALSE}
 rps10_matrix<-read.csv("~/demulticoder_test/final_asv_abundance_matrix_rps10.csv", header=TRUE)
 head(rps10_matrix)
 ```
 
 We can also inspect the first rows of the *ITS1* matrix
-```{r Show_its_matrix, message=TRUE, warning=FALSE}
+```{r Show_its_matrix, warning=FALSE, message=FALSE}
 its_matrix<-read.csv("~/demulticoder_test/final_asv_abundance_matrix_its.csv", header=TRUE)
 head(its_matrix)
 ```
 
 ### Reformat ASV matrix as taxmap and phyloseq objects after optional filtering of low abundance ASVs  
-
-```{r Reformat_final_matrix, message=TRUE, warning=FALSE}
+```{r Reformat_final_matrix, message=FALSE, warning=FALSE, results='hide'}
 objs<-convert_asv_matrix_to_objs(output, minimum_bootstrap = 0, save_outputs = TRUE)
 ```
 
 ### Objects can now be used for downstream data analysis  
 Here we make heattrees using taxmap object.  
 
-First we make a heat tree for our **ITS1**-barcoded samples. We retain only taxa that have bootstrap supports > 60 and filter out any with the classification 'Unsupported' or that didn't have an assignment and are marked as 'NA'.   
-
-```{r Heatree_demonstration_its, fig.height=8, fig.width=8, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
+First we make a heat tree to examine fungal community composition using our **ITS1** data. 
+```{r Heatree_demonstration_its, fig.height=8, fig.width=8, warning=FALSE, message=FALSE}
 objs$taxmap_its %>%
   filter_taxa(! grepl(x = taxon_names, "NA", ignore.case = TRUE)) %>%
   metacoder::heat_tree(node_label = taxon_names,
@@ -290,8 +286,8 @@ objs$taxmap_its %>%
                        layout = "da", initial_layout = "re")
 ```
 
-Now we make a heat tree for our rps10-barcoded samples
-```{r Heatree_demonstration_rps10, fig.height=8, fig.width=8, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
+Now we make a heat tree to showcase oomycete community composition using our *rps10* data
+```{r Heatree_demonstration_rps10, fig.height=8, fig.width=8, warning=FALSE, message=FALSE}
 objs$taxmap_rps10 %>%
   filter_taxa(! grepl(x = taxon_names, "NA", ignore.case = TRUE)) %>%
   metacoder::heat_tree(node_label = taxon_names,
@@ -305,7 +301,7 @@ objs$taxmap_rps10 %>%
 We can also do a variety of analyses, if we convert to **phyloseq** object
 
 Here we demonstrate how to make a stacked bar plot of the relative abundance of taxa by sample for the ITS1-barcoded samples
-```{r Phyloseq_demonstration_ITS, fig.height=8, fig.width=8, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
+```{r Phyloseq_demonstration_ITS, fig.height=8, fig.width=8, warning=FALSE, message=FALSE}
 data <- objs$phyloseq_its %>%
   phyloseq::transform_sample_counts(function(x) {x/sum(x)} ) %>% 
   phyloseq::psmelt() %>%                                        
@@ -327,7 +323,7 @@ abund_plot <- ggplot2::ggplot(data, ggplot2::aes(x = Sample, y = Abundance, fill
     panel.grid.minor = ggplot2::element_blank(),
     legend.position = "top",
     legend.text = ggplot2::element_text(size = 14),
-    legend.title = ggplot2::element_text(size = 14),  # Adjust legend title size
+    legend.title = ggplot2::element_text(size = 14),  
     strip.text = ggplot2::element_text(size = 14),
     strip.background = ggplot2::element_blank()
   ) +
@@ -338,7 +334,7 @@ abund_plot <- ggplot2::ggplot(data, ggplot2::aes(x = Sample, y = Abundance, fill
       keyheight = 1,
       title.position = "top",
       title.hjust = 0.5,  # Center the legend title
-      label.theme = ggplot2::element_text(size = 10)  # Adjust the size of the legend labels
+      label.theme = ggplot2::element_text(size = 10)  
     )
   )
 
@@ -346,7 +342,7 @@ print(abund_plot)
 ```
 
 Finally, we demonstrate how to make a stacked bar plot of the relative abundance of taxa by sample for the rps10-barcoded samples  
-```{r Phyloseq_demonstration_rps10, fig.height=8, fig.width=8, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
+```{r Phyloseq_demonstration_rps10, fig.height=8, fig.width=8, warning=FALSE, message=FALSE}
 data <- objs$phyloseq_rps10 %>%
   phyloseq::transform_sample_counts(function(x) {x/sum(x)} ) %>% 
   phyloseq::psmelt() %>%                                        

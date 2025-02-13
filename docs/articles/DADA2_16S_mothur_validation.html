@@ -14,8 +14,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="16S Mothur SOP Validation">
 </head>
 <body>
@@ -59,7 +59,7 @@
 
 
 
-<script src="DADA2_16S_mothur_validation_files/kePrint-0.0.1/kePrint.js"></script><link href="DADA2_16S_mothur_validation_files/lightable-0.0.1/lightable.css" rel="stylesheet">
+
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
@@ -76,643 +76,594 @@
 <h2 id="this-vignette-shows-how-demulticoder-was-used-to-analyze-the-mothur-16s-sop-dataset-featured-in-dada2-tutorials">This vignette shows how demulticoder was used to analyze the mothur
 16S SOP dataset featured in DADA2 tutorials<a class="anchor" aria-label="anchor" href="#this-vignette-shows-how-demulticoder-was-used-to-analyze-the-mothur-16s-sop-dataset-featured-in-dada2-tutorials"></a>
 </h2>
-<p>First, make sure input metadata and primerinfo_params files are in
-data folder</p>
-The only required columns are the first with sample names, and the
-second with the primer name/barcode used. The subsequent columns are
-user-specific columns for downstream steps<br><em>metadata.csv file</em>
-<table class="table table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
-<thead><tr>
-<th style="text-align:left;">
-sample_name
-</th>
-<th style="text-align:left;">
-primer_name
-</th>
-<th style="text-align:right;">
-Day
-</th>
-<th style="text-align:left;">
-When
-</th>
-</tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-F3D0
-</td>
-<td style="text-align:left;">
-r16S
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:left;">
-Early
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-F3D1
-</td>
-<td style="text-align:left;">
-r16S
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-Early
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-F3D141
-</td>
-<td style="text-align:left;">
-r16S
-</td>
-<td style="text-align:right;">
-141
-</td>
-<td style="text-align:left;">
-Late
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-F3D142
-</td>
-<td style="text-align:left;">
-r16S
-</td>
-<td style="text-align:right;">
-142
-</td>
-<td style="text-align:left;">
-Late
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-F3D143
-</td>
-<td style="text-align:left;">
-r16S
-</td>
-<td style="text-align:right;">
-143
-</td>
-<td style="text-align:left;">
-Late
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-F3D144
-</td>
-<td style="text-align:left;">
-r16S
-</td>
-<td style="text-align:right;">
-144
-</td>
-<td style="text-align:left;">
-Late
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-F3D145
-</td>
-<td style="text-align:left;">
-r16S
-</td>
-<td style="text-align:right;">
-145
-</td>
-<td style="text-align:left;">
-Late
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-F3D146
-</td>
-<td style="text-align:left;">
-r16S
-</td>
-<td style="text-align:right;">
-146
-</td>
-<td style="text-align:left;">
-Late
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-F3D147
-</td>
-<td style="text-align:left;">
-r16S
-</td>
-<td style="text-align:right;">
-147
-</td>
-<td style="text-align:left;">
-Late
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-F3D148
-</td>
-<td style="text-align:left;">
-r16S
-</td>
-<td style="text-align:right;">
-148
-</td>
-<td style="text-align:left;">
-Late
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-F3D149
-</td>
-<td style="text-align:left;">
-r16S
-</td>
-<td style="text-align:right;">
-149
-</td>
-<td style="text-align:left;">
-Late
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-F3D150
-</td>
-<td style="text-align:left;">
-r16S
-</td>
-<td style="text-align:right;">
-150
-</td>
-<td style="text-align:left;">
-Late
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-F3D2
-</td>
-<td style="text-align:left;">
-r16S
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-Early
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-F3D3
-</td>
-<td style="text-align:left;">
-r16S
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:left;">
-Early
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-F3D5
-</td>
-<td style="text-align:left;">
-r16S
-</td>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:left;">
-Early
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-F3D6
-</td>
-<td style="text-align:left;">
-r16S
-</td>
-<td style="text-align:right;">
-6
-</td>
-<td style="text-align:left;">
-Early
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-F3D7
-</td>
-<td style="text-align:left;">
-r16S
-</td>
-<td style="text-align:right;">
-7
-</td>
-<td style="text-align:left;">
-Early
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-F3D8
-</td>
-<td style="text-align:left;">
-r16S
-</td>
-<td style="text-align:right;">
-8
-</td>
-<td style="text-align:left;">
-Early
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-F3D9
-</td>
-<td style="text-align:left;">
-r16S
-</td>
-<td style="text-align:right;">
-9
-</td>
-<td style="text-align:left;">
-Early
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Mock
-</td>
-<td style="text-align:left;">
-r16S
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-</tr>
-</tbody>
-</table>
-<p>I then included the necessary second file with the name of the
-barcode selected, primer sequences, and the optional DADA2 parameter
-options. I referenced the DADA2 <a href="https://benjjneb.github.io/dada2/tutorial.html" class="external-link">tutorial</a> to
-select the proper parameter options.</p>
-Note, primers were already trimmed from reads, but just to be certain, I
-included the Earth Microbiome primers described <a href="https://earthmicrobiome.org/protocols-and-standards/16s/" class="external-link">here</a>,
-and a few primer sequences were still found within a small number of
-reads. <em>primerinfo_params.csv</em>
-<div style="border: 1px solid #ddd; padding: 0px; thead th { white-space: nowrap; }overflow-y: scroll; height:100px; overflow-x: scroll; width:100%; ">
-<table class="table table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
-<thead><tr>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-primer_name
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-forward
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-reverse
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-already_trimmed
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-minCutadaptlength
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-multithread
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-verbose
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-maxN
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-maxEE_forward
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-maxEE_reverse
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-truncLen_forward
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-truncLen_reverse
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-truncQ
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-minLen
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-maxLen
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-minQ
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-trimLeft
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-trimRight
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-rm.lowcomplex
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-minOverlap
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-maxMismatch
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-min_asv_length
-</th>
-</tr></thead>
-<tbody><tr>
-<td style="text-align:left;">
-r16S
-</td>
-<td style="text-align:left;">
-GTGYCAGCMGCCGCGGTAA
-</td>
-<td style="text-align:left;">
-GGACTACNVGGGTWTCTAAT
-</td>
-<td style="text-align:left;">
-TRUE
-</td>
-<td style="text-align:right;">
-50
-</td>
-<td style="text-align:left;">
-TRUE
-</td>
-<td style="text-align:left;">
-TRUE
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-240
-</td>
-<td style="text-align:right;">
-160
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-20
-</td>
-<td style="text-align:right;">
-Inf
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-12
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-50
-</td>
-</tr></tbody>
-</table>
+<p>The raw read files and information on the dataset used for this
+analysis can be found <a href="https://mothur.org/wiki/miseq_sop/#preparing-for-analysis" class="external-link">here</a></p>
+<div class="section level3">
+<h3 id="step-1-setup-data-directory">STEP 1-Setup data directory<a class="anchor" aria-label="anchor" href="#step-1-setup-data-directory"></a>
+</h3>
+<p><strong>Download read files and associated data in your specified
+location</strong></p>
+<p>Let’s download the necessary data set first and place in our
+specified data directory</p>
+<p>Ensure your computer has sufficient storage and that you change the
+<strong>destination_folder</strong> path to a location where you have
+space and can save files to.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">destination_folder</span> <span class="op">&lt;-</span> <span class="st">"~"</span> <span class="co">#CURRENTLY SET TO HOME DIR-CHANGE TO DIR OF YOUR CHOOSING</span></span>
+<span><span class="va">mothur_sop_path</span> <span class="op">&lt;-</span> <span class="st">"https://mothur.s3.us-east-2.amazonaws.com/wiki/miseqsopdata.zip"</span></span>
+<span><span class="va">temp_file_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"miseqsopdata.zip"</span><span class="op">)</span></span>
+<span><span class="va">data_folder</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">destination_folder</span>,<span class="st">"MiSeq_SOP"</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.exists</a></span><span class="op">(</span><span class="va">data_folder</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># Only download if the file does not already exist</span></span>
+<span>  <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span><span class="op">(</span><span class="va">mothur_sop_path</span>, <span class="va">temp_file_path</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/unzip.html" class="external-link">unzip</a></span><span class="op">(</span><span class="va">temp_file_path</span>, exdir <span class="op">=</span> <span class="va">destination_folder</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Directory downloaded:"</span>, <span class="va">data_folder</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Directory already exists here:"</span>,<span class="va">data_folder</span>,<span class="st">"!"</span>,<span class="st">"Skipping download.\n"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co">#&gt; Directory already exists here: ~/MiSeq_SOP ! Skipping download.</span></span></code></pre></div>
+<p>We now have an unzipped directory in our desired destination called
+<strong>MiSeq_SOP</strong></p>
+<p>We will also need to rename our files so they are more in line with
+the file name conventions specified by demulticoder {see
+Documentation}(<a href="https://grunwaldlab.github.io/demulticoder/articles/Documentation.html" class="external-link uri">https://grunwaldlab.github.io/demulticoder/articles/Documentation.html</a>)</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#We will remove the "001 appended at the end of the filenames</span></span>
+<span><span class="va">files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">data_folder</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">file</span> <span class="kw">in</span> <span class="va">files</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">new_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"_001"</span>, <span class="st">""</span>, <span class="va">file</span><span class="op">)</span></span>
+<span>  <span class="va">old_file_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data_folder</span>, <span class="va">file</span><span class="op">)</span></span>
+<span>  <span class="va">new_file_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data_folder</span>, <span class="va">new_name</span><span class="op">)</span></span>
+<span>  <span class="va">rename_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.rename</a></span><span class="op">(</span><span class="va">old_file_path</span>, <span class="va">new_file_path</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="loading-the-package">Loading the Package<a class="anchor" aria-label="anchor" href="#loading-the-package"></a>
+<h3 id="step-2-add-necessary-csv-input-files-to-the-directory">STEP 2-Add necessary CSV input files to the directory<a class="anchor" aria-label="anchor" href="#step-2-add-necessary-csv-input-files-to-the-directory"></a>
+</h3>
+<p><strong>First, specify the path to our data directory folder with our
+recently downloaded reads</strong></p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data_folder</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">destination_folder</span>,<span class="st">"MiSeq_SOP"</span><span class="op">)</span> </span></code></pre></div>
+<p><strong>Second, make our metadata.csv input file</strong></p>
+<p>The only required columns are the first with sample names, and the
+second with the primer name/barcode used. The subsequent columns (‘Day’
+and ‘When’) are necessary for downstream steps with the phyloseq
+package.</p>
+<p><em>metadata.csv file</em></p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  sample_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0_S188_L001"</span>, <span class="st">"F3D1_S189_L001"</span>, <span class="st">"F3D141_S207_L001"</span>, <span class="st">"F3D142_S208_L001"</span>,</span>
+<span>  <span class="st">"F3D143_S209_L001"</span>, <span class="st">"F3D144_S210_L001"</span>, <span class="st">"F3D145_S211_L001"</span>, <span class="st">"F3D146_S212_L001"</span>,</span>
+<span>  <span class="st">"F3D147_S213_L001"</span>, <span class="st">"F3D148_S214_L001"</span>, <span class="st">"F3D149_S215_L001"</span>, <span class="st">"F3D150_S216_L001"</span>,</span>
+<span>  <span class="st">"F3D2_S190_L001"</span>, <span class="st">"F3D3_S191_L001"</span>, <span class="st">"F3D5_S193_L001"</span>, <span class="st">"F3D6_S194_L001"</span>,</span>
+<span>  <span class="st">"F3D7_S195_L001"</span>, <span class="st">"F3D8_S196_L001"</span>, <span class="st">"F3D9_S197_L001"</span>, <span class="st">"Mock_S280_L001"</span><span class="op">)</span>,</span>
+<span>  primer_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"r16S"</span>, <span class="fl">20</span><span class="op">)</span>,</span>
+<span>  Day <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">141</span>, <span class="fl">142</span>, <span class="fl">143</span>, <span class="fl">144</span>, <span class="fl">145</span>, <span class="fl">146</span>, <span class="fl">147</span>, <span class="fl">148</span>, <span class="fl">149</span>, <span class="fl">150</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
+<span>  When <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Early"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Late"</span>, <span class="fl">10</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Early"</span>, <span class="fl">7</span><span class="op">)</span>, <span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>While you can construct your CSV files in Excel, here we construct
+and save our metadata file in our data directory directly in R.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#Let's define a variable that stores our data directory path</span></span>
+<span><span class="va">metadata_dir_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data_folder</span>, <span class="st">"metadata.csv"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">metadata</span>, <span class="va">metadata_dir_path</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt;         sample_name primer_name Day  When</span></span>
+<span><span class="co">#&gt; 1    F3D0_S188_L001        r16S   0 Early</span></span>
+<span><span class="co">#&gt; 2    F3D1_S189_L001        r16S   1 Early</span></span>
+<span><span class="co">#&gt; 3  F3D141_S207_L001        r16S 141  Late</span></span>
+<span><span class="co">#&gt; 4  F3D142_S208_L001        r16S 142  Late</span></span>
+<span><span class="co">#&gt; 5  F3D143_S209_L001        r16S 143  Late</span></span>
+<span><span class="co">#&gt; 6  F3D144_S210_L001        r16S 144  Late</span></span>
+<span><span class="co">#&gt; 7  F3D145_S211_L001        r16S 145  Late</span></span>
+<span><span class="co">#&gt; 8  F3D146_S212_L001        r16S 146  Late</span></span>
+<span><span class="co">#&gt; 9  F3D147_S213_L001        r16S 147  Late</span></span>
+<span><span class="co">#&gt; 10 F3D148_S214_L001        r16S 148  Late</span></span>
+<span><span class="co">#&gt; 11 F3D149_S215_L001        r16S 149  Late</span></span>
+<span><span class="co">#&gt; 12 F3D150_S216_L001        r16S 150  Late</span></span>
+<span><span class="co">#&gt; 13   F3D2_S190_L001        r16S   2 Early</span></span>
+<span><span class="co">#&gt; 14   F3D3_S191_L001        r16S   3 Early</span></span>
+<span><span class="co">#&gt; 15   F3D5_S193_L001        r16S   5 Early</span></span>
+<span><span class="co">#&gt; 16   F3D6_S194_L001        r16S   6 Early</span></span>
+<span><span class="co">#&gt; 17   F3D7_S195_L001        r16S   7 Early</span></span>
+<span><span class="co">#&gt; 18   F3D8_S196_L001        r16S   8 Early</span></span>
+<span><span class="co">#&gt; 19   F3D9_S197_L001        r16S   9 Early</span></span>
+<span><span class="co">#&gt; 20   Mock_S280_L001        r16S  NA  &lt;NA&gt;</span></span></code></pre>
+<p><strong>Third, make our primerinfo_params.csv input file</strong></p>
+<p>We then make and save the second CSV input file with the name of the
+metabarcode used, primer sequences, and the optional DADA2 parameter
+options.</p>
+<p>I referenced the DADA2 <a href="https://benjjneb.github.io/dada2/tutorial.html" class="external-link">tutorial</a> to
+select the same parameter options.</p>
+<p>Note, primers were already trimmed from reads during the
+demultiplexing step that occurs after sequencing, but just to be
+certain, I included the Earth Microbiome primers sequences described <a href="https://earthmicrobiome.org/protocols-and-standards/16s/" class="external-link">here</a>,
+which will be searched for across reads.</p>
+<p><em>primerinfo_params.csv</em></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Create the data frame</span></span>
+<span><span class="va">primer_info</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  primer_name <span class="op">=</span> <span class="st">"r16S"</span>,</span>
+<span>  forward <span class="op">=</span> <span class="st">"GTGYCAGCMGCCGCGGTAA"</span>,</span>
+<span>  reverse <span class="op">=</span> <span class="st">"GGACTACNVGGGTWTCTAAT"</span>,</span>
+<span>  already_trimmed <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  minCutadaptlength <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  multithread <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  maxN <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  maxEE_forward <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  maxEE_reverse <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  truncLen_forward <span class="op">=</span> <span class="fl">240</span>,</span>
+<span>  truncLen_reverse <span class="op">=</span> <span class="fl">160</span>,</span>
+<span>  truncQ <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  minLen <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>  maxLen <span class="op">=</span> <span class="cn">Inf</span>,</span>
+<span>  minQ <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  trimLeft <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  trimRight <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  rm.lowcomplex <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  minOverlap <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>  maxMismatch <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  min_asv_length <span class="op">=</span> <span class="fl">50</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>We construct and save our <strong>primerinfo_params</strong> file in
+our data directory</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">primer_params_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data_folder</span>, <span class="st">"primerinfo_params.csv"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">primer_info</span>, <span class="va">primer_params_path</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt;   primer_name             forward              reverse already_trimmed</span></span>
+<span><span class="co">#&gt; 1        r16S GTGYCAGCMGCCGCGGTAA GGACTACNVGGGTWTCTAAT            TRUE</span></span>
+<span><span class="co">#&gt;   minCutadaptlength multithread verbose maxN maxEE_forward maxEE_reverse</span></span>
+<span><span class="co">#&gt; 1                 0        TRUE    TRUE    0             2             2</span></span>
+<span><span class="co">#&gt;   truncLen_forward truncLen_reverse truncQ minLen maxLen minQ trimLeft</span></span>
+<span><span class="co">#&gt; 1              240              160      2     20    Inf    0        0</span></span>
+<span><span class="co">#&gt;   trimRight rm.lowcomplex minOverlap maxMismatch min_asv_length</span></span>
+<span><span class="co">#&gt; 1         0             0         12           0             50</span></span></code></pre>
+</div>
+<div class="section level3">
+<h3 id="step-3-download-silva-reference-database-v--138-2-formatted-for-analysis-with-dada2">STEP 3-Download Silva reference database (v. 138.2) formatted for
+analysis with DADA2<a class="anchor" aria-label="anchor" href="#step-3-download-silva-reference-database-v--138-2-formatted-for-analysis-with-dada2"></a>
+</h3>
+<p>We now retrieve the Silva database (to the taxonomic level of
+species) More information is [here] (<a href="https://zenodo.org/records/14169026" class="external-link uri">https://zenodo.org/records/14169026</a>)</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># We will also download the Silva database **with species** assignments here:</span></span>
+<span><span class="va">silva_path</span> <span class="op">&lt;-</span> <span class="st">"https://zenodo.org/records/14169026/files/silva_nr99_v138.2_toSpecies_trainset.fa.gz?download=1"</span></span>
+<span><span class="va">file_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data_folder</span>, <span class="st">"silva_nr99_v138.2_toSpecies_trainset.fa.gz"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">file_path</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span><span class="op">(</span><span class="va">silva_path</span>, <span class="va">file_path</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"File downloaded to:"</span>, <span class="va">file_path</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"File already exists. Skipping download.\n"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co">#&gt; File already exists. Skipping download.</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="step-4-load-the-demulticoder-r-package-and-necessary-dependencies">STEP 4-Load the demulticoder R package and necessary
+dependencies<a class="anchor" aria-label="anchor" href="#step-4-load-the-demulticoder-r-package-and-necessary-dependencies"></a>
 </h3>
 <p>For now, the package will be loaded by retrieving it from GitHub. We
 are submitting package to CRAN.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"grunwaldlab/demulticoder"</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#devtools::load_all("~/demulticoder")</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/demulticoder/" class="external-link">"demulticoder"</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #00BBBB;">R CMD build</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; * checking for file ‘/tmp/RtmpnWzZiF/remotes230b6497f0055/grunwaldlab-demulticoder-3734229/DESCRIPTION’ ... OK</span></span>
+<span><span class="co">#&gt; * preparing ‘demulticoder’:</span></span>
+<span><span class="co">#&gt; * checking DESCRIPTION meta-information ... OK</span></span>
+<span><span class="co">#&gt; * checking for LF line-endings in source and make files and shell scripts</span></span>
+<span><span class="co">#&gt; * checking for empty or unneeded directories</span></span>
+<span><span class="co">#&gt; Omitted ‘LazyData’ from DESCRIPTION</span></span>
+<span><span class="co">#&gt; * building ‘demulticoder_0.0.0.9000.tar.gz’</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/demulticoder/" class="external-link">"demulticoder"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/metacoder_documentation/" class="external-link">"metacoder"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://dx.plos.org/10.1371/journal.pone.0061217" class="external-link">"phyloseq"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://dplyr.tidyverse.org" class="external-link">"dplyr"</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="step-1">Step 1<a class="anchor" aria-label="anchor" href="#step-1"></a>
+<h3 id="step-5-prepare_reads-function">STEP 5-prepare_reads function<a class="anchor" aria-label="anchor" href="#step-5-prepare_reads-function"></a>
 </h3>
-<p>Remove N’s and create directory structure for downstream steps</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">output</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/prepare_reads.html">prepare_reads</a></span><span class="op">(</span></span>
-<span>  data_directory <span class="op">=</span> <span class="st">"~/benchmark_demulticoder/mothur_16S_sop/data"</span>, </span>
-<span>  output_directory <span class="op">=</span> <span class="st">"~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs"</span>,</span>
-<span>  tempdir_path <span class="op">=</span> <span class="st">"~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs_temp"</span>,</span>
-<span>  tempdir_id <span class="op">=</span> <span class="st">"temp_files"</span><span class="op">)</span></span></code></pre></div>
+<p>Remove N’s and create directory structure for downstream steps<br>
+Note-intermediate files are saved in a temporary folder automatically.
+If you prefer to define a temp directory path, refer to documentation
+for the <strong>prepare_reads</strong> function</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># The file names will first need to be renamed to go through the demulticoder workflow, since it is looking for files that have suffixes like R1.fastq.gz or R2.fastq.gz</span></span>
+<span><span class="va">output</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/prepare_reads.html">prepare_reads</a></span><span class="op">(</span></span>
+<span>  data_directory <span class="op">=</span> <span class="va">data_folder</span>, <span class="co">#Use data_dir_path defined above </span></span>
+<span>  output_directory <span class="op">=</span> <span class="st">"~/sop_16S_outputs"</span>,</span>
+<span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co">#This is optional. If not specified, your temp files will be saved to a temporary directory automatically</span></span></code></pre></div>
 <p><img src="prepare_reads-1.png" width="70%"></p>
 </div>
 <div class="section level3">
-<h3 id="step-2">Step 2<a class="anchor" aria-label="anchor" href="#step-2"></a>
+<h3 id="step-6-cut_trim-function">STEP 6-cut_trim function<a class="anchor" aria-label="anchor" href="#step-6-cut_trim-function"></a>
 </h3>
 <p>Run Cutadapt to remove primers and then trim reads with DADA2
 filterAndTrim function</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cut_trim.html">cut_trim</a></span><span class="op">(</span></span>
 <span>  <span class="va">output</span>,</span>
-<span>  cutadapt_path<span class="op">=</span><span class="st">"/usr/bin/cutadapt"</span><span class="op">)</span></span></code></pre></div>
+<span>  cutadapt_path<span class="op">=</span><span class="st">"/usr/bin/cutadapt"</span>,</span>
+<span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Running Cutadapt 3.5 for r16S sequence data </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D0_S188_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D0_S188_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D1_S189_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D1_S189_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D141_S207_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D141_S207_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D142_S208_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D142_S208_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D143_S209_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D143_S209_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D144_S210_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D144_S210_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D145_S211_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D145_S211_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D146_S212_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D146_S212_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D147_S213_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D147_S213_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D148_S214_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D148_S214_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D149_S215_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D149_S215_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D150_S216_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D150_S216_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D2_S190_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D2_S190_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D3_S191_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D3_S191_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D5_S193_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D5_S193_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D6_S194_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D6_S194_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D7_S195_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D7_S195_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D8_S196_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D8_S196_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D9_S197_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D9_S197_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/Mock_S280_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/Mock_S280_L001_R2_r16S.fastq.gz</span></span></code></pre></div>
+<p><img src="Remove_primers_and_trim_reads-1.png" width="70%"></p>
 <p>We can now visualize the outputs from the primer removal and trimming
 steps. A CSV files is output showing which samples still have primer
-sequences and the barplot below summarizes the outputs.</p>
+sequences and the barplot above summarizes the outputs.</p>
 <p>There are circumstances where a few primer sequences may still
 remain. If so, any ASVs with any residual primer sequences will be
 filtered at the end.</p>
-<p><img src="posttrim_primer_plot_16S.png" width="70%"></p>
 </div>
 <div class="section level3">
-<h3 id="step-3">Step 3<a class="anchor" aria-label="anchor" href="#step-3"></a>
+<h3 id="step-7-make_asv_abund_matrix-function">STEP 7-make_asv_abund_matrix function<a class="anchor" aria-label="anchor" href="#step-7-make_asv_abund_matrix-function"></a>
 </h3>
 <p>Core ASV inference step</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make_asv_abund_matrix.html">make_asv_abund_matrix</a></span><span class="op">(</span></span>
-<span>  <span class="va">output</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="va">output</span>,</span>
+<span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 33513360 total bases in 139639 reads from 20 samples will be used for learning the error rates.</span></span>
+<span><span class="co">#&gt; Initializing error rates to maximum possible estimate.</span></span>
+<span><span class="co">#&gt; selfConsist step 1 ....................</span></span>
+<span><span class="co">#&gt;    selfConsist step 2</span></span>
+<span><span class="co">#&gt;    selfConsist step 3</span></span>
+<span><span class="co">#&gt;    selfConsist step 4</span></span>
+<span><span class="co">#&gt;    selfConsist step 5</span></span>
+<span><span class="co">#&gt; Convergence after  5  rounds.</span></span>
+<span><span class="co">#&gt; Error rate plot for the Forward read of primer pair r16S</span></span>
+<span><span class="co">#&gt; Sample 1 - 7112 reads in 1978 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 2 - 5299 reads in 1639 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 3 - 5463 reads in 1477 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 4 - 2914 reads in 904 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 5 - 2941 reads in 939 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 6 - 4312 reads in 1267 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 7 - 6741 reads in 1756 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 8 - 4560 reads in 1438 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 9 - 15636 reads in 3589 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 10 - 11412 reads in 2761 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 11 - 12017 reads in 3021 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 12 - 5032 reads in 1566 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 13 - 18075 reads in 3707 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 14 - 6250 reads in 1479 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 15 - 4052 reads in 1195 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 16 - 7369 reads in 1832 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 17 - 4765 reads in 1183 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 18 - 4871 reads in 1382 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 19 - 6504 reads in 1709 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 20 - 4314 reads in 897 unique sequences.</span></span>
+<span><span class="co">#&gt; 22342240 total bases in 139639 reads from 20 samples will be used for learning the error rates.</span></span>
+<span><span class="co">#&gt; Initializing error rates to maximum possible estimate.</span></span>
+<span><span class="co">#&gt; selfConsist step 1 ....................</span></span>
+<span><span class="co">#&gt;    selfConsist step 2</span></span>
+<span><span class="co">#&gt;    selfConsist step 3</span></span>
+<span><span class="co">#&gt;    selfConsist step 4</span></span>
+<span><span class="co">#&gt;    selfConsist step 5</span></span>
+<span><span class="co">#&gt;    selfConsist step 6</span></span>
+<span><span class="co">#&gt;    selfConsist step 7</span></span>
+<span><span class="co">#&gt; Convergence after  7  rounds.</span></span>
+<span><span class="co">#&gt; Error rate plot for the Reverse read of primer pair r16S</span></span>
+<span><span class="co">#&gt; Sample 1 - 7112 reads in 1659 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 2 - 5299 reads in 1349 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 3 - 5463 reads in 1335 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 4 - 2914 reads in 853 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 5 - 2941 reads in 880 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 6 - 4312 reads in 1286 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 7 - 6741 reads in 1803 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 8 - 4560 reads in 1265 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 9 - 15636 reads in 3413 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 10 - 11412 reads in 2522 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 11 - 12017 reads in 2771 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 12 - 5032 reads in 1415 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 13 - 18075 reads in 3290 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 14 - 6250 reads in 1390 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 15 - 4052 reads in 1134 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 16 - 7369 reads in 1635 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 17 - 4765 reads in 1084 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 18 - 4871 reads in 1161 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 19 - 6504 reads in 1502 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 20 - 4314 reads in 732 unique sequences.</span></span></code></pre></div>
+<p><img src="ASV_inference-1.png" width="70%"><img src="ASV_inference-2.png" width="70%"></p>
+<pre><code><span><span class="co">#&gt; $r16S</span></span>
+<span><span class="co">#&gt; [1] "/tmp/RtmpS60frC/demulticoder_run/asvabund_matrixDADA2_r16S.RData"</span></span></code></pre>
 <p>We can now visualize the outputs from the ASV inference step.</p>
 <p>The first plot shows the how reads were merged in terms of mismatches
 and indels.</p>
 <p>The plot to the right shows the overlap lengths across the inferred
 ASVs.</p>
-<p><img src="read_merging_info_r16S.png" width="70%"></p>
 <p>We can also look at the distribution of ASV lengths</p>
-<p><img src="asv_seqlength_plot_r16S.png" width="70%"></p>
 </div>
 <div class="section level3">
-<h3 id="step-4">Step 4<a class="anchor" aria-label="anchor" href="#step-4"></a>
+<h3 id="step-8-assign_tax-function">STEP 8-assign_tax function<a class="anchor" aria-label="anchor" href="#step-8-assign_tax-function"></a>
 </h3>
 <p>Assign taxonomy step</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/assign_tax.html">assign_tax</a></span><span class="op">(</span></span>
 <span>  <span class="va">output</span>,</span>
 <span>  <span class="va">asv_abund_matrix</span>,</span>
 <span>  db_16S<span class="op">=</span><span class="st">"silva_nr99_v138.2_toSpecies_trainset.fa.gz"</span>,</span>
-<span>  retrieve_files<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span>  retrieve_files<span class="op">=</span><span class="cn">FALSE</span>,</span>
+<span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;          samplename_barcode input filtered denoisedF denoisedR merged nonchim</span></span>
+<span><span class="co">#&gt; 1    F3D0_S188_L001_R1_r16S  7733     7112      6976      6979   6540    6528</span></span>
+<span><span class="co">#&gt; 2    F3D1_S189_L001_R1_r16S  5829     5299      5226      5239   5027    5016</span></span>
+<span><span class="co">#&gt; 3  F3D141_S207_L001_R1_r16S  5926     5463      5331      5357   4986    4863</span></span>
+<span><span class="co">#&gt; 4  F3D142_S208_L001_R1_r16S  3158     2914      2799      2830   2595    2521</span></span>
+<span><span class="co">#&gt; 5  F3D143_S209_L001_R1_r16S  3164     2941      2822      2868   2553    2519</span></span>
+<span><span class="co">#&gt; 6  F3D144_S210_L001_R1_r16S  4798     4312      4150      4228   3646    3507</span></span>
+<span><span class="co">#&gt; 7  F3D145_S211_L001_R1_r16S  7331     6741      6592      6627   6079    5820</span></span>
+<span><span class="co">#&gt; 8  F3D146_S212_L001_R1_r16S  4993     4560      4450      4470   3968    3879</span></span>
+<span><span class="co">#&gt; 9  F3D147_S213_L001_R1_r16S 16956    15636     15433     15505  14233   13006</span></span>
+<span><span class="co">#&gt; 10 F3D148_S214_L001_R1_r16S 12332    11412     11250     11267  10529    9935</span></span>
+<span><span class="co">#&gt; 11 F3D149_S215_L001_R1_r16S 13006    12017     11857     11898  11154   10653</span></span>
+<span><span class="co">#&gt; 12 F3D150_S216_L001_R1_r16S  5474     5032      4879      4925   4349    4240</span></span>
+<span><span class="co">#&gt; 13   F3D2_S190_L001_R1_r16S 19489    18075     17907     17939  17431   16835</span></span>
+<span><span class="co">#&gt; 14   F3D3_S191_L001_R1_r16S  6726     6250      6145      6176   5850    5486</span></span>
+<span><span class="co">#&gt; 15   F3D5_S193_L001_R1_r16S  4418     4052      3930      3991   3713    3713</span></span>
+<span><span class="co">#&gt; 16   F3D6_S194_L001_R1_r16S  7933     7369      7231      7294   6865    6678</span></span>
+<span><span class="co">#&gt; 17   F3D7_S195_L001_R1_r16S  5103     4765      4646      4673   4428    4217</span></span>
+<span><span class="co">#&gt; 18   F3D8_S196_L001_R1_r16S  5274     4871      4786      4802   4576    4547</span></span>
+<span><span class="co">#&gt; 19   F3D9_S197_L001_R1_r16S  7023     6504      6341      6442   6092    6015</span></span>
+<span><span class="co">#&gt; 20   Mock_S280_L001_R1_r16S  4748     4314      4287      4286   4269    4269</span></span></code></pre></div>
 <p>As a check we can take a look at read counts across the workflow. If
 there are sudden drops, we should reconsider our adjusting certain DADA2
 parameters and re-running the analysis.</p>
-<pre><code><span><span class="co">#&gt; Tables showing read counts throughout the demulticoder DADA2 workflow</span></span>
-<span><span class="co">#&gt;    samplename_barcode input filtered denoisedF denoisedR merged nonchim</span></span>
-<span><span class="co">#&gt; 1           F3D0_r16S  7733     7112      6976      6979   6540    6528</span></span>
-<span><span class="co">#&gt; 2           F3D1_r16S  5829     5299      5226      5239   5027    5016</span></span>
-<span><span class="co">#&gt; 3         F3D141_r16S  5926     5463      5331      5357   4986    4863</span></span>
-<span><span class="co">#&gt; 4         F3D142_r16S  3158     2914      2799      2830   2595    2521</span></span>
-<span><span class="co">#&gt; 5         F3D143_r16S  3164     2941      2822      2868   2553    2519</span></span>
-<span><span class="co">#&gt; 6         F3D144_r16S  4798     4312      4150      4228   3646    3507</span></span>
-<span><span class="co">#&gt; 7         F3D145_r16S  7331     6741      6592      6627   6079    5820</span></span>
-<span><span class="co">#&gt; 8         F3D146_r16S  4993     4560      4450      4470   3968    3879</span></span>
-<span><span class="co">#&gt; 9         F3D147_r16S 16956    15636     15433     15505  14233   13006</span></span>
-<span><span class="co">#&gt; 10        F3D148_r16S 12332    11412     11250     11267  10529    9935</span></span>
-<span><span class="co">#&gt; 11        F3D149_r16S 13006    12017     11857     11898  11154   10653</span></span>
-<span><span class="co">#&gt; 12        F3D150_r16S  5474     5032      4879      4925   4349    4240</span></span>
-<span><span class="co">#&gt; 13          F3D2_r16S 19489    18075     17907     17939  17431   16835</span></span>
-<span><span class="co">#&gt; 14          F3D3_r16S  6726     6250      6145      6176   5850    5486</span></span>
-<span><span class="co">#&gt; 15          F3D5_r16S  4418     4052      3930      3991   3713    3713</span></span>
-<span><span class="co">#&gt; 16          F3D6_r16S  7933     7369      7231      7294   6865    6678</span></span>
-<span><span class="co">#&gt; 17          F3D7_r16S  5103     4765      4646      4673   4428    4217</span></span>
-<span><span class="co">#&gt; 18          F3D8_r16S  5274     4871      4786      4802   4576    4547</span></span>
-<span><span class="co">#&gt; 19          F3D9_r16S  7023     6504      6341      6442   6092    6015</span></span>
-<span><span class="co">#&gt; 20          Mock_r16S  4748     4314      4287      4286   4269    4269</span></span></code></pre>
 </div>
 <div class="section level3">
-<h3 id="step-5">Step 5<a class="anchor" aria-label="anchor" href="#step-5"></a>
+<h3 id="step-9-convert_matrix_to_other_formats">STEP 9-convert_matrix_to_other_formats<a class="anchor" aria-label="anchor" href="#step-9-convert_matrix_to_other_formats"></a>
 </h3>
-<p>Convert asv matrix to taxmap and phyloseq objects with one
+<p>Convert ASV matrix to taxmap and phyloseq objects with one
 function</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/convert_asv_matrix_to_objs.html">convert_asv_matrix_to_objs</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">232</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">23</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span>  (3): asv_id, sequence, dada2_tax</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (20): F3D0_r16S, F3D1_r16S, F3D141_r16S, F3D142_r16S, F3D143_r16S, F3D14...</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
 <span><span class="co">#&gt; For r16S dataset </span></span>
-<span><span class="co">#&gt; Taxmap object saved in: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/taxmap_obj_r16S.RData </span></span>
-<span><span class="co">#&gt; Phyloseq object saved in: ~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/phylo_obj_r16S.RData </span></span>
+<span><span class="co">#&gt; Taxmap object saved in: ~/sop_16S_outputs/taxmap_obj_r16S.RData </span></span>
+<span><span class="co">#&gt; Phyloseq object saved in: ~/sop_16S_outputs/phylo_obj_r16S.RData </span></span>
 <span><span class="co">#&gt; ASVs filtered by minimum read depth: 0 </span></span>
 <span><span class="co">#&gt; For taxonomic assignments, if minimum bootstrap was set to: 0 assignments were set to 'Unsupported' </span></span>
 <span><span class="co">#&gt; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="step-6">Step 6<a class="anchor" aria-label="anchor" href="#step-6"></a>
+<h3 id="step-10-examine-accuracy-relative-to-a-mock-community">STEP 10-Examine accuracy relative to a mock community<a class="anchor" aria-label="anchor" href="#step-10-examine-accuracy-relative-to-a-mock-community"></a>
 </h3>
-<p>Evaluate accuracy using mock community, as shown in dada2
+<p>Evaluate accuracy using mock community, as shown in DADA2
 tutorial</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">track_reads_demulticoder</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/track_reads_r16S.csv"</span>, row.names <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">track_reads_demulticoder</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      input          filtered       denoisedF       denoisedR    </span></span>
-<span><span class="co">#&gt;  Min.   : 3158   Min.   : 2914   Min.   : 2799   Min.   : 2830  </span></span>
-<span><span class="co">#&gt;  1st Qu.: 4944   1st Qu.: 4498   1st Qu.: 4409   1st Qu.: 4424  </span></span>
-<span><span class="co">#&gt;  Median : 5878   Median : 5381   Median : 5278   Median : 5298  </span></span>
-<span><span class="co">#&gt;  Mean   : 7571   Mean   : 6982   Mean   : 6852   Mean   : 6890  </span></span>
-<span><span class="co">#&gt;  3rd Qu.: 7783   3rd Qu.: 7176   3rd Qu.: 7040   3rd Qu.: 7058  </span></span>
-<span><span class="co">#&gt;  Max.   :19489   Max.   :18075   Max.   :17907   Max.   :17939  </span></span>
-<span><span class="co">#&gt;      merged         nonchim     </span></span>
-<span><span class="co">#&gt;  Min.   : 2553   Min.   : 2519  </span></span>
-<span><span class="co">#&gt;  1st Qu.: 4194   1st Qu.: 4132  </span></span>
-<span><span class="co">#&gt;  Median : 5006   Median : 4940  </span></span>
-<span><span class="co">#&gt;  Mean   : 6444   Mean   : 6212  </span></span>
-<span><span class="co">#&gt;  3rd Qu.: 6621   3rd Qu.: 6566  </span></span>
-<span><span class="co">#&gt;  Max.   :17431   Max.   :16835</span></span>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">matrix_filepath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">output</span><span class="op">$</span><span class="va">directory_paths</span><span class="op">$</span><span class="va">output_directory</span>, <span class="st">"final_asv_abundance_matrix_r16S.csv"</span><span class="op">)</span></span>
+<span><span class="va">tax_matrix</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">matrix_filepath</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">tax_matrix</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"~/benchmark_demulticoder/mothur_16S_sop/vignette_outputs/final_asv_abundance_matrix_r16S.csv"</span><span class="op">)</span></span>
+<span><span class="va">unqs.mock</span> <span class="op">&lt;-</span> <span class="va">tax_matrix</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">tax_matrix</span><span class="op">)</span> <span class="op">==</span> <span class="st">"Mock_S280_L001_r16S"</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
-<span><span class="va">unqs.mock</span> <span class="op">&lt;-</span> <span class="va">tax_matrix</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">tax_matrix</span><span class="op">)</span> <span class="op">==</span> <span class="st">"Mock_r16S"</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span>
-<span></span>
-<span><span class="va">unqs.mock</span> <span class="op">&lt;-</span> <span class="va">unqs.mock</span><span class="op">[</span><span class="va">unqs.mock</span><span class="op">$</span><span class="va">Mock_r16S</span> <span class="op">!=</span> <span class="fl">0</span>,<span class="op">]</span></span>
+<span><span class="va">unqs.mock</span> <span class="op">&lt;-</span> <span class="va">unqs.mock</span><span class="op">[</span><span class="va">unqs.mock</span><span class="op">$</span><span class="va">Mock_S280_L001_r16S</span> <span class="op">!=</span> <span class="fl">0</span>,<span class="op">]</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"DADA2 inferred"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">unqs.mock</span><span class="op">)</span>, <span class="st">"sample sequences present in the Mock community.\n"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; DADA2 inferred 20 sample sequences present in the Mock community.</span></span>
-<span></span>
-<span><span class="va">mock.ref</span> <span class="op">&lt;-</span> <span class="fu">dada2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/dada2/man/getSequences.html" class="external-link">getSequences</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"~/benchmark_demulticoder/mothur_16S_sop/data"</span>, <span class="st">"HMP_MOCK.v35.fasta"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">match.ref</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">unqs.mock</span><span class="op">$</span><span class="va">sequence</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">mock.ref</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Of those,"</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">match.ref</span><span class="op">)</span>, <span class="st">"were exact matches to the expected reference sequences.\n"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Of those, 20 were exact matches to the expected reference sequences.</span></span></code></pre></div>
+<span><span class="co">#&gt; DADA2 inferred 20 sample sequences present in the Mock community.</span></span></code></pre></div>
 <p>When looking at mock community sample, we were able to extract 20
-bacterial sequences with 0% mismatch, and this matched what was
-described previously.</p>
+bacterial sequences that also matched with what was present in the mock
+community.</p>
 </div>
 <div class="section level3">
-<h3 id="step-7">Step 7<a class="anchor" aria-label="anchor" href="#step-7"></a>
+<h3 id="step-11-alpha-diversity-analysis">STEP 11-Alpha diversity analysis<a class="anchor" aria-label="anchor" href="#step-11-alpha-diversity-analysis"></a>
 </h3>
 <p>Follow-up work using phyloseq to do side-by-side comparison with
 dada2 example and to examine alpha diversity results</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/prune_samples-methods.html" class="external-link">prune_samples</a></span><span class="op">(</span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html" class="external-link">sample_names</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span><span class="op">)</span> <span class="op">!=</span> <span class="st">"Mock_r16S"</span>, <span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span><span class="op">)</span> <span class="co"># Remove mock sample</span></span>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/prune_samples-methods.html" class="external-link">prune_samples</a></span><span class="op">(</span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html" class="external-link">sample_names</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span><span class="op">)</span> <span class="op">!=</span> <span class="st">"Mock_S280_L001_r16S"</span>, <span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span><span class="op">)</span> <span class="co"># Remove mock sample</span></span>
+<span></span>
 <span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/plot_richness.html" class="external-link">plot_richness</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span>, x<span class="op">=</span><span class="st">"Day"</span>, measures<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Shannon"</span>, <span class="st">"Simpson"</span><span class="op">)</span>, color<span class="op">=</span><span class="st">"When"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="phyloseq_alpha_diversity_analysis-1.png" width="70%"></p>
 </div>
 <div class="section level3">
-<h3 id="step-8">Step 8<a class="anchor" aria-label="anchor" href="#step-8"></a>
+<h3 id="step-12-beta-diversity-analysis">STEP 12-Beta diversity analysis<a class="anchor" aria-label="anchor" href="#step-12-beta-diversity-analysis"></a>
 </h3>
 <p>Examine ordination plots as additional point of comparison with DADA2
 tutorial</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Transform data to proportions as appropriate for Bray-Curtis distances</span></span>
 <span><span class="va">ps.prop</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span>, <span class="kw">function</span><span class="op">(</span><span class="va">otu</span><span class="op">)</span> <span class="va">otu</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">otu</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">ord.nmds.bray</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/ordinate.html" class="external-link">ordinate</a></span><span class="op">(</span><span class="va">ps.prop</span>, method<span class="op">=</span><span class="st">"NMDS"</span>, distance<span class="op">=</span><span class="st">"bray"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Run 0 stress 0.0808378 </span></span>
+<span><span class="co">#&gt; Run 1 stress 0.08096389 </span></span>
+<span><span class="co">#&gt; ... Procrustes: rmse 0.009177604  max resid 0.02810685 </span></span>
+<span><span class="co">#&gt; Run 2 stress 0.1231378 </span></span>
+<span><span class="co">#&gt; Run 3 stress 0.121153 </span></span>
+<span><span class="co">#&gt; Run 4 stress 0.08635462 </span></span>
+<span><span class="co">#&gt; Run 5 stress 0.0808378 </span></span>
+<span><span class="co">#&gt; ... Procrustes: rmse 5.812944e-06  max resid 1.554258e-05 </span></span>
+<span><span class="co">#&gt; ... Similar to previous best</span></span>
+<span><span class="co">#&gt; Run 6 stress 0.1231378 </span></span>
+<span><span class="co">#&gt; Run 7 stress 0.09061366 </span></span>
+<span><span class="co">#&gt; Run 8 stress 0.08096389 </span></span>
+<span><span class="co">#&gt; ... Procrustes: rmse 0.009176341  max resid 0.02810282 </span></span>
+<span><span class="co">#&gt; Run 9 stress 0.1433231 </span></span>
+<span><span class="co">#&gt; Run 10 stress 0.0808378 </span></span>
+<span><span class="co">#&gt; ... Procrustes: rmse 5.646214e-06  max resid 1.499963e-05 </span></span>
+<span><span class="co">#&gt; ... Similar to previous best</span></span>
+<span><span class="co">#&gt; Run 11 stress 0.1231378 </span></span>
+<span><span class="co">#&gt; Run 12 stress 0.0809639 </span></span>
+<span><span class="co">#&gt; ... Procrustes: rmse 0.009215858  max resid 0.02823353 </span></span>
+<span><span class="co">#&gt; Run 13 stress 0.121153 </span></span>
+<span><span class="co">#&gt; Run 14 stress 0.1320722 </span></span>
+<span><span class="co">#&gt; Run 15 stress 0.08635462 </span></span>
+<span><span class="co">#&gt; Run 16 stress 0.121153 </span></span>
+<span><span class="co">#&gt; Run 17 stress 0.08096389 </span></span>
+<span><span class="co">#&gt; ... Procrustes: rmse 0.009186834  max resid 0.02813753 </span></span>
+<span><span class="co">#&gt; Run 18 stress 0.08635462 </span></span>
+<span><span class="co">#&gt; Run 19 stress 0.08635462 </span></span>
+<span><span class="co">#&gt; Run 20 stress 0.09466617 </span></span>
+<span><span class="co">#&gt; *** Best solution repeated 2 times</span></span>
 <span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/plot_ordination.html" class="external-link">plot_ordination</a></span><span class="op">(</span><span class="va">ps.prop</span>, <span class="va">ord.nmds.bray</span>, color<span class="op">=</span><span class="st">"When"</span>, title<span class="op">=</span><span class="st">"Bray NMDS"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="phyloseq_beta_diversity_analysis-1.png" width="70%"></p>
 </div>
 <div class="section level3">
-<h3 id="step-9">Step 9<a class="anchor" aria-label="anchor" href="#step-9"></a>
+<h3 id="step-13-top-taxa-analysis">STEP 13-Top taxa analysis<a class="anchor" aria-label="anchor" href="#step-13-top-taxa-analysis"></a>
 </h3>
 <p>Let’s look at what the top 20 taxa are in the early vs. late samples
 time points, as shown in the dada2 tutorial</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">top20</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_sums.html" class="external-link">taxa_sums</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span><span class="op">)</span>, decreasing<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span></span>
 <span><span class="va">ps.top20</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span>, <span class="kw">function</span><span class="op">(</span><span class="va">OTU</span><span class="op">)</span> <span class="va">OTU</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">OTU</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">ps.top20</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/prune_taxa-methods.html" class="external-link">prune_taxa</a></span><span class="op">(</span><span class="va">top20</span>, <span class="va">ps.top20</span><span class="op">)</span></span>
 <span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/plot_bar.html" class="external-link">plot_bar</a></span><span class="op">(</span><span class="va">ps.top20</span>, x<span class="op">=</span><span class="st">"Day"</span>, fill<span class="op">=</span><span class="st">"Family"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">When</span>, scales<span class="op">=</span><span class="st">"free_x"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="phyloseq_community_analysis-1.png" width="70%"></p>
+</div>
+<div class="section level3">
+<h3 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h3>
+<p><strong>Information on the 16S SOP Mothur dataset can be found
+here:</strong> <a href="https://mothur.org/wiki/miseq_sop/" class="external-link uri">https://mothur.org/wiki/miseq_sop/</a></p>
+<p>Kozich, J. J., Westcott, S. L., Baxter, N. T., Highlander, S. K., and
+Schloss, P. D. 2013. Development of a dual-index sequencing strategy and
+curation pipeline for analyzing amplicon sequence data on the MiSeq
+Illumina sequencing platform. Applied and Environmental Microbiology
+79:5112–5120. <a href="https://doi.org/10.1128/AEM.01043-13" class="external-link uri">https://doi.org/10.1128/AEM.01043-13</a>.</p>
+<p><strong>Information on the DADA2 16S tutorial and associated
+manuscript can be found here:</strong> <a href="https://benjjneb.github.io/dada2/tutorial.html" class="external-link uri">https://benjjneb.github.io/dada2/tutorial.html</a></p>
+<p>Callahan, B. J., McMurdie, P. J., Rosen, M. J., Han, A. W., Johnson,
+A. J. A., and Holmes, S. P. 2016. DADA2: high-resolution sample
+inference from Illumina amplicon data. Nature Methods 13:581. <a href="https://doi.org/10.1038/nmeth.3869" class="external-link uri">https://doi.org/10.1038/nmeth.3869</a>.</p>
+</div>
+<div class="section level3">
+<h3 id="software-and-packages">Software and packages<a class="anchor" aria-label="anchor" href="#software-and-packages"></a>
+</h3>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; R version 4.1.2 (2021-11-01)</span></span>
+<span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
+<span><span class="co">#&gt; Running under: Pop!_OS 22.04 LTS</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matrix products: default</span></span>
+<span><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0</span></span>
+<span><span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.10.0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; locale:</span></span>
+<span><span class="co">#&gt;  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></span>
+<span><span class="co">#&gt;  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span></span>
+<span><span class="co">#&gt;  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span></span>
+<span><span class="co">#&gt;  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span></span>
+<span><span class="co">#&gt;  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></span>
+<span><span class="co">#&gt; [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attached base packages:</span></span>
+<span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; other attached packages:</span></span>
+<span><span class="co">#&gt; [1] purrr_1.0.4             dplyr_1.1.4             phyloseq_1.38.0        </span></span>
+<span><span class="co">#&gt; [4] metacoder_0.3.8         demulticoder_0.0.0.9000 kableExtra_1.4.0       </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
+<span><span class="co">#&gt;   [1] systemfonts_1.0.4           plyr_1.8.9                 </span></span>
+<span><span class="co">#&gt;   [3] igraph_2.0.3                lazyeval_0.2.2             </span></span>
+<span><span class="co">#&gt;   [5] splines_4.1.2               listenv_0.9.1              </span></span>
+<span><span class="co">#&gt;   [7] BiocParallel_1.28.3         usethis_3.1.0              </span></span>
+<span><span class="co">#&gt;   [9] GenomeInfoDb_1.30.1         ggplot2_3.5.1              </span></span>
+<span><span class="co">#&gt;  [11] digest_0.6.37               foreach_1.5.2              </span></span>
+<span><span class="co">#&gt;  [13] htmltools_0.5.8.1           magrittr_2.0.3             </span></span>
+<span><span class="co">#&gt;  [15] memoise_2.0.1               cluster_2.1.2              </span></span>
+<span><span class="co">#&gt;  [17] tzdb_0.4.0                  remotes_2.5.0              </span></span>
+<span><span class="co">#&gt;  [19] globals_0.16.3              Biostrings_2.62.0          </span></span>
+<span><span class="co">#&gt;  [21] readr_2.1.5                 RcppParallel_5.1.10        </span></span>
+<span><span class="co">#&gt;  [23] matrixStats_1.5.0           vroom_1.6.5                </span></span>
+<span><span class="co">#&gt;  [25] svglite_2.1.3               pkgdown_2.1.1              </span></span>
+<span><span class="co">#&gt;  [27] jpeg_0.1-10                 colorspace_2.1-1           </span></span>
+<span><span class="co">#&gt;  [29] textshaping_0.3.6           xfun_0.50                  </span></span>
+<span><span class="co">#&gt;  [31] callr_3.7.6                 crayon_1.5.3               </span></span>
+<span><span class="co">#&gt;  [33] RCurl_1.98-1.16             jsonlite_1.8.9             </span></span>
+<span><span class="co">#&gt;  [35] dada2_1.30.0                survival_3.2-13            </span></span>
+<span><span class="co">#&gt;  [37] iterators_1.0.14            ape_5.8-1                  </span></span>
+<span><span class="co">#&gt;  [39] glue_1.8.0                  gtable_0.3.6               </span></span>
+<span><span class="co">#&gt;  [41] zlibbioc_1.40.0             XVector_0.34.0             </span></span>
+<span><span class="co">#&gt;  [43] DelayedArray_0.20.0         pkgbuild_1.4.6             </span></span>
+<span><span class="co">#&gt;  [45] Rhdf5lib_1.16.0             BiocGenerics_0.40.0        </span></span>
+<span><span class="co">#&gt;  [47] scales_1.3.0                DBI_1.2.3                  </span></span>
+<span><span class="co">#&gt;  [49] miniUI_0.1.1.1              Rcpp_1.0.14                </span></span>
+<span><span class="co">#&gt;  [51] viridisLite_0.4.2           xtable_1.8-4               </span></span>
+<span><span class="co">#&gt;  [53] bit_4.5.0.1                 stats4_4.1.2               </span></span>
+<span><span class="co">#&gt;  [55] profvis_0.4.0               htmlwidgets_1.6.4          </span></span>
+<span><span class="co">#&gt;  [57] RColorBrewer_1.1-3          ellipsis_0.3.2             </span></span>
+<span><span class="co">#&gt;  [59] farver_2.1.2                urlchecker_1.0.1           </span></span>
+<span><span class="co">#&gt;  [61] pkgconfig_2.0.3             sass_0.4.9                 </span></span>
+<span><span class="co">#&gt;  [63] deldir_2.0-4                labeling_0.4.3             </span></span>
+<span><span class="co">#&gt;  [65] tidyselect_1.2.1            rlang_1.1.5                </span></span>
+<span><span class="co">#&gt;  [67] reshape2_1.4.4              later_1.4.1                </span></span>
+<span><span class="co">#&gt;  [69] munsell_0.5.1               tools_4.1.2                </span></span>
+<span><span class="co">#&gt;  [71] cachem_1.1.0                cli_3.6.3                  </span></span>
+<span><span class="co">#&gt;  [73] generics_0.1.3              ade4_1.7-22                </span></span>
+<span><span class="co">#&gt;  [75] devtools_2.4.5              evaluate_1.0.3             </span></span>
+<span><span class="co">#&gt;  [77] biomformat_1.22.0           stringr_1.5.1              </span></span>
+<span><span class="co">#&gt;  [79] fastmap_1.2.0               yaml_2.3.10                </span></span>
+<span><span class="co">#&gt;  [81] ragg_1.2.1                  processx_3.8.5             </span></span>
+<span><span class="co">#&gt;  [83] knitr_1.49                  bit64_4.6.0-1              </span></span>
+<span><span class="co">#&gt;  [85] fs_1.6.5                    future_1.34.0              </span></span>
+<span><span class="co">#&gt;  [87] nlme_3.1-155                mime_0.12                  </span></span>
+<span><span class="co">#&gt;  [89] xml2_1.3.6                  compiler_4.1.2             </span></span>
+<span><span class="co">#&gt;  [91] rstudioapi_0.17.1           curl_6.2.0                 </span></span>
+<span><span class="co">#&gt;  [93] png_0.1-8                   tibble_3.2.1               </span></span>
+<span><span class="co">#&gt;  [95] bslib_0.9.0                 stringi_1.8.4              </span></span>
+<span><span class="co">#&gt;  [97] ps_1.8.1                    desc_1.4.3                 </span></span>
+<span><span class="co">#&gt;  [99] lattice_0.20-45             Matrix_1.4-0               </span></span>
+<span><span class="co">#&gt; [101] vegan_2.6-10                permute_0.9-7              </span></span>
+<span><span class="co">#&gt; [103] multtest_2.50.0             vctrs_0.6.5                </span></span>
+<span><span class="co">#&gt; [105] furrr_0.3.1                 pillar_1.10.1              </span></span>
+<span><span class="co">#&gt; [107] lifecycle_1.0.4             rhdf5filters_1.6.0         </span></span>
+<span><span class="co">#&gt; [109] jquerylib_0.1.4             data.table_1.16.4          </span></span>
+<span><span class="co">#&gt; [111] bitops_1.0-7                httpuv_1.6.15              </span></span>
+<span><span class="co">#&gt; [113] GenomicRanges_1.46.1        R6_2.6.0                   </span></span>
+<span><span class="co">#&gt; [115] latticeExtra_0.6-30         hwriter_1.3.2.1            </span></span>
+<span><span class="co">#&gt; [117] promises_1.3.2              ShortRead_1.60.0           </span></span>
+<span><span class="co">#&gt; [119] parallelly_1.42.0           IRanges_2.28.0             </span></span>
+<span><span class="co">#&gt; [121] sessioninfo_1.2.3           codetools_0.2-18           </span></span>
+<span><span class="co">#&gt; [123] MASS_7.3-55                 pkgload_1.4.0              </span></span>
+<span><span class="co">#&gt; [125] rhdf5_2.38.1                SummarizedExperiment_1.24.0</span></span>
+<span><span class="co">#&gt; [127] withr_3.0.2                 GenomicAlignments_1.30.0   </span></span>
+<span><span class="co">#&gt; [129] Rsamtools_2.10.0            S4Vectors_0.32.4           </span></span>
+<span><span class="co">#&gt; [131] GenomeInfoDbData_1.2.7      mgcv_1.8-39                </span></span>
+<span><span class="co">#&gt; [133] parallel_4.1.2              hms_1.1.3                  </span></span>
+<span><span class="co">#&gt; [135] grid_4.1.2                  tidyr_1.3.1                </span></span>
+<span><span class="co">#&gt; [137] rmarkdown_2.29              MatrixGenerics_1.6.0       </span></span>
+<span><span class="co">#&gt; [139] Biobase_2.54.0              shiny_1.10.0               </span></span>
+<span><span class="co">#&gt; [141] interp_1.1-6</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -726,7 +677,7 @@ time points, as shown in the dada2 tutorial</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>

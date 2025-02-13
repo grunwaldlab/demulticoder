@@ -14,8 +14,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Documentation">
 </head>
 <body>
@@ -75,13 +75,14 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>This documentation provides comprehensive information on how to use
-the <em>demulticoder</em> R package for processing and analyzing
-metabarcode sequencing data. It covers input directory and file
-requirements, parameter settings, and key parameters.</p>
-<div class="section level3">
-<h3 id="package-workflow">Package workflow<a class="anchor" aria-label="anchor" href="#package-workflow"></a>
-</h3>
+<p>This documentation page provides additional information on to use the
+<em>demulticoder</em> R package for processing and analyzing metabarcode
+sequencing data. Specifically, it provides more detail on input
+directory and file requirements, and key parameters.</p>
+</div>
+<div class="section level2">
+<h2 id="package-workflow">Package workflow<a class="anchor" aria-label="anchor" href="#package-workflow"></a>
+</h2>
 <ol style="list-style-type: decimal">
 <li>Prepare your input files (metadata.csv, primerinfo_params.csv,
 unformatted reference databases, and PE Illumina read files).</li>
@@ -91,20 +92,20 @@ unformatted reference databases, and PE Illumina read files).</li>
 adjust parameters as needed.</li>
 </ol>
 </div>
-<div class="section level3">
-<h3 id="inputs">Inputs<a class="anchor" aria-label="anchor" href="#inputs"></a>
-</h3>
-<p><strong>Directory Structure</strong></p>
+<div class="section level2">
+<h2 id="data-directory-structure">Data directory structure<a class="anchor" aria-label="anchor" href="#data-directory-structure"></a>
+</h2>
 <p>Place all your input files into a single directory. The directory
 should contain the following files:</p>
 <ul>
+<li><strong>PE Illumina read files</strong></li>
 <li><strong>metadata.csv</strong></li>
 <li><strong>primerinfo_params.csv</strong></li>
-<li><strong>PE Illumina read files</strong></li>
-<li><strong>Unformatted reference databases</strong></li>
+<li><strong>Reference databases</strong></li>
 </ul>
-<p><strong>File Naming Conventions</strong></p>
-<p><strong>Read Name Format</strong></p>
+<div class="section level3">
+<h3 id="read-name-format">Read Name Format<a class="anchor" aria-label="anchor" href="#read-name-format"></a>
+</h3>
 <p>To avoid errors, the only characters that are acceptable in sample
 names are letters and numbers. Characters can be separated by
 underscores, but no other symbols. The files must end with the suffix
@@ -125,10 +126,13 @@ follows:</strong></p>
 <li>Sample1_001_R1_001.fastq.gz</li>
 <li>Sample1_001_R2_001.fastq.gz</li>
 </ul>
-<p><strong>metadata.csv file</strong></p>
-<p>The metadata.csv file contains information about the samples and
-primers (and associated barcodes) used in the experiment. It has the
-following two required columns:</p>
+</div>
+<div class="section level3">
+<h3 id="metadata-file-components">Metadata file components<a class="anchor" aria-label="anchor" href="#metadata-file-components"></a>
+</h3>
+<p>The <strong>metadata.csv</strong> file contains information about the
+samples and primers (and associated barcodes) used in the experiment. It
+has the following two required columns:</p>
 <ul>
 <li>
 <strong>sample_name</strong>: Identifier for each sample (e.g., S1,
@@ -147,11 +151,14 @@ S1,rps10,Cry
 S2,rps10,Cin
 S1,its,Cry
 S2,its,Cin</code></pre>
-<p><strong>primerinfo_params.csv file</strong></p>
-<p>The primerinfo_params.csv file contains information about the primer
-sequences used in the experiment, along with optional additional
-parameters that are part of the DADA2 pipeline. If anything is not
-specified, the default values will be used.</p>
+</div>
+<div class="section level3">
+<h3 id="primer-and-parameter-file-components">Primer and parameter file components<a class="anchor" aria-label="anchor" href="#primer-and-parameter-file-components"></a>
+</h3>
+<p>The <strong>primerinfo_params.csv</strong> file contains information
+about the primer sequences used in the experiment, along with optional
+additional parameters that are part of the DADA2 pipeline. If anything
+is not specified, the default values will be used.</p>
 <p><strong>Required columns:</strong></p>
 <ul>
 <li>
@@ -162,6 +169,10 @@ rps10)</li>
 <li>
 <strong>reverse</strong>: Reverse primer sequence</li>
 </ul>
+<p>Below are the parameters that can be input into the
+<strong>primerinfo_params.csv</strong> file along with the defaults.
+Refer to the DADA2 documentation and <a href="https://www.bioconductor.org/packages/release/bioc/manuals/dada2/man/dada2.pdf" class="external-link">manual</a>
+for additional information.</p>
 <p><strong>DADA2 filterAndTrim function parameters:</strong></p>
 <ul>
 <li>
@@ -302,13 +313,18 @@ in the <em>assignTax</em> function.</p>
 <p>For now, the package is compatible with the following databases:</p>
 <ul>
 <li><p>oomycetedb from: <a href="https://grunwaldlab.github.io/OomyceteDB/" class="external-link">https://grunwaldlab.github.io/OomyceteDB/</a></p></li>
-<li><p>SILVA 16S database <strong>with</strong> species assignments: <a href="https://www.arb-silva.de/" class="external-link">https://www.arb-silva.de/</a></p></li>
-<li><p>UNITE fungal database from <a href="https://unite.ut.ee/repository.php" class="external-link">https://unite.ut.ee/repository.php</a></p></li>
+<li>
+<p>SILVA 16S database <strong>with</strong> species assignments: <a href="https://www.arb-silva.de/" class="external-link">https://www.arb-silva.de/</a></p>
+<ul>
+<li>An easily accessible download is found here: <a href="https://zenodo.org/records/14169026" class="external-link">https://zenodo.org/records/14169026</a>
+</li>
+</ul>
+</li>
+<li><p>UNITE fungal database from <a href="https://zenodo.org/records/14169026" class="external-link">https://zenodo.org/records/14169026</a></p></li>
 <li><p>Up to two other reference databases. The user will need to
-reformat headers exactly as outlined in the <a href="https://benjjneb.github.io/dada2/training.html" class="external-link">DADA2 database
-format</a>, and similar to the SILVA database format. The user can then
-specify the path to the database in the input file. The database should
-be in fasta format.</p></li>
+reformat headers exactly as outlined <a href="https://benjjneb.github.io/dada2/training.html" class="external-link">here</a>. The user
+can then specify the path to the database in the input file. The
+database should be in FASTA format.</p></li>
 </ul>
 </div>
 </div>
@@ -323,7 +339,7 @@ be in fasta format.</p></li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>

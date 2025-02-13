@@ -1,8 +1,8 @@
 pandoc: 3.1.1
-pkgdown: 2.1.0
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   DADA2_16S_mothur_validation: DADA2_16S_mothur_validation.html
   Documentation: Documentation.html
   Getting_started: Getting_started.html
-last_built: 2025-02-12T01:19Z
+last_built: 2025-02-13T04:14Z
