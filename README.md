@@ -62,9 +62,6 @@ Second, make sure the following R packages are installed:
   - To install:
     <https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html>  
 - **metacoder** (Available through CRAN)
-  - If you are using the latest version of R (4.4.2) and R studio
-    (2024.12.0+467), you may temporarily need to install metacoder
-    through Github, until CRAN approves the latest version.
 
 To install the development version of package (while submission to CRAN
 is in progress):
@@ -74,13 +71,9 @@ is in progress):
 devtools::install_github("grunwaldlab/demulticoder")
 library("demulticoder")
 
-#If you need to install metacoder but have the latest version of R and R studio, you can temporarily install metacoder as follows. 
-#This message will be removed once updates to CRAN are made. 
-devtools::install_github("grunwaldlab/metacoder")
-
 #Let's make sure other packages are loaded:
 library("devtools")
-library("DADA2")
+library("dada2")
 library("phyloseq")
 library("metacoder")
 ```
