@@ -81,10 +81,12 @@ knitr::kable(data, row.names = FALSE) %>%
 
 ### 3. Format of primer and parameters file 
 
-DADA2 Primer sequence information and user-defined parameters are placed in **primerinfo_params.csv**  
+DADA2 Primer sequence information and user-defined parameters are placed in **primerinfo_params.csv**     
+
 * To simplify how functions are called, user will provide parameters within this input file.   
 * We recommend using the template linked   [here](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv).   
 * Remember to add any additional optional DADA2 parameters you want to use.  
+
 * The only three **required** columns (with these headers) are:  
   * Column 1. **sample_name** 
   * Column 2. **forward** (primer sequence)

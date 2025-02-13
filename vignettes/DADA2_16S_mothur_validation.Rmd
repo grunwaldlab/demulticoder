@@ -170,7 +170,16 @@ if (!file.exists(file_path)) {
 
 For now, the package will be loaded by retrieving it from GitHub. 
 We are submitting package to CRAN. 
-```{r setup, echo=TRUE, message=FALSE, warning=FALSE}
+
+```{r setup, echo=TRUE, eval=FALSE}
+devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
+library("demulticoder")
+library("metacoder")
+library("phyloseq")
+library("dplyr")
+```
+
+```{r setup2, include=FALSE}
 devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
 library("demulticoder")
 library("metacoder")
