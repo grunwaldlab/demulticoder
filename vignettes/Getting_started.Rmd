@@ -43,12 +43,12 @@ library("kableExtra")
   - UNITE fungal database (abridged version)
   - oomyceteDB 
 
-### 1. Format of the paired-end read files  
+### Format of the paired-end read files  
 
 * The package takes forward and reverse Illumina short read sequence data.
 * **Format of file names** To avoid errors, the only characters that are acceptable in sample names are letters and numbers. Characters can be separated by underscores, but no other symbols. The files must end with the suffix **R1.fastq.gz** or **R2.fastq.gz**.
 
-### 2. Format of metadata file   
+### Format of metadata file   
 
 * The format of the CSV file named **metadata.csv** is simple.  
 * A template is [here](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv).  
@@ -79,7 +79,7 @@ knitr::kable(data, row.names = FALSE) %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", full_width = F, font_size = 6))
 ```
 
-### 3. Format of primer and parameters file 
+### Format of primer and parameters file 
 
 DADA2 Primer sequence information and user-defined parameters are placed in **primerinfo_params.csv**     
 
@@ -125,7 +125,7 @@ kable(primer_info, row.names = FALSE) %>%
 
 For more info on parameter specifics, see [Documentation](https://grunwaldlab.github.io/demulticoder/articles/Documentation.html)   
 
-### 4. Reference Database Format  
+### Reference Database Format  
 
 * For now, the package is compatible with the following databases:  
   * oomycetedb from: [https://grunwaldlab.github.io/OomyceteDB/](https://grunwaldlab.github.io/OomyceteDB/)  
@@ -178,7 +178,10 @@ Second, make sure the following R packages are installed:
 
 To install the development version of package (while submission to CRAN is in progress):  
 
-```{r, echo=TRUE, message=FALSE, warning=FALSE, cache=FALSE}
+### Loading the Package  
+
+For now, the package will be loaded by retrieving it from GitHub. Submission to CRAN is in progress.  
+```{r installation_1, eval=FALSE}
 #Here we install demulticoder (instructions will be updated once available through CRAN)
 devtools::install_github("grunwaldlab/demulticoder")
 library("demulticoder")
@@ -190,10 +193,7 @@ library("phyloseq")
 library("metacoder")
 ```
 
-### Loading the Package  
-
-For now, the package will be loaded by retrieving it from GitHub. Submission to CRAN is in progress.  
-```{r installation, message=FALSE, warning=FALSE}
+```{r installation, message=FALSE, warning=FALSE, include=FALSE}
 devtools::install_github("grunwaldlab/demulticoder")
 library("demulticoder")
 library("metacoder")

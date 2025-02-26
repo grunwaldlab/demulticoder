@@ -72,19 +72,19 @@
 
     
     
-<div class="section level2">
-<h2 id="this-vignette-shows-how-demulticoder-was-used-to-analyze-the-mothur-16s-sop-dataset-featured-in-dada2-tutorials">This vignette shows how demulticoder was used to analyze the mothur
-16S SOP dataset featured in DADA2 tutorials<a class="anchor" aria-label="anchor" href="#this-vignette-shows-how-demulticoder-was-used-to-analyze-the-mothur-16s-sop-dataset-featured-in-dada2-tutorials"></a>
-</h2>
+<div class="section level3">
+<h3 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h3>
+<p>This vignette shows how demulticoder was used to analyze the mothur
+16S SOP dataset featured in DADA2 tutorials</p>
 <p>The raw read files and information on the dataset used for this
 analysis can be found <a href="https://mothur.org/wiki/miseq_sop/#preparing-for-analysis" class="external-link">here</a></p>
+</div>
 <div class="section level3">
-<h3 id="step-1-setup-data-directory">STEP 1-Setup data directory<a class="anchor" aria-label="anchor" href="#step-1-setup-data-directory"></a>
+<h3 id="setup-data-directory">Setup data directory<a class="anchor" aria-label="anchor" href="#setup-data-directory"></a>
 </h3>
-<p><strong>Download read files and associated data in your specified
-location</strong></p>
-<p>Let’s download the necessary data set first and place in our
-specified data directory</p>
+<p>Download read files and associated data in your specified
+location</p>
 <p>Ensure your computer has sufficient storage and that you change the
 <strong>destination_folder</strong> path to a location where you have
 space and can save files to.</p>
@@ -120,18 +120,17 @@ Documentation}(<a href="https://grunwaldlab.github.io/demulticoder/articles/Docu
 <span><span class="op">}</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="step-2-add-necessary-csv-input-files-to-the-directory">STEP 2-Add necessary CSV input files to the directory<a class="anchor" aria-label="anchor" href="#step-2-add-necessary-csv-input-files-to-the-directory"></a>
+<h3 id="add-csv-input-files-to-the-directory">Add CSV input files to the directory<a class="anchor" aria-label="anchor" href="#add-csv-input-files-to-the-directory"></a>
 </h3>
-<p><strong>First, specify the path to our data directory folder with our
-recently downloaded reads</strong></p>
+<p>Specify the path to our data directory folder with our recently
+downloaded reads</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_folder</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">destination_folder</span>,<span class="st">"MiSeq_SOP"</span><span class="op">)</span> </span></code></pre></div>
-<p><strong>Second, make our metadata.csv input file</strong></p>
+<p>Let’s now create our <strong>metadata.csv</strong> input file</p>
 <p>The only required columns are the first with sample names, and the
 second with the primer name/barcode used. The subsequent columns (‘Day’
 and ‘When’) are necessary for downstream steps with the phyloseq
 package.</p>
-<p><em>metadata.csv file</em></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">metadata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  sample_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F3D0_S188_L001"</span>, <span class="st">"F3D1_S189_L001"</span>, <span class="st">"F3D141_S207_L001"</span>, <span class="st">"F3D142_S208_L001"</span>,</span>
@@ -149,6 +148,7 @@ and save our metadata file in our data directory directly in R.</p>
 <code class="sourceCode R"><span><span class="co">#Let's define a variable that stores our data directory path</span></span>
 <span><span class="va">metadata_dir_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data_folder</span>, <span class="st">"metadata.csv"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">metadata</span>, <span class="va">metadata_dir_path</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p><strong>metadata.csv</strong></p>
 <pre><code><span><span class="co">#&gt;         sample_name primer_name Day  When</span></span>
 <span><span class="co">#&gt; 1    F3D0_S188_L001        r16S   0 Early</span></span>
 <span><span class="co">#&gt; 2    F3D1_S189_L001        r16S   1 Early</span></span>
@@ -170,17 +170,17 @@ and save our metadata file in our data directory directly in R.</p>
 <span><span class="co">#&gt; 18   F3D8_S196_L001        r16S   8 Early</span></span>
 <span><span class="co">#&gt; 19   F3D9_S197_L001        r16S   9 Early</span></span>
 <span><span class="co">#&gt; 20   Mock_S280_L001        r16S  NA  &lt;NA&gt;</span></span></code></pre>
-<p><strong>Third, make our primerinfo_params.csv input file</strong></p>
+<p>Now, make our <strong>primerinfo_params.csv</strong> input file</p>
 <p>We then make and save the second CSV input file with the name of the
 metabarcode used, primer sequences, and the optional DADA2 parameter
 options.</p>
-<p>I referenced the DADA2 <a href="https://benjjneb.github.io/dada2/tutorial.html" class="external-link">tutorial</a> to
+<p>We referenced the DADA2 <a href="https://benjjneb.github.io/dada2/tutorial.html" class="external-link">tutorial</a> to
 select the same parameter options.</p>
-<p>Note, primers were already trimmed from reads during the
+<p><em>Note, primers were already trimmed from reads during the
 demultiplexing step that occurs after sequencing, but just to be
-certain, I included the Earth Microbiome primers sequences described <a href="https://earthmicrobiome.org/protocols-and-standards/16s/" class="external-link">here</a>,
-which will be searched for across reads.</p>
-<p><em>primerinfo_params.csv</em></p>
+certain, we included the Earth Microbiome primers sequences described <a href="https://earthmicrobiome.org/protocols-and-standards/16s/" class="external-link">here</a>,
+which will be searched for across reads.</em></p>
+<p><strong>primerinfo_params.csv</strong></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create the data frame</span></span>
 <span><span class="va">primer_info</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
@@ -222,11 +222,11 @@ our data directory</p>
 <span><span class="co">#&gt; 1         0             0         12           0             50</span></span></code></pre>
 </div>
 <div class="section level3">
-<h3 id="step-3-download-silva-reference-database-v--138-2-formatted-for-analysis-with-dada2">STEP 3-Download Silva reference database (v. 138.2) formatted for
-analysis with DADA2<a class="anchor" aria-label="anchor" href="#step-3-download-silva-reference-database-v--138-2-formatted-for-analysis-with-dada2"></a>
+<h3 id="download-silva-reference-database">Download SILVA reference database<a class="anchor" aria-label="anchor" href="#download-silva-reference-database"></a>
 </h3>
-<p>We now retrieve the Silva database (to the taxonomic level of
-species) More information is [here] (<a href="https://zenodo.org/records/14169026" class="external-link uri">https://zenodo.org/records/14169026</a>)</p>
+<p>We now retrieve the SILVA database (v.138.2) (to the taxonomic level
+of species).</p>
+<p>More information is [here] (<a href="https://zenodo.org/records/14169026" class="external-link uri">https://zenodo.org/records/14169026</a>)</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># We will also download the Silva database **with species** assignments here:</span></span>
 <span><span class="va">silva_path</span> <span class="op">&lt;-</span> <span class="st">"https://zenodo.org/records/14169026/files/silva_nr99_v138.2_toSpecies_trainset.fa.gz?download=1"</span></span>
@@ -241,8 +241,7 @@ species) More information is [here] (<a href="https://zenodo.org/records/1416902
 <span><span class="co">#&gt; File already exists. Skipping download.</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="step-4-load-the-demulticoder-r-package-and-necessary-dependencies">STEP 4-Load the demulticoder R package and necessary
-dependencies<a class="anchor" aria-label="anchor" href="#step-4-load-the-demulticoder-r-package-and-necessary-dependencies"></a>
+<h3 id="load-the-demulticoder-r-package-and-necessary-dependencies">Load the demulticoder R package and necessary dependencies<a class="anchor" aria-label="anchor" href="#load-the-demulticoder-r-package-and-necessary-dependencies"></a>
 </h3>
 <p>For now, the package will be loaded by retrieving it from GitHub. We
 are submitting package to CRAN.</p>
@@ -254,7 +253,7 @@ are submitting package to CRAN.</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://dplyr.tidyverse.org" class="external-link">"dplyr"</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="step-5-prepare_reads-function">STEP 5-prepare_reads function<a class="anchor" aria-label="anchor" href="#step-5-prepare_reads-function"></a>
+<h3 id="prepare-reads-for-dada2-analyses">Prepare reads for DADA2 analyses<a class="anchor" aria-label="anchor" href="#prepare-reads-for-dada2-analyses"></a>
 </h3>
 <p>Remove N’s and create directory structure for downstream steps<br>
 Note-intermediate files are saved in a temporary folder automatically.
@@ -269,7 +268,7 @@ for the <strong>prepare_reads</strong> function</p>
 <p><img src="prepare_reads-1.png" width="70%"></p>
 </div>
 <div class="section level3">
-<h3 id="step-6-cut_trim-function">STEP 6-cut_trim function<a class="anchor" aria-label="anchor" href="#step-6-cut_trim-function"></a>
+<h3 id="remove-primers-and-trim-reads">Remove primers and trim reads<a class="anchor" aria-label="anchor" href="#remove-primers-and-trim-reads"></a>
 </h3>
 <p>Run Cutadapt to remove primers and then trim reads with DADA2
 filterAndTrim function</p>
@@ -279,46 +278,46 @@ filterAndTrim function</p>
 <span>  cutadapt_path<span class="op">=</span><span class="st">"/usr/bin/cutadapt"</span>,</span>
 <span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running Cutadapt 3.5 for r16S sequence data </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D0_S188_L001_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D0_S188_L001_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D1_S189_L001_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D1_S189_L001_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D141_S207_L001_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D141_S207_L001_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D142_S208_L001_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D142_S208_L001_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D143_S209_L001_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D143_S209_L001_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D144_S210_L001_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D144_S210_L001_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D145_S211_L001_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D145_S211_L001_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D146_S212_L001_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D146_S212_L001_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D147_S213_L001_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D147_S213_L001_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D148_S214_L001_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D148_S214_L001_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D149_S215_L001_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D149_S215_L001_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D150_S216_L001_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D150_S216_L001_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D2_S190_L001_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D2_S190_L001_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D3_S191_L001_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D3_S191_L001_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D5_S193_L001_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D5_S193_L001_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D6_S194_L001_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D6_S194_L001_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D7_S195_L001_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D7_S195_L001_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D8_S196_L001_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D8_S196_L001_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D9_S197_L001_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/F3D9_S197_L001_R2_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/Mock_S280_L001_R1_r16S.fastq.gz </span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/RtmpS60frC/demulticoder_run/trimmed_sequences/Mock_S280_L001_R2_r16S.fastq.gz</span></span></code></pre></div>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D0_S188_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D0_S188_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D1_S189_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D1_S189_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D141_S207_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D141_S207_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D142_S208_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D142_S208_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D143_S209_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D143_S209_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D144_S210_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D144_S210_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D145_S211_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D145_S211_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D146_S212_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D146_S212_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D147_S213_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D147_S213_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D148_S214_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D148_S214_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D149_S215_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D149_S215_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D150_S216_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D150_S216_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D2_S190_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D2_S190_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D3_S191_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D3_S191_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D5_S193_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D5_S193_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D6_S194_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D6_S194_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D7_S195_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D7_S195_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D8_S196_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D8_S196_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D9_S197_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/F3D9_S197_L001_R2_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/Mock_S280_L001_R1_r16S.fastq.gz </span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here: /tmp/Rtmpg5Maa3/demulticoder_run/trimmed_sequences/Mock_S280_L001_R2_r16S.fastq.gz</span></span></code></pre></div>
 <p><img src="Remove_primers_and_trim_reads-1.png" width="70%"></p>
 <p>We can now visualize the outputs from the primer removal and trimming
 steps. A CSV files is output showing which samples still have primer
@@ -328,9 +327,8 @@ remain. If so, any ASVs with any residual primer sequences will be
 filtered at the end.</p>
 </div>
 <div class="section level3">
-<h3 id="step-7-make_asv_abund_matrix-function">STEP 7-make_asv_abund_matrix function<a class="anchor" aria-label="anchor" href="#step-7-make_asv_abund_matrix-function"></a>
+<h3 id="core-asv-inference-step">Core ASV inference step<a class="anchor" aria-label="anchor" href="#core-asv-inference-step"></a>
 </h3>
-<p>Core ASV inference step</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make_asv_abund_matrix.html">make_asv_abund_matrix</a></span><span class="op">(</span></span>
 <span>  <span class="va">output</span>,</span>
@@ -397,18 +395,17 @@ filtered at the end.</p>
 <span><span class="co">#&gt; Sample 20 - 4314 reads in 732 unique sequences.</span></span></code></pre></div>
 <p><img src="ASV_inference-1.png" width="70%"><img src="ASV_inference-2.png" width="70%"></p>
 <pre><code><span><span class="co">#&gt; $r16S</span></span>
-<span><span class="co">#&gt; [1] "/tmp/RtmpS60frC/demulticoder_run/asvabund_matrixDADA2_r16S.RData"</span></span></code></pre>
+<span><span class="co">#&gt; [1] "/tmp/Rtmpg5Maa3/demulticoder_run/asvabund_matrixDADA2_r16S.RData"</span></span></code></pre>
 <p>We can now visualize the outputs from the ASV inference step.</p>
 <p>The first plot shows the how reads were merged in terms of mismatches
 and indels.</p>
-<p>The plot to the right shows the overlap lengths across the inferred
+<p>The second plot shows the overlap lengths across the inferred
 ASVs.</p>
 <p>We can also look at the distribution of ASV lengths</p>
 </div>
 <div class="section level3">
-<h3 id="step-8-assign_tax-function">STEP 8-assign_tax function<a class="anchor" aria-label="anchor" href="#step-8-assign_tax-function"></a>
+<h3 id="assign-taxonomy-step">Assign taxonomy step<a class="anchor" aria-label="anchor" href="#assign-taxonomy-step"></a>
 </h3>
-<p>Assign taxonomy step</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/assign_tax.html">assign_tax</a></span><span class="op">(</span></span>
 <span>  <span class="va">output</span>,</span>
@@ -442,7 +439,7 @@ there are sudden drops, we should reconsider our adjusting certain DADA2
 parameters and re-running the analysis.</p>
 </div>
 <div class="section level3">
-<h3 id="step-9-convert_matrix_to_other_formats">STEP 9-convert_matrix_to_other_formats<a class="anchor" aria-label="anchor" href="#step-9-convert_matrix_to_other_formats"></a>
+<h3 id="convert-asv-matrix-to-taxmap-and-phyloseq-objects">Convert ASV matrix to taxmap and phyloseq objects<a class="anchor" aria-label="anchor" href="#convert-asv-matrix-to-taxmap-and-phyloseq-objects"></a>
 </h3>
 <p>Convert ASV matrix to taxmap and phyloseq objects with one
 function</p>
@@ -456,7 +453,7 @@ function</p>
 <span><span class="co">#&gt; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="step-10-examine-accuracy-relative-to-a-mock-community">STEP 10-Examine accuracy relative to a mock community<a class="anchor" aria-label="anchor" href="#step-10-examine-accuracy-relative-to-a-mock-community"></a>
+<h3 id="examine-accuracy-relative-to-a-mock-community">Examine accuracy relative to a mock community<a class="anchor" aria-label="anchor" href="#examine-accuracy-relative-to-a-mock-community"></a>
 </h3>
 <p>Evaluate accuracy using mock community, as shown in DADA2
 tutorial</p>
@@ -475,7 +472,7 @@ bacterial sequences that also matched with what was present in the mock
 community.</p>
 </div>
 <div class="section level3">
-<h3 id="step-11-alpha-diversity-analysis">STEP 11-Alpha diversity analysis<a class="anchor" aria-label="anchor" href="#step-11-alpha-diversity-analysis"></a>
+<h3 id="alpha-diversity-analysis">Alpha diversity analysis<a class="anchor" aria-label="anchor" href="#alpha-diversity-analysis"></a>
 </h3>
 <p>Follow-up work using phyloseq to do side-by-side comparison with
 dada2 example and to examine alpha diversity results</p>
@@ -486,7 +483,7 @@ dada2 example and to examine alpha diversity results</p>
 <p><img src="phyloseq_alpha_diversity_analysis-1.png" width="70%"></p>
 </div>
 <div class="section level3">
-<h3 id="step-12-beta-diversity-analysis">STEP 12-Beta diversity analysis<a class="anchor" aria-label="anchor" href="#step-12-beta-diversity-analysis"></a>
+<h3 id="beta-diversity-analysis">Beta diversity analysis<a class="anchor" aria-label="anchor" href="#beta-diversity-analysis"></a>
 </h3>
 <p>Examine ordination plots as additional point of comparison with DADA2
 tutorial</p>
@@ -528,7 +525,7 @@ tutorial</p>
 <p><img src="phyloseq_beta_diversity_analysis-1.png" width="70%"></p>
 </div>
 <div class="section level3">
-<h3 id="step-13-top-taxa-analysis">STEP 13-Top taxa analysis<a class="anchor" aria-label="anchor" href="#step-13-top-taxa-analysis"></a>
+<h3 id="top-taxa-analysis">Top taxa analysis<a class="anchor" aria-label="anchor" href="#top-taxa-analysis"></a>
 </h3>
 <p>Let’s look at what the top 20 taxa are in the early vs. late samples
 time points, as shown in the dada2 tutorial</p>
@@ -598,7 +595,7 @@ inference from Illumina amplicon data. Nature Methods 13:581. <a href="https://d
 <span><span class="co">#&gt;  [23] matrixStats_1.5.0           vroom_1.6.5                </span></span>
 <span><span class="co">#&gt;  [25] svglite_2.1.3               pkgdown_2.1.1              </span></span>
 <span><span class="co">#&gt;  [27] jpeg_0.1-10                 colorspace_2.1-1           </span></span>
-<span><span class="co">#&gt;  [29] textshaping_0.3.6           xfun_0.50                  </span></span>
+<span><span class="co">#&gt;  [29] textshaping_0.3.6           xfun_0.51                  </span></span>
 <span><span class="co">#&gt;  [31] callr_3.7.6                 crayon_1.5.3               </span></span>
 <span><span class="co">#&gt;  [33] RCurl_1.98-1.16             jsonlite_1.8.9             </span></span>
 <span><span class="co">#&gt;  [35] dada2_1.30.0                survival_3.2-13            </span></span>
@@ -619,7 +616,7 @@ inference from Illumina amplicon data. Nature Methods 13:581. <a href="https://d
 <span><span class="co">#&gt;  [65] tidyselect_1.2.1            rlang_1.1.5                </span></span>
 <span><span class="co">#&gt;  [67] reshape2_1.4.4              later_1.4.1                </span></span>
 <span><span class="co">#&gt;  [69] munsell_0.5.1               tools_4.1.2                </span></span>
-<span><span class="co">#&gt;  [71] cachem_1.1.0                cli_3.6.3                  </span></span>
+<span><span class="co">#&gt;  [71] cachem_1.1.0                cli_3.6.4                  </span></span>
 <span><span class="co">#&gt;  [73] generics_0.1.3              ade4_1.7-22                </span></span>
 <span><span class="co">#&gt;  [75] devtools_2.4.5              evaluate_1.0.3             </span></span>
 <span><span class="co">#&gt;  [77] biomformat_1.22.0           stringr_1.5.1              </span></span>
@@ -640,7 +637,7 @@ inference from Illumina amplicon data. Nature Methods 13:581. <a href="https://d
 <span><span class="co">#&gt; [107] lifecycle_1.0.4             rhdf5filters_1.6.0         </span></span>
 <span><span class="co">#&gt; [109] jquerylib_0.1.4             data.table_1.16.4          </span></span>
 <span><span class="co">#&gt; [111] bitops_1.0-7                httpuv_1.6.15              </span></span>
-<span><span class="co">#&gt; [113] GenomicRanges_1.46.1        R6_2.6.0                   </span></span>
+<span><span class="co">#&gt; [113] GenomicRanges_1.46.1        R6_2.6.1                   </span></span>
 <span><span class="co">#&gt; [115] latticeExtra_0.6-30         hwriter_1.3.2.1            </span></span>
 <span><span class="co">#&gt; [117] promises_1.3.2              ShortRead_1.60.0           </span></span>
 <span><span class="co">#&gt; [119] parallelly_1.42.0           IRanges_2.28.0             </span></span>
@@ -655,7 +652,6 @@ inference from Illumina amplicon data. Nature Methods 13:581. <a href="https://d
 <span><span class="co">#&gt; [137] rmarkdown_2.29              MatrixGenerics_1.6.0       </span></span>
 <span><span class="co">#&gt; [139] Biobase_2.54.0              shiny_1.10.0               </span></span>
 <span><span class="co">#&gt; [141] interp_1.1-6</span></span></code></pre></div>
-</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
