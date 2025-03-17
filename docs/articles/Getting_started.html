@@ -568,7 +568,6 @@ Submission to CRAN is in progress.</p>
 <code class="sourceCode R"><span><span class="co">#Here we install demulticoder (instructions will be updated once available through CRAN)</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"grunwaldlab/demulticoder"</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/demulticoder/" class="external-link">"demulticoder"</a></span><span class="op">)</span></span>
-<span></span>
 <span><span class="co">#Let's make sure other packages are loaded:</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://devtools.r-lib.org/" class="external-link">"devtools"</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://benjjneb.github.io/dada2/" class="external-link">"dada2"</a></span><span class="op">)</span></span>
@@ -584,7 +583,33 @@ reorganized in preparation for running Cutadapt to remove primers.</p>
 <code class="sourceCode R"><span><span class="va">output</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/prepare_reads.html">prepare_reads</a></span><span class="op">(</span></span>
 <span>  data_directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"demulticoder"</span><span class="op">)</span>,</span>
 <span>  output_directory <span class="op">=</span> <span class="st">"~/demulticoder_test"</span>, <span class="co">#Run commands from a Terminal window", </span></span>
-<span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">2</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">24</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span>  (3): primer_name, forward, reverse</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (17): minCutadaptlength, maxN, maxEE_forward, maxEE_reverse, truncLen_fo...</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">lgl</span>  (4): already_trimmed, count_all_samples, multithread, verbose</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">2</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">24</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span>  (3): primer_name, forward, reverse</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (17): minCutadaptlength, maxN, maxEE_forward, maxEE_reverse, truncLen_fo...</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">lgl</span>  (4): already_trimmed, count_all_samples, multithread, verbose</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">4</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span> (3): sample_name, primer_name, organism</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span><span class="co">#&gt; Creating output directory: /tmp/Rtmp6z4iDb/demulticoder_run/prefiltered_sequences</span></span></code></pre></div>
 <p><img src="prepare_for_analysis-1.png" width="70%"></p>
 </div>
 <div class="section level3">
@@ -598,14 +623,19 @@ installed it</strong></p>
 <span>  cutadapt_path <span class="op">=</span> <span class="st">"/usr/bin/cutadapt"</span>, <span class="co">#CHANGE LOCATION TO YOUR LOCAL INSTALLATION</span></span>
 <span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running Cutadapt 3.5 for its sequence data</span></span>
-<span><span class="co">#&gt; Running Cutadapt 3.5 for rps10 sequence data</span></span></code></pre></div>
+<span><span class="co">#&gt; Read in 2564 paired-sequences, output 1479 (57.7%) filtered paired-sequences.</span></span>
+<span><span class="co">#&gt; Read in 1996 paired-sequences, output 1215 (60.9%) filtered paired-sequences.</span></span></code></pre></div>
 <p><img src="remove_primers_with_cut_trim_function-1.png" width="70%"></p>
+<pre><code><span><span class="co">#&gt; Running Cutadapt 3.5 for rps10 sequence data</span></span>
+<span><span class="co">#&gt; Read in 1830 paired-sequences, output 1429 (78.1%) filtered paired-sequences.</span></span>
+<span><span class="co">#&gt; Read in 2090 paired-sequences, output 1506 (72.1%) filtered paired-sequences.</span></span></code></pre>
+<p><img src="remove_primers_with_cut_trim_function-2.png" width="70%"></p>
 </div>
 <div class="section level3">
 <h3 id="asv-inference-step">ASV inference step<a class="anchor" aria-label="anchor" href="#asv-inference-step"></a>
 </h3>
 <p>Raw reads will be merged and ASVs will be inferred</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make_asv_abund_matrix.html">make_asv_abund_matrix</a></span><span class="op">(</span></span>
 <span>  <span class="va">output</span>,</span>
 <span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -648,17 +678,17 @@ installed it</strong></p>
 <span><span class="co">#&gt; Sample 2 - 1506 reads in 1284 unique sequences.</span></span></code></pre>
 <p><img src="ASV_inference-3.png" width="70%"><img src="ASV_inference-4.png" width="70%"></p>
 <pre><code><span><span class="co">#&gt; $its</span></span>
-<span><span class="co">#&gt; [1] "/tmp/RtmpdsmbQX/demulticoder_run/asvabund_matrixDADA2_its.RData"</span></span>
+<span><span class="co">#&gt; [1] "/tmp/Rtmp6z4iDb/demulticoder_run/asvabund_matrixDADA2_its.RData"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $rps10</span></span>
-<span><span class="co">#&gt; [1] "/tmp/RtmpdsmbQX/demulticoder_run/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
+<span><span class="co">#&gt; [1] "/tmp/Rtmp6z4iDb/demulticoder_run/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="taxonomic-assignment-step">Taxonomic assignment step<a class="anchor" aria-label="anchor" href="#taxonomic-assignment-step"></a>
 </h3>
 <p>Using the core assignTaxonomy function from DADA2, taxonomic
 assignments will be given to ASVs.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/assign_tax.html">assign_tax</a></span><span class="op">(</span></span>
 <span>  <span class="va">output</span>,</span>
 <span>  <span class="va">asv_abund_matrix</span>,</span>
@@ -696,7 +726,7 @@ associated bootstrap supports.</li>
 <p>We can also load the matrices into our R environment and view then
 from R Studio.</p>
 <p>We do that here with the <em>rps10</em> matrix</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rps10_matrix</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"~/demulticoder_test/final_asv_abundance_matrix_rps10.csv"</span>, header<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">rps10_matrix</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   asv_id</span></span>
@@ -713,10 +743,10 @@ from R Studio.</p>
 <span><span class="co">#&gt; 5    GAAAATCTTTGTGTCGGTGGTTCAAGTCCGCCTCCAAACATCTTATAAAAATGTATGTATATTTTACGAATTAGTTTTAAATCAGTAGAAAAAATAAATGAATTAAAAAAAAATATCTCAAAAATAAAAAAAATATATAATTTTAAAAATTTAAAAGTAAAATGGTATTTTTAGAACAAAAAATAAAAATAAAATTTTTACATTATTAAAATCACCCCATGTTAATAAAAAATCACGTGAACATTTTATATATAAAAATTATATTCAAAAAATTGATTTAAATTTTTCAAATTTTTTTCAATTATTAAATTTTTTAGTAATTTTAAAAAAAACATTATCTAAAGATTTTTTAATCAATATTAAAATTATTAAAAAAAATAAAAAAATATGCTTATAGCTTAATGGATAAAGCGTTAGATTGCGGATCTATAAAATGAA</span></span>
 <span><span class="co">#&gt;                                                                                                                                                                                                                     dada2_tax</span></span>
 <span><span class="co">#&gt; 1   Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Peronosporales--26--Order;Peronosporaceae--26--Family;Phytophthora--23--Genus;Phytophthora_sp.kununurra--13--Species;oomycetedb_650--13--Reference</span></span>
-<span><span class="co">#&gt; 2                      Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Pythium--100--Genus;Pythium_dissotocum--50--Species;oomycetedb_750--19--Reference</span></span>
+<span><span class="co">#&gt; 2                      Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Pythium--100--Genus;Pythium_dissotocum--63--Species;oomycetedb_750--38--Reference</span></span>
 <span><span class="co">#&gt; 3 Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Globisporangium--100--Genus;Globisporangium_cryptoirregulare--25--Species;oomycetedb_40--25--Reference</span></span>
 <span><span class="co">#&gt; 4                     Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--94--Order;Pythiaceae--94--Family;Pythium--89--Genus;Pythium_aphanidermatum--19--Species;oomycetedb_727--19--Reference</span></span>
-<span><span class="co">#&gt; 5                      Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Pythium--100--Genus;Pythium_oopapillum--67--Species;oomycetedb_771--67--Reference</span></span>
+<span><span class="co">#&gt; 5                      Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Pythium--100--Genus;Pythium_oopapillum--68--Species;oomycetedb_771--68--Reference</span></span>
 <span><span class="co">#&gt;   S1_rps10 S2_rps10</span></span>
 <span><span class="co">#&gt; 1      842       17</span></span>
 <span><span class="co">#&gt; 2      578      220</span></span>
@@ -724,7 +754,7 @@ from R Studio.</p>
 <span><span class="co">#&gt; 4        0      516</span></span>
 <span><span class="co">#&gt; 5        0      163</span></span></code></pre></div>
 <p>We can also inspect the first rows of the <em>ITS1</em> matrix</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">its_matrix</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"~/demulticoder_test/final_asv_abundance_matrix_its.csv"</span>, header<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">its_matrix</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   asv_id</span></span>
@@ -760,7 +790,7 @@ from R Studio.</p>
 <h3 id="reformat-asv-matrix-as-taxmap-and-phyloseq-objects-after-optional-filtering-of-low-abundance-asvs">Reformat ASV matrix as taxmap and phyloseq objects after optional
 filtering of low abundance ASVs<a class="anchor" aria-label="anchor" href="#reformat-asv-matrix-as-taxmap-and-phyloseq-objects-after-optional-filtering-of-low-abundance-asvs"></a>
 </h3>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/convert_asv_matrix_to_objs.html">convert_asv_matrix_to_objs</a></span><span class="op">(</span><span class="va">output</span>, minimum_bootstrap <span class="op">=</span> <span class="fl">0</span>, save_outputs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -769,7 +799,7 @@ filtering of low abundance ASVs<a class="anchor" aria-label="anchor" href="#refo
 <p>Here we make heattrees using taxmap object.</p>
 <p>First we make a heat tree to examine fungal community composition
 using our <strong>ITS1</strong> data.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">$</span><span class="va">taxmap_its</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/filter_taxa.html" class="external-link">filter_taxa</a></span><span class="op">(</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">taxon_names</span>, <span class="st">"NA"</span>, ignore.case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">metacoder</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/metacoder/man/heat_tree.html" class="external-link">heat_tree</a></span><span class="op">(</span>node_label <span class="op">=</span> <span class="va">taxon_names</span>,</span>
@@ -781,7 +811,7 @@ using our <strong>ITS1</strong> data.</p>
 <p><img src="Heatree_demonstration_its-1.png" width="70%"></p>
 <p>Now we make a heat tree to showcase oomycete community composition
 using our <em>rps10</em> data</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">$</span><span class="va">taxmap_rps10</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/filter_taxa.html" class="external-link">filter_taxa</a></span><span class="op">(</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">taxon_names</span>, <span class="st">"NA"</span>, ignore.case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">metacoder</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/metacoder/man/heat_tree.html" class="external-link">heat_tree</a></span><span class="op">(</span>node_label <span class="op">=</span> <span class="va">taxon_names</span>,</span>
@@ -795,7 +825,7 @@ using our <em>rps10</em> data</p>
 <strong>phyloseq</strong> object</p>
 <p>Here we demonstrate how to make a stacked bar plot of the relative
 abundance of taxa by sample for the ITS1-barcoded samples</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_its</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="va">x</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">}</span> <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/psmelt.html" class="external-link">psmelt</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>                                        </span>
@@ -836,7 +866,7 @@ abundance of taxa by sample for the ITS1-barcoded samples</p>
 <p><img src="Phyloseq_demonstration_ITS-1.png" width="70%"></p>
 <p>Finally, we demonstrate how to make a stacked bar plot of the
 relative abundance of taxa by sample for the rps10-barcoded samples</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_rps10</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="va">x</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">}</span> <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/psmelt.html" class="external-link">psmelt</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>                                        </span>

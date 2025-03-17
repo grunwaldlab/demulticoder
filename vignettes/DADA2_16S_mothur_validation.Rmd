@@ -34,7 +34,7 @@ The raw read files and information on the dataset used for this analysis can be 
 Download read files and associated data in your specified location  
 
 Ensure your computer has sufficient storage and that you change the **destination_folder** path to a location where you have space and can save files to.
-```{r download_files, warning=FALSE, message=FALSE}
+```{r download_files, warning=FALSE, message=TRUE}
 destination_folder <- "~" #CURRENTLY SET TO HOME DIR-CHANGE TO DIR OF YOUR CHOOSING
 mothur_sop_path <- "https://mothur.s3.us-east-2.amazonaws.com/wiki/miseqsopdata.zip"
 temp_file_path <- file.path(tempdir(), "miseqsopdata.zip")
@@ -54,7 +54,7 @@ We now have an unzipped directory in our desired destination called **MiSeq_SOP*
 
 We will also need to rename our files so they are more in line with the file name conventions specified by demulticoder {see Documentation}(https://grunwaldlab.github.io/demulticoder/articles/Documentation.html)  
 
-```{r rename_files, warning=FALSE, message=FALSE}
+```{r rename_files, warning=FALSE, message=TRUE}
 #We will remove the "001 appended at the end of the filenames
 files <- list.files(data_folder)
 
@@ -70,14 +70,14 @@ for (file in files) {
 
 Specify the path to our data directory folder with our recently downloaded reads
 
-```{r, data_directory_setup, warning=FALSE, message=FALSE}
+```{r, data_directory_setup, warning=FALSE, message=TRUE}
 data_folder <- file.path(destination_folder,"MiSeq_SOP") 
 ```
 
 Let's now create our **metadata.csv** input file
 
 The only required columns are the first with sample names, and the second with the primer name/barcode used. The subsequent columns ('Day' and 'When') are necessary for downstream steps with the phyloseq package.    
-```{r metadata_1, warning=FALSE, message=FALSE}
+```{r metadata_1, warning=FALSE, message=TRUE}
 metadata <- data.frame(
   sample_name = c("F3D0_S188_L001", "F3D1_S189_L001", "F3D141_S207_L001", "F3D142_S208_L001",
   "F3D143_S209_L001", "F3D144_S210_L001", "F3D145_S211_L001", "F3D146_S212_L001",
@@ -91,14 +91,14 @@ metadata <- data.frame(
 ```
 
 While you can construct your CSV files in Excel, here we construct and save our metadata file in our data directory directly in R.  
-```{r metadata_2, warning=FALSE, message=FALSE}
+```{r metadata_2, warning=FALSE, message=TRUE}
 #Let's define a variable that stores our data directory path
 metadata_dir_path <- file.path(data_folder, "metadata.csv")
 write.csv(metadata, metadata_dir_path, row.names = FALSE)
 ```
 
 **metadata.csv**
-```{r, metadata_csv, echo=FALSE, message=FALSE}
+```{r, metadata_csv, echo=FALSE, message=TRUE}
 print(metadata)
 ```
 
@@ -111,7 +111,7 @@ We referenced the DADA2 [tutorial](https://benjjneb.github.io/dada2/tutorial.htm
 *Note, primers were already trimmed from reads during the demultiplexing step that occurs after sequencing, but just to be certain, we included the Earth Microbiome primers sequences described [here](https://earthmicrobiome.org/protocols-and-standards/16s/), which will be searched for across reads.* 
 
 **primerinfo_params.csv**
-```{r primerinfo_params_file, warning=FALSE, message=FALSE}
+```{r primerinfo_params_file, warning=FALSE, message=TRUE}
 # Create the data frame
 primer_info <- data.frame(
   primer_name = "r16S",
@@ -135,17 +135,18 @@ primer_info <- data.frame(
   rm.lowcomplex = 0,
   minOverlap = 12,
   maxMismatch = 0,
-  min_asv_length = 50
+  min_asv_length = 50,
+  seed = 1
 )
 ```
 
 We construct and save our **primerinfo_params** file in our data directory 
-```{r primerinfo_pararms_2, warning=FALSE, message=FALSE}
+```{r primerinfo_pararms_2, warning=FALSE, message=TRUE}
 primer_params_path <- file.path(data_folder, "primerinfo_params.csv")
 write.csv(primer_info, primer_params_path, row.names = FALSE)
 ```
 
-```{r, primerinfo_csv, echo=FALSE, message=FALSE}
+```{r, primerinfo_csv, echo=FALSE, message=TRUE}
 print(primer_info)
 ```
 
@@ -153,7 +154,7 @@ print(primer_info)
 We now retrieve the SILVA database (v.138.2) (to the taxonomic level of species).  
 
 More information is [here] (https://zenodo.org/records/14169026)
-```{r download_db, warning=FALSE, message=FALSE}
+```{r download_db, warning=FALSE, message=TRUE}
 # We will also download the Silva database **with species** assignments here:
 silva_path <- "https://zenodo.org/records/14169026/files/silva_nr99_v138.2_toSpecies_trainset.fa.gz?download=1"
 file_path <- file.path(data_folder, "silva_nr99_v138.2_toSpecies_trainset.fa.gz")
@@ -192,7 +193,7 @@ library("dplyr")
 Remove N's and create directory structure for downstream steps  
 Note-intermediate files are saved in a temporary folder automatically. If you prefer to define a temp directory path, refer to documentation for the **prepare_reads** function
 
-```{r prepare_reads, fig.height=6, fig.width=6, message=FALSE, warning=FALSE, cache=TRUE}
+```{r prepare_reads, fig.height=6, fig.width=6, message=TRUE, warning=FALSE, cache=TRUE}
 # The file names will first need to be renamed to go through the demulticoder workflow, since it is looking for files that have suffixes like R1.fastq.gz or R2.fastq.gz
 output<-prepare_reads(
   data_directory = data_folder, #Use data_dir_path defined above 
@@ -203,7 +204,7 @@ output<-prepare_reads(
 ### Remove primers and trim reads  
 
 Run Cutadapt to remove primers and then trim reads with DADA2 filterAndTrim function 
-```{r Remove_primers_and_trim_reads, fig.height=6, fig.width=6, message=FALSE, warning=FALSE, cache=TRUE}
+```{r Remove_primers_and_trim_reads, fig.height=6, fig.width=6, message=TRUE, warning=FALSE, cache=TRUE}
 cut_trim(
   output,
   cutadapt_path="/usr/bin/cutadapt",
@@ -214,7 +215,7 @@ We can now visualize the outputs from the primer removal and trimming steps. A C
 
 There are circumstances where a few primer sequences may still remain. If so, any ASVs with any residual primer sequences will be filtered at the end.  
 
-```{r visualize_outputs_cut_trim, echo=FALSE, fig.height=6, fig.width=6, message=FALSE, cache=TRUE}
+```{r visualize_outputs_cut_trim, echo=FALSE, fig.height=6, fig.width=6, message=TRUE, cache=TRUE}
 if (!overwrite_existing) {
   knitr::include_graphics("./posttrim_primer_plot_16S.png")
 }
@@ -222,7 +223,7 @@ if (!overwrite_existing) {
 
 ### Core ASV inference step  
 
-```{r ASV_inference, fig.height=6, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE}
+```{r ASV_inference, fig.height=6, fig.width=6, warning=FALSE, message=TRUE, cache=TRUE}
 make_asv_abund_matrix(
   output,
   overwrite_existing = TRUE)
@@ -234,21 +235,21 @@ The first plot shows the how reads were merged in terms of mismatches and indels
 
 The second plot shows the overlap lengths across the inferred ASVs.  
 
-```{r visualize_outputs_asv_inf1, fig.height=10, fig.width=10, echo=FALSE, message=FALSE, cache=TRUE}
+```{r visualize_outputs_asv_inf1, fig.height=10, fig.width=10, echo=FALSE, message=TRUE, cache=TRUE}
 if (!overwrite_existing) {
   knitr::include_graphics("./read_merging_info_r16S.png")
 }
 ```
 
 We can also look at the distribution of ASV lengths  
-```{r visualize_outputs_asv_inf2, fig.height=10, fig.width=10, echo=FALSE, message=FALSE, cache=TRUE}
+```{r visualize_outputs_asv_inf2, fig.height=10, fig.width=10, echo=FALSE, message=TRUE, cache=TRUE}
 if (!overwrite_existing) {
   knitr::include_graphics("./asv_seqlength_plot_r16S.png")
 }
 ```
 
 ### Assign taxonomy step  
-```{r assign_taxonomy_step, fig.height=6, fig.width=6, echo=TRUE, message=FALSE, warning=FALSE, cache=TRUE}
+```{r assign_taxonomy_step, fig.height=6, fig.width=6, echo=TRUE, message=TRUE, warning=FALSE, cache=TRUE}
 assign_tax(
   output,
   asv_abund_matrix,
@@ -258,7 +259,7 @@ assign_tax(
 ```
 
 As a check we can take a look at read counts across the workflow. If there are sudden drops, we should reconsider our adjusting certain DADA2 parameters and re-running the analysis.  
-```{r view_read_counts, fig.height=10, fig.width=10, echo=FALSE, message=FALSE}
+```{r view_read_counts, fig.height=10, fig.width=10, echo=FALSE, message=TRUE}
 reads_filepath <- file.path(output$directory_paths$output_directory, "track_reads_r16S.csv")
 
 if (!overwrite_existing) {
@@ -271,14 +272,14 @@ if (!overwrite_existing) {
 ### Convert ASV matrix to taxmap and phyloseq objects
 
 Convert ASV matrix to taxmap and phyloseq objects with one function  
-```{r convert_matrix_to_other_formats, fig.height=6, fig.width=6, message=FALSE, cache=TRUE}
+```{r convert_matrix_to_other_formats, fig.height=6, fig.width=6, message=TRUE, cache=TRUE}
 objs<-convert_asv_matrix_to_objs(output)
 ```
 
 ### Examine accuracy relative to a mock community  
 
 Evaluate accuracy using mock community, as shown in DADA2 tutorial  
-```{r examine_accuracy, fig.height=6, fig.width=6, message=FALSE, cache=TRUE}
+```{r examine_accuracy, fig.height=6, fig.width=6, message=TRUE, cache=TRUE}
 matrix_filepath <- file.path(output$directory_paths$output_directory, "final_asv_abundance_matrix_r16S.csv")
 tax_matrix<-read.csv(matrix_filepath)
 
@@ -294,7 +295,7 @@ When looking at mock community sample, we were able to extract 20 bacterial sequ
 ### Alpha diversity analysis  
 
 Follow-up work using phyloseq to do side-by-side comparison with dada2 example and to examine alpha diversity results
-```{r phyloseq_alpha_diversity_analysis, fig.height=6, fig.width=6, echo=TRUE, message=FALSE, warning=FALSE, cache=TRUE}
+```{r phyloseq_alpha_diversity_analysis, fig.height=6, fig.width=6, echo=TRUE, message=TRUE, warning=FALSE, cache=TRUE}
 objs$phyloseq_r16S <- phyloseq::prune_samples(phyloseq::sample_names(objs$phyloseq_r16S) != "Mock_S280_L001_r16S", objs$phyloseq_r16S) # Remove mock sample
 
 phyloseq::plot_richness(objs$phyloseq_r16S, x="Day", measures=c("Shannon", "Simpson"), color="When")
@@ -303,7 +304,7 @@ phyloseq::plot_richness(objs$phyloseq_r16S, x="Day", measures=c("Shannon", "Simp
 ### Beta diversity analysis  
 
 Examine ordination plots as additional point of comparison with DADA2 tutorial
-```{r phyloseq_beta_diversity_analysis, fig.height=8, fig.width=8, echo=TRUE, message=FALSE, warning=FALSE, cache=TRUE}
+```{r phyloseq_beta_diversity_analysis, fig.height=8, fig.width=8, echo=TRUE, message=TRUE, warning=FALSE, cache=TRUE}
 # Transform data to proportions as appropriate for Bray-Curtis distances
 ps.prop <- phyloseq::transform_sample_counts(objs$phyloseq_r16S, function(otu) otu/sum(otu))
 ord.nmds.bray <- phyloseq::ordinate(ps.prop, method="NMDS", distance="bray")
@@ -313,7 +314,7 @@ phyloseq::plot_ordination(ps.prop, ord.nmds.bray, color="When", title="Bray NMDS
 ### Top taxa analysis   
 
 Let's look at what the top 20 taxa are in the early vs. late samples  time points, as shown in the dada2 tutorial
-```{r phyloseq_community_analysis, fig.height=8, fig.width=8, echo=TRUE, message=FALSE, warning=FALSE, cache=TRUE}
+```{r phyloseq_community_analysis, fig.height=8, fig.width=8, echo=TRUE, message=TRUE, warning=FALSE, cache=TRUE}
 top20 <- names(sort(phyloseq::taxa_sums(objs$phyloseq_r16S), decreasing=TRUE))[1:20]
 ps.top20 <- phyloseq::transform_sample_counts(objs$phyloseq_r16S, function(OTU) OTU/sum(OTU))
 ps.top20 <- phyloseq::prune_taxa(top20, ps.top20)
@@ -337,6 +338,6 @@ https://doi.org/10.1038/nmeth.3869.
 
 
 ### Software and packages
-```{r session_info, message=FALSE, cache=TRUE}
+```{r session_info, message=TRUE, cache=TRUE}
 sessionInfo()
 ```

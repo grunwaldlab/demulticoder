@@ -294,9 +294,15 @@ overlap region (default: 0)</li>
 </ul>
 <p><strong>Other parameters to include in CSV input file:</strong></p>
 <ul>
-<li>
-<strong>min_asv_length</strong>: Minimum length of Amplicon Sequence
-Variants (ASVs) after core dada ASV inference steps (default=0)</li>
+<li><p><strong>min_asv_length</strong>: Minimum length of Amplicon
+Sequence Variants (ASVs) after core dada ASV inference steps
+(default=0)</p></li>
+<li><p><strong>seed</strong>: For greater reproducibility, user can
+specify an integer to set as a seed to use when the following DADA2
+functions are run: <strong>plotQualityProfile</strong>,
+<strong>learnErrors</strong>, <strong>dada</strong>,
+<strong>makeSequenceTable</strong>, and <strong>assignTaxonomy</strong>
+(default: NULL)</p></li>
 </ul>
 <p>Example file (with select optional columns after forward and reverse
 primer sequence columns):</p>

@@ -11,7 +11,8 @@ assign_taxonomyDada2(
   tryRC = FALSE,
   verbose = FALSE,
   multithread = TRUE,
-  locus = "barcode"
+  locus = "barcode",
+  barcode_params
 )
 }
 \arguments{

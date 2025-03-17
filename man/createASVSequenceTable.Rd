@@ -4,7 +4,7 @@
 \alias{createASVSequenceTable}
 \title{Make ASV sequence matrix}
 \usage{
-createASVSequenceTable(merged_reads, orderBy = "abundance")
+createASVSequenceTable(merged_reads, orderBy = "abundance", barcode_params)
 }
 \arguments{
 \item{merged_reads}{Intermediate merged read R data file}

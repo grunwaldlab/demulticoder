@@ -4,7 +4,7 @@
 \alias{plot_qc}
 \title{Wrapper function for plotQualityProfile function}
 \usage{
-plot_qc(cutadapt_data, output_directory_path, n = 5e+05)
+plot_qc(cutadapt_data, output_directory_path, n = 5e+05, barcode_params)
 }
 \arguments{
 \item{cutadapt_data}{directory_data folder with trimmed and filtered reads
@@ -15,6 +15,8 @@ are output}
 
 \item{n}{(Optional). Default 500,000.
 The number of records to sample from the fastq file.}
+
+\item{seed}{Set seed for reproducibility}
 }
 \value{
 Dada2 wrapper function for making quality profiles for each sample

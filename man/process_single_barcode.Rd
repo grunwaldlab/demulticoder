@@ -13,7 +13,8 @@ process_single_barcode(
   tryRC = FALSE,
   verbose = FALSE,
   multithread = FALSE,
-  locus = barcode
+  locus = barcode,
+  barcode_params
 )
 }
 \arguments{

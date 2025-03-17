@@ -4,7 +4,12 @@
 \alias{plot_post_trim_qc}
 \title{Wrapper script for plotQualityProfile after trim steps and primer removal.}
 \usage{
-plot_post_trim_qc(cutadapt_data, output_directory_path, n = 5e+05)
+plot_post_trim_qc(
+  cutadapt_data,
+  output_directory_path,
+  n = 5e+05,
+  barcode_params
+)
 }
 \arguments{
 \item{cutadapt_data}{directory_data folder with trimmed and filtered reads

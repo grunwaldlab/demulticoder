@@ -185,7 +185,6 @@ For now, the package will be loaded by retrieving it from GitHub. Submission to 
 #Here we install demulticoder (instructions will be updated once available through CRAN)
 devtools::install_github("grunwaldlab/demulticoder")
 library("demulticoder")
-
 #Let's make sure other packages are loaded:
 library("devtools")
 library("dada2")
@@ -193,7 +192,7 @@ library("phyloseq")
 library("metacoder")
 ```
 
-```{r installation, message=FALSE, warning=FALSE, include=FALSE}
+```{r installation_2, message=FALSE, warning=FALSE, include=FALSE}
 devtools::install_github("grunwaldlab/demulticoder")
 library("demulticoder")
 library("metacoder")
@@ -205,7 +204,7 @@ library("metacoder")
 
 The sample names, primer sequences, and other metadata are reorganized in preparation for running Cutadapt to remove primers.  
 
-```{r prepare_for_analysis, warning=FALSE, message=FALSE, cache=FALSE}
+```{r prepare_for_analysis, warning=FALSE, message=TRUE, cache=FALSE}
 output<-prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
   output_directory = "~/demulticoder_test", #Run commands from a Terminal window", 
@@ -216,7 +215,7 @@ output<-prepare_reads(
 
 Before running Cutadapt, **please ensure that you have installed it** 
 
-```{r remove_primers_with_cut_trim_function, warning=FALSE, message=FALSE, cache=FALSE}
+```{r remove_primers_with_cut_trim_function, warning=FALSE, message=TRUE, cache=FALSE}
 cut_trim(
   output,
   cutadapt_path = "/usr/bin/cutadapt", #CHANGE LOCATION TO YOUR LOCAL INSTALLATION
