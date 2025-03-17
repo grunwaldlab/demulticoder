@@ -1,6 +1,6 @@
 Package: demulticoder
 Title: An R Package for the Integrated Analysis of Multiplex Metabarcodes
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: c(person("Martha A.", "Sudermann", email = "sudermam@oregonstate.edu", role = c("aut", "cre")), person("Zachary S. L", "Foster", role = "aut"), person("Samantha", "Dawson", role = "aut"), person("Hung", "Phan", role = "aut"), person("Jeff", "H. Chang", role = "aut"), person("Niklaus", "Grünwald", role = "aut")) 
 Description: The demulticoder package provides a workflow for analyzing 
    multiplex metabarcoding data. It includes functions for filtering, 
