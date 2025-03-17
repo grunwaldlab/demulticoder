@@ -1,11 +1,7 @@
 ---
 title: "16S Mothur SOP Validation"
 output: 
-  rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{16S Mothur SOP Validation}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  rmarkdown::html_document
 ---
 
 ```{r, include = FALSE}
