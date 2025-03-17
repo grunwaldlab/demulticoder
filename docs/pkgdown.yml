@@ -2,7 +2,7 @@ pandoc: 3.1.1
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
-  articles/vignettes-DADA2_16S_mothur_validation: vignettes-DADA2_16S_mothur_validation.html
-  articles/vignettes-Documentation: vignettes-Documentation.html
-  articles/vignettes-Getting_started: vignettes-Getting_started.html
-last_built: 2025-03-17T21:45Z
+  articles/DADA2_16S_mothur_validation: DADA2_16S_mothur_validation.html
+  articles/Documentation: Documentation.html
+  articles/Getting_started: Getting_started.html
+last_built: 2025-03-17T22:00Z
