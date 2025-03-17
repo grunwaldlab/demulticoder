@@ -11,15 +11,15 @@ navbar:
   components:
     intro:
       text: Getting Started
-      href: articles/Getting_started.html
+      href: articles/vignettes-Getting_started.html
     documentation:
       text: Documentation
-      href: articles/Documentation.html
+      href: articles/vignettes-Documentation.html
     articles:
       text: Example Vignettes
       menu:
         - text: 16S DADA2 Mothur SOP Validation
-          href: articles/DADA2_16S_mothur_validation.html
+          href: articles/vignettes-DADA2_16S_mothur_validation.html
     reference:
       text: Main Functions
       href: reference/index.html

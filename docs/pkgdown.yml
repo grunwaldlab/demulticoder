@@ -3,6 +3,7 @@ pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   DADA2_16S_mothur_validation: DADA2_16S_mothur_validation.html
-  Documentation: Documentation.html
-  Getting_started: Getting_started.html
-last_built: 2025-03-17T19:12Z
+  articles/vignettes-DADA2_16S_mothur_validation: vignettes-DADA2_16S_mothur_validation.html
+  articles/vignettes-Documentation: vignettes-Documentation.html
+  articles/vignettes-Getting_started: vignettes-Getting_started.html
+last_built: 2025-03-17T21:27Z

@@ -1,7 +1,7 @@
 #devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
 devtools::clean_dll()
-devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
-#devtools::load_all("~/demulticoder")
+#devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
+devtools::load_all("~/demulticoder")
 library("demulticoder")
 devtools::document()
 devtools::document()
@@ -20,4 +20,12 @@ pkgdown::preview_site()
 
 pkgdown::build_favicons(overwrite=TRUE)
 
+tinytex::install_tinytex()
+library("tinytex")
 rcmdcheck::rcmdcheck(args = "--as-cran")
+
+pkgdown::build_articles("~/demulticoder/")
+
+usethis::use_article("vignettes/Getting_started.Rmd")
+usethis::use_article("vignettes/Documentation.Rmd")
+usethis::use_article("vignettes/DADA2_16S_mothur_validation.Rmd")
