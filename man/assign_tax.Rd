@@ -58,6 +58,7 @@ Assign taxonomy functions
 At this point DADA2 assignTaxonomy is used to assign taxonomy to the inferred ASVs.
 }
 \examples{
+\donttest{
 # Assign taxonomies to ASVs on a per barcode basis
 analysis_setup <- prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
@@ -81,4 +82,5 @@ asv_abund_matrix,
 retrieve_files=FALSE, 
 overwrite_existing = TRUE
 )
+}
 }

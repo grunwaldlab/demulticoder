@@ -295,7 +295,7 @@ make_seqhist <- function(asv_abund_matrix, output_directory_path) {
 #' @export make_asv_abund_matrix
 #'
 #' @examples 
-#' \donttest{
+#' \dontrun{
 #' # The primary wrapper function for DADA2 ASV inference steps
 #' analysis_setup <- prepare_reads(
 #'   data_directory = system.file("extdata", package = "demulticoder"),

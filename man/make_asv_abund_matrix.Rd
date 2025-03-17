@@ -25,6 +25,7 @@ inferring ASVs, merging reads, and creating an ASV abundance matrix.
 To do this, the DADA2 core denoising alogrithm is used to infer ASVs.
 }
 \examples{
+\donttest{
 # The primary wrapper function for DADA2 ASV inference steps
 analysis_setup <- prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
@@ -42,4 +43,5 @@ make_asv_abund_matrix(
 analysis_setup, 
 overwrite_existing = TRUE
 )
+}
 }

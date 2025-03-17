@@ -481,7 +481,7 @@ make_cutadapt_tibble <-
 #' @export
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # Pre-filter raw reads and parse metadata and primer_information to prepare 
 #' # for primer trimming and filter
 #' analysis_setup <- prepare_reads(

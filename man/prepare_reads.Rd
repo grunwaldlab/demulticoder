@@ -42,6 +42,7 @@ user-defined parameters for all subsequent steps.
 Prepare reads for primer trimming using Cutadapt
 }
 \examples{
+\donttest{
 # Pre-filter raw reads and parse metadata and primer_information to prepare 
 # for primer trimming and filter
 analysis_setup <- prepare_reads(
@@ -51,4 +52,5 @@ analysis_setup <- prepare_reads(
   tempdir_id = "demulticoder_run_temp",
   overwrite_existing = TRUE
 )
+}
 }
