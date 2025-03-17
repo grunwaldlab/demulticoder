@@ -20,8 +20,6 @@ pkgdown::preview_site()
 
 pkgdown::build_favicons(overwrite=TRUE)
 
-tinytex::install_tinytex()
-library("tinytex")
 rcmdcheck::rcmdcheck(args = "--as-cran")
 
 pkgdown::build_articles("~/demulticoder/")
