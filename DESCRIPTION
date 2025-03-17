@@ -39,5 +39,4 @@ LazyData: true
 URL: https://grunwaldlab.github.io/demulticoder/
 BugReports: https://github.com/grunwaldlab/demulticoder/issues
 RoxygenNote: 7.3.2
-VignetteBuilder: knitr
 Config/Needs/website: rmarkdown
