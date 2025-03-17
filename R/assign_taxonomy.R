@@ -262,6 +262,7 @@ process_single_barcode <-
 #' @details At this point DADA2 assignTaxonomy is used to assign taxonomy to the inferred ASVs. 
 #'
 #' @examples
+#' \donttest{
 #' # Assign taxonomies to ASVs on a per barcode basis
 #' analysis_setup <- prepare_reads(
 #'   data_directory = system.file("extdata", package = "demulticoder"),
@@ -285,6 +286,7 @@ process_single_barcode <-
 #' retrieve_files=FALSE, 
 #' overwrite_existing = TRUE
 #' )
+#' }
 assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, overwrite_existing = FALSE, db_rps10 = "oomycetedb.fasta", db_its = "fungidb.fasta", db_16S = "bacteriadb.fasta", db_other1 = "otherdb1.fasta", db_other2 = "otherdb2.fasta") {
   data_tables <- analysis_setup$data_tables
   data_path <- analysis_setup$directory_paths$data_directory

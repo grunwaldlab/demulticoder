@@ -290,6 +290,7 @@ plot_post_trim_qc <- function(cutadapt_data, output_directory_path, n = 500000, 
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # Remove remaining primers from raw reads, demultiplex pooled barcoded samples, 
 #' # and then trim reads based on specific DADA2 parameters
 #' analysis_setup <- prepare_reads(
@@ -304,6 +305,7 @@ plot_post_trim_qc <- function(cutadapt_data, output_directory_path, n = 500000, 
 #' cutadapt_path="/usr/bin/cutadapt", 
 #' overwrite_existing = TRUE
 #' )
+#' }
 cut_trim <- function(analysis_setup,
                      cutadapt_path,
                      overwrite_existing = FALSE) {

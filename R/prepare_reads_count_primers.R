@@ -481,6 +481,7 @@ make_cutadapt_tibble <-
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # Pre-filter raw reads and parse metadata and primer_information to prepare 
 #' # for primer trimming and filter
 #' analysis_setup <- prepare_reads(
@@ -490,6 +491,7 @@ make_cutadapt_tibble <-
 #'   tempdir_id = "demulticoder_run_temp",
 #'   overwrite_existing = TRUE
 #' )
+#' }
 prepare_reads <- function(data_directory = "data",
                           output_directory = "output",
                           tempdir_path = NULL,

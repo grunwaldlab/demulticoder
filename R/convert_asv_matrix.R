@@ -14,6 +14,7 @@
 #' @export
 #' 
 #' @examples
+#' \donttest{
 #' # Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
 #' analysis_setup <- prepare_reads(
 #'   data_directory = system.file("extdata", package = "demulticoder"),
@@ -40,6 +41,7 @@
 #' objs<-convert_asv_matrix_to_objs(
 #' analysis_setup
 #' )
+#' }
 
 convert_asv_matrix_to_objs <- function(analysis_setup, min_read_depth = 0, minimum_bootstrap = 0, save_outputs = FALSE) {
   data_tables <- analysis_setup$data_tables
