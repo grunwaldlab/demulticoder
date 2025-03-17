@@ -23,9 +23,9 @@ prep_abund_matrix <-function(cutadapt_data, asv_abund_matrix, data_tables, locus
 #' @param locus The locus for taxonomy assignment (e.g., rps10, other1, other2)
 #'
 #' @keywords internal
-assign_taxonomyDada2 <- function(asv_abund_matrix, temp_directory_path, minBoot = 0, tryRC = FALSE, verbose = FALSE, multithread = TRUE, locus = "barcode") {
+assign_taxonomyDada2 <- function(asv_abund_matrix, temp_directory_path, minBoot = 0, tryRC = FALSE, verbose = FALSE, multithread = TRUE, locus = "barcode", barcode_params) {
   
-  set.seed(1)
+  set.seed(barcode_params$seed)
   refFasta_raw <- file.path(temp_directory_path, paste0(locus, "_reference_db.fa"))
   refFasta <- file.path(temp_directory_path, paste0(locus, "_reference_db_unique.fa"))
   
@@ -209,7 +209,8 @@ process_single_barcode <-
            tryRC = FALSE,
            verbose = FALSE,
            multithread = FALSE,
-           locus = barcode)
+           locus = barcode,
+           barcode_params)
   {
     abund_asv_single <-
       prep_abund_matrix(data_tables$cutadapt_data, asv_abund_matrix, data_tables, locus)
@@ -222,7 +223,8 @@ process_single_barcode <-
         tryRC = tryRC,
         verbose = verbose,
         multithread = multithread,
-        locus=locus
+        locus=locus,
+        barcode_params = barcode_params
       )
     #single_pids_asv <- get_pids(tax_results_single_asv, temp_directory_path, output_directory_path, refdb, locus)
     #tax_results_single_asv_pid <-
@@ -286,9 +288,12 @@ process_single_barcode <-
 assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, overwrite_existing = FALSE, db_rps10 = "oomycetedb.fasta", db_its = "fungidb.fasta", db_16S = "bacteriadb.fasta", db_other1 = "otherdb1.fasta", db_other2 = "otherdb2.fasta") {
   data_tables <- analysis_setup$data_tables
   data_path <- analysis_setup$directory_paths$data_directory
-  output_directory_path <- analysis_setup$directory_paths$output_directory
+  output_directory_path <- analysis_setup$directory_paths$output_directo
   temp_directory_path <- analysis_setup$directory_paths$temp_directory
   unique_barcodes <- unique(data_tables$cutadapt_data$primer_name)
+  
+  default_params <- list(
+    seed = NULL)
   
   files_to_check <- c("*_reference_db.fa", "TaxMatrix_*", "Final_tax_matrix_*")
   existing_files <- list.files(temp_directory_path, pattern = files_to_check, full.names = TRUE)
@@ -332,20 +337,27 @@ assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose 
     if (length(existing_files) == 0 && !overwrite_existing) {
       warning("No existing files found. The analysis will be run.")
     }
-    
+      
     for (barcode in unique_barcodes) {
       # Load merged reads for the current barcode
       load(file.path(temp_directory_path, paste0("asvabund_matrixDADA2_", barcode, ".RData")))
       
+      params <- dplyr::filter(data_tables$parameters, primer_name == barcode)
+      if (nrow(params) > 0) {
+        params <- as.list(params)
+        
+        barcode_params <- modifyList(default_params, params)
+      }
+      
       format_database(data_tables, data_path, output_directory_path, temp_directory_path, barcode, db_its, db_rps10, db_16S, db_other1, db_other2)
       
-      # Run taxonomy assignment for the current barcode
       process_single_barcode(
         data_tables = data_tables,
         temp_directory_path = temp_directory_path,
         output_directory_path = output_directory_path,
         asv_abund_matrix = asv_abund_matrix,
-        locus = barcode
+        locus = barcode,
+        barcode_params = barcode_params
       )
     }
     

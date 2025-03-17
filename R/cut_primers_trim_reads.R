@@ -84,15 +84,17 @@ run_cutadapt <- function(cutadapt_path,
 #'   for each sample
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
+#' @param seed Set seed for reproducibility
 #'
 #' @return Dada2 wrapper function for making quality profiles for each sample
 #'
 #' @keywords internal
-plot_qc <- function(cutadapt_data, output_directory_path, n = 500000) {
+plot_qc <- function(cutadapt_data, output_directory_path, n = 500000, barcode_params) {
   #just retrieve all plots for first sample
   for (i in unique(cutadapt_data$sample_name)) {
     name1 = paste0('readqual_pretrim_plot_', i, '.pdf')
     pdf_path = file.path(output_directory_path, name1)
+    set.seed = barcode_params$seed
     if (!file.exists(pdf_path)) {
       sample_info = cutadapt_data$trimmed_path[cutadapt_data$sample_name == i]
       quality_plots <- dada2::plotQualityProfile(sample_info, n)
@@ -136,6 +138,7 @@ filter_and_trim <- function(output_directory_path,
       )
     )
   if (!all(file.exists(cutadapt_data_barcode$filtered_path))) {
+    seed = barcode_params$seed
     filter_results <-
       dada2::filterAndTrim(
         fwd = cutadapt_data_barcode$trimmed_path[cutadapt_data_barcode$direction == "Forward"],
@@ -251,12 +254,13 @@ get_post_trim_hits <- function(primer_data, cutadapt_data, output_directory_path
 #' @return Quality profiles of reads after primer trimming
 #'
 #' @keywords internal
-plot_post_trim_qc <- function(cutadapt_data, output_directory_path, n = 500000) {
+plot_post_trim_qc <- function(cutadapt_data, output_directory_path, n = 500000, barcode_params) {
   for (i in unique(cutadapt_data$sample_name)) {
     name2 = paste0('readqual_posttrim_plot_', i, '.pdf')
     pdf_path = file.path(output_directory_path, name2)
     if (!file.exists(pdf_path)) {
       sample_info2 = cutadapt_data$filtered_path[cutadapt_data$sample_name == i]
+      set.seed = barcode_params$seed
       quality_plots2 <- dada2::plotQualityProfile(sample_info2, n)
       ggplot2::ggsave(
         quality_plots2,
@@ -319,13 +323,13 @@ cut_trim <- function(analysis_setup,
     any(file.exists(list.files(path = output_directory_path, pattern = pattern, full.names = TRUE, recursive = TRUE)))
   })
   
-  if (any(files_exist) && all(files_exist) && !overwrite_existing) {
+  if (any(files_exist) && !overwrite_existing) {
     message("Existing data detected: Primer counts and N's may have been removed from previous runs. Loading existing output. To perform a new analysis, specify overwrite_existing = TRUE.")
     return(invisible())
-  } else if (!overwrite_existing) {
-    warning("Existing analysis files not found. The 'cut_trim' function was rerun.")
+  } else if (overwrite_existing) {
+    warning("Existing analysis files found. Overwriting existing files.")
     
-    # Your existing code to remove files and directories
+    # Remove existing files and directories
     patterns_to_remove <- c(
       "primer_hit_data_posttrim.csv", 
       "posttrim_primer_plot.pdf",
@@ -402,6 +406,7 @@ cut_trim <- function(analysis_setup,
     rm.lowcomplex = 0,
     orient.fwd = NULL,
     id.field = NULL,
+    seed = NULL,
     overwrite_existing = FALSE
   )
   
@@ -412,7 +417,6 @@ cut_trim <- function(analysis_setup,
     
     if (nrow(barcode_params) > 0) {
       barcode_params <- as.list(barcode_params)
-      
       barcode_params <- utils::modifyList(default_params, barcode_params)
       
       cutadapt_data_barcode <- subset(data_tables$cutadapt_data, primer_name == barcode)
@@ -421,7 +425,8 @@ cut_trim <- function(analysis_setup,
           cutadapt_path,
           cutadapt_data_barcode,
           barcode_params,
-          minCutadaptlength = barcode_params$minCutadaptlength)
+          minCutadaptlength = barcode_params$minCutadaptlength
+        )
         
         if (length(barcode_params) > 0) {
           barcode_params <- as.list(barcode_params)
@@ -430,12 +435,15 @@ cut_trim <- function(analysis_setup,
             temp_directory_path,
             cutadapt_data_barcode,
             barcode_params, 
-            barcode)
+            barcode
+          )
         }
+        
+        # Call plot_post_trim_qc within the loop
+        quality_plots <- plot_qc(cutadapt_data_barcode, output_directory_path, barcode_params = barcode_params)
+        post_primer_hit_data <- get_post_trim_hits(data_tables$primer_data, cutadapt_data_barcode, output_directory_path)
+        plot_post_trim_qc(cutadapt_data_barcode, output_directory_path, barcode_params = barcode_params)
       }
     }
   }
-  quality_plots <- plot_qc(data_tables$cutadapt_data, output_directory_path)
-  post_primer_hit_data <- get_post_trim_hits(data_tables$primer_data, data_tables$cutadapt_data, output_directory_path)
-  quality_plots2 <- plot_post_trim_qc(data_tables$cutadapt_data, output_directory_path)
-  }
+}

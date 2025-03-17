@@ -26,9 +26,9 @@ get_fastq_paths <- function(data_tables, my_direction, my_primer_pair_id) {
 #' @return asv_data
 #' @keywords internal
 infer_asvs <- function(data_tables,my_direction, my_primer_pair_id, barcode_params, output_directory_path) {
-  set.seed(1)
-  fastq_paths <- get_fastq_paths(data_tables,my_direction, my_primer_pair_id)
+  fastq_paths <- get_fastq_paths(data_tables, my_direction, my_primer_pair_id)
   error_plot_filename <- paste0("error_plot_", my_primer_pair_id, ".pdf")
+  set.seed(barcode_params$seed)
   error_profile <- dada2::learnErrors(
     fastq_paths,
     multithread = barcode_params$multithread,
@@ -49,13 +49,12 @@ infer_asvs <- function(data_tables,my_direction, my_primer_pair_id, barcode_para
       ' \n'
     )
   )
-  
   plot_errors <- dada2::plotErrors(
     error_profile,
     nominalQ = barcode_params$nominalQ,
     obs = barcode_params$obs,
     err_out = barcode_params$err_out,
-    err_in = barcode_params$err_in
+    err_in = barcode_params$err_in,
   )
   
   ggplot2::ggsave(
@@ -70,7 +69,7 @@ infer_asvs <- function(data_tables,my_direction, my_primer_pair_id, barcode_para
     fastq_paths,
     err = error_profile,
     pool=barcode_params$pool,
-    multithread = barcode_params$multithread
+    multithread = barcode_params$multithread,
   )
   
   return(asv_data)
@@ -83,19 +82,19 @@ infer_asvs <- function(data_tables,my_direction, my_primer_pair_id, barcode_para
 #' @keywords internal
 infer_asv_command <- function(output_directory_path, temp_directory_path, data_tables, barcode_params, barcode) {
   
-  multithread <- barcode_params$multithread
-  nbases <- barcode_params$nbases
-  randomize <- barcode_params$randomize
-  MAX_CONSIST <- barcode_params$MAX_CONSIST
-  OMEGA_C <- barcode_params$OMEGA_C
-  qualityType <- barcode_params$qualityType
-  nominalQ <- barcode_params$nominalQ
-  obs <- barcode_params$obs
-  err_out <- barcode_params$err_out
-  err_in <- barcode_params$err_in
-  pool <- barcode_params$pool
-  selfConsist <- barcode_params$selfConsist
-  verbose <- barcode_params$verbose
+  multithread = barcode_params$multithread
+  nbases = barcode_params$nbases
+  randomize = barcode_params$randomize
+  MAX_CONSIST = barcode_params$MAX_CONSIST
+  OMEGA_C = barcode_params$OMEGA_C
+  qualityType = barcode_params$qualityType
+  nominalQ = barcode_params$nominalQ
+  obs = barcode_params$obs
+  err_out = barcode_params$err_out
+  err_in = barcode_params$err_in
+  pool = barcode_params$pool
+  selfConsist = barcode_params$selfConsist
+  verbose = barcode_params$verbose
   
   denoised_data_path <- file.path(temp_directory_path, paste0("Denoised_data_", barcode, ".RData"))
   
@@ -210,7 +209,8 @@ countOverlap <- function(data_tables, merged_reads, barcode, output_directory_pa
 #' @param merged_reads Intermediate merged read R data file
 #' @return raw_seqtab
 #' @keywords internal
-createASVSequenceTable <- function(merged_reads, orderBy = "abundance") {
+createASVSequenceTable <- function(merged_reads, orderBy = "abundance", barcode_params) {
+  set.seed(barcode_params$seed)
   raw_seqtab <- dada2::makeSequenceTable(merged_reads, orderBy = orderBy)
   return(raw_seqtab)
 }
@@ -338,7 +338,8 @@ make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {
     minOverlap = 12,
     maxMismatch = 0,
     method = "consensus",
-    min_asv_length = 0)
+    min_asv_length = 0,
+    seed = NULL)
   
   files_to_check <- c("asvabund_matrixDADA2_*")
   existing_files <- list.files(temp_directory_path, pattern = files_to_check, full.names = TRUE)
@@ -398,10 +399,9 @@ make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {
             temp_directory_path = temp_directory_path,
             data_tables = data_tables,
             barcode_params = barcode_params,
-            barcode = barcode
+            barcode = barcode 
           )
-          
-          # Merge reads with barcode-specific parameters
+      
           merged_reads <- merge_reads_command(
             output_directory_path = output_directory_path,
             temp_directory_path = temp_directory_path,
@@ -410,8 +410,8 @@ make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {
           )
           
           countOverlap(data_tables, merged_reads, barcode, output_directory_path)
-          raw_seqtab <- createASVSequenceTable(merged_reads, orderBy = "abundance")
-          asv_abund_matrix <- make_abund_matrix(raw_seqtab, temp_directory_path = temp_directory_path, barcode_params, barcode)
+          raw_seqtab <- createASVSequenceTable(merged_reads, orderBy = "abundance", barcode_params = barcode_params)
+          asv_abund_matrix <- make_abund_matrix(raw_seqtab, temp_directory_path = temp_directory_path, barcode_params = barcode_params, barcode)
           make_seqhist(asv_abund_matrix, output_directory_path)
           asv_abund_matrix_list[[barcode]] <- file.path(temp_directory_path, paste0("asvabund_matrixDADA2_", barcode, ".RData"))
         }
