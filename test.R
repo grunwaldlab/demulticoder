@@ -28,3 +28,7 @@ usethis::use_article("vignettes/Getting_started.Rmd")
 usethis::use_article("vignettes/Documentation.Rmd")
 usethis::use_article("vignettes/DADA2_16S_mothur_validation.Rmd")
 system(paste("R CMD Rd2pdf --no-clean", "~/demulticoder"))
+
+devtools::build()
+devtools::check()
+devtools::document()

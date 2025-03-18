@@ -1,42 +1,29 @@
 Package: demulticoder
-Title: An R Package for the Integrated Analysis of Multiplex Metabarcodes
+Title: An R package for the simultaneous analysis of multiplexed metabarcodes
 Version: 0.1.0
-Authors@R: c(person("Martha A.", "Sudermann", email = "sudermam@oregonstate.edu", role = c("aut", "cre")), person("Zachary S. L", "Foster", role = "aut"), person("Samantha", "Dawson", role = "aut"), person("Hung", "Phan", role = "aut"), person("Jeff", "H. Chang", role = "aut"), person("Niklaus", "Grünwald", role = "aut")) 
-Description: The demulticoder package provides a workflow for analyzing 
-   multiplex metabarcoding data. It includes functions for filtering, 
-   trimming primers, and denoising data using Cutadapt and the dada2 package.
-   The package can handle datasets with pooled amplicons and simple 
-   experimental designs.
+Authors@R: c(person("Martha A.", "Sudermann", email = "sudermam@oregonstate.edu", role = c("aut", "cre")), person("Zachary S. L", "Foster", role = "aut"), 
+person("Samantha", "Dawson", role = "aut"), person("Hung", "Phan", role = "aut"), person("Jeff", "H. Chang", role = "aut"), person("Niklaus", "Grünwald", role = "aut")) 
+Description: The demulticoder package provides a comprehensive workflow for analyzing multiplex metabarcode data. It includes robust wrappers for cutadapt and DADA2 to trim primers, filter reads, perform ASV inference, and assign taxonomy. The package can handle single metabarcode datasets, datasets with two pooled metabarcodes, or multiple datasets simultaneously. The final output is a matrix per metabarcode, containing both ASV abundance data and associated taxonomic assignments. An optional function converts these matrices into phyloseq and taxmap objects. 
 License: MIT + file LICENSE
 Encoding: UTF-8
-Depends:
-   R (>= 3.0.2)  
-Imports:
-   furrr,
-   purrr,
-   readr,
-   stringr,
-   tidyr,
-   dplyr,
-   ggplot2,
-   tibble,
-   utils,
-   knitr
-Suggests:
-    BiocManager,
-    Biostrings,
-    dada2,
-    metacoder,
-    ShortRead,
-    phyloseq,
-    testthat (>= 3.0.0),
-    rmarkdown,
-    RcppParallel,
-    devtools
+Depends: R (>= 3.0.2)
+Imports: furrr, purrr, readr, stringr, tidyr, dplyr, ggplot2, tibble,
+        utils, knitr
+Suggests: BiocManager, Biostrings, dada2, metacoder, ShortRead,
+        phyloseq, testthat (>= 3.0.0), rmarkdown, RcppParallel,
+        devtools
 Roxygen: list(markdown = TRUE)
 Config/testthat/edition: 3
-LazyData: true
 URL: https://grunwaldlab.github.io/demulticoder/
 BugReports: https://github.com/grunwaldlab/demulticoder/issues
 RoxygenNote: 7.3.2
 Config/Needs/website: rmarkdown
+NeedsCompilation: no
+Packaged: 2025-03-17 23:40:47 UTC; marthasudermann
+Author: Martha A. Sudermann [aut, cre],
+  Zachary S. L Foster [aut],
+  Samantha Dawson [aut],
+  Hung Phan [aut],
+  Jeff H. Chang [aut],
+  Niklaus Grünwald [aut]
+Maintainer: Martha A. Sudermann <sudermam@oregonstate.edu>

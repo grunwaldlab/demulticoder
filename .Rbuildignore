@@ -10,3 +10,4 @@
 ^index.md$
 ^test.R$
 ^vignettes/articles$
+^cran-comments\.md$
