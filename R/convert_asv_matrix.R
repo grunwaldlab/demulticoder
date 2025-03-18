@@ -8,6 +8,9 @@
 #' @param minimum_bootstrap Threshold for bootstrap support value for taxonomic
 #'   assignments. Below designated minimum bootstrap threshold, taxnomoic
 #'   assignments will be set to N/A
+#'@param save_outputs Logical, indicating whether to save the resulting phyloseq 
+#'  and taxmap objects. If TRUE, the objects will be saved; if FALSE, they will 
+#'  only be available in the global environment. Default is FALSE.
 #' 
 #' @return ASV matrix converted to taxmap object
 #' 

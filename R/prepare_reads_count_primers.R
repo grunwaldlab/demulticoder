@@ -469,8 +469,6 @@ make_cutadapt_tibble <-
 #' @param tempdir_id ID for temporary directories. Default is
 #'   "demulticoder_run". The user can provide any helpful ID, whether it be a
 #'   date or specific name for the run.
-#' @param multithread Logical, indicating whether to use multithreading for
-#'   certain operations. Default is `FALSE`.
 #' @param overwrite_existing Logical, indicating whether to remove or overwrite
 #'   existing files and directories from previous runs. Default is `FALSE`.
 #'
