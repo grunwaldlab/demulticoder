@@ -29,9 +29,6 @@ date or specific name for the run.}
 
 \item{overwrite_existing}{Logical, indicating whether to remove or overwrite
 existing files and directories from previous runs. Default is \code{FALSE}.}
-
-\item{multithread}{Logical, indicating whether to use multithreading for
-certain operations. Default is \code{FALSE}.}
 }
 \value{
 A list containing data tables, including metadata, primer sequences

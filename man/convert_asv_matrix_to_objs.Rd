@@ -21,6 +21,10 @@ samples is less than this threshold, ASV will be filtered.}
 \item{minimum_bootstrap}{Threshold for bootstrap support value for taxonomic
 assignments. Below designated minimum bootstrap threshold, taxnomoic
 assignments will be set to N/A}
+
+\item{save_outputs}{Logical, indicating whether to save the resulting phyloseq
+and taxmap objects. If TRUE, the objects will be saved; if FALSE, they will
+only be available in the global environment. Default is FALSE.}
 }
 \value{
 ASV matrix converted to taxmap object
