@@ -281,9 +281,9 @@ format_database <- function(data_tables, data_path, output_directory_path, temp_
   } else if (barcode == "r16S") {
     return(format_db_16S(data_tables, data_path, output_directory_path, temp_directory_path, db_16S))
   } else if (barcode == "other1") {
-    return(format_db_other(data_tables, data_path, output_directory_path, temp_directory_path, db_other1))
+    return(format_db_other1(data_tables, data_path, output_directory_path, temp_directory_path, db_other1))
   } else if (barcode == "other2") {
-    return(format_db_other(data_tables, data_path, output_directory_path, temp_directory_path, db_other2))
+    return(format_db_other2(data_tables, data_path, output_directory_path, temp_directory_path, db_other2))
   } else {
     stop("Barcode not recognized: ", barcode)
   }
