@@ -14,7 +14,7 @@ the orient_primers function.}
 \item{metadata_path}{The path to the metadata file.}
 }
 \value{
-A dataframe containing the merged metadata and primer data.
+A data frame containing the merged metadata and primer data.
 }
 \description{
 Read metadata file from user and combine and reformat it, given primer data.

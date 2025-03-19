@@ -28,7 +28,7 @@ throughout the workflow metadata, and primer_info files}
 \item{db_other2}{The name of the database}
 }
 \value{
-An other database that has modified headers and is output in the
+An second database (other than SILVA, UNITE, and oomyceteDB that has modified headers and is output in the
 reference_databases folder
 }
 \description{

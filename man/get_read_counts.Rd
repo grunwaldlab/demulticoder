@@ -8,11 +8,11 @@ get_read_counts(
   asv_abund_matrix,
   temp_directory_path,
   output_directory_path,
-  locus
+  metabarcode
 )
 }
 \arguments{
-\item{asv_abund_matrix}{An abundance matrix containing amplified sequence variants}
+\item{asv_abund_matrix}{The final abundance matrix containing amplified sequence variants}
 }
 \description{
 Final inventory of read counts after each step from input to removal of chimeras. This function deals with if you have more than one sample. TODO optimize for one sample

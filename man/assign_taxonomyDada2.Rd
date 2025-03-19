@@ -11,12 +11,12 @@ assign_taxonomyDada2(
   tryRC = FALSE,
   verbose = FALSE,
   multithread = TRUE,
-  locus = "barcode",
+  metabarcode = "barcode",
   barcode_params
 )
 }
 \arguments{
-\item{asv_abund_matrix}{The ASV abundance matrix}
+\item{asv_abund_matrix}{The final abundance matrix containing amplified sequence variants}
 
 \item{temp_directory_path}{The temporary directory path}
 
@@ -28,7 +28,7 @@ assign_taxonomyDada2(
 
 \item{multithread}{Use multiple threads (default TRUE)}
 
-\item{locus}{The locus for taxonomy assignment (e.g., rps10, other1, other2)}
+\item{metabarcode}{The metabarcode for taxonomy assignment (e.g., rps10, other1, other2)}
 }
 \description{
 Assign taxonomy

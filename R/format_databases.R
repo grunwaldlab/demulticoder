@@ -1,3 +1,5 @@
+utils::globalVariables(c("data_other1", "db_other1", "data_other2", "db_other2"))
+
 #' Create modified reference rps10 database for downstream analysis
 #' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
 #' @param data_path Path to the data directory
@@ -31,7 +33,6 @@ format_db_rps10 <- function(data_tables, data_path, output_directory_path, temp_
     sub(data_rps10$taxonomy[index], pattern = binomial[index], replacement = paste0(species[index], ';', binomial[index]))
   })
   
-  #data_rps10$taxonomy <- paste0(data_rps10$taxonomy, ";refdb_", seq_along(data_rps10$taxonomy), ";")
   data_rps10$taxonomy <- trimws(data_rps10$taxonomy)
   data_rps10$taxonomy <- paste0(data_rps10$taxonomy, ';')
   
@@ -77,7 +78,6 @@ format_db_its <- function(data_tables, data_path, output_directory_path, temp_di
     paste(tax_parts, collapse = ";")
   })
   
-  #data_its$taxonomy <- paste0(data_its$taxonomy, ";refdb_", seq_along(data_its$taxonomy), ";")
   data_its$taxonomy <- trimws(data_its$taxonomy)
   data_its$taxonomy <- paste0(data_its$taxonomy, ';')
   
@@ -131,7 +131,6 @@ format_db_16S <- function(data_tables, data_path, output_directory_path, temp_di
     paste(tax_parts, collapse = ";")
   })
   
-  #data_16S$taxonomy <- paste0(data_16S$taxonomy, ";refdb_", seq_along(data_16S$taxonomy), ";")
   data_16S$taxonomy <- trimws(data_16S$taxonomy)
   data_16S$taxonomy <- paste0(data_16S$taxonomy, ';')
   
@@ -155,10 +154,14 @@ format_db_16S <- function(data_tables, data_path, output_directory_path, temp_di
 #' An other, user-specified database that is initially in the format specified by DADA2 with header simply taxonomic levels (kingdom down to species, separated by semi-colons, ;)
 #' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
 #' @param data_path Path to the data directory
-#' @param output_directory_path The path to the directory where resulting files are output
-#' @param temp_directory_path User-defined temporary directory to place reads throughout the workflow
-#' metadata, and primer_info files
+#' @param output_directory_path The path to the directory where resulting files
+#'   are output
+#' @param temp_directory_path User-defined temporary directory to place reads
+#'   throughout the workflow metadata, and primer_info files
 #' @param db_other1 The name of the database
+#'
+#' @return A database (other than SILVA, UNITE, and oomyceteDB that has modified headers and is output in the
+#'   reference_databases folder
 #' 
 #' @return An other database that has modified headers and is output in the reference_databases folder.
 #' 
@@ -182,9 +185,6 @@ format_db_other1 <-function(data_tables, data_path, output_directory_path, temp_
   
   
   data_other1$taxonomy <- paste0(data_other1$taxonomy, ";")
-  
-  #These seems to mess up taxonomic assignments, unfortunately, but is necessary should we want to calculate PID
-  #data_other1$taxonomy <- paste0(data_other1$taxonomy, ";refdb_", seq_along(data_other1$taxonomy), ";")
 
   data_other1$genus <- ifelse(
     sapply(strsplit(data_other1$taxonomy, ";"), length) == 7,
@@ -217,7 +217,7 @@ format_db_other1 <-function(data_tables, data_path, output_directory_path, temp_
 #'   throughout the workflow metadata, and primer_info files
 #' @param db_other2 The name of the database
 #'
-#' @return An other database that has modified headers and is output in the
+#' @return An second database (other than SILVA, UNITE, and oomyceteDB that has modified headers and is output in the
 #'   reference_databases folder
 #'
 #' @keywords internal
@@ -281,9 +281,9 @@ format_database <- function(data_tables, data_path, output_directory_path, temp_
   } else if (barcode == "r16S") {
     return(format_db_16S(data_tables, data_path, output_directory_path, temp_directory_path, db_16S))
   } else if (barcode == "other1") {
-    return(format_db_other(data_tables, data_path, output_directory_path, temp_directory_path, db_other1))
+    return(format_db_other1(data_tables, data_path, output_directory_path, temp_directory_path, db_other1))
   } else if (barcode == "other2") {
-    return(format_db_other(data_tables, data_path, output_directory_path, temp_directory_path, db_other2))
+    return(format_db_other2(data_tables, data_path, output_directory_path, temp_directory_path, db_other2))
   } else {
     stop("Barcode not recognized: ", barcode)
   }

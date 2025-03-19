@@ -6,11 +6,8 @@ Description: The demulticoder package provides a comprehensive workflow for anal
 License: MIT + file LICENSE
 Encoding: UTF-8
 Depends: R (>= 3.0.2)
-Imports: furrr, purrr, readr, stringr, tidyr, dplyr, ggplot2, tibble,
-        utils, knitr
-Suggests: BiocManager, Biostrings, dada2, metacoder, ShortRead,
-        phyloseq, testthat (>= 3.0.0), rmarkdown, RcppParallel,
-        devtools
+Imports: furrr, purrr, readr, stringr, tidyr, dplyr, ggplot2, tibble, utils
+Suggests: BiocManager, Biostrings, dada2, metacoder, ShortRead, phyloseq, rmarkdown, RcppParallel, devtools
 Roxygen: list(markdown = TRUE)
 Config/testthat/edition: 3
 URL: https://grunwaldlab.github.io/demulticoder/

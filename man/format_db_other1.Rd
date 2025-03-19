@@ -17,14 +17,18 @@ format_db_other1(
 
 \item{data_path}{Path to the data directory}
 
-\item{output_directory_path}{The path to the directory where resulting files are output}
+\item{output_directory_path}{The path to the directory where resulting files
+are output}
 
-\item{temp_directory_path}{User-defined temporary directory to place reads throughout the workflow
-metadata, and primer_info files}
+\item{temp_directory_path}{User-defined temporary directory to place reads
+throughout the workflow metadata, and primer_info files}
 
 \item{db_other1}{The name of the database}
 }
 \value{
+A database (other than SILVA, UNITE, and oomyceteDB that has modified headers and is output in the
+reference_databases folder
+
 An other database that has modified headers and is output in the reference_databases folder.
 }
 \description{

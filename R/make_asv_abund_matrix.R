@@ -1,9 +1,11 @@
+utils::globalVariables(c("Length", "Merged", "Total", "barcode", "dada_forward","dada_reverse", "merged_reads", "primer_name", "value", "asv_abund_matrix"))
+
 #' Retrieve the paths of the filtered and trimmed Fastq files
-#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
+#' @param data_tables The data tables containing the paths to read files, 
+#'   metadata, primer sequences
 #' @param my_direction Whether primer is in forward or reverse direction
 #' @param my_primer_pair_id The the specific barcode id
-#' @param cutadapt_data directory_data folder with trimmed and filtered reads
-#'   for each sample
+#' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
 #' @keywords internal
 get_fastq_paths <- function(data_tables, my_direction, my_primer_pair_id) {
   filtered_paths <- character()
@@ -262,7 +264,7 @@ make_seqhist <- function(asv_abund_matrix, output_directory_path) {
     
     hist_plot <- ggplot2::ggplot(data, ggplot2::aes(x = Length)) +
       ggplot2::geom_histogram(binwidth = 10, fill = "blue", color = "black", alpha = 0.7, ) +
-      ggplot2::labs(x = 'Length of sequence (bp)', y = 'Counts', title = paste("ASV lengths for", barcode, "locus")) +
+      ggplot2::labs(x = 'Length of sequence (bp)', y = 'Counts', title = paste("ASV lengths for", barcode, "metabarcode")) +
       ggplot2::theme_minimal()+
       ggplot2::theme(panel.grid = ggplot2::element_blank())
     

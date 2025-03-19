@@ -13,15 +13,14 @@ process_single_barcode(
   tryRC = FALSE,
   verbose = FALSE,
   multithread = FALSE,
-  locus = barcode,
+  metabarcode = barcode,
   barcode_params
 )
 }
 \arguments{
 \item{data_tables}{The data tables containing the paths to read files, metadata, primer sequences}
 
-\item{asv_abund_matrix}{An abundance matrix containing amplified sequence
-variants}
+\item{asv_abund_matrix}{The final abundance matrix containing amplified sequence variants}
 }
 \description{
 Process the information from an ASV abundance matrix to run DADA2 for single

@@ -1,3 +1,5 @@
+utils::globalVariables(c("f_compt", "f_rc", "f_rev", "forward", "primer_type", "r_compt", "r_rc", "r_rev", "reverse"))
+
 #' Set up directory paths for subsequent analyses
 #'
 #' This function sets up the directory paths for subsequent analyses. It checks
@@ -65,7 +67,7 @@ setup_directories <- function(data_directory = "data",
 #'   the orient_primers function.
 #' @param metadata_path The path to the metadata file.
 #'
-#' @return A dataframe containing the merged metadata and primer data.
+#' @return A data frame containing the merged metadata and primer data.
 #'
 #' @keywords internal
 prepare_metadata_table <-
@@ -138,7 +140,7 @@ orient_primers <- function(primers_params_path) {
 #' @return A data frame with information on the DADA2 parameters.
 #'
 #' @keywords internal
-read_parameters <- function(primers_params_path) {
+read_parameters_table <- function(primers_params_path) {
   params_data_path <- file.path(primers_params_path)
   param_data <- readr::read_csv(params_data_path)
   parameters <- param_data[, c(1, 4:ncol(param_data))]
@@ -382,6 +384,7 @@ get_pre_primer_hits <-
     
     make_primer_hit_plot(primer_hit_data, output_directory_path)
   }
+
 #' Prepare for primmer trimming with Cutaapt. Make new sub-directories and
 #' specify paths for the trimmed and untrimmed reads
 #'
@@ -511,7 +514,7 @@ prepare_reads <- function(data_directory = "data",
     if (file.exists(existing_analysis_table)) {
       load(existing_analysis_table)
       message(
-        "Existing data detected: Primer counts and N's may have been removed from previous runs. Loading existing output. To perform a new analysis, specify overwrite_existing = TRUE."
+        "Existing analysis setup tables detected. To perform a new analysis, specify overwrite_existing = TRUE."
       )
     } else {
       warning(
@@ -536,7 +539,7 @@ prepare_reads <- function(data_directory = "data",
   }
   
   primer_data <- orient_primers(primers_params_path)
-  parameters <- read_parameters(primers_params_path)
+  parameters <- read_parameters_table(primers_params_path)
   metadata <- prepare_metadata_table(metadata_path, primer_data)
   
   multithread <- if ("multithread" %in% names(parameters)) {

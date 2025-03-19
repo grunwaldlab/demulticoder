@@ -1,3 +1,5 @@
+utils::globalVariables(c("f_compt", "f_rc", "f_rev", "forward", "primer_type", "r_compt", "r_rc", "r_rev", "reverse", "filter_results"))
+
 #' Core function for running cutadapt
 #'
 #' @param cutadapt_path A path to the cutadapt program.

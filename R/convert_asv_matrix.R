@@ -1,6 +1,5 @@
 #' Filter ASV abundance matrix and convert to taxmap and phyloseq objects
-#' @importFrom utils modifyList read.table stack
-#' 
+#' @importFrom utils modifyList read.table stack 
 #' @param analysis_setup analysis_setup An object containing directory paths and
 #'   data tables, produced by the `prepare_reads` function
 #' @param min_read_depth ASV filter parameter. If mean read depth of across all

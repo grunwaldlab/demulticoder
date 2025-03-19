@@ -23,7 +23,7 @@ assign_tax(
 \item{analysis_setup}{An object containing directory paths and data tables,
 produced by the \code{prepare_reads} function}
 
-\item{asv_abund_matrix}{ASV abundance matrix.}
+\item{asv_abund_matrix}{The final abundance matrix containing amplified sequence variants}
 
 \item{tryRC}{Whether to try reverse complementing sequences during taxonomic
 assignment}
@@ -38,15 +38,15 @@ directory to the output directory}
 \item{overwrite_existing}{Logical, indicating whether to remove or overwrite
 existing files and directories from previous runs. Default is \code{FALSE}.}
 
-\item{db_rps10}{The reference database for the rps10 locus}
+\item{db_rps10}{The reference database for the rps10 metabarcode}
 
-\item{db_its}{The reference database for the ITS locus}
+\item{db_its}{The reference database for the ITS metabarcode}
 
-\item{db_16S}{The reference database for the 16S locus}
+\item{db_16S}{The reference database for the 16S metabarcode}
 
-\item{db_other1}{The reference database for different locus 1 (assumes format is like SILVA DB entries)}
+\item{db_other1}{The reference database for different metabarcode 1 (assumes format is like SILVA DB entries)}
 
-\item{db_other2}{The reference database for a different locus 2 (assumes format is like SILVA DB entries)}
+\item{db_other2}{The reference database for a different metabarcode 2 (assumes format is like SILVA DB entries)}
 }
 \value{
 Taxonomic assignments of each unique ASV sequence

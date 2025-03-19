@@ -9,14 +9,13 @@ format_abund_matrix(
   asv_abund_matrix,
   seq_tax_asv,
   output_directory_path,
-  locus
+  metabarcode
 )
 }
 \arguments{
 \item{data_tables}{The data tables containing the paths to read files, metadata, primer sequences}
 
-\item{asv_abund_matrix}{An abundance matrix containing amplified sequence
-variants}
+\item{asv_abund_matrix}{The final abundance matrix containing amplified sequence variants}
 
 \item{seq_tax_asv}{An amplified sequence variants matrix with taxonomic
 information}
