@@ -99,7 +99,7 @@ assignTax_as_char <- function(tax_results, temp_directory_path, metabarcode) {
 }
 
 #' Format ASV abundance matrix
-#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
+#' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param asv_abund_matrix The final abundance matrix containing amplified sequence variants
 #' @param seq_tax_asv An amplified sequence variants matrix with taxonomic
 #'   information
@@ -195,7 +195,7 @@ get_read_counts <- function(asv_abund_matrix, temp_directory_path, output_direct
 #' Process the information from an ASV abundance matrix to run DADA2 for single
 #' barcode
 #'
-#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
+#' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param asv_abund_matrix The final abundance matrix containing amplified sequence variants
 #' @inheritParams RcppParallel::setThreadOptions
 #'
@@ -245,12 +245,11 @@ process_single_barcode <-
 #' @param db_rps10 The reference database for the rps10 metabarcode
 #' @param db_its The reference database for the ITS metabarcode
 #' @param db_16S The reference database for the 16S metabarcode
-#' @param db_other1 The reference database for different metabarcode 1 (assumes format is like SILVA DB entries)
-#' @param db_other2 The reference database for a different metabarcode 2 (assumes format is like SILVA DB entries)
+#' @param db_other1 The reference database for other metabarcode 1 (assumes format is like SILVA DB entries)
+#' @param db_other2 The reference database for other metabarcode 2 (assumes format is like SILVA DB entries)
 #' @param verbose Logical, indicating whether to display verbose output
-#' @param multithread Logical, indicating whether to use multithreading
-#' @param retrieve_files Specify TRUE/FALSE whether to copy files from the temp
-#'   directory to the output directory
+#' @param multithread Logical, indicating whether to multithread
+#' @param retrieve_files Logical, TRUE/FALSE whether to copy files from the temp directory to the output directory. Default is FALSE.
 #' @param overwrite_existing Logical, indicating whether to remove or overwrite
 #'   existing files and directories from previous runs. Default is `FALSE`.
 #'

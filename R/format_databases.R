@@ -1,7 +1,7 @@
 utils::globalVariables(c("data_other1", "db_other1", "data_other2", "db_other2"))
 
 #' Create modified reference rps10 database for downstream analysis
-#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
+#' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param data_path Path to the data directory
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
@@ -50,7 +50,7 @@ format_db_rps10 <- function(data_tables, data_path, output_directory_path, temp_
 }
 #' An ITS database that has modified headers and is output in the
 #' reference_databases folder
-#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
+#' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param data_path Path to the data directory
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
@@ -101,7 +101,7 @@ format_db_its <- function(data_tables, data_path, output_directory_path, temp_di
 
 #' An 16S database that has modified headers and is output in the
 #' reference_databases folder
-#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
+#' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param data_path Path to the data directory
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
@@ -152,7 +152,7 @@ format_db_16S <- function(data_tables, data_path, output_directory_path, temp_di
 }
 
 #' An other, user-specified database that is initially in the format specified by DADA2 with header simply taxonomic levels (kingdom down to species, separated by semi-colons, ;)
-#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
+#' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param data_path Path to the data directory
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
@@ -209,7 +209,7 @@ format_db_other1 <-function(data_tables, data_path, output_directory_path, temp_
 #' by DADA2 with header simply taxonomic levels (kingdom down to species,
 #' separated by semi-colons, ;)
 #' 
-#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
+#' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param data_path Path to the data directory
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
@@ -262,7 +262,7 @@ format_db_other2 <-function(data_tables, data_path, output_directory_path, temp_
 
 #' General functions to format user-specified databases
 #' @importFrom utils modifyList read.table stack
-#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
+#' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param data_path Path to the data directory
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output

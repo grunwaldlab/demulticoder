@@ -7,10 +7,10 @@ utils::globalVariables(c("f_compt", "f_rc", "f_rev", "forward", "primer_type", "
 #' The function also provides paths to primer and metadata files within the data
 #' directory.
 #'
-#' @param data_directory User-specified directory path where the user has placed
+#' @param data_directory Directory path where the user has placed
 #'   raw FASTQ (forward and reverse reads), metadata.csv, and
 #'   primerinfo_params.csv files. Default is "data".
-#' @param output_directory User-specified directory for outputs. Default is
+#' @param output_directory User-specified directory path for outputs. Default is
 #'   "output".
 #' @param tempdir_path Path to a temporary directory. If `NULL`, a temporary
 #'   directory path will be identified using the `tempdir()` command.
@@ -151,8 +151,8 @@ read_parameters_table <- function(primers_params_path) {
 #' paths to files that will be created and used in the future. Included in a
 #' larger 'read_prefilt_fastq' function.
 #'
-#' @param data_directory_path The path to the directory containing the FASTQ,
-#'   metadata, and primer_info files
+#' @param data_directory_path The path to the directory containing raw FASTQ (forward and reverse reads), metadata.csv, and
+#'   primerinfo_params.csv files
 #' @param temp_directory_path User-defined temporary directory to place reads
 #'   throughout the workflow.
 #'
@@ -217,8 +217,8 @@ primer_check <- function(fastq_data) {
 #'
 #' @inheritParams dada2::filterAndTrim
 #'
-#' @param data_directory_path The path to the directory containing the FASTQ,
-#'   metadata.csv, and primerinfo_params.csv files
+#' @param data_directory_path The path to the directory containing raw FASTQ (forward and reverse reads), metadata.csv, and
+#'   primerinfo_params.csv files
 #' @param temp_directory_path User-defined temporary directory to output
 #'   unfiltered, trimmed, and filtered read directories throughout the workflow
 #'
@@ -462,7 +462,7 @@ make_cutadapt_tibble <-
 #' Prepare reads for primer trimming using Cutadapt
 #' 
 #' @importFrom utils modifyList read.table stack
-#' @param data_directory User-specified directory path where the user has placed
+#' @param data_directory Directory path where the user has placed
 #'   raw FASTQ (forward and reverse reads), metadata.csv, and
 #'   primerinfo_params.csv files. Default is "data".
 #' @param output_directory User-specified directory for outputs. Default is

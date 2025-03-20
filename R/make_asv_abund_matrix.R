@@ -1,11 +1,10 @@
 utils::globalVariables(c("Length", "Merged", "Total", "barcode", "dada_forward","dada_reverse", "merged_reads", "primer_name", "value", "asv_abund_matrix"))
 
 #' Retrieve the paths of the filtered and trimmed Fastq files
-#' @param data_tables The data tables containing the paths to read files, 
-#'   metadata, primer sequences
+#' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param my_direction Whether primer is in forward or reverse direction
 #' @param my_primer_pair_id The the specific barcode id
-#' @param cutadapt_data Directory with reads trimmed of primers
+#' @param cutadapt_data FASTQ read files trimmed of primers
 #' @keywords internal
 get_fastq_paths <- function(data_tables, my_direction, my_primer_pair_id) {
   filtered_paths <- character()
@@ -20,9 +19,8 @@ get_fastq_paths <- function(data_tables, my_direction, my_primer_pair_id) {
   filtered_paths
 }
 #' Core DADA2 function to learn errors and infer ASVs
-#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
-#' @param output_directory_path The path to the directory containing the fastq,
-#' metadata, and primerinfo_params files
+#' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
+#' @param output_directory_path The path to the directory where resulting files are output
 #' @param my_primer_pair_id The the specific barcode id 
 #' @param my_direction Location of read files and metadata file
 #' @return asv_data
@@ -78,7 +76,7 @@ infer_asvs <- function(data_tables,my_direction, my_primer_pair_id, barcode_para
 }
 
 #' Function to infer ASVs, for multiple loci
-#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
+#' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param output_directory_path The path to the directory where resulting files are output
 #' @param denoised_data_path Path to saved intermediate denoised data
 #' @keywords internal
@@ -151,7 +149,7 @@ merge_reads_command <- function(output_directory_path, temp_directory_path, barc
 }
 
 #' Count overlap to see how well the reads were merged
-#' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
+#' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param merged_reads Intermediate merged read R data file
 #' @param barcode The metabarcode used throughout the workflow (applicable options: 'rps10', 'its', 'r16S', 'other1', other2')
 #' @param output_directory_path The path to the directory where resulting files

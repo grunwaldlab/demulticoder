@@ -3,9 +3,9 @@ utils::globalVariables(c("f_compt", "f_rc", "f_rev", "forward", "primer_type", "
 #' Core function for running cutadapt
 #'
 #' @param cutadapt_path A path to the cutadapt program.
-#' @param cutadapt_data Directory with reads trimmed of primers
+#' @param cutadapt_data FASTQ read files trimmed of primers
 #' @param minCutadaptlength Read lengths that are lower than this threshold will
-#'   be discarded. Default is 50.
+#'   be discarded. Default is 0.
 #'
 #' @return Trimmed read.
 #'
@@ -81,7 +81,7 @@ run_cutadapt <- function(cutadapt_path,
 #'
 #' @inheritParams dada2::plotQualityProfile
 #'
-#' @param cutadapt_data Directory with reads trimmed of primers
+#' @param cutadapt_data FASTQ read files trimmed of primers
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
 #' @param seed Set seed for reproducibility
@@ -115,7 +115,7 @@ plot_qc <- function(cutadapt_data, output_directory_path, n = 500000, barcode_pa
 #' @inheritParams dada2::filterAndTrim
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
-#' @param cutadapt_data_barcode Metabarcode-specific read files trimmed of primers
+#' @param cutadapt_data_barcode Metabarcode-specific FASTQ read files trimmed of primers
 #'
 #' @return Filtered and trimmed reads
 #'
@@ -176,7 +176,7 @@ filter_and_trim <- function(output_directory_path,
 #' Get primer counts for reach sample after primer removal and trimming steps
 #'
 #' @param primer_data The primer data frame created in orient_primers function
-#' @param cutadapt_data Directory with reads trimmed of primers
+#' @param cutadapt_data FASTQ read files trimmed of primers
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
 #'
@@ -244,7 +244,7 @@ get_post_trim_hits <- function(primer_data, cutadapt_data, output_directory_path
 #' Wrapper script for plotQualityProfile after trim steps and primer removal.
 #'
 #' @inheritParams dada2::plotQualityProfile
-#' @param cutadapt_data Directory with reads trimmed of primers
+#' @param cutadapt_data FASTQ read files trimmed of primers
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
 #'
