@@ -87,7 +87,7 @@ Already loaded in the test data set directory are the following files:
   * New row for each unique sample
   * Samples entered twice if samples contain two pooled metabolites, as in the test data template
 * [**primerinfo_params.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv)
-  * New row for each unique barcode and associated primer sequence
+  * New row for each unique metabarcode (applicable options: 'rps10', 'its', 'r16S', 'other1', 'other2') and associated primer sequence
   * Optional cutadapt and DADA2 parameters
 * **Taxonomy databases**  
   * UNITE fungal database (abridged version)

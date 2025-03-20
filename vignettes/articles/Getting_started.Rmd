@@ -49,7 +49,7 @@ library("kableExtra")
 * A template is [here](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv).  
 * The only two **required** columns (with these headers) are:  
   * Column 1. **sample_name**  
-  * Column 2. **primer_info**  
+  * Column 2. **primer_info** (applicable options: 'rps10', 'its', 'r16S', 'other1', other2')
 
 **Additional columns**  
 

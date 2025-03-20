@@ -268,7 +268,7 @@ format_db_other2 <-function(data_tables, data_path, output_directory_path, temp_
 #'   are output
 #' @param temp_directory_path User-defined temporary directory to place reads
 #'   throughout the workflow metadata, and primer_info files
-#' @param barcode The barcode for which the database should be formatted
+#' @param barcode The metabarcode used throughout the workflow (applicable options: 'rps10', 'its', 'r16S', 'other1', other2')
 #'
 #' @return A formatted database based on the specified barcode type
 #'

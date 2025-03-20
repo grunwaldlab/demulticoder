@@ -5,7 +5,7 @@ utils::globalVariables(c("Length", "Merged", "Total", "barcode", "dada_forward",
 #'   metadata, primer sequences
 #' @param my_direction Whether primer is in forward or reverse direction
 #' @param my_primer_pair_id The the specific barcode id
-#' @param cutadapt_data directory_data folder with trimmed and filtered reads for each sample
+#' @param cutadapt_data Directory with reads trimmed of primers
 #' @keywords internal
 get_fastq_paths <- function(data_tables, my_direction, my_primer_pair_id) {
   filtered_paths <- character()
@@ -153,7 +153,7 @@ merge_reads_command <- function(output_directory_path, temp_directory_path, barc
 #' Count overlap to see how well the reads were merged
 #' @param data_tables The data tables containing the paths to read files, metadata, primer sequences
 #' @param merged_reads Intermediate merged read R data file
-#' @param barcode The barcode used for the analysis
+#' @param barcode The metabarcode used throughout the workflow (applicable options: 'rps10', 'its', 'r16S', 'other1', other2')
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
 #' @keywords internal
@@ -239,7 +239,7 @@ make_abund_matrix <- function(raw_seqtab,
 #' Plots a histogram of read length counts of all sequences within the ASV
 #' matrix
 #'
-#' @param asv_abund_matrix The returned final ASV abundance matrix
+#' @param asv_abund_matrix The final abundance matrix containing amplified sequence variants
 #' @keywords internal
 #' @return histogram with read length counts of all sequences within ASV matrix
 #' @keywords internal
@@ -264,7 +264,7 @@ make_seqhist <- function(asv_abund_matrix, output_directory_path) {
     
     hist_plot <- ggplot2::ggplot(data, ggplot2::aes(x = Length)) +
       ggplot2::geom_histogram(binwidth = 10, fill = "blue", color = "black", alpha = 0.7, ) +
-      ggplot2::labs(x = 'Length of sequence (bp)', y = 'Counts', title = paste("ASV lengths for", barcode, "metabarcode")) +
+      ggplot2::labs(x = 'Length of sequence (bp)', y = 'Counts', title = paste("ASV lengths for", barcode, "metabarode")) +
       ggplot2::theme_minimal()+
       ggplot2::theme(panel.grid = ggplot2::element_blank())
     
@@ -283,7 +283,7 @@ make_seqhist <- function(asv_abund_matrix, output_directory_path) {
 #' 
 #' @importFrom utils modifyList read.table stack
 #' 
-#' @param analysis_setup analysis_setup An object containing directory paths and
+#' @param analysis_setup An object containing directory paths and
 #'   data tables, produced by the `prepare_reads` function
 #' @param overwrite_existing Logical, indicating whether to overwrite existing
 #'   results. Default is FALSE.
