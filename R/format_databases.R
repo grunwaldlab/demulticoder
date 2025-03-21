@@ -5,11 +5,9 @@ utils::globalVariables(c("data_other1", "db_other1", "data_other2", "db_other2")
 #' @param data_path Path to the data directory
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
-#' @param temp_directory_path User-defined temporary directory to place reads
-#'   throughout the workflow metadata, and primer_info files
-#' @param db_rps10 The name of the database
-#' @return A rps10 database that has modified headers and is output in the
-#'   reference_databases folder.
+#' @param temp_directory_path User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow
+#' @param db_rps10 The oomyceteDB rps10 reference database provided by the user
+#' @return The oomyceteDB database with modified headers
 #' @keywords internal
 
 format_db_rps10 <- function(data_tables, data_path, output_directory_path, temp_directory_path, db_rps10) {
@@ -54,11 +52,9 @@ format_db_rps10 <- function(data_tables, data_path, output_directory_path, temp_
 #' @param data_path Path to the data directory
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
-#' @param temp_directory_path User-defined temporary directory to place reads
-#'   throughout the workflow metadata, and primer_info files
-#' @param db_its The name of the database
-#' @return An ITS database that has modified headers and is output in the
-#'   reference_databases folder.
+#' @param temp_directory_path User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow
+#' @param db_its The UNITE ITS reference database provided by the user
+#' @return The UNITE ITS database with modified headers
 #' @keywords internal
 format_db_its <- function(data_tables, data_path, output_directory_path, temp_directory_path, db_its) {
   database_path <- file.path(temp_directory_path, "its_reference_db.fa")
@@ -105,12 +101,10 @@ format_db_its <- function(data_tables, data_path, output_directory_path, temp_di
 #' @param data_path Path to the data directory
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
-#' @param temp_directory_path User-defined temporary directory to place reads
-#'   throughout the workflow metadata, and primer_info files
-#' @param db_16S The name of the database
+#' @param temp_directory_path User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow
+#' @param db_16S The SILVA 16S rRNA reference database provided by the user
 #'
-#' @return An 16S database that has modified headers and is output in the
-#'   reference_databases folder
+#' @return The SILVA 16S rRNA database with modified headers
 #'
 #' @keywords internal
 format_db_16S <- function(data_tables, data_path, output_directory_path, temp_directory_path, db_16S) {
@@ -156,14 +150,10 @@ format_db_16S <- function(data_tables, data_path, output_directory_path, temp_di
 #' @param data_path Path to the data directory
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
-#' @param temp_directory_path User-defined temporary directory to place reads
-#'   throughout the workflow metadata, and primer_info files
-#' @param db_other1 The name of the database
+#' @param temp_directory_path User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow
+#' @param db_other1 A reference database other than SILVA, UNITE, or oomyceteDB (assumes format is like SILVA DB entries)
 #'
-#' @return A database (other than SILVA, UNITE, and oomyceteDB that has modified headers and is output in the
-#'   reference_databases folder
-#' 
-#' @return An other database that has modified headers and is output in the reference_databases folder.
+#' @return The database with modified headers
 #' 
 #' @keywords internal
 format_db_other1 <-function(data_tables, data_path, output_directory_path, temp_directory_path, db_other1){
@@ -213,12 +203,10 @@ format_db_other1 <-function(data_tables, data_path, output_directory_path, temp_
 #' @param data_path Path to the data directory
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
-#' @param temp_directory_path User-defined temporary directory to place reads
-#'   throughout the workflow metadata, and primer_info files
-#' @param db_other2 The name of the database
+#' @param temp_directory_path User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow
+#' @param db_other2 A second reference database other than SILVA, UNITE, or oomyceteDB (assumes format is like SILVA DB entries)
 #'
-#' @return An second database (other than SILVA, UNITE, and oomyceteDB that has modified headers and is output in the
-#'   reference_databases folder
+#' @return The database with modified headers
 #'
 #' @keywords internal
 format_db_other2 <-function(data_tables, data_path, output_directory_path, temp_directory_path, db_other2){
@@ -266,11 +254,10 @@ format_db_other2 <-function(data_tables, data_path, output_directory_path, temp_
 #' @param data_path Path to the data directory
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
-#' @param temp_directory_path User-defined temporary directory to place reads
-#'   throughout the workflow metadata, and primer_info files
-#' @param barcode The metabarcode used throughout the workflow (applicable options: 'rps10', 'its', 'r16S', 'other1', other2')
+#' @param temp_directory_path User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow
+#' @param metabarcode The metabarcode used throughout the workflow (applicable options: 'rps10', 'its', 'r16S', 'other1', other2')
 #'
-#' @return A formatted database based on the specified barcode type
+#' @return A formatted database for the specified metabarcode type(s)
 #'
 #' @keywords internal
 format_database <- function(data_tables, data_path, output_directory_path, temp_directory_path, barcode, db_its, db_rps10, db_16S, db_other1, db_other2) {

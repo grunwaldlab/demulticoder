@@ -3,7 +3,7 @@ utils::globalVariables(c("Length", "Merged", "Total", "barcode", "dada_forward",
 #' Retrieve the paths of the filtered and trimmed Fastq files
 #' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param my_direction Whether primer is in forward or reverse direction
-#' @param my_primer_pair_id The the specific barcode id
+#' @param my_primer_pair_id The specific metabarcode ID
 #' @param cutadapt_data FASTQ read files trimmed of primers
 #' @keywords internal
 get_fastq_paths <- function(data_tables, my_direction, my_primer_pair_id) {
@@ -21,8 +21,8 @@ get_fastq_paths <- function(data_tables, my_direction, my_primer_pair_id) {
 #' Core DADA2 function to learn errors and infer ASVs
 #' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param output_directory_path The path to the directory where resulting files are output
-#' @param my_primer_pair_id The the specific barcode id 
-#' @param my_direction Location of read files and metadata file
+#' @param my_primer_pair_id The specific metabarcode ID
+#' @param my_direction Whether primer is in forward or reverse direction
 #' @return asv_data
 #' @keywords internal
 infer_asvs <- function(data_tables,my_direction, my_primer_pair_id, barcode_params, output_directory_path) {
@@ -78,7 +78,7 @@ infer_asvs <- function(data_tables,my_direction, my_primer_pair_id, barcode_para
 #' Function to infer ASVs, for multiple loci
 #' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param output_directory_path The path to the directory where resulting files are output
-#' @param denoised_data_path Path to saved intermediate denoised data
+#' @param denoised_data_path The path to the saved intermediate denoised data
 #' @keywords internal
 infer_asv_command <- function(output_directory_path, temp_directory_path, data_tables, barcode_params, barcode) {
   
@@ -122,8 +122,8 @@ infer_asv_command <- function(output_directory_path, temp_directory_path, data_t
 #' @inheritParams dada2::mergePairs
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
-#' @param merged_read_data_path Path to R data file containing merged read data
-#' @return merged_reads Intermediate merged read R data file
+#' @param merged_read_data_path Path to RData file containing the intermediate merged read data
+#' @return merged_reads Intermediate merged read RData file
 #' @keywords internal
 merge_reads_command <- function(output_directory_path, temp_directory_path, barcode_params, barcode) {
   denoised_data_path <- file.path(temp_directory_path, paste0("Denoised_data_", barcode, ".RData"))
@@ -150,7 +150,7 @@ merge_reads_command <- function(output_directory_path, temp_directory_path, barc
 
 #' Count overlap to see how well the reads were merged
 #' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
-#' @param merged_reads Intermediate merged read R data file
+#' @param merged_reads Intermediate merged read RData file
 #' @param barcode The metabarcode used throughout the workflow (applicable options: 'rps10', 'its', 'r16S', 'other1', other2')
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
@@ -206,7 +206,7 @@ countOverlap <- function(data_tables, merged_reads, barcode, output_directory_pa
 #' Make ASV sequence matrix
 #'
 #' @inheritParams dada2::makeSequenceTable
-#' @param merged_reads Intermediate merged read R data file
+#' @param merged_reads Intermediate merged read RData file
 #' @return raw_seqtab
 #' @keywords internal
 createASVSequenceTable <- function(merged_reads, orderBy = "abundance", barcode_params) {
@@ -218,8 +218,7 @@ createASVSequenceTable <- function(merged_reads, orderBy = "abundance", barcode_
 #' Quality filtering to remove chimeras and short sequences
 #'
 #' @inheritParams dada2::removeBimeraDenovo
-#' @param raw_seqtab R data file with raw sequence data prior to removal of
-#'   chimeras
+#' @param raw_seqtab An RData file containing intermediate read data before chimeras were removed
 #' @return asv_abund_matrix The returned final ASV abundance matrix
 #' @keywords internal
 make_abund_matrix <- function(raw_seqtab,

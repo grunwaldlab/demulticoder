@@ -133,10 +133,14 @@ Below are the parameters that can be input into the **primerinfo_params.csv** fi
 
 * **method**: Method for sample inference ("consensus" or "pooled") (default: "consensus")
 
+**DADA2 assignTaxonomy function parameters:**  
+
+* **minBoot**: The minimum bootstrap confidence for assigning a taxonomic level (default: 0)  
+* **tryRC**: If TRUE, the reverse-complement of each sequences will be used for classification if it is a better match to the reference sequences than the forward sequence (default is FALSE)  
+
 **Other parameters to include in CSV input file:**  
 
-* **min_asv_length**: Minimum length of Amplicon Sequence Variants (ASVs) after core dada ASV inference steps (default=0)  
-
+* **min_asv_length**: Minimum length of Amplicon Sequence Variants (ASVs) after core dada ASV inference steps (default = 0)    
 * **seed**: For greater reproducibility, user can specify an integer to set as a seed to use when the following DADA2 functions are run: **plotQualityProfile**, **learnErrors**, **dada**, **makeSequenceTable**, and **assignTaxonomy** (default: NULL)  
 
 Example file (with select optional columns after forward and reverse primer sequence columns):

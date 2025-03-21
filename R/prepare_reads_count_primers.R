@@ -14,9 +14,7 @@ utils::globalVariables(c("f_compt", "f_rc", "f_rev", "forward", "primer_type", "
 #'   "output".
 #' @param tempdir_path Path to a temporary directory. If `NULL`, a temporary
 #'   directory path will be identified using the `tempdir()` command.
-#' @param tempdir_id ID for temporary directories. Default is
-#'   "demulticoder_run". The user can provide any helpful ID, whether it be a
-#'   date or specific name for the run.
+#' @param tempdir_id ID for temporary directories. The user can provide any helpful ID, whether it be a date or specific name for the run. Default is "demulticoder_run"
 #'
 #' @return A list with paths for data, output, temporary directories, primer,
 #'   and metadata files.
@@ -63,8 +61,7 @@ setup_directories <- function(data_directory = "data",
 #' Read metadata file from user and combine and reformat it, given primer data.
 #' Included in a larger function prepare_reads.
 #'
-#' @param primer_data A data frame of oriented primer information returned from
-#'   the orient_primers function.
+#' @param primer_data Primer data frame created using the orient_primers function to parse information on forward and reverse primer sequences.
 #' @param metadata_path The path to the metadata file.
 #'
 #' @return A data frame containing the merged metadata and primer data.
@@ -152,9 +149,8 @@ read_parameters_table <- function(primers_params_path) {
 #' larger 'read_prefilt_fastq' function.
 #'
 #' @param data_directory_path The path to the directory containing raw FASTQ (forward and reverse reads), metadata.csv, and
-#'   primerinfo_params.csv files
-#' @param temp_directory_path User-defined temporary directory to place reads
-#'   throughout the workflow.
+#'   primerinfo_params.csv files.
+#' @param temp_directory_path User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow
 #'
 #' @return A data frame with the FASTQ file paths, primer orientations and
 #'   sequences, and parsed sample names
@@ -189,8 +185,7 @@ read_fastq <- function(data_directory_path,
 
 #' Matching Order Primer Check
 #'
-#' @param fastq_data A data frame with the FASTQ file paths, the direction of
-#'   the sequences, and names of sequences
+#' @param fastq_data A data frame containing the read file paths and the direction of the reads by sample
 #'
 #' @return None
 #'
@@ -219,8 +214,7 @@ primer_check <- function(fastq_data) {
 #'
 #' @param data_directory_path The path to the directory containing raw FASTQ (forward and reverse reads), metadata.csv, and
 #'   primerinfo_params.csv files
-#' @param temp_directory_path User-defined temporary directory to output
-#'   unfiltered, trimmed, and filtered read directories throughout the workflow
+#' @param temp_directory_path User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow
 #'
 #' @return Returns filtered reads that have no Ns
 #'
@@ -241,13 +235,8 @@ read_prefilt_fastq <-
 #'
 #' @inheritParams dada2::filterAndTrim
 #'
-#' @param fastq_data A data frame with the fastq file paths, the direction of
-#'   the sequences, and names of sequences metadata, and primer_info files
-#'
-#' @param metadata A metadata containing the concatenated metadata and primer
-#'   data
-#' @param temp_directory_path User-defined temporary directory to output
-#'   unfiltered, trimmed, and filtered read directories throughout the workflow
+#' @param fastq_data A data frame containing the read file paths and the direction of the reads by sample
+#' @param temp_directory_path User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow
 #' @return Return prefiltered reads with no Ns
 #'
 #' @keywords internal
@@ -278,10 +267,8 @@ remove_ns <-
 #'
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
-#' @param primer_data The primer data data frame created in orient_primers
-#'   function
-#' @param fastq_data A data frame with the FASTQ file paths, the direction of
-#'   the sequences, and names of sequences
+#' @param primer_data Primer data frame created using the orient_primers function to parse information on forward and reverse primer sequences.
+#' @param fastq_data A data frame containing the read file paths and the direction of the reads by sample
 #'
 #' @return The number of reads in which the primer is found
 #'
@@ -290,10 +277,8 @@ remove_ns <-
 #'
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
-#' @param primer_data The primer data data frame created in orient_primers
-#'   function
-#' @param fastq_data A data frame with the FASTQ file paths, the direction of
-#'   the sequences, and names of sequences
+#' @param primer_data Primer data frame created using the orient_primers function to parse information on forward and reverse primer sequences.
+#' @param fastq_data A data frame containing the read file paths and the direction of the reads by sample
 #'
 #' @return The number of reads in which the primer is found
 #'
@@ -388,12 +373,9 @@ get_pre_primer_hits <-
 #' Prepare for primmer trimming with Cutaapt. Make new sub-directories and
 #' specify paths for the trimmed and untrimmed reads
 #'
-#' @param fastq_data A path to FASTQ files for analysis metadata, and
-#'   primer_info files
-#' @param metadata Loaded metadata pairing the user's metadata file with the
-#'   primer data
-#' @param temp_directory_path User-defined temporary directory to output
-#'   unfiltered, trimmed, and filtered read directories throughout the workflow
+#' @param fastq_data A data frame containing the read file paths and the direction of the reads by sample
+#' @param metadata_primer_data A data frame combining the metadata and primer data 
+#' @param temp_directory_path User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow
 #'
 #' @return Returns a larger data frame containing paths to temporary read
 #'   directories, which is used as input when running Cutadapt
@@ -401,9 +383,9 @@ get_pre_primer_hits <-
 #' @keywords internal
 make_cutadapt_tibble <-
   function(fastq_data,
-           metadata,
+           metadata_primer_data,
            temp_directory_path) {
-    cutadapt_data <- merge(metadata, fastq_data, by = "sample_name")
+    cutadapt_data <- merge(metadata_primers, fastq_data, by = "sample_name")
     
     # Directory for trimmed sequences
     trimmed_read_dir <- file.path(temp_directory_path, "trimmed_sequences")
@@ -469,9 +451,7 @@ make_cutadapt_tibble <-
 #'   "output".
 #' @param tempdir_path Path to a temporary directory. If `NULL`, a temporary
 #'   directory path will be identified using the `tempdir()` command.
-#' @param tempdir_id ID for temporary directories. Default is
-#'   "demulticoder_run". The user can provide any helpful ID, whether it be a
-#'   date or specific name for the run.
+#' @param tempdir_id ID for temporary directories. The user can provide any helpful ID, whether it be a date or specific name for the run. Default is "demulticoder_run"
 #' @param overwrite_existing Logical, indicating whether to remove or overwrite
 #'   existing files and directories from previous runs. Default is `FALSE`.
 #'
@@ -540,7 +520,7 @@ prepare_reads <- function(data_directory = "data",
   
   primer_data <- orient_primers(primers_params_path)
   parameters <- read_parameters_table(primers_params_path)
-  metadata <- prepare_metadata_table(metadata_path, primer_data)
+  metadata_primer_data <- prepare_metadata_table(metadata_path, primer_data)
   
   multithread <- if ("multithread" %in% names(parameters)) {
     parameters$multithread[1]
@@ -553,13 +533,13 @@ prepare_reads <- function(data_directory = "data",
   pre_primer_hit_data <-
     get_pre_primer_hits(primer_data, fastq_data, output_directory_path)
   cutadapt_data <-
-    make_cutadapt_tibble(fastq_data, metadata, temp_directory_path)
+    make_cutadapt_tibble(fastq_data, metadata_primer_data, temp_directory_path)
   data_tables <- list(
     cutadapt_data = cutadapt_data,
     primer_data = primer_data,
     fastq_data = fastq_data,
     parameters = parameters,
-    metadata = metadata
+    metadata_primer_data = metadata_primer_data
   )
   
   analysis_setup <-

@@ -175,7 +175,7 @@ filter_and_trim <- function(output_directory_path,
 
 #' Get primer counts for reach sample after primer removal and trimming steps
 #'
-#' @param primer_data The primer data frame created in orient_primers function
+#' @param primer_data Primer data frame created using the orient_primers function to parse information on forward and reverse primer sequences
 #' @param cutadapt_data FASTQ read files trimmed of primers
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output

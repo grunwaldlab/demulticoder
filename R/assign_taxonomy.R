@@ -2,9 +2,8 @@ utils::globalVariables("filter_results")
 
 #' Prepare final ASV abundance matrix
 #'
-#' @param directory_data folder with trimmed and filtered reads for each sample
 #' @param asv_abund_matrix The final abundance matrix containing amplified sequence variants
-#' @param metabarcode The barcode selected in the analysis
+#' @param metabarcode The metabarcode used throughout the workflow (applicable options: 'rps10', 'its', 'r16S', 'other1', other2')
 #'
 #' @keywords internal
 prep_abund_matrix <-function(cutadapt_data, asv_abund_matrix, data_tables, metabarcode){
@@ -16,16 +15,12 @@ prep_abund_matrix <-function(cutadapt_data, asv_abund_matrix, data_tables, metab
 #' Assign taxonomy
 #'
 #' @inheritParams RcppParallel::setThreadOptions
-#' @param asv_abund_matrix The final abundance matrix containing amplified sequence variants
-#' @param temp_directory_path The temporary directory path
-#' @param minBoot Minimum bootstrap value for taxonomy assignment (default 0)
-#' @param tryRC Try reverse complement (default FALSE)
-#' @param verbose Print additional information (default FALSE)
-#' @param multithread Use multiple threads (default TRUE)
-#' @param metabarcode The metabarcode for taxonomy assignment (e.g., rps10, other1, other2)
+#' @param asv_abund_matrix The final abundance matrix containing amplified sequence variants.
+#' @param temp_directory_path User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow
+#' @param metabarcode The metabarcode used throughout the workflow (applicable options: 'rps10', 'its', 'r16S', 'other1', other2')
 #'
 #' @keywords internal
-assign_taxonomyDada2 <- function(asv_abund_matrix, temp_directory_path, minBoot = 0, tryRC = FALSE, verbose = FALSE, multithread = TRUE, metabarcode = "barcode", barcode_params) {
+assign_taxonomyDada2 <- function(asv_abund_matrix, temp_directory_path, metabarcode = "barcode", barcode_params) {
   
   set.seed(barcode_params$seed)
   refFasta_raw <- file.path(temp_directory_path, paste0(metabarcode, "_reference_db.fa"))
@@ -55,20 +50,20 @@ assign_taxonomyDada2 <- function(asv_abund_matrix, temp_directory_path, minBoot 
     tax_results <- dada2::assignTaxonomy(asv_abund_matrix,
                                          refFasta,
                                          taxLevels = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species", "Reference"),
-                                         minBoot = minBoot,
-                                         tryRC = tryRC,
+                                         minBoot = barcode_params$minBoot,
+                                         tryRC = barcode_params$tryRC,
                                          outputBootstraps = TRUE,
-                                         multithread = multithread)
+                                         multithread = barcode_params$multithread)
   } else {
     refFasta <- refFasta_raw
     # For other loci, use standard taxLevels
     tax_results <- dada2::assignTaxonomy(asv_abund_matrix,
                                          refFasta,
                                          taxLevels = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"),
-                                         minBoot = minBoot,
-                                         tryRC = tryRC,
+                                         minBoot = barcode_params$minBoot,
+                                         tryRC = barcode_params$tryRC,
                                          outputBootstraps = TRUE,
-                                         multithread = multithread)
+                                         multithread = barcode_params$multithread)
   }
   
   tax_matrix_path <- file.path(temp_directory_path, paste0("TaxMatrix_", metabarcode, ".RData"))
@@ -205,9 +200,6 @@ process_single_barcode <-
            temp_directory_path,
            output_directory_path,
            asv_abund_matrix,
-           tryRC = FALSE,
-           verbose = FALSE,
-           multithread = FALSE,
            metabarcode = barcode,
            barcode_params)
   {
@@ -219,15 +211,16 @@ process_single_barcode <-
       assign_taxonomyDada2(
         abund_asv_single,
         temp_directory_path,
-        tryRC = tryRC,
-        verbose = verbose,
-        multithread = multithread,
-        metabarcode=metabarcode,
-        barcode_params = barcode_params
+        barcode_params = barcode_params,
+        verbose = barcode_params$verbose,
+        multithread = barcode_params$multithread,
+        tryRC = barcode_params$tryRC, 
+        metabarcode = metabarcode
       )
     #single_pids_asv <- get_pids(tax_results_single_asv, temp_directory_path, output_directory_path, refdb, metabarcode)
     #tax_results_single_asv_pid <-
     #add_pid_to_tax(tax_results_single_asv, single_pids_asv)
+    
     seq_tax_asv <- assignTax_as_char(tax_results_single_asv, temp_directory_path, metabarcode)
     formatted_abund_asv <-
       format_abund_matrix(data_tables, asv_abund_matrix, seq_tax_asv, output_directory_path, metabarcode)
@@ -240,15 +233,11 @@ process_single_barcode <-
 #' @param analysis_setup An object containing directory paths and data tables,
 #'   produced by the `prepare_reads` function
 #' @param asv_abund_matrix The final abundance matrix containing amplified sequence variants
-#' @param tryRC Whether to try reverse complementing sequences during taxonomic
-#'   assignment
 #' @param db_rps10 The reference database for the rps10 metabarcode
 #' @param db_its The reference database for the ITS metabarcode
-#' @param db_16S The reference database for the 16S metabarcode
+#' @param db_16S The SILVA 16S-rRNA reference database provided by the user
 #' @param db_other1 The reference database for other metabarcode 1 (assumes format is like SILVA DB entries)
 #' @param db_other2 The reference database for other metabarcode 2 (assumes format is like SILVA DB entries)
-#' @param verbose Logical, indicating whether to display verbose output
-#' @param multithread Logical, indicating whether to multithread
 #' @param retrieve_files Logical, TRUE/FALSE whether to copy files from the temp directory to the output directory. Default is FALSE.
 #' @param overwrite_existing Logical, indicating whether to remove or overwrite
 #'   existing files and directories from previous runs. Default is `FALSE`.
@@ -285,15 +274,20 @@ process_single_barcode <-
 #' overwrite_existing = TRUE
 #' )
 #' }
-assign_tax <- function(analysis_setup, asv_abund_matrix, tryRC = FALSE, verbose = FALSE, multithread = FALSE, retrieve_files = FALSE, overwrite_existing = FALSE, db_rps10 = "oomycetedb.fasta", db_its = "fungidb.fasta", db_16S = "bacteriadb.fasta", db_other1 = "otherdb1.fasta", db_other2 = "otherdb2.fasta") {
+assign_tax <- function(analysis_setup, asv_abund_matrix, retrieve_files = FALSE, overwrite_existing = FALSE, db_rps10 = "oomycetedb.fasta", db_its = "fungidb.fasta", db_16S = "bacteriadb.fasta", db_other1 = "otherdb1.fasta", db_other2 = "otherdb2.fasta") {
   data_tables <- analysis_setup$data_tables
   data_path <- analysis_setup$directory_paths$data_directory
-  output_directory_path <- analysis_setup$directory_paths$output_directo
+  output_directory_path <- analysis_setup$directory_paths$output_directory
   temp_directory_path <- analysis_setup$directory_paths$temp_directory
   unique_barcodes <- unique(data_tables$cutadapt_data$primer_name)
   
   default_params <- list(
-    seed = NULL)
+    seed = NULL,
+    verbose = FALSE,
+    multithread = FALSE,
+    tryRC = FALSE, 
+    minBoot = 0
+  )
   
   files_to_check <- c("*_reference_db.fa", "TaxMatrix_*", "Final_tax_matrix_*")
   existing_files <- list.files(temp_directory_path, pattern = files_to_check, full.names = TRUE)
