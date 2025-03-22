@@ -292,7 +292,6 @@ get_read_counts <-
     track$samplename_barcode <-
       track$samplename_barcode <-
       gsub("(R1_|.fastq(.gz)?)$", "", track$samplename_barcode)
-    output_format <- knitr::opts_knit$get("rmarkdown.pandoc.to")
     print(track)
     track_read_counts_path <-
       file.path(output_directory_path,

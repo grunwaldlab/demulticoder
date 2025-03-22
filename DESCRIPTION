@@ -7,7 +7,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Depends: R (>= 3.0.2)
 Imports: furrr, purrr, readr, stringr, tidyr, dplyr, ggplot2, tibble, utils
-Suggests: BiocManager, Biostrings, dada2, metacoder, ShortRead, phyloseq, rmarkdown, RcppParallel, devtools
+Suggests: BiocManager, Biostrings, dada2, metacoder, ShortRead, phyloseq, rmarkdown, RcppParallel
 Roxygen: list(markdown = TRUE)
 Config/testthat/edition: 3
 URL: https://grunwaldlab.github.io/demulticoder/
