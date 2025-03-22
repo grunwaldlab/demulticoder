@@ -77,11 +77,12 @@
 </h3>
 <ul>
 <li>In the following example, we demonstrate key package functionality
-using the test dataset that is included in the package</li>
+using the test data set that is included in the package</li>
 <li>You can follow along because all test data and associated CSV input
 files are contained in the package.</li>
-<li>Additional examples are also available under the [Example
-vignettes]tab</li>
+<li>Additional examples are also available under <a href="https://grunwaldlab.github.io/demulticoder/articles/DADA2_16S_mothur_validation.html" class="external-link">Example
+vignettes</a>
+</li>
 </ul>
 </div>
 <div class="section level3">
@@ -584,20 +585,20 @@ reorganized in preparation for running Cutadapt to remove primers.</p>
 <span>  data_directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"demulticoder"</span><span class="op">)</span>,</span>
 <span>  output_directory <span class="op">=</span> <span class="st">"~/demulticoder_test"</span>, <span class="co">#Run commands from a Terminal window", </span></span>
 <span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">2</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">24</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">2</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">25</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
 <span><span class="co">#&gt; <span style="color: #BB0000;">chr</span>  (3): primer_name, forward, reverse</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (17): minCutadaptlength, maxN, maxEE_forward, maxEE_reverse, truncLen_fo...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (18): minCutadaptlength, maxN, maxEE_forward, maxEE_reverse, truncLen_fo...</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">lgl</span>  (4): already_trimmed, count_all_samples, multithread, verbose</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">2</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">24</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">2</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">25</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
 <span><span class="co">#&gt; <span style="color: #BB0000;">chr</span>  (3): primer_name, forward, reverse</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (17): minCutadaptlength, maxN, maxEE_forward, maxEE_reverse, truncLen_fo...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (18): minCutadaptlength, maxN, maxEE_forward, maxEE_reverse, truncLen_fo...</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">lgl</span>  (4): already_trimmed, count_all_samples, multithread, verbose</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
@@ -609,7 +610,7 @@ reorganized in preparation for running Cutadapt to remove primers.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
-<span><span class="co">#&gt; Creating output directory: /tmp/RtmpFo3vTQ/demulticoder_run/prefiltered_sequences</span></span></code></pre></div>
+<span><span class="co">#&gt; Creating output directory: /tmp/RtmpHgwaPE/demulticoder_run/prefiltered_sequences</span></span></code></pre></div>
 <p><img src="prepare_for_analysis-1.png" width="70%"></p>
 </div>
 <div class="section level3">
@@ -678,10 +679,10 @@ installed it</strong></p>
 <span><span class="co">#&gt; Sample 2 - 1506 reads in 1284 unique sequences.</span></span></code></pre>
 <p><img src="ASV_inference-3.png" width="70%"><img src="ASV_inference-4.png" width="70%"></p>
 <pre><code><span><span class="co">#&gt; $its</span></span>
-<span><span class="co">#&gt; [1] "/tmp/RtmpFo3vTQ/demulticoder_run/asvabund_matrixDADA2_its.RData"</span></span>
+<span><span class="co">#&gt; [1] "/tmp/RtmpHgwaPE/demulticoder_run/asvabund_matrixDADA2_its.RData"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $rps10</span></span>
-<span><span class="co">#&gt; [1] "/tmp/RtmpFo3vTQ/demulticoder_run/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
+<span><span class="co">#&gt; [1] "/tmp/RtmpHgwaPE/demulticoder_run/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="taxonomic-assignment-step">Taxonomic assignment step<a class="anchor" aria-label="anchor" href="#taxonomic-assignment-step"></a>
@@ -743,10 +744,10 @@ from R Studio.</p>
 <span><span class="co">#&gt; 5    GAAAATCTTTGTGTCGGTGGTTCAAGTCCGCCTCCAAACATCTTATAAAAATGTATGTATATTTTACGAATTAGTTTTAAATCAGTAGAAAAAATAAATGAATTAAAAAAAAATATCTCAAAAATAAAAAAAATATATAATTTTAAAAATTTAAAAGTAAAATGGTATTTTTAGAACAAAAAATAAAAATAAAATTTTTACATTATTAAAATCACCCCATGTTAATAAAAAATCACGTGAACATTTTATATATAAAAATTATATTCAAAAAATTGATTTAAATTTTTCAAATTTTTTTCAATTATTAAATTTTTTAGTAATTTTAAAAAAAACATTATCTAAAGATTTTTTAATCAATATTAAAATTATTAAAAAAAATAAAAAAATATGCTTATAGCTTAATGGATAAAGCGTTAGATTGCGGATCTATAAAATGAA</span></span>
 <span><span class="co">#&gt;                                                                                                                                                                                                                   dada2_tax</span></span>
 <span><span class="co">#&gt; 1 Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Peronosporales--26--Order;Peronosporaceae--26--Family;Phytophthora--23--Genus;Phytophthora_sp.kununurra--13--Species;oomycetedb_650--13--Reference</span></span>
-<span><span class="co">#&gt; 2                    Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Pythium--100--Genus;Pythium_dissotocum--53--Species;oomycetedb_750--27--Reference</span></span>
-<span><span class="co">#&gt; 3 Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Globisporangium--100--Genus;Globisporangium_cylindrosporum--27--Species;oomycetedb_41--27--Reference</span></span>
+<span><span class="co">#&gt; 2                      Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Pythium--100--Genus;Pythium_lutarium--24--Species;oomycetedb_764--24--Reference</span></span>
+<span><span class="co">#&gt; 3 Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Globisporangium--100--Genus;Globisporangium_cylindrosporum--26--Species;oomycetedb_41--26--Reference</span></span>
 <span><span class="co">#&gt; 4                   Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--94--Order;Pythiaceae--94--Family;Pythium--89--Genus;Pythium_aphanidermatum--19--Species;oomycetedb_727--19--Reference</span></span>
-<span><span class="co">#&gt; 5                    Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Pythium--100--Genus;Pythium_oopapillum--66--Species;oomycetedb_771--66--Reference</span></span>
+<span><span class="co">#&gt; 5                    Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Pythium--100--Genus;Pythium_oopapillum--65--Species;oomycetedb_771--65--Reference</span></span>
 <span><span class="co">#&gt;   S1_rps10 S2_rps10</span></span>
 <span><span class="co">#&gt; 1      842       17</span></span>
 <span><span class="co">#&gt; 2      578      220</span></span>

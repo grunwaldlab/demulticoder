@@ -19,9 +19,9 @@ library("kableExtra")
 
 ### Before You Start
 
-* In the following example, we demonstrate key package functionality using the test dataset that is included in the package
+* In the following example, we demonstrate key package functionality using the test data set that is included in the package
 * You can follow along because all test data and associated CSV input files are contained in the package. 
-* Additional examples are also available under the [Example vignettes]tab
+* Additional examples are also available under [Example vignettes ](https://grunwaldlab.github.io/demulticoder/articles/DADA2_16S_mothur_validation.html)
 
 ### Components of the test dataset  
 

@@ -150,8 +150,7 @@ assignTax_as_char <-
 #' Format ASV abundance matrix
 #' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param asv_abund_matrix The final abundance matrix containing amplified sequence variants
-#' @param seq_tax_asv An amplified sequence variants matrix with taxonomic
-#'   information
+#' @param seq_tax_asv An amplified sequence variants matrix with taxonomic information
 #'
 #' @keywords internal
 
