@@ -8,3 +8,4 @@ future_vignettes
 .httr-oauth
 .DS_Store
 .quarto
+pkgdown
