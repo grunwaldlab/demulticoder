@@ -8,7 +8,7 @@ step}
 remove_ns(fastq_data, multithread, temp_directory_path)
 }
 \arguments{
-\item{fastq_data}{A data frame containing the read file paths and the direction of the reads by sample}
+\item{fastq_data}{A \code{data.frame} containing the read file paths and the direction of the reads by sample}
 
 \item{multithread}{(Optional). Default is FALSE.
  If TRUE, input files are filtered in parallel via \code{\link[parallel]{mclapply}}.

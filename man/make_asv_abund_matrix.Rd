@@ -40,7 +40,7 @@ cutadapt_path="/usr/bin/cutadapt",
 overwrite_existing = TRUE
 )
 make_asv_abund_matrix(
-analysis_setup, 
+analysis_setup,
 overwrite_existing = TRUE
 )
 }

@@ -7,7 +7,7 @@
 primer_check(fastq_data)
 }
 \arguments{
-\item{fastq_data}{A data frame containing the read file paths and the direction of the reads by sample}
+\item{fastq_data}{A \code{data.frame} containing the read file paths and the direction of the reads by sample}
 }
 \value{
 None

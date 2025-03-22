@@ -8,14 +8,14 @@ specify paths for the trimmed and untrimmed reads}
 make_cutadapt_tibble(fastq_data, metadata_primer_data, temp_directory_path)
 }
 \arguments{
-\item{fastq_data}{A data frame containing the read file paths and the direction of the reads by sample}
+\item{fastq_data}{A \code{data.frame} containing the read file paths and the direction of the reads by sample}
 
-\item{metadata_primer_data}{A data frame combining the metadata and primer data}
+\item{metadata_primer_data}{A \code{data.frame} combining the metadata and primer data}
 
 \item{temp_directory_path}{User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow}
 }
 \value{
-Returns a larger data frame containing paths to temporary read
+Returns a larger \code{data.frame} containing paths to temporary read
 directories, which is used as input when running Cutadapt
 }
 \description{

@@ -3,7 +3,7 @@
 \name{orient_primers}
 \alias{orient_primers}
 \title{Take in user's forward and reverse sequences and creates the complement,
-reverse, reverse complement of primers in one data frame}
+reverse, reverse complement of primers in one \code{data.frame}}
 \usage{
 orient_primers(primers_params_path)
 }
@@ -12,10 +12,10 @@ orient_primers(primers_params_path)
 information.}
 }
 \value{
-A data frame with oriented primer information.
+A \code{data.frame} with oriented primer information.
 }
 \description{
 Take in user's forward and reverse sequences and creates the complement,
-reverse, reverse complement of primers in one data frame
+reverse, reverse complement of primers in one \code{data.frame}
 }
 \keyword{internal}

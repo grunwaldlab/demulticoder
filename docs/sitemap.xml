@@ -4,10 +4,10 @@
 <url><loc>/articles/DADA2_16S_mothur_validation.html</loc></url>
 <url><loc>/articles/Documentation.html</loc></url>
 <url><loc>/articles/Getting_started.html</loc></url>
-<url><loc>/articles/Pooled_barcode_example.html</loc></url>
 <url><loc>/articles/index.html</loc></url>
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
 <url><loc>/reference/add_pid_to_tax.html</loc></url>
 <url><loc>/reference/assignTax_as_char.html</loc></url>
 <url><loc>/reference/assign_tax.html</loc></url>
@@ -48,6 +48,7 @@
 <url><loc>/reference/process_single_barcode.html</loc></url>
 <url><loc>/reference/read_fastq.html</loc></url>
 <url><loc>/reference/read_parameters.html</loc></url>
+<url><loc>/reference/read_parameters_table.html</loc></url>
 <url><loc>/reference/read_prefilt_fastq.html</loc></url>
 <url><loc>/reference/remove_ns.html</loc></url>
 <url><loc>/reference/run_cutadapt.html</loc></url>

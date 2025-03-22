@@ -7,7 +7,7 @@
 get_post_trim_hits(primer_data, cutadapt_data, output_directory_path)
 }
 \arguments{
-\item{primer_data}{Primer data frame created using the orient_primers function to parse information on forward and reverse primer sequences.}
+\item{primer_data}{Primer \code{data.frame} created using the orient_primers function to parse information on forward and reverse primer sequences.}
 
 \item{cutadapt_data}{FASTQ read files trimmed of primers}
 

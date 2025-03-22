@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_reads_count_primers.R
 \name{read_fastq}
 \alias{read_fastq}
-\title{Takes in the FASTQ files from the user and creates a data frame with the
+\title{Takes in the FASTQ files from the user and creates a \code{data.frame} with the
 paths to files that will be created and used in the future. Included in a
 larger 'read_prefilt_fastq' function.}
 \usage{
@@ -12,14 +12,14 @@ read_fastq(data_directory_path, temp_directory_path)
 \item{data_directory_path}{The path to the directory containing raw FASTQ (forward and reverse reads), metadata.csv, and
 primerinfo_params.csv files.}
 
-\item{temp_directory_path}{User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow}
+\item{temp_directory_path}{User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow.}
 }
 \value{
-A data frame with the FASTQ file paths, primer orientations and
-sequences, and parsed sample names
+A \code{data.frame} with the FASTQ file paths, primer orientations and
+sequences, and parsed sample names.
 }
 \description{
-Takes in the FASTQ files from the user and creates a data frame with the
+Takes in the FASTQ files from the user and creates a \code{data.frame} with the
 paths to files that will be created and used in the future. Included in a
 larger 'read_prefilt_fastq' function.
 }

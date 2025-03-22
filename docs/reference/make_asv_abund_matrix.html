@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">demulticoder</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,7 +52,7 @@
 
 
 <dl><dt id="arg-analysis-setup">analysis_setup<a class="anchor" aria-label="anchor" href="#arg-analysis-setup"></a></dt>
-<dd><p>analysis_setup An object containing directory paths and
+<dd><p>An object containing directory paths and
 data tables, produced by the <code>prepare_reads</code> function</p></dd>
 
 
@@ -74,7 +74,8 @@ To do this, the DADA2 core denoising alogrithm is used to infer ASVs.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># The primary wrapper function for DADA2 ASV inference steps</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span><span class="co"># The primary wrapper function for DADA2 ASV inference steps</span></span></span>
 <span class="r-in"><span><span class="va">analysis_setup</span> <span class="op">&lt;-</span> <span class="fu"><a href="prepare_reads.html">prepare_reads</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data_directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"demulticoder"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  output_directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
@@ -82,108 +83,16 @@ To do this, the DADA2 core denoising alogrithm is used to infer ASVs.</p>
 <span class="r-in"><span>  tempdir_id <span class="op">=</span> <span class="st">"demulticoder_run_temp"</span>,</span></span>
 <span class="r-in"><span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">2</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">24</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Delimiter:</span> ","</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">chr</span>  (3): primer_name, forward, reverse</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">dbl</span> (17): minCutadaptlength, maxN, maxEE_forward, maxEE_reverse, truncLen_fo...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">lgl</span>  (4): already_trimmed, count_all_samples, multithread, verbose</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">2</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">24</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Delimiter:</span> ","</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">chr</span>  (3): primer_name, forward, reverse</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">dbl</span> (17): minCutadaptlength, maxN, maxEE_forward, maxEE_reverse, truncLen_fo...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">lgl</span>  (4): already_trimmed, count_all_samples, multithread, verbose</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">4</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">3</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Delimiter:</span> ","</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">chr</span> (3): sample_name, primer_name, organism</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Creating output directory: /tmp/RtmpDKKfYO/demulticoder_run_temp/prefiltered_sequences</span>
-<span class="r-plt img"><img src="make_asv_abund_matrix-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="cut_trim.html">cut_trim</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span><span class="va">analysis_setup</span>,</span></span>
 <span class="r-in"><span>cutadapt_path<span class="op">=</span><span class="st">"/usr/bin/cutadapt"</span>,</span></span>
 <span class="r-in"><span>overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Existing analysis files found. Overwriting existing files.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Running Cutadapt 3.5 for its sequence data </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Read in 2564 paired-sequences, output 1479 (57.7%) filtered paired-sequences.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Read in 1996 paired-sequences, output 1215 (60.9%) filtered paired-sequences.</span>
-<span class="r-plt img"><img src="make_asv_abund_matrix-2.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Running Cutadapt 3.5 for rps10 sequence data </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Read in 1830 paired-sequences, output 1429 (78.1%) filtered paired-sequences.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Read in 2090 paired-sequences, output 1506 (72.1%) filtered paired-sequences.</span>
-<span class="r-plt img"><img src="make_asv_abund_matrix-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">make_asv_abund_matrix</span><span class="op">(</span></span></span>
-<span class="r-in"><span><span class="va">analysis_setup</span>, </span></span>
+<span class="r-in"><span><span class="va">analysis_setup</span>,</span></span>
 <span class="r-in"><span>overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 710804 total bases in 2694 reads from 2 samples will be used for learning the error rates.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Initializing error rates to maximum possible estimate.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> selfConsist step 1 ..</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    selfConsist step 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    selfConsist step 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Convergence after  3  rounds.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error rate plot for the Forward read of primer pair its </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #00BB00;">log-10</span> transformation introduced infinite values.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample 1 - 1479 reads in 660 unique sequences.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample 2 - 1215 reads in 613 unique sequences.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 724230 total bases in 2694 reads from 2 samples will be used for learning the error rates.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Initializing error rates to maximum possible estimate.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> selfConsist step 1 ..</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    selfConsist step 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    selfConsist step 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Convergence after  3  rounds.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error rate plot for the Reverse read of primer pair its </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #00BB00;">log-10</span> transformation introduced infinite values.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample 1 - 1479 reads in 1019 unique sequences.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample 2 - 1215 reads in 814 unique sequences.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 1315 paired-reads (in 21 unique pairings) successfully merged out of 1416 (in 32 pairings) input.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences in merged output.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 1063 paired-reads (in 25 unique pairings) successfully merged out of 1108 (in 28 pairings) input.</span>
-<span class="r-plt img"><img src="make_asv_abund_matrix-4.png" alt="" width="700" height="433"></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Duplicate sequences detected and merged.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Identified 0 bimeras out of 38 input sequences.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 824778 total bases in 2935 reads from 2 samples will be used for learning the error rates.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Initializing error rates to maximum possible estimate.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> selfConsist step 1 ..</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    selfConsist step 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Convergence after  2  rounds.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error rate plot for the Forward read of primer pair rps10 </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #00BB00;">log-10</span> transformation introduced infinite values.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample 1 - 1429 reads in 933 unique sequences.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample 2 - 1506 reads in 1018 unique sequences.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 821851 total bases in 2935 reads from 2 samples will be used for learning the error rates.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Initializing error rates to maximum possible estimate.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> selfConsist step 1 ..</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    selfConsist step 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    selfConsist step 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Convergence after  3  rounds.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error rate plot for the Reverse read of primer pair rps10 </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span><span style="color: #00BB00;">log-10</span> transformation introduced infinite values.</span>
-<span class="r-plt img"><img src="make_asv_abund_matrix-5.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample 1 - 1429 reads in 1044 unique sequences.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample 2 - 1506 reads in 1284 unique sequences.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 1420 paired-reads (in 2 unique pairings) successfully merged out of 1422 (in 4 pairings) input.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 1503 paired-reads (in 5 unique pairings) successfully merged out of 1504 (in 6 pairings) input.</span>
-<span class="r-plt img"><img src="make_asv_abund_matrix-6.png" alt="" width="700" height="433"></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Identified 0 bimeras out of 5 input sequences.</span>
-<span class="r-plt img"><img src="make_asv_abund_matrix-7.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $its</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpDKKfYO/demulticoder_run_temp/asvabund_matrixDADA2_its.RData"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $rps10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpDKKfYO/demulticoder_run_temp/asvabund_matrixDADA2_rps10.RData"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

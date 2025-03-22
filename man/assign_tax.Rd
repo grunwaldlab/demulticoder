@@ -62,13 +62,13 @@ cutadapt_path="/usr/bin/cutadapt",
 overwrite_existing = TRUE
 )
 make_asv_abund_matrix(
-analysis_setup, 
+analysis_setup,
 overwrite_existing = TRUE
 )
 assign_tax(
 analysis_setup,
-asv_abund_matrix, 
-retrieve_files=FALSE, 
+asv_abund_matrix,
+retrieve_files=FALSE,
 overwrite_existing = TRUE
 )
 }

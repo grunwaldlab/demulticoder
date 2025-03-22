@@ -11,7 +11,7 @@ read_parameters_table(primers_params_path)
 information.}
 }
 \value{
-A data frame with information on the DADA2 parameters.
+A \code{data.frame} with information on the DADA2 parameters.
 }
 \description{
 Take in user's DADA2 parameters and make a dataframe for downstream steps

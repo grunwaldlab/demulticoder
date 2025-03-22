@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">demulticoder</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -138,8 +138,8 @@ has the following two required columns:</p>
 <strong>sample_name</strong>: Identifier for each sample (e.g., S1,
 S2)</li>
 <li>
-<strong>primer_name</strong>: Name of the primer used (e.g., rps10,
-its, r16S, other1, other2)</li>
+<strong>primer_name</strong>: Name of the primer used (applicable
+options: ‘rps10’, ‘its’, ‘r16S’, ‘other1’, ‘other2’)</li>
 </ul>
 <p>Please add your associated metadata to the file after these two
 required columns. This can then be used for your downstream exploratory
@@ -292,17 +292,30 @@ overlap region (default: 0)</li>
 <strong>method</strong>: Method for sample inference (“consensus” or
 “pooled”) (default: “consensus”)</li>
 </ul>
+<p><strong>DADA2 assignTaxonomy function parameters:</strong></p>
+<ul>
+<li>
+<strong>minBoot</strong>: The minimum bootstrap confidence for
+assigning a taxonomic level (default: 0)<br>
+</li>
+<li>
+<strong>tryRC</strong>: If TRUE, the reverse-complement of each
+sequences will be used for classification if it is a better match to the
+reference sequences than the forward sequence (default is FALSE)</li>
+</ul>
 <p><strong>Other parameters to include in CSV input file:</strong></p>
 <ul>
-<li><p><strong>min_asv_length</strong>: Minimum length of Amplicon
-Sequence Variants (ASVs) after core dada ASV inference steps
-(default=0)</p></li>
-<li><p><strong>seed</strong>: For greater reproducibility, user can
-specify an integer to set as a seed to use when the following DADA2
-functions are run: <strong>plotQualityProfile</strong>,
+<li>
+<strong>min_asv_length</strong>: Minimum length of Amplicon Sequence
+Variants (ASVs) after core dada ASV inference steps (default = 0)<br>
+</li>
+<li>
+<strong>seed</strong>: For greater reproducibility, user can specify
+an integer to set as a seed to use when the following DADA2 functions
+are run: <strong>plotQualityProfile</strong>,
 <strong>learnErrors</strong>, <strong>dada</strong>,
 <strong>makeSequenceTable</strong>, and <strong>assignTaxonomy</strong>
-(default: NULL)</p></li>
+(default: NULL)</li>
 </ul>
 <p>Example file (with select optional columns after forward and reverse
 primer sequence columns):</p>

@@ -26,7 +26,7 @@ If samples are comprised of two different barcodes (like ITS1 and rps10), reads 
 }
 \examples{
 \dontrun{
-# Remove remaining primers from raw reads, demultiplex pooled barcoded samples, 
+# Remove remaining primers from raw reads, demultiplex pooled barcoded samples,
 # and then trim reads based on specific DADA2 parameters
 analysis_setup <- prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
@@ -37,7 +37,7 @@ analysis_setup <- prepare_reads(
 )
 cut_trim(
 analysis_setup,
-cutadapt_path="/usr/bin/cutadapt", 
+cutadapt_path="/usr/bin/cutadapt",
 overwrite_existing = TRUE
 )
 }

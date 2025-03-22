@@ -7,9 +7,9 @@
 get_pre_primer_hits(primer_data, fastq_data, output_directory_path)
 }
 \arguments{
-\item{primer_data}{Primer data frame created using the orient_primers function to parse information on forward and reverse primer sequences.}
+\item{primer_data}{Primer \code{data.frame} created using the orient_primers function to parse information on forward and reverse primer sequences.}
 
-\item{fastq_data}{A data frame containing the read file paths and the direction of the reads by sample}
+\item{fastq_data}{A \code{data.frame} containing the read file paths and the direction of the reads by sample}
 
 \item{output_directory_path}{The path to the directory where resulting files
 are output}

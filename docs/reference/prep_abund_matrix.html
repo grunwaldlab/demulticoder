@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">demulticoder</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,7 +44,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prep_abund_matrix</span><span class="op">(</span><span class="va">cutadapt_data</span>, <span class="va">asv_abund_matrix</span>, <span class="va">data_tables</span>, <span class="va">locus</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prep_abund_matrix</span><span class="op">(</span><span class="va">cutadapt_data</span>, <span class="va">asv_abund_matrix</span>, <span class="va">data_tables</span>, <span class="va">metabarcode</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -52,15 +52,11 @@
 
 
 <dl><dt id="arg-asv-abund-matrix">asv_abund_matrix<a class="anchor" aria-label="anchor" href="#arg-asv-abund-matrix"></a></dt>
-<dd><p>The returned final ASV abundance matrix</p></dd>
+<dd><p>The final abundance matrix containing amplified sequence variants</p></dd>
 
 
-<dt id="arg-locus">locus<a class="anchor" aria-label="anchor" href="#arg-locus"></a></dt>
-<dd><p>The barcode selected in the analysis</p></dd>
-
-
-<dt id="arg-directory-data">directory_data<a class="anchor" aria-label="anchor" href="#arg-directory-data"></a></dt>
-<dd><p>folder with trimmed and filtered reads for each sample</p></dd>
+<dt id="arg-metabarcode">metabarcode<a class="anchor" aria-label="anchor" href="#arg-metabarcode"></a></dt>
+<dd><p>The metabarcode used throughout the workflow (applicable options: 'rps10', 'its', 'r16S', 'other1', other2')</p></dd>
 
 </dl></div>
 

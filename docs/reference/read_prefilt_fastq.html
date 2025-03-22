@@ -11,7 +11,7 @@ primers with Cutadapt. Part of a larger 'prepare_reads' function."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">demulticoder</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,8 +62,8 @@ primers with Cutadapt. Part of a larger 'prepare_reads' function.</p>
 
 
 <dl><dt id="arg-data-directory-path">data_directory_path<a class="anchor" aria-label="anchor" href="#arg-data-directory-path"></a></dt>
-<dd><p>The path to the directory containing the FASTQ,
-metadata.csv, and primerinfo_params.csv files</p></dd>
+<dd><p>The path to the directory containing raw FASTQ (forward and reverse reads), metadata.csv, and
+primerinfo_params.csv files</p></dd>
 
 
 <dt id="arg-multithread">multithread<a class="anchor" aria-label="anchor" href="#arg-multithread"></a></dt>
@@ -77,8 +77,7 @@ If memory is an issue, execute in a clean environment and reduce the chunk size 
 
 
 <dt id="arg-temp-directory-path">temp_directory_path<a class="anchor" aria-label="anchor" href="#arg-temp-directory-path"></a></dt>
-<dd><p>User-defined temporary directory to output
-unfiltered, trimmed, and filtered read directories throughout the workflow</p></dd>
+<dd><p>User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow</p></dd>
 
 </dl></div>
     <div class="section level2">

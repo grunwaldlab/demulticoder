@@ -30,7 +30,7 @@ are output}
 \item{metabarcode}{The metabarcode used throughout the workflow (applicable options: 'rps10', 'its', 'r16S', 'other1', other2')}
 }
 \value{
-A formatted database for the specified metabarcode type(s)
+Formatted database(s) for the specified metabarcode type(s)
 }
 \description{
 General functions to format user-specified databases
