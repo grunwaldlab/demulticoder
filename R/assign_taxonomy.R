@@ -248,7 +248,7 @@ format_abund_matrix <-
 
 #' Final inventory of read counts after each step from input to removal of chimeras. This function deals with if you have more than one sample. TODO optimize for one sample
 #'
-#' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
+#' @param asv_abund_matrix The final abundance matrix containing amplified sequence variants
 #'
 #' @keywords internal
 get_read_counts <-
