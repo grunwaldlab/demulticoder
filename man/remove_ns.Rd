@@ -8,8 +8,7 @@ step}
 remove_ns(fastq_data, multithread, temp_directory_path)
 }
 \arguments{
-\item{fastq_data}{A data frame with the fastq file paths, the direction of
-the sequences, and names of sequences metadata, and primer_info files}
+\item{fastq_data}{A data frame containing the read file paths and the direction of the reads by sample}
 
 \item{multithread}{(Optional). Default is FALSE.
  If TRUE, input files are filtered in parallel via \code{\link[parallel]{mclapply}}.
@@ -19,11 +18,7 @@ the sequences, and names of sequences metadata, and primer_info files}
 If memory is an issue, execute in a clean environment and reduce the chunk size \code{n} and/or
  the number of threads.}
 
-\item{temp_directory_path}{User-defined temporary directory to output
-unfiltered, trimmed, and filtered read directories throughout the workflow}
-
-\item{metadata}{A metadata containing the concatenated metadata and primer
-data}
+\item{temp_directory_path}{User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow}
 }
 \value{
 Return prefiltered reads with no Ns

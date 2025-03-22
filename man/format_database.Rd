@@ -18,20 +18,19 @@ format_database(
 )
 }
 \arguments{
-\item{data_tables}{The data tables containing the paths to read files, metadata, primer sequences}
+\item{data_tables}{The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences}
 
 \item{data_path}{Path to the data directory}
 
 \item{output_directory_path}{The path to the directory where resulting files
 are output}
 
-\item{temp_directory_path}{User-defined temporary directory to place reads
-throughout the workflow metadata, and primer_info files}
+\item{temp_directory_path}{User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow}
 
-\item{barcode}{The barcode for which the database should be formatted}
+\item{metabarcode}{The metabarcode used throughout the workflow (applicable options: 'rps10', 'its', 'r16S', 'other1', other2')}
 }
 \value{
-A formatted database based on the specified barcode type
+A formatted database for the specified metabarcode type(s)
 }
 \description{
 General functions to format user-specified databases

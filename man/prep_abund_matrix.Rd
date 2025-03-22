@@ -9,9 +9,7 @@ prep_abund_matrix(cutadapt_data, asv_abund_matrix, data_tables, metabarcode)
 \arguments{
 \item{asv_abund_matrix}{The final abundance matrix containing amplified sequence variants}
 
-\item{metabarcode}{The barcode selected in the analysis}
-
-\item{directory_data}{folder with trimmed and filtered reads for each sample}
+\item{metabarcode}{The metabarcode used throughout the workflow (applicable options: 'rps10', 'its', 'r16S', 'other1', other2')}
 }
 \description{
 Prepare final ASV abundance matrix

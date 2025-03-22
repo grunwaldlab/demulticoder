@@ -14,21 +14,19 @@ format_db_16S(
 )
 }
 \arguments{
-\item{data_tables}{The data tables containing the paths to read files, metadata, primer sequences}
+\item{data_tables}{The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences}
 
 \item{data_path}{Path to the data directory}
 
 \item{output_directory_path}{The path to the directory where resulting files
 are output}
 
-\item{temp_directory_path}{User-defined temporary directory to place reads
-throughout the workflow metadata, and primer_info files}
+\item{temp_directory_path}{User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow}
 
-\item{db_16S}{The name of the database}
+\item{db_16S}{The SILVA 16S rRNA reference database provided by the user}
 }
 \value{
-An 16S database that has modified headers and is output in the
-reference_databases folder
+The SILVA 16S rRNA database with modified headers
 }
 \description{
 An 16S database that has modified headers and is output in the

@@ -7,7 +7,7 @@
 make_asv_abund_matrix(analysis_setup, overwrite_existing = FALSE)
 }
 \arguments{
-\item{analysis_setup}{analysis_setup An object containing directory paths and
+\item{analysis_setup}{An object containing directory paths and
 data tables, produced by the \code{prepare_reads} function}
 
 \item{overwrite_existing}{Logical, indicating whether to overwrite existing

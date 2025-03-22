@@ -7,11 +7,11 @@
 countOverlap(data_tables, merged_reads, barcode, output_directory_path)
 }
 \arguments{
-\item{data_tables}{The data tables containing the paths to read files, metadata, primer sequences}
+\item{data_tables}{The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences}
 
-\item{merged_reads}{Intermediate merged read R data file}
+\item{merged_reads}{Intermediate merged read RData file}
 
-\item{barcode}{The barcode used for the analysis}
+\item{barcode}{The metabarcode used throughout the workflow (applicable options: 'rps10', 'its', 'r16S', 'other1', other2')}
 
 \item{output_directory_path}{The path to the directory where resulting files
 are output}

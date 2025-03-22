@@ -17,8 +17,7 @@ filter_and_trim(
 \item{output_directory_path}{The path to the directory where resulting files
 are output}
 
-\item{cutadapt_data_barcode}{directory_data folder with trimmed and filtered
-reads for each sample}
+\item{cutadapt_data_barcode}{Metabarcode-specific FASTQ read files trimmed of primers}
 }
 \value{
 Filtered and trimmed reads

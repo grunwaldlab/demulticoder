@@ -8,13 +8,12 @@ Included in a larger function prepare_reads.}
 prepare_metadata_table(metadata_file_path, primer_data)
 }
 \arguments{
-\item{primer_data}{A data frame of oriented primer information returned from
-the orient_primers function.}
+\item{primer_data}{Primer data frame created using the orient_primers function to parse information on forward and reverse primer sequences.}
 
 \item{metadata_path}{The path to the metadata file.}
 }
 \value{
-A data frame containing the merged metadata and primer data.
+A data frame containing the merged metadata and primer data called metadata_primer_data.
 }
 \description{
 Read metadata file from user and combine and reformat it, given primer data.

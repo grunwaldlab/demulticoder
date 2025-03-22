@@ -7,14 +7,13 @@
 get_fastq_paths(data_tables, my_direction, my_primer_pair_id)
 }
 \arguments{
-\item{data_tables}{The data tables containing the paths to read files,
-metadata, primer sequences}
+\item{data_tables}{The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences}
 
 \item{my_direction}{Whether primer is in forward or reverse direction}
 
-\item{my_primer_pair_id}{The the specific barcode id}
+\item{my_primer_pair_id}{The specific metabarcode ID}
 
-\item{cutadapt_data}{directory_data folder with trimmed and filtered reads for each sample}
+\item{cutadapt_data}{FASTQ read files trimmed of primers}
 }
 \description{
 Retrieve the paths of the filtered and trimmed Fastq files

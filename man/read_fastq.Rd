@@ -9,11 +9,10 @@ larger 'read_prefilt_fastq' function.}
 read_fastq(data_directory_path, temp_directory_path)
 }
 \arguments{
-\item{data_directory_path}{The path to the directory containing the FASTQ,
-metadata, and primer_info files}
+\item{data_directory_path}{The path to the directory containing raw FASTQ (forward and reverse reads), metadata.csv, and
+primerinfo_params.csv files.}
 
-\item{temp_directory_path}{User-defined temporary directory to place reads
-throughout the workflow.}
+\item{temp_directory_path}{User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow}
 }
 \value{
 A data frame with the FASTQ file paths, primer orientations and

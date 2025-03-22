@@ -212,9 +212,6 @@ process_single_barcode <-
         abund_asv_single,
         temp_directory_path,
         barcode_params = barcode_params,
-        verbose = barcode_params$verbose,
-        multithread = barcode_params$multithread,
-        tryRC = barcode_params$tryRC, 
         metabarcode = metabarcode
       )
     #single_pids_asv <- get_pids(tax_results_single_asv, temp_directory_path, output_directory_path, refdb, metabarcode)
@@ -293,10 +290,13 @@ assign_tax <- function(analysis_setup, asv_abund_matrix, retrieve_files = FALSE,
   existing_files <- list.files(temp_directory_path, pattern = files_to_check, full.names = TRUE)
   
   if (!overwrite_existing && length(existing_files) > 0) {
-    message("Existing files found. Specify overwrite=TRUE, to rerun analysis")
+    message("Existing files found. Specify overwrite=TRUE to rerun analysis.")
     return(invisible())
-    
   } else {
+    if (length(existing_files) > 0 && overwrite_existing) {
+      message("Existing files found. Overwriting existing files.")
+    }
+    
     patterns_to_remove <- c(
       "*_species_count_table.csv",
       "dada2_asv_alignments_*",
@@ -329,9 +329,9 @@ assign_tax <- function(analysis_setup, asv_abund_matrix, retrieve_files = FALSE,
     }
     
     if (length(existing_files) == 0 && !overwrite_existing) {
-      warning("No existing files found. The analysis will be run.")
+      message("No existing files found. The analysis will be run.")
     }
-      
+    
     for (barcode in unique_barcodes) {
       # Load merged reads for the current barcode
       load(file.path(temp_directory_path, paste0("asvabund_matrixDADA2_", barcode, ".RData")))
@@ -356,7 +356,7 @@ assign_tax <- function(analysis_setup, asv_abund_matrix, retrieve_files = FALSE,
     }
     
     if (retrieve_files) {
-      file.copy(temp_directory_path, output_directory_path,  recursive = TRUE)
+      file.copy(temp_directory_path, output_directory_path, recursive = TRUE)
     }
   }
   return(invisible())

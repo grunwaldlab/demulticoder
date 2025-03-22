@@ -15,10 +15,10 @@ merge_reads_command(
 \item{output_directory_path}{The path to the directory where resulting files
 are output}
 
-\item{merged_read_data_path}{Path to R data file containing merged read data}
+\item{merged_read_data_path}{Path to RData file containing the intermediate merged read data}
 }
 \value{
-merged_reads Intermediate merged read R data file
+merged_reads Intermediate merged read RData file
 }
 \description{
 Merge forward and reverse reads

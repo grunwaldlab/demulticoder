@@ -10,15 +10,12 @@ process_single_barcode(
   temp_directory_path,
   output_directory_path,
   asv_abund_matrix,
-  tryRC = FALSE,
-  verbose = FALSE,
-  multithread = FALSE,
   metabarcode = barcode,
   barcode_params
 )
 }
 \arguments{
-\item{data_tables}{The data tables containing the paths to read files, metadata, primer sequences}
+\item{data_tables}{The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences}
 
 \item{asv_abund_matrix}{The final abundance matrix containing amplified sequence variants}
 }

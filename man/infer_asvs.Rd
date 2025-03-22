@@ -13,14 +13,13 @@ infer_asvs(
 )
 }
 \arguments{
-\item{data_tables}{The data tables containing the paths to read files, metadata, primer sequences}
+\item{data_tables}{The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences}
 
-\item{my_direction}{Location of read files and metadata file}
+\item{my_direction}{Whether primer is in forward or reverse direction}
 
-\item{my_primer_pair_id}{The the specific barcode id}
+\item{my_primer_pair_id}{The specific metabarcode ID}
 
-\item{output_directory_path}{The path to the directory containing the fastq,
-metadata, and primerinfo_params files}
+\item{output_directory_path}{The path to the directory where resulting files are output}
 }
 \value{
 asv_data

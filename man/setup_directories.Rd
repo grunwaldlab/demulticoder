@@ -12,19 +12,17 @@ setup_directories(
 )
 }
 \arguments{
-\item{data_directory}{User-specified directory path where the user has placed
+\item{data_directory}{Directory path where the user has placed
 raw FASTQ (forward and reverse reads), metadata.csv, and
 primerinfo_params.csv files. Default is "data".}
 
-\item{output_directory}{User-specified directory for outputs. Default is
+\item{output_directory}{User-specified directory path for outputs. Default is
 "output".}
 
 \item{tempdir_path}{Path to a temporary directory. If \code{NULL}, a temporary
 directory path will be identified using the \code{tempdir()} command.}
 
-\item{tempdir_id}{ID for temporary directories. Default is
-"demulticoder_run". The user can provide any helpful ID, whether it be a
-date or specific name for the run.}
+\item{tempdir_id}{ID for temporary directories. The user can provide any helpful ID, whether it be a date or specific name for the run. Default is "demulticoder_run"}
 }
 \value{
 A list with paths for data, output, temporary directories, primer,

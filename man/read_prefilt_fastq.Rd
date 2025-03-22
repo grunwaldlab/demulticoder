@@ -13,8 +13,8 @@ read_prefilt_fastq(
 )
 }
 \arguments{
-\item{data_directory_path}{The path to the directory containing the FASTQ,
-metadata.csv, and primerinfo_params.csv files}
+\item{data_directory_path}{The path to the directory containing raw FASTQ (forward and reverse reads), metadata.csv, and
+primerinfo_params.csv files}
 
 \item{multithread}{(Optional). Default is FALSE.
  If TRUE, input files are filtered in parallel via \code{\link[parallel]{mclapply}}.
@@ -24,8 +24,7 @@ metadata.csv, and primerinfo_params.csv files}
 If memory is an issue, execute in a clean environment and reduce the chunk size \code{n} and/or
  the number of threads.}
 
-\item{temp_directory_path}{User-defined temporary directory to output
-unfiltered, trimmed, and filtered read directories throughout the workflow}
+\item{temp_directory_path}{User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow}
 }
 \value{
 Returns filtered reads that have no Ns

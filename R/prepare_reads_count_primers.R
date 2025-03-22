@@ -14,7 +14,7 @@ utils::globalVariables(c("f_compt", "f_rc", "f_rev", "forward", "primer_type", "
 #'   "output".
 #' @param tempdir_path Path to a temporary directory. If `NULL`, a temporary
 #'   directory path will be identified using the `tempdir()` command.
-#' @param tempdir_id ID for temporary directories. The user can provide any helpful ID, whether it be a date or specific name for the run. Default is "demulticoder_run"
+#' @param tempdir_id ID for temporary directories. The user can provide any helpful ID, whether it be a date or specific name for the run. Default is "demulticoder_run".
 #'
 #' @return A list with paths for data, output, temporary directories, primer,
 #'   and metadata files.
@@ -61,39 +61,39 @@ setup_directories <- function(data_directory = "data",
 #' Read metadata file from user and combine and reformat it, given primer data.
 #' Included in a larger function prepare_reads.
 #'
-#' @param primer_data Primer data frame created using the orient_primers function to parse information on forward and reverse primer sequences.
+#' @param primer_data Primer \code{data.frame} created using the orient_primers function to parse information on forward and reverse primer sequences.
 #' @param metadata_path The path to the metadata file.
 #'
-#' @return A data frame containing the merged metadata and primer data.
+#' @return A \code{data.frame} containing the merged metadata and primer data called metadata_primer_data.
 #'
 #' @keywords internal
 prepare_metadata_table <-
   function(metadata_file_path, primer_data) {
     metadata <- readr::read_csv(metadata_file_path)
-    metadata <- merge(metadata, primer_data, by = "primer_name")
-    metadata <- metadata[order(metadata$sample_name), ]
-    if ("primer_name" %in% colnames(metadata)) {
+    metadata_primer_data <- merge(metadata, primer_data, by = "primer_name")
+    metadata_primer_data <- metadata_primer_data[order(metadata_primer_data$sample_name), ]
+    if ("primer_name" %in% colnames(metadata_primer_data)) {
       new_metadata_cols <-
-        c("primer_name", colnames(metadata)[colnames(metadata) != "primer_name"])
-      metadata <- metadata[new_metadata_cols]
-      metadata$samplename_barcode <-
-        paste0(metadata$sample_name, "_", metadata$primer_name)
-      barcode_col <- match("samplename_barcode", colnames(metadata))
-      metadata <-
-        metadata[, c(barcode_col, seq_along(metadata)[-barcode_col])]
+        c("primer_name", colnames(metadata_primer_data)[colnames(metadata_primer_data) != "primer_name"])
+      metadata_primer_data <- metadata_primer_data[new_metadata_cols]
+      metadata_primer_data$samplename_barcode <-
+        paste0(metadata_primer_data$sample_name, "_", metadata_primer_data$primer_name)
+      barcode_col <- match("samplename_barcode", colnames(metadata_primer_data))
+      metadata_primer_data <-
+        metadata_primer_data[, c(barcode_col, seq_along(metadata_primer_data)[-barcode_col])]
     } else {
       stop("Please make sure that there is a 'primer_name' column in your metadata table.")
     }
-    return(metadata)
+    return(metadata_primer_data)
   }
 
 #' Take in user's forward and reverse sequences and creates the complement,
-#' reverse, reverse complement of primers in one data frame
+#' reverse, reverse complement of primers in one \code{data.frame}
 #'
 #' @param primers_params_path A path to the CSV file that holds the primer
 #'   information.
 #'
-#' @return A data frame with oriented primer information.
+#' @return A \code{data.frame} with oriented primer information.
 #'
 #' @keywords internal
 orient_primers <- function(primers_params_path) {
@@ -134,7 +134,7 @@ orient_primers <- function(primers_params_path) {
 #' @param primers_params_path A path to the CSV file that holds the primer
 #'   information.
 #'
-#' @return A data frame with information on the DADA2 parameters.
+#' @return A \code{data.frame} with information on the DADA2 parameters.
 #'
 #' @keywords internal
 read_parameters_table <- function(primers_params_path) {
@@ -144,16 +144,16 @@ read_parameters_table <- function(primers_params_path) {
   return(parameters)
 }
 
-#' Takes in the FASTQ files from the user and creates a data frame with the
+#' Takes in the FASTQ files from the user and creates a \code{data.frame} with the
 #' paths to files that will be created and used in the future. Included in a
 #' larger 'read_prefilt_fastq' function.
 #'
 #' @param data_directory_path The path to the directory containing raw FASTQ (forward and reverse reads), metadata.csv, and
 #'   primerinfo_params.csv files.
-#' @param temp_directory_path User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow
+#' @param temp_directory_path User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow.
 #'
-#' @return A data frame with the FASTQ file paths, primer orientations and
-#'   sequences, and parsed sample names
+#' @return A \code{data.frame} with the FASTQ file paths, primer orientations and
+#'   sequences, and parsed sample names.
 #'
 #' @keywords internal
 read_fastq <- function(data_directory_path,
@@ -185,7 +185,7 @@ read_fastq <- function(data_directory_path,
 
 #' Matching Order Primer Check
 #'
-#' @param fastq_data A data frame containing the read file paths and the direction of the reads by sample
+#' @param fastq_data A \code{data.frame} containing the read file paths and the direction of the reads by sample
 #'
 #' @return None
 #'
@@ -235,7 +235,7 @@ read_prefilt_fastq <-
 #'
 #' @inheritParams dada2::filterAndTrim
 #'
-#' @param fastq_data A data frame containing the read file paths and the direction of the reads by sample
+#' @param fastq_data A \code{data.frame} containing the read file paths and the direction of the reads by sample
 #' @param temp_directory_path User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow
 #' @return Return prefiltered reads with no Ns
 #'
@@ -267,8 +267,8 @@ remove_ns <-
 #'
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
-#' @param primer_data Primer data frame created using the orient_primers function to parse information on forward and reverse primer sequences.
-#' @param fastq_data A data frame containing the read file paths and the direction of the reads by sample
+#' @param primer_data Primer \code{data.frame} created using the orient_primers function to parse information on forward and reverse primer sequences.
+#' @param fastq_data A \code{data.frame} containing the read file paths and the direction of the reads by sample
 #'
 #' @return The number of reads in which the primer is found
 #'
@@ -277,8 +277,8 @@ remove_ns <-
 #'
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
-#' @param primer_data Primer data frame created using the orient_primers function to parse information on forward and reverse primer sequences.
-#' @param fastq_data A data frame containing the read file paths and the direction of the reads by sample
+#' @param primer_data Primer \code{data.frame} created using the orient_primers function to parse information on forward and reverse primer sequences.
+#' @param fastq_data A \code{data.frame} containing the read file paths and the direction of the reads by sample
 #'
 #' @return The number of reads in which the primer is found
 #'
@@ -370,14 +370,14 @@ get_pre_primer_hits <-
     make_primer_hit_plot(primer_hit_data, output_directory_path)
   }
 
-#' Prepare for primmer trimming with Cutaapt. Make new sub-directories and
+#' Prepare for primmer trimming with Cutadapt. Make new sub-directories and
 #' specify paths for the trimmed and untrimmed reads
 #'
-#' @param fastq_data A data frame containing the read file paths and the direction of the reads by sample
-#' @param metadata_primer_data A data frame combining the metadata and primer data 
+#' @param fastq_data A \code{data.frame} containing the read file paths and the direction of the reads by sample
+#' @param metadata_primer_data A \code{data.frame} combining the metadata and primer data 
 #' @param temp_directory_path User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow
 #'
-#' @return Returns a larger data frame containing paths to temporary read
+#' @return Returns a larger \code{data.frame} containing paths to temporary read
 #'   directories, which is used as input when running Cutadapt
 #'
 #' @keywords internal
@@ -385,7 +385,7 @@ make_cutadapt_tibble <-
   function(fastq_data,
            metadata_primer_data,
            temp_directory_path) {
-    cutadapt_data <- merge(metadata_primers, fastq_data, by = "sample_name")
+    cutadapt_data <- merge(metadata_primer_data, fastq_data, by = "sample_name")
     
     # Directory for trimmed sequences
     trimmed_read_dir <- file.path(temp_directory_path, "trimmed_sequences")
@@ -478,8 +478,7 @@ prepare_reads <- function(data_directory = "data",
                           tempdir_path = NULL,
                           tempdir_id = "demulticoder_run",
                           overwrite_existing = FALSE) {
-  directory_paths <-
-    setup_directories(data_directory, output_directory, tempdir_path, tempdir_id)
+  directory_paths <- setup_directories(data_directory, output_directory, tempdir_path, tempdir_id)
   output_directory_path <- directory_paths$output_directory
   data_directory_path <- directory_paths$data_directory
   temp_directory_path <- directory_paths$temp_directory
@@ -489,19 +488,18 @@ prepare_reads <- function(data_directory = "data",
   existing_files <- list.files(output_directory_path)
   
   if (!overwrite_existing && length(existing_files) > 0) {
-    existing_analysis_table <-
-      file.path(temp_directory_path, "analysis_setup_obj.RData")
+    existing_analysis_table <- file.path(temp_directory_path, "analysis_setup_obj.RData")
     if (file.exists(existing_analysis_table)) {
       load(existing_analysis_table)
-      message(
-        "Existing analysis setup tables detected. To perform a new analysis, specify overwrite_existing = TRUE."
-      )
+      message("Existing analysis setup tables detected. To perform a new analysis, specify overwrite_existing = TRUE.")
+      return(analysis_setup)
     } else {
-      warning(
-        "Existing analysis setup tables are not found. The 'prepare_reads' function was rerun"
-      )
+      message("Existing analysis setup tables are not found. The 'prepare_reads' function was rerun.")
     }
   } else {
+    if (length(existing_files) > 0) {
+      warning("Existing files found in the output directory. Overwriting existing files.")
+    }
     if (dir.exists(output_directory_path)) {
       unlink(output_directory_path, recursive = TRUE)
     }
@@ -528,12 +526,9 @@ prepare_reads <- function(data_directory = "data",
     FALSE
   }
   
-  fastq_data <-
-    read_prefilt_fastq(data_directory_path, multithread, temp_directory_path)
-  pre_primer_hit_data <-
-    get_pre_primer_hits(primer_data, fastq_data, output_directory_path)
-  cutadapt_data <-
-    make_cutadapt_tibble(fastq_data, metadata_primer_data, temp_directory_path)
+  fastq_data <- read_prefilt_fastq(data_directory_path, multithread, temp_directory_path)
+  pre_primer_hit_data <- get_pre_primer_hits(primer_data, fastq_data, output_directory_path)
+  cutadapt_data <- make_cutadapt_tibble(fastq_data, metadata_primer_data, temp_directory_path)
   data_tables <- list(
     cutadapt_data = cutadapt_data,
     primer_data = primer_data,
@@ -542,11 +537,8 @@ prepare_reads <- function(data_directory = "data",
     metadata_primer_data = metadata_primer_data
   )
   
-  analysis_setup <-
-    list(data_tables = data_tables, directory_paths = directory_paths)
-  analysis_setup_path <-
-    file.path(temp_directory_path,
-              paste0("analysis_setup_obj", ".RData"))
+  analysis_setup <- list(data_tables = data_tables, directory_paths = directory_paths)
+  analysis_setup_path <- file.path(temp_directory_path, paste0("analysis_setup_obj", ".RData"))
   save(analysis_setup, file = analysis_setup_path)
   return(analysis_setup)
 }

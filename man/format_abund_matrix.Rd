@@ -13,7 +13,7 @@ format_abund_matrix(
 )
 }
 \arguments{
-\item{data_tables}{The data tables containing the paths to read files, metadata, primer sequences}
+\item{data_tables}{The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences}
 
 \item{asv_abund_matrix}{The final abundance matrix containing amplified sequence variants}
 

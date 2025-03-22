@@ -7,28 +7,16 @@
 assign_taxonomyDada2(
   asv_abund_matrix,
   temp_directory_path,
-  minBoot = 0,
-  tryRC = FALSE,
-  verbose = FALSE,
-  multithread = TRUE,
   metabarcode = "barcode",
   barcode_params
 )
 }
 \arguments{
-\item{asv_abund_matrix}{The final abundance matrix containing amplified sequence variants}
+\item{asv_abund_matrix}{The final abundance matrix containing amplified sequence variants.}
 
-\item{temp_directory_path}{The temporary directory path}
+\item{temp_directory_path}{User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow}
 
-\item{minBoot}{Minimum bootstrap value for taxonomy assignment (default 0)}
-
-\item{tryRC}{Try reverse complement (default FALSE)}
-
-\item{verbose}{Print additional information (default FALSE)}
-
-\item{multithread}{Use multiple threads (default TRUE)}
-
-\item{metabarcode}{The metabarcode for taxonomy assignment (e.g., rps10, other1, other2)}
+\item{metabarcode}{The metabarcode used throughout the workflow (applicable options: 'rps10', 'its', 'r16S', 'other1', other2')}
 }
 \description{
 Assign taxonomy

@@ -15,9 +15,9 @@ infer_asv_command(
 \arguments{
 \item{output_directory_path}{The path to the directory where resulting files are output}
 
-\item{data_tables}{The data tables containing the paths to read files, metadata, primer sequences}
+\item{data_tables}{The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences}
 
-\item{denoised_data_path}{Path to saved intermediate denoised data}
+\item{denoised_data_path}{The path to the saved intermediate denoised data}
 }
 \description{
 Function to infer ASVs, for multiple loci

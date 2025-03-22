@@ -12,13 +12,13 @@ convert_asv_matrix_to_objs(
 )
 }
 \arguments{
-\item{analysis_setup}{analysis_setup An object containing directory paths and
+\item{analysis_setup}{An object containing directory paths and
 data tables, produced by the \code{prepare_reads} function}
 
 \item{min_read_depth}{ASV filter parameter. If mean read depth of across all
 samples is less than this threshold, ASV will be filtered.}
 
-\item{minimum_bootstrap}{Threshold for bootstrap support value for taxonomic
+\item{minimum_bootstrap}{Set threshold for bootstrap support value for taxonomic
 assignments. Below designated minimum bootstrap threshold, taxnomoic
 assignments will be set to N/A}
 

@@ -166,8 +166,7 @@ countOverlap <- function(data_tables, merged_reads, barcode, output_directory_pa
   merge_data2$overlap <- merge_data2$nmatch + merge_data2$nmismatch
   merge_data2$mismatch <- merge_data2$nmismatch + merge_data2$nindel
   merge_data2$identity <- (merge_data2$overlap - merge_data2$mismatch) / merge_data2$overlap
-  
-  # Make dataframe long
+
   merge_plot <- data.frame(
     barcode = merge_data2$primer_name,
     Mismatches_and_Indels = merge_data2$mismatch,
@@ -340,7 +339,8 @@ make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {
     maxMismatch = 0,
     method = "consensus",
     min_asv_length = 0,
-    seed = NULL)
+    seed = NULL
+  )
   
   files_to_check <- c("asvabund_matrixDADA2_*")
   existing_files <- list.files(temp_directory_path, pattern = files_to_check, full.names = TRUE)
@@ -353,6 +353,10 @@ make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {
     })
     return(asv_abund_matrix_list)
   } else {
+    if (length(existing_files) > 0 && overwrite_existing) {
+      message("Existing files found. Overwriting existing files.")
+    }
+    
     patterns_to_remove <- c(
       "asv_seqlength_plot_*",
       "error_plot_*",
@@ -380,7 +384,7 @@ make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {
     }
     
     if (length(existing_files) == 0 && !overwrite_existing) {
-      warning("No existing files found. The 'make_asv_abund_matrix' function will run.")
+      message("No existing files found. The 'make_asv_abund_matrix' function will run.")
       # Continue with the analysis
     }
     
@@ -402,7 +406,7 @@ make_asv_abund_matrix <- function(analysis_setup, overwrite_existing = FALSE) {
             barcode_params = barcode_params,
             barcode = barcode 
           )
-      
+          
           merged_reads <- merge_reads_command(
             output_directory_path = output_directory_path,
             temp_directory_path = temp_directory_path,

@@ -12,8 +12,7 @@ plot_post_trim_qc(
 )
 }
 \arguments{
-\item{cutadapt_data}{directory_data folder with trimmed and filtered reads
-for each sample}
+\item{cutadapt_data}{FASTQ read files trimmed of primers}
 
 \item{output_directory_path}{The path to the directory where resulting files
 are output}

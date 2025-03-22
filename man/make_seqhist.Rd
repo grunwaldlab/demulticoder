@@ -8,7 +8,7 @@ matrix}
 make_seqhist(asv_abund_matrix, output_directory_path)
 }
 \arguments{
-\item{asv_abund_matrix}{The returned final ASV abundance matrix}
+\item{asv_abund_matrix}{The final abundance matrix containing amplified sequence variants}
 }
 \value{
 histogram with read length counts of all sequences within ASV matrix

@@ -7,9 +7,6 @@
 assign_tax(
   analysis_setup,
   asv_abund_matrix,
-  tryRC = FALSE,
-  verbose = FALSE,
-  multithread = FALSE,
   retrieve_files = FALSE,
   overwrite_existing = FALSE,
   db_rps10 = "oomycetedb.fasta",
@@ -25,15 +22,7 @@ produced by the \code{prepare_reads} function}
 
 \item{asv_abund_matrix}{The final abundance matrix containing amplified sequence variants}
 
-\item{tryRC}{Whether to try reverse complementing sequences during taxonomic
-assignment}
-
-\item{verbose}{Logical, indicating whether to display verbose output}
-
-\item{multithread}{Logical, indicating whether to use multithreading}
-
-\item{retrieve_files}{Specify TRUE/FALSE whether to copy files from the temp
-directory to the output directory}
+\item{retrieve_files}{Logical, TRUE/FALSE whether to copy files from the temp directory to the output directory. Default is FALSE.}
 
 \item{overwrite_existing}{Logical, indicating whether to remove or overwrite
 existing files and directories from previous runs. Default is \code{FALSE}.}
@@ -42,11 +31,11 @@ existing files and directories from previous runs. Default is \code{FALSE}.}
 
 \item{db_its}{The reference database for the ITS metabarcode}
 
-\item{db_16S}{The reference database for the 16S metabarcode}
+\item{db_16S}{The SILVA 16S-rRNA reference database provided by the user}
 
-\item{db_other1}{The reference database for different metabarcode 1 (assumes format is like SILVA DB entries)}
+\item{db_other1}{The reference database for other metabarcode 1 (assumes format is like SILVA DB entries)}
 
-\item{db_other2}{The reference database for a different metabarcode 2 (assumes format is like SILVA DB entries)}
+\item{db_other2}{The reference database for other metabarcode 2 (assumes format is like SILVA DB entries)}
 }
 \value{
 Taxonomic assignments of each unique ASV sequence
