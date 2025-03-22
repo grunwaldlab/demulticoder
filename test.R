@@ -1,4 +1,5 @@
-#devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
+devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
+library("demulticoder")
 devtools::clean_dll()
 #devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
 devtools::load_all("~/demulticoder")
@@ -26,8 +27,8 @@ usethis::use_news_md()
 
 output<-prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
-  output_directory = "~/demulticoder_test16", 
-  overwrite_existing = FALSE
+  output_directory = "~/demulticoder_test17", 
+  overwrite_existing = TRUE
   )
 
 cut_trim(
@@ -37,12 +38,12 @@ cut_trim(
 
 make_asv_abund_matrix(
   output,
-  overwrite_existing = FALSE)
+  overwrite_existing = TRUE)
 
 assign_tax(
   output,
   asv_abund_matrix,
   retrieve_files=TRUE,
-  overwrite_existing = FALSE)
+  overwrite_existing = TRUE)
 
 objs<-convert_asv_matrix_to_objs(output, minimum_bootstrap = 0, save_outputs = TRUE)

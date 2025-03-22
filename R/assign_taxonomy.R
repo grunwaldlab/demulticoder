@@ -154,151 +154,94 @@ assignTax_as_char <-
 #'   information
 #'
 #' @keywords internal
-format_abund_matrix <-
-  function(data_tables,
-           asv_abund_matrix,
-           seq_tax_asv,
-           output_directory_path,
-           metabarcode) {
-    formatted_abund_asv <- t(asv_abund_matrix)
-    #asv_id_column <- paste("asv_", seq_along(rownames(formatted_abund_asv)), sep = "")
-    
-    if (metabarcode == "rps10") {
-      formatted_abund_asv <- cbind(
-        sequence = rownames(formatted_abund_asv),
-        dada2_tax = stringr::str_match(seq_tax_asv[rownames(formatted_abund_asv)], pattern = "^(.+)--Reference")[, 1],
-        formatted_abund_asv
-      )
-    } else {
-      formatted_abund_asv <- cbind(
-        sequence = rownames(formatted_abund_asv),
-        dada2_tax = stringr::str_match(seq_tax_asv[rownames(formatted_abund_asv)], pattern = "^(.+)--Species")[, 1],
-        formatted_abund_asv
-      )
-    }
-    
-    formatted_abund_asv <- tibble::as_tibble(formatted_abund_asv)
-    
-    primer_seqs <-
-      apply(data_tables$primer_data[, 2:ncol(data_tables$primer_data)], 2, paste, collapse = "|")
-    create_primer_pattern <- function(primer_seq) {
-      ambig_code_mapping <-
-        c(
-          "R" = "[AG]",
-          "Y" = "[CT]",
-          "S" = "[GC]",
-          "W" = "[AT]",
-          "K" = "[GT]",
-          "M" = "[AC]",
-          "B" = "[CGT]",
-          "D" = "[AGT]",
-          "H" = "[ACT]",
-          "V" = "[ACG]",
-          "N" = "[ACGT]"
-        )
-      
-      pattern <- ""
-      for (char in strsplit(primer_seq, '')[[1]]) {
-        if (char %in% names(ambig_code_mapping)) {
-          pattern <- paste0(pattern, ambig_code_mapping[char])
-        } else {
-          pattern <- paste0(pattern, char)
-        }
-      }
-      
-      return(pattern)
-    }
-    
-    # Create regular expression patterns for each primer
-    primer_patterns <- sapply(primer_seqs, create_primer_pattern)
-    
-    # Filter out sequences based on primers
-    keep_rows <-
-      sapply(formatted_abund_asv$sequence, function(asv_seq) {
-        # Check if any of the primer sequences are present in the ASV sequence
-        match_primer <-
-          sapply(primer_patterns, function(pattern)
-            any(grepl(pattern, asv_seq, ignore.case = TRUE)))
-        
-        if (any(match_primer)) {
-          cat("ASV Sequence:", asv_seq, "\n")
-          cat("Matching Primer(s):", primer_seqs[match_primer], "\n")
-          cat("Sequence removed\n-----\n")
-        }
-        
-        # Keep the row if none of the primer sequences match!any(match_primer)
-      })
-    
-    # Update the abundance matrix with filtered rows
-    filtered_abund_matrix <- formatted_abund_asv[keep_rows, ]
-    asv_id_column <-
-      paste("asv_", seq_along(rownames(filtered_abund_matrix)), sep = "")
-    filtered_abund_matrix <- cbind(asv_id = asv_id_column,
-                                   filtered_abund_matrix)
-    
-    # Return the filtered abundance matrix
-    
-    readr::write_csv(filtered_abund_matrix,
-                     file = file.path(
-                       output_directory_path,
-                       paste0('final_asv_abundance_matrix_', metabarcode, '.csv')
-                     ))
-    return(filtered_abund_matrix)
+
+format_abund_matrix <- function(data_tables, asv_abund_matrix, seq_tax_asv, output_directory_path, metabarcode) {
+  formatted_abund_asv <- t(asv_abund_matrix)
+  #asv_id_column <- paste("asv_", seq_along(rownames(formatted_abund_asv)), sep = "")
+  
+  if(metabarcode == "rps10") {
+    formatted_abund_asv <- cbind(
+      sequence = rownames(formatted_abund_asv),
+      dada2_tax = stringr::str_match(seq_tax_asv[rownames(formatted_abund_asv)], pattern = "^(.+)--Reference")[,1],
+      formatted_abund_asv)
+  } else {
+    formatted_abund_asv <- cbind(
+      sequence = rownames(formatted_abund_asv),
+      dada2_tax = stringr::str_match(seq_tax_asv[rownames(formatted_abund_asv)], pattern = "^(.+)--Species")[,1],
+      formatted_abund_asv)
   }
+  
+  formatted_abund_asv <- tibble::as_tibble(formatted_abund_asv)
+  
+  primer_seqs <- apply(data_tables$primer_data[, 2:ncol(data_tables$primer_data)], 2, paste, collapse = "|")
+  create_primer_pattern <- function(primer_seq) {
+    ambig_code_mapping <- c("R" = "[AG]", "Y" = "[CT]", "S" = "[GC]", "W" = "[AT]", "K" = "[GT]", "M" = "[AC]", "B" = "[CGT]", "D" = "[AGT]", "H" = "[ACT]", "V" = "[ACG]", "N" = "[ACGT]")
+    
+    pattern <- ""
+    for (char in strsplit(primer_seq, '')[[1]]) {
+      if (char %in% names(ambig_code_mapping)) {
+        pattern <- paste0(pattern, ambig_code_mapping[char])
+      } else {
+        pattern <- paste0(pattern, char)
+      }
+    }
+    
+    return(pattern)
+  }
+  
+  # Create regular expression patterns for each primer
+  primer_patterns <- sapply(primer_seqs, create_primer_pattern)
+  
+  # Filter out sequences based on primers
+  keep_rows <- sapply(formatted_abund_asv$sequence, function(asv_seq) {
+    # Check if any of the primer sequences are present in the ASV sequence
+    match_primer <- sapply(primer_patterns, function(pattern) any(grepl(pattern, asv_seq, ignore.case = TRUE)))
+    
+    if (any(match_primer)) {
+      cat("ASV Sequence:", asv_seq, "\n")
+      cat("Matching Primer(s):", primer_seqs[match_primer], "\n")
+      cat("Sequence removed\n-----\n")
+    }
+    
+    # Keep the row if none of the primer sequences match
+    !any(match_primer)
+  })
+  
+  # Update the abundance matrix with filtered rows
+  filtered_abund_matrix <- formatted_abund_asv[keep_rows, ]
+  asv_id_column <- paste("asv_", seq_along(rownames(filtered_abund_matrix)), sep = "")
+  filtered_abund_matrix <- cbind(
+    asv_id = asv_id_column,
+    filtered_abund_matrix)
+  
+  # Return the filtered abundance matrix
+  
+  readr::write_csv(filtered_abund_matrix, file = file.path(output_directory_path, paste0('final_asv_abundance_matrix_', metabarcode, '.csv')))
+  return(filtered_abund_matrix)
+}
 
 #' Final inventory of read counts after each step from input to removal of chimeras. This function deals with if you have more than one sample. TODO optimize for one sample
 #'
-#' @param asv_abund_matrix The final abundance matrix containing amplified sequence variants
-#'
+#' @param asv_abund_matrix An abundance matrix containing amplified sequence variants
+#' 
 #' @keywords internal
-get_read_counts <-
-  function(asv_abund_matrix,
-           temp_directory_path,
-           output_directory_path,
-           metabarcode) {
-    filter_results_path <-
-      file.path(temp_directory_path,
-                paste0("Filter_results_", metabarcode, ".RData"))
-    load(filter_results_path)
-    denoised_data_path <-
-      file.path(temp_directory_path,
-                paste0("Denoised_data_", metabarcode, ".RData"))
-    load(denoised_data_path)
-    merged_read_data_path <-
-      file.path(temp_directory_path,
-                paste0("Merged_reads_", metabarcode, ".RData"))
-    load(merged_read_data_path)
-    getN <- function(x)
-      sum(dada2::getUniques(x))
-    track <-
-      cbind(
-        filter_results,
-        sapply(dada_forward, getN),
-        sapply(dada_reverse, getN),
-        sapply(merged_reads, getN),
-        rowSums(asv_abund_matrix)
-      )
-    track <-
-      cbind(rownames(track), data.frame(track, row.names = NULL))
-    colnames(track) <-
-      c(
-        "samplename_barcode",
-        "input",
-        "filtered",
-        "denoisedF",
-        "denoisedR",
-        "merged",
-        "nonchim"
-      )
-    track$samplename_barcode <-
-      track$samplename_barcode <-
-      gsub("(R1_|.fastq(.gz)?)$", "", track$samplename_barcode)
-    print(track)
-    track_read_counts_path <-
-      file.path(output_directory_path,
-                paste0("track_reads_", metabarcode, ".csv"))
-    readr::write_csv(track, track_read_counts_path)
-  }
+get_read_counts <- function(asv_abund_matrix, temp_directory_path, output_directory_path, metabarcode) {
+  filter_results_path <- file.path(temp_directory_path, paste0("Filter_results_", metabarcode, ".RData"))
+  load(filter_results_path)
+  denoised_data_path <- file.path(temp_directory_path, paste0("Denoised_data_", metabarcode, ".RData"))
+  load(denoised_data_path)
+  merged_read_data_path <- file.path(temp_directory_path, paste0("Merged_reads_", metabarcode, ".RData"))
+  load(merged_read_data_path)
+  getN <- function(x) sum(dada2::getUniques(x))
+  track <- cbind(filter_results, sapply(dada_forward, getN), sapply(dada_reverse, getN), sapply(merged_reads, getN), rowSums(asv_abund_matrix))
+  track <- cbind(rownames(track), data.frame(track, row.names=NULL))
+  colnames(track) <- c("samplename_barcode", "input", "filtered", "denoisedF", "denoisedR", "merged", "nonchim")
+  track$samplename_barcode <- track$samplename_barcode <- gsub("(R1_|.fastq(.gz)?)$", "", track$samplename_barcode)
+  output_format <- knitr::opts_knit$get("rmarkdown.pandoc.to")
+  print(track)
+  track_read_counts_path <- file.path(output_directory_path, paste0("track_reads_", metabarcode, ".csv"))
+  readr::write_csv(track, track_read_counts_path)
+}
 
 #' Process the information from an ASV abundance matrix to run DADA2 for single
 #' barcode
@@ -334,14 +277,12 @@ process_single_barcode <-
     #tax_results_single_asv_pid <-
     #add_pid_to_tax(tax_results_single_asv, single_pids_asv)
     
-    seq_tax_asv <-
-      assignTax_as_char(tax_results_single_asv, temp_directory_path, metabarcode)
-    formatted_abund_asv <-
-      format_abund_matrix(data_tables,
-                          asv_abund_matrix,
-                          seq_tax_asv,
-                          output_directory_path,
-                          metabarcode)
+    seq_tax_asv <- assignTax_as_char(tax_results_single_asv, temp_directory_path, metabarcode)
+    formatted_abund_asv <- format_abund_matrix(data_tables,
+                                               asv_abund_matrix,
+                                               seq_tax_asv,
+                                               output_directory_path,
+                                               metabarcode)
     get_read_counts(asv_abund_matrix,
                     temp_directory_path,
                     output_directory_path,
