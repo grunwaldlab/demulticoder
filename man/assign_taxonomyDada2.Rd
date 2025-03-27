@@ -7,7 +7,7 @@
 assign_taxonomyDada2(
   asv_abund_matrix,
   temp_directory_path,
-  metabarcode = "barcode",
+  metabarcode = "metabarcode",
   barcode_params
 )
 }

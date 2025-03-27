@@ -33,7 +33,7 @@ prep_abund_matrix <-
 assign_taxonomyDada2 <-
   function(asv_abund_matrix,
            temp_directory_path,
-           metabarcode = "barcode",
+           metabarcode = "metabarcode",
            barcode_params) {
     set.seed(barcode_params$seed)
     refFasta_raw <-
@@ -300,7 +300,7 @@ get_read_counts <-
   }
 
 #' Process the information from an ASV abundance matrix to run DADA2 for single
-#' barcode
+#' metabarcode
 #'
 #' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param asv_abund_matrix The final abundance matrix containing amplified sequence variants
@@ -312,7 +312,7 @@ process_single_barcode <-
            temp_directory_path,
            output_directory_path,
            asv_abund_matrix,
-           metabarcode = barcode,
+           metabarcode = metabarcode,
            barcode_params)
   {
     abund_asv_single <-
@@ -369,7 +369,7 @@ process_single_barcode <-
 #'
 #' @examples
 #' \dontrun{
-#' # Assign taxonomies to ASVs on a per barcode basis
+#' # Assign taxonomies to ASVs on by metabarcode
 #' analysis_setup <- prepare_reads(
 #'   data_directory = system.file("extdata", package = "demulticoder"),
 #'   output_directory = tempdir(),
@@ -473,15 +473,15 @@ assign_tax <-
         message("No existing files found. The analysis will be run.")
       }
       
-      for (barcode in unique_barcodes) {
-        # Load merged reads for the current barcode
+      for (metabarcode in unique_barcodes) {
+        # Load merged reads for the current metabarcode
         load(file.path(
           temp_directory_path,
-          paste0("asvabund_matrixDADA2_", barcode, ".RData")
+          paste0("asvabund_matrixDADA2_", metabarcode, ".RData")
         ))
         
         params <-
-          dplyr::filter(data_tables$parameters, primer_name == barcode)
+          dplyr::filter(data_tables$parameters, primer_name == metabarcode)
         if (nrow(params) > 0) {
           params <- as.list(params)
           
@@ -493,7 +493,7 @@ assign_tax <-
           data_path,
           output_directory_path,
           temp_directory_path,
-          barcode,
+          metabarcode,
           db_its,
           db_rps10,
           db_16S,
@@ -506,7 +506,7 @@ assign_tax <-
           temp_directory_path = temp_directory_path,
           output_directory_path = output_directory_path,
           asv_abund_matrix = asv_abund_matrix,
-          metabarcode = barcode,
+          metabarcode = metabarcode,
           barcode_params = barcode_params
         )
       }

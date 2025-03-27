@@ -3,14 +3,14 @@
 \name{process_single_barcode}
 \alias{process_single_barcode}
 \title{Process the information from an ASV abundance matrix to run DADA2 for single
-barcode}
+metabarcode}
 \usage{
 process_single_barcode(
   data_tables,
   temp_directory_path,
   output_directory_path,
   asv_abund_matrix,
-  metabarcode = barcode,
+  metabarcode = metabarcode,
   barcode_params
 )
 }
@@ -21,6 +21,6 @@ process_single_barcode(
 }
 \description{
 Process the information from an ASV abundance matrix to run DADA2 for single
-barcode
+metabarcode
 }
 \keyword{internal}

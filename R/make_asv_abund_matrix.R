@@ -344,7 +344,7 @@ make_seqhist <- function(asv_abund_matrix, output_directory_path) {
       ggplot2::labs(
         x = 'Length of sequence (bp)',
         y = 'Counts',
-        title = paste("ASV lengths for", barcode, "metabarode")
+        title = paste("ASV lengths for", barcode, "metabarcode")
       ) +
       ggplot2::theme_minimal() +
       ggplot2::theme(panel.grid = ggplot2::element_blank())

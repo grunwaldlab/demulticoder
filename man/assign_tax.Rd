@@ -48,7 +48,7 @@ At this point DADA2 assignTaxonomy is used to assign taxonomy to the inferred AS
 }
 \examples{
 \dontrun{
-# Assign taxonomies to ASVs on a per barcode basis
+# Assign taxonomies to ASVs on by metabarcode
 analysis_setup <- prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
   output_directory = tempdir(),
