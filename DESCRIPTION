@@ -10,7 +10,7 @@ Imports: furrr, purrr, readr, stringr, tidyr, dplyr, ggplot2, tibble, utils
 Suggests: BiocManager, Biostrings, dada2, metacoder, ShortRead, phyloseq, rmarkdown, RcppParallel
 Roxygen: list(markdown = TRUE)
 Config/testthat/edition: 3
-URL: https://grunwaldlab.github.io/demulticoder/
+URL: https://grunwaldlab.github.io/demulticoder/, https://github.com/grunwaldlab/demulticoder
 BugReports: https://github.com/grunwaldlab/demulticoder/issues
 RoxygenNote: 7.3.2
 Config/Needs/website: rmarkdown
