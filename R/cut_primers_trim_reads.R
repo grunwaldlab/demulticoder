@@ -16,7 +16,6 @@ utils::globalVariables(
 #' Core function for running cutadapt
 #'
 #' @param cutadapt_path A path to the cutadapt program.
-#' @param cutadapt_data FASTQ read files trimmed of primers
 #' @param minCutadaptlength Read lengths that are lower than this threshold will
 #'   be discarded. Default is 0.
 #'
@@ -127,7 +126,6 @@ run_cutadapt <- function(cutadapt_path,
 #' @param cutadapt_data FASTQ read files trimmed of primers
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
-#' @param seed Set seed for reproducibility
 #'
 #' @return Dada2 wrapper function for making quality profiles for each sample
 #'

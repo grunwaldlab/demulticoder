@@ -369,13 +369,13 @@ format_database <-
            data_path,
            output_directory_path,
            temp_directory_path,
-           barcode,
+           metabarcode,
            db_its,
            db_rps10,
            db_16S,
            db_other1,
            db_other2) {
-    if (barcode == "rps10") {
+    if (metabarcode == "rps10") {
       return(
         format_db_rps10(
           data_tables,
@@ -385,7 +385,7 @@ format_database <-
           db_rps10
         )
       )
-    } else if (barcode == "its") {
+    } else if (metabarcode == "its") {
       return(
         format_db_its(
           data_tables,
@@ -395,7 +395,7 @@ format_database <-
           db_its
         )
       )
-    } else if (barcode == "r16S") {
+    } else if (metabarcode == "r16S") {
       return(
         format_db_16S(
           data_tables,
@@ -405,7 +405,7 @@ format_database <-
           db_16S
         )
       )
-    } else if (barcode == "other1") {
+    } else if (metabarcode == "other1") {
       return(
         format_db_other1(
           data_tables,
@@ -415,7 +415,7 @@ format_database <-
           db_other1
         )
       )
-    } else if (barcode == "other2") {
+    } else if (metabarcode == "other2") {
       return(
         format_db_other2(
           data_tables,
@@ -426,6 +426,6 @@ format_database <-
         )
       )
     } else {
-      stop("Metabarcode not recognized: ", barcode)
+      stop("Metabarcode not recognized: ", metabarcode)
     }
   }

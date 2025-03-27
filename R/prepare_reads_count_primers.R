@@ -53,7 +53,7 @@ setup_directories <- function(data_directory = "data",
       output_directory = output_directory,
       temp_directory = temp_path,
       primers_params_path = primers_params_path,
-      metadata_path = metadata_file_path
+      metadata_file_path = metadata_file_path
     )
   )
 }
@@ -62,7 +62,7 @@ setup_directories <- function(data_directory = "data",
 #' Included in a larger function prepare_reads.
 #'
 #' @param primer_data Primer \code{data.frame} created using the orient_primers function to parse information on forward and reverse primer sequences.
-#' @param metadata_path The path to the metadata file.
+#' @param metadata_file_path The path to the metadata file.
 #'
 #' @return A \code{data.frame} containing the merged metadata and primer data called metadata_primer_data.
 #'
@@ -483,7 +483,7 @@ prepare_reads <- function(data_directory = "data",
   data_directory_path <- directory_paths$data_directory
   temp_directory_path <- directory_paths$temp_directory
   primers_params_path <- directory_paths$primers_params_path
-  metadata_path <- directory_paths$metadata_path
+  metadata_file_path <- directory_paths$metadata_file_path
   
   existing_files <- list.files(output_directory_path)
   
@@ -518,7 +518,7 @@ prepare_reads <- function(data_directory = "data",
   
   primer_data <- orient_primers(primers_params_path)
   parameters <- read_parameters_table(primers_params_path)
-  metadata_primer_data <- prepare_metadata_table(metadata_path, primer_data)
+  metadata_primer_data <- prepare_metadata_table(metadata_file_path, primer_data)
   
   multithread <- if ("multithread" %in% names(parameters)) {
     parameters$multithread[1]

@@ -17,7 +17,6 @@ utils::globalVariables(
 #' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param my_direction Whether primer is in forward or reverse direction
 #' @param my_primer_pair_id The specific metabarcode ID
-#' @param cutadapt_data FASTQ read files trimmed of primers
 #' @keywords internal
 get_fastq_paths <-
   function(data_tables,
@@ -103,7 +102,6 @@ infer_asvs <-
 #' Function to infer ASVs, for multiple loci
 #' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param output_directory_path The path to the directory where resulting files are output
-#' @param denoised_data_path The path to the saved intermediate denoised data
 #' @keywords internal
 infer_asv_command <-
   function(output_directory_path,
@@ -157,7 +155,6 @@ infer_asv_command <-
 #' @inheritParams dada2::mergePairs
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
-#' @param merged_read_data_path Path to RData file containing the intermediate merged read data
 #' @return merged_reads Intermediate merged read RData file
 #' @keywords internal
 merge_reads_command <-
