@@ -1,6 +1,6 @@
 # MIT License
 
-Copyright (c) 2025 demulticoder authors
+Copyright (c) 2025 Martha A. Sudermann, Zachary S.L. Foster, Samantha Dawson, Hung Phan, Jeﬀ H. Chang, and Niklaus J. Grünwald 
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
