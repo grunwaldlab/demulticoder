@@ -8,11 +8,26 @@ devtools::document()
 pkgdown::build_site()
 pkgdown::preview_site()
 
+usethis::use_github_links(overwrite=TRUE)
 pkgdown::build_favicons(overwrite=TRUE)
+
+urlchecker::url_check()
+
+devtools::build_readme()
+
+devtools::check(remote = TRUE, manual = TRUE)
+
+devtools::check_win_devel()
+
+git push
+
 
 rcmdcheck::rcmdcheck(args = "--as-cran")
 
 pkgdown::build_articles("~/demulticoder/")
+
+use_release_issue()
+usethis::use_cran_comments()
 
 usethis::use_article("vignettes/Getting_started.Rmd")
 usethis::use_article("vignettes/Documentation.Rmd")
@@ -47,3 +62,5 @@ assign_tax(
   overwrite_existing = TRUE)
 
 objs<-convert_asv_matrix_to_objs(output, minimum_bootstrap = 0, save_outputs = TRUE)
+
+

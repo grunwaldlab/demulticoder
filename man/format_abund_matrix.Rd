@@ -17,8 +17,7 @@ format_abund_matrix(
 
 \item{asv_abund_matrix}{The final abundance matrix containing amplified sequence variants}
 
-\item{seq_tax_asv}{An amplified sequence variants matrix with taxonomic
-information}
+\item{seq_tax_asv}{An amplified sequence variants matrix with taxonomic information}
 }
 \description{
 Format ASV abundance matrix
