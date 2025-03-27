@@ -18,7 +18,7 @@ prep_abund_matrix <-
         data_tables$cutadapt_data$primer_name
       )
     asv_abund_matrix <-
-      asv_abund_matrix[rownames(asv_abund_matrix) %in% data_tables$cutadapt_data$file_id_primer[data_tables$cutadapt_data$primer_name == metabarcode],]
+      asv_abund_matrix[rownames(asv_abund_matrix) %in% data_tables$cutadapt_data$file_id_primer[data_tables$cutadapt_data$primer_name == metabarcode], ]
     return(asv_abund_matrix)
   }
 
@@ -132,8 +132,8 @@ assignTax_as_char <-
     tax_out <-
       vapply(1:nrow(tax_results$tax), FUN.VALUE = character(1), function(i) {
         paste(
-          tax_results$tax[i,],
-          tax_results$boot[i,],
+          tax_results$tax[i, ],
+          tax_results$boot[i, ],
           colnames(tax_results$tax),
           sep = '--',
           collapse = ';'
@@ -209,10 +209,8 @@ format_abund_matrix <-
       return(pattern)
     }
     
-    # Create regular expression patterns for each primer
     primer_patterns <- sapply(primer_seqs, create_primer_pattern)
     
-    # Filter out sequences based on primers
     keep_rows <-
       sapply(formatted_abund_asv$sequence, function(asv_seq) {
         # Check if any of the primer sequences are present in the ASV sequence
@@ -226,17 +224,14 @@ format_abund_matrix <-
           cat("Sequence removed\n-----\n")
         }
         
-        # Keep the row if none of the primer sequences match!any(match_primer)
+        ! any(match_primer)
       })
     
-    # Update the abundance matrix with filtered rows
     filtered_abund_matrix <- formatted_abund_asv[keep_rows,]
     asv_id_column <-
       paste("asv_", seq_along(rownames(filtered_abund_matrix)), sep = "")
     filtered_abund_matrix <- cbind(asv_id = asv_id_column,
                                    filtered_abund_matrix)
-    
-    # Return the filtered abundance matrix
     
     readr::write_csv(filtered_abund_matrix,
                      file = file.path(
@@ -278,7 +273,8 @@ get_read_counts <-
         sapply(merged_reads, getN),
         rowSums(asv_abund_matrix)
       )
-    track <- cbind(rownames(track), data.frame(track, row.names = NULL))
+    track <-
+      cbind(rownames(track), data.frame(track, row.names = NULL))
     colnames(track) <-
       c(
         "samplename_barcode",
