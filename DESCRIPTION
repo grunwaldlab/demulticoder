@@ -16,7 +16,7 @@ RoxygenNote: 7.3.2
 Config/Needs/website: rmarkdown
 NeedsCompilation: no
 Packaged: 2025-03-17 23:40:47 UTC; marthasudermann
-Author: Martha A. Sudermann [aut, cre],
+Author: Martha A. Sudermann [aut, cre, cph],
   Zachary S. L Foster [aut],
   Samantha Dawson [aut],
   Hung Phan [aut],
