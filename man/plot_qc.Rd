@@ -14,8 +14,6 @@ are output}
 
 \item{n}{(Optional). Default 500,000.
 The number of records to sample from the fastq file.}
-
-\item{seed}{Set seed for reproducibility}
 }
 \value{
 Dada2 wrapper function for making quality profiles for each sample

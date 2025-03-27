@@ -8,9 +8,9 @@ Included in a larger function prepare_reads.}
 prepare_metadata_table(metadata_file_path, primer_data)
 }
 \arguments{
-\item{primer_data}{Primer \code{data.frame} created using the orient_primers function to parse information on forward and reverse primer sequences.}
+\item{metadata_file_path}{The path to the metadata file.}
 
-\item{metadata_path}{The path to the metadata file.}
+\item{primer_data}{Primer \code{data.frame} created using the orient_primers function to parse information on forward and reverse primer sequences.}
 }
 \value{
 A \code{data.frame} containing the merged metadata and primer data called metadata_primer_data.

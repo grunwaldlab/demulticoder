@@ -9,7 +9,7 @@ format_database(
   data_path,
   output_directory_path,
   temp_directory_path,
-  barcode,
+  metabarcode,
   db_its,
   db_rps10,
   db_16S,

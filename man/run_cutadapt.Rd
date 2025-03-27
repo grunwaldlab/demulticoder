@@ -16,8 +16,6 @@ run_cutadapt(
 
 \item{minCutadaptlength}{Read lengths that are lower than this threshold will
 be discarded. Default is 0.}
-
-\item{cutadapt_data}{FASTQ read files trimmed of primers}
 }
 \value{
 Trimmed read.
