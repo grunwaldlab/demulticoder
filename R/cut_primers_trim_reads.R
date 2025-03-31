@@ -127,7 +127,7 @@ run_cutadapt <- function(cutadapt_path,
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
 #'
-#' @return Dada2 wrapper function for making quality profiles for each sample
+#' @return 'DADA2' wrapper function for making quality profiles for each sample
 #'
 #' @keywords internal
 plot_qc <-
@@ -154,7 +154,7 @@ plot_qc <-
     }
   }
 
-#' Wrapper function for filterAndTrim function from DADA2, to be used after
+#' Wrapper function for filterAndTrim function from 'DADA2', to be used after
 #' primer trimming
 #'
 #' @inheritParams dada2::filterAndTrim
