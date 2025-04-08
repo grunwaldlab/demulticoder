@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">demulticoder</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,7 +76,7 @@
 <h3 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h3>
 <p>This vignette shows how demulticoder was used to analyze the mothur
-16S SOP dataset featured in DADA2 tutorials</p>
+16S SOP dataset featured in <strong>DADA2</strong> tutorials</p>
 <p>The raw read files and information on the dataset used for this
 analysis can be found <a href="https://mothur.org/wiki/miseq_sop/#preparing-for-analysis" class="external-link">here</a></p>
 </div>
@@ -172,8 +172,8 @@ and save our metadata file in our data directory directly in R.</p>
 <span><span class="co">#&gt; 20   Mock_S280_L001        r16S  NA  &lt;NA&gt;</span></span></code></pre>
 <p>Now, make our <strong>primerinfo_params.csv</strong> input file</p>
 <p>We then make and save the second CSV input file with the name of the
-metabarcode used, primer sequences, and the optional DADA2 parameter
-options.</p>
+metabarcode used, primer sequences, and the optional
+<strong>dada2</strong> parameter options.</p>
 <p>We referenced the DADA2 <a href="https://benjjneb.github.io/dada2/tutorial.html" class="external-link">tutorial</a> to
 select the same parameter options.</p>
 <p><em>Note, primers were already trimmed from reads during the
@@ -298,8 +298,8 @@ for the <strong>prepare_reads</strong> function</p>
 <div class="section level3">
 <h3 id="remove-primers-and-trim-reads">Remove primers and trim reads<a class="anchor" aria-label="anchor" href="#remove-primers-and-trim-reads"></a>
 </h3>
-<p>Run Cutadapt to remove primers and then trim reads with DADA2
-filterAndTrim function</p>
+<p>Run Cutadapt to remove primers and then trim reads with
+<strong>dada2</strong> filterAndTrim function</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cut_trim.html">cut_trim</a></span><span class="op">(</span></span>
 <span>  <span class="va">output</span>,</span>
@@ -485,8 +485,8 @@ ASVs.</p>
 <span><span class="co">#&gt; 19   F3D9_S197_L001_R1_r16S  7023     6504      6341      6442   6092    6015</span></span>
 <span><span class="co">#&gt; 20   Mock_S280_L001_R1_r16S  4748     4314      4287      4286   4269    4269</span></span></code></pre></div>
 <p>As a check we can take a look at read counts across the workflow. If
-there are sudden drops, we should reconsider our adjusting certain DADA2
-parameters and re-running the analysis.</p>
+there are sudden drops, we should reconsider our adjusting certain
+<strong>dada2</strong> parameters and re-running the analysis.</p>
 </div>
 <div class="section level3">
 <h3 id="convert-asv-matrix-to-taxmap-and-phyloseq-objects">Convert ASV matrix to taxmap and phyloseq objects<a class="anchor" aria-label="anchor" href="#convert-asv-matrix-to-taxmap-and-phyloseq-objects"></a>
@@ -513,8 +513,8 @@ function</p>
 <div class="section level3">
 <h3 id="examine-accuracy-relative-to-a-mock-community">Examine accuracy relative to a mock community<a class="anchor" aria-label="anchor" href="#examine-accuracy-relative-to-a-mock-community"></a>
 </h3>
-<p>Evaluate accuracy using mock community, as shown in DADA2
-tutorial</p>
+<p>Evaluate accuracy using mock community, as shown in
+<strong>dada2</strong> tutorial</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">matrix_filepath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">output</span><span class="op">$</span><span class="va">directory_paths</span><span class="op">$</span><span class="va">output_directory</span>, <span class="st">"final_asv_abundance_matrix_r16S.csv"</span><span class="op">)</span></span>
 <span><span class="va">tax_matrix</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">matrix_filepath</span><span class="op">)</span></span>
@@ -533,7 +533,7 @@ community.</p>
 <h3 id="alpha-diversity-analysis">Alpha diversity analysis<a class="anchor" aria-label="anchor" href="#alpha-diversity-analysis"></a>
 </h3>
 <p>Follow-up work using phyloseq to do side-by-side comparison with
-dada2 example and to examine alpha diversity results</p>
+DADA2 workflow example and to examine alpha diversity results</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/prune_samples-methods.html" class="external-link">prune_samples</a></span><span class="op">(</span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/sample_names-methods.html" class="external-link">sample_names</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span><span class="op">)</span> <span class="op">!=</span> <span class="st">"Mock_S280_L001_r16S"</span>, <span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span><span class="op">)</span> <span class="co"># Remove mock sample</span></span>
 <span></span>
@@ -543,8 +543,8 @@ dada2 example and to examine alpha diversity results</p>
 <div class="section level3">
 <h3 id="beta-diversity-analysis">Beta diversity analysis<a class="anchor" aria-label="anchor" href="#beta-diversity-analysis"></a>
 </h3>
-<p>Examine ordination plots as additional point of comparison with DADA2
-tutorial</p>
+<p>Examine ordination plots as additional point of comparison with the
+DADA2 tutorial</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Transform data to proportions as appropriate for Bray-Curtis distances</span></span>
 <span><span class="va">ps.prop</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span>, <span class="kw">function</span><span class="op">(</span><span class="va">otu</span><span class="op">)</span> <span class="va">otu</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">otu</span><span class="op">)</span><span class="op">)</span></span>
@@ -586,7 +586,7 @@ tutorial</p>
 <h3 id="top-taxa-analysis">Top taxa analysis<a class="anchor" aria-label="anchor" href="#top-taxa-analysis"></a>
 </h3>
 <p>Let’s look at what the top 20 taxa are in the early vs. late samples
-time points, as shown in the dada2 tutorial</p>
+time points, as shown in the DADA2 tutorial</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">top20</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/taxa_sums.html" class="external-link">taxa_sums</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span><span class="op">)</span>, decreasing<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span></span>
 <span><span class="va">ps.top20</span> <span class="op">&lt;-</span> <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_r16S</span>, <span class="kw">function</span><span class="op">(</span><span class="va">OTU</span><span class="op">)</span> <span class="va">OTU</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">OTU</span><span class="op">)</span><span class="op">)</span></span>

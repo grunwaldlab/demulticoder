@@ -2,7 +2,7 @@
 % Please edit documentation in R/cut_primers_trim_reads.R
 \name{run_cutadapt}
 \alias{run_cutadapt}
-\title{Core function for running cutadapt}
+\title{Core function for running 'Cutadapt'}
 \usage{
 run_cutadapt(
   cutadapt_path,
@@ -12,7 +12,7 @@ run_cutadapt(
 )
 }
 \arguments{
-\item{cutadapt_path}{A path to the cutadapt program.}
+\item{cutadapt_path}{A path to the 'Cutadapt' program.}
 
 \item{minCutadaptlength}{Read lengths that are lower than this threshold will
 be discarded. Default is 0.}
@@ -21,6 +21,6 @@ be discarded. Default is 0.}
 Trimmed read.
 }
 \description{
-Core function for running cutadapt
+Core function for running 'Cutadapt'
 }
 \keyword{internal}

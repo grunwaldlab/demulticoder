@@ -295,8 +295,7 @@ get_read_counts <-
     readr::write_csv(track, track_read_counts_path)
   }
 
-#' Process the information from an ASV abundance matrix to run 'DADA2' for single
-#' metabarcode
+#' Run 'dada2' taxonomy functions for single metabarcode
 #'
 #' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param asv_abund_matrix The final abundance matrix containing amplified sequence variants
@@ -361,7 +360,7 @@ process_single_barcode <-
 #'
 #' @export assign_tax
 #'
-#' @details At this point, 'DADA2' function assignTaxonomy is used to assign taxonomy to the inferred ASVs.
+#' @details At this point, 'dada2' function assignTaxonomy is used to assign taxonomy to the inferred ASVs.
 #'
 #' @examples
 #' \dontrun{

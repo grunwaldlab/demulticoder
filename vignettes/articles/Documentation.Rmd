@@ -81,10 +81,10 @@ The **primerinfo_params.csv** file contains information about the primer sequenc
 
 Below are the parameters that can be input into the **primerinfo_params.csv** file along with the defaults. Refer to the DADA2 documentation and [manual](https://www.bioconductor.org/packages/release/bioc/manuals/dada2/man/dada2.pdf) for additional information. 
 
-**DADA2 filterAndTrim function parameters:**  
+**dada2 filterAndTrim function parameters:**  
 
 * **already_trimmed**: Boolean indicating if primers are already trimmed (TRUE/FALSE) (default: FALSE)
-* **minCutadaptlength**: Cutadapt parameter-Minimum length after Cutadapt trimming (default: 0)
+* **minCutadaptlength**: **Cutadapt** parameter-Filter out processed reads that are shorter than specified length (default: 0)
 * **multithread**: Boolean for multithreading (TRUE/FALSE) (default: FALSE)
 * **verbose**: Boolean for verbose output (TRUE/FALSE) (default: FALSE)
 * **maxN**: Maximum number of N bases allowed (default: 0)
@@ -100,7 +100,7 @@ Below are the parameters that can be input into the **primerinfo_params.csv** fi
 * **trimRight**: Number of bases to trim from the end of reads (default: 0)
 * **rm.lowcomplex**: Boolean for removing low complexity sequences (default: TRUE)
 
-**DADA2 learnErrors function parameters:**  
+**dada2 learnErrors function parameters:**  
 
 * **nbases**: Number of bases to use for error rate learning (default: 1e+08)
 * **randomize**: Randomize reads for error rate learning (default: FALSE)
@@ -108,14 +108,14 @@ Below are the parameters that can be input into the **primerinfo_params.csv** fi
 * **OMEGA_C**: Convergence threshold for the error rates (default: 0)
 * **qualityType**: Quality score type ("Auto", "FastqQuality", or "ShortRead") (default: "Auto")
 
-**DADA2 plot errors parameters:**  
+**dada2 plot errors parameters:**  
 
 * **err_out**: Return the error rates used for inference (default: TRUE)
 * **err_in**: Use input error rates instead of learning them (default: FALSE)
 * **nominalQ**: Use nominal Q-scores (default: FALSE)
 * **obs**: Return the observed error rates (default: TRUE)
 
-**DADA2 dada function parameters:**  
+**dada2 dada function parameters:**  
 
 * **OMP**: Use OpenMP multi-threading if available (default: TRUE)
 * **n**: Number of reads to use for error rate estimation (default: 1e+05)
@@ -124,16 +124,16 @@ Below are the parameters that can be input into the **primerinfo_params.csv** fi
 * **pool**: Pool samples for error rate estimation (default: FALSE)
 * **selfConsist**: Perform self-consistency iterations (default: FALSE)
 
-**DADA2 mergePairs function parameters:**  
+**dada2 mergePairs function parameters:**  
 
 * **minOverlap**: Minimum overlap for merging paired-end reads (default: 12)
 * **maxMismatch**: Maximum mismatches allowed in the overlap region (default: 0)
 
-**DADA2 removeBimeraDenovo function parameters:**  
+**dada2 removeBimeraDenovo function parameters:**  
 
 * **method**: Method for sample inference ("consensus" or "pooled") (default: "consensus")
 
-**DADA2 assignTaxonomy function parameters:**  
+**dada2 assignTaxonomy function parameters:**  
 
 * **minBoot**: The minimum bootstrap confidence for assigning a taxonomic level (default: 0)  
 * **tryRC**: If TRUE, the reverse-complement of each sequences will be used for classification if it is a better match to the reference sequences than the forward sequence (default is FALSE)  
@@ -141,7 +141,7 @@ Below are the parameters that can be input into the **primerinfo_params.csv** fi
 **Other parameters to include in CSV input file:**  
 
 * **min_asv_length**: Minimum length of Amplicon Sequence Variants (ASVs) after core dada ASV inference steps (default = 0)    
-* **seed**: For greater reproducibility, user can specify an integer to set as a seed to use when the following DADA2 functions are run: **plotQualityProfile**, **learnErrors**, **dada**, **makeSequenceTable**, and **assignTaxonomy** (default: NULL)  
+* **seed**: For greater reproducibility, user can specify an integer to set as a seed to use when the following dada2 functions are run: **plotQualityProfile**, **learnErrors**, **dada**, **makeSequenceTable**, and **assignTaxonomy** (default: NULL)  
 
 Example file (with select optional columns after forward and reverse primer sequence columns):
 ```{csv}

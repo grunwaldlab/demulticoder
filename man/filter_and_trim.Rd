@@ -2,7 +2,7 @@
 % Please edit documentation in R/cut_primers_trim_reads.R
 \name{filter_and_trim}
 \alias{filter_and_trim}
-\title{Wrapper function for filterAndTrim function from DADA2, to be used after
+\title{Wrapper function for filterAndTrim function from 'dada2', to be used after
 primer trimming}
 \usage{
 filter_and_trim(
@@ -23,7 +23,7 @@ are output}
 Filtered and trimmed reads
 }
 \description{
-Wrapper function for filterAndTrim function from DADA2, to be used after
+Wrapper function for filterAndTrim function from 'dada2', to be used after
 primer trimming
 }
 \keyword{internal}

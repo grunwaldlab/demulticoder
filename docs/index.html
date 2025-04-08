@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>An R Package for the Simultaneous Analysis of Multiplexed Metabarcodes • demulticoder</title>
+<title>A Set of Tools for the Simultaneous Analysis of Multiplexed Metabarcodes • demulticoder</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -16,9 +16,9 @@
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="An R Package for the Simultaneous Analysis of Multiplexed Metabarcodes">
-<meta name="description" content="The demulticoder package provides a comprehensive workflow for analyzing multiplex metabarcode data. It includes robust wrappers for cutadapt and DADA2 to trim primers, filter reads, perform ASV inference, and assign taxonomy. The package can handle single metabarcode datasets, datasets with two pooled metabarcodes, or multiple datasets simultaneously. The final output is a matrix per metabarcode, containing both ASV abundance data and associated taxonomic assignments. An optional function converts these matrices into phyloseq and taxmap objects.">
-<meta property="og:description" content="The demulticoder package provides a comprehensive workflow for analyzing multiplex metabarcode data. It includes robust wrappers for cutadapt and DADA2 to trim primers, filter reads, perform ASV inference, and assign taxonomy. The package can handle single metabarcode datasets, datasets with two pooled metabarcodes, or multiple datasets simultaneously. The final output is a matrix per metabarcode, containing both ASV abundance data and associated taxonomic assignments. An optional function converts these matrices into phyloseq and taxmap objects.">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="A Set of Tools for the Simultaneous Analysis of Multiplexed Metabarcodes">
+<meta name="description" content="A comprehensive set of wrapper functions for the analysis of multiplex metabarcode data. It includes robust wrappers for Cutadapt and dada2 to trim primers, filter reads, perform amplicon sequence variant (ASV) inference, and assign taxonomy. The package can handle single metabarcode datasets, datasets with two pooled metabarcodes, or multiple datasets simultaneously. The final output is a matrix per metabarcode, containing both ASV abundance data and associated taxonomic assignments. An optional function converts these matrices into phyloseq and taxmap objects.">
+<meta property="og:description" content="A comprehensive set of wrapper functions for the analysis of multiplex metabarcode data. It includes robust wrappers for Cutadapt and dada2 to trim primers, filter reads, perform amplicon sequence variant (ASV) inference, and assign taxonomy. The package can handle single metabarcode datasets, datasets with two pooled metabarcodes, or multiple datasets simultaneously. The final output is a matrix per metabarcode, containing both ASV abundance data and associated taxonomic assignments. An optional function converts these matrices into phyloseq and taxmap objects.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="index.html">demulticoder</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -223,9 +223,8 @@ Let’s locate where the cutadapt executable is. You must do this from a <strong
 <div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li>
-<a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
-</li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
 
@@ -240,12 +239,12 @@ Let’s locate where the cutadapt executable is. You must do this from a <strong
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Martha A. Sudermann <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Martha A. Sudermann <br><small class="roles"> Author, maintainer, copyright holder </small>  </li>
 <li>Zachary S. L Foster <br><small class="roles"> Author </small>  </li>
 <li>Samantha Dawson <br><small class="roles"> Author </small>  </li>
 <li>Hung Phan <br><small class="roles"> Author </small>  </li>
 <li>Jeff H. Chang <br><small class="roles"> Author </small>  </li>
-<li>Niklaus Grünwald <br><small class="roles"> Author </small>  </li>
+<li>Niklaus Grünwald <br><small class="roles"> Author, copyright holder </small>  </li>
 </ul>
 </div>
 

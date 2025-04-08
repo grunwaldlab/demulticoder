@@ -21,7 +21,7 @@ library("kableExtra")
 
 * In the following example, we demonstrate key package functionality using the test data set that is included in the package
 * You can follow along because all test data and associated CSV input files are contained in the package. 
-* Additional examples are also available under [Example vignettes ](https://grunwaldlab.github.io/demulticoder/articles/DADA2_16S_mothur_validation.html)
+* Additional examples are also available under [Example Vignettes ](https://grunwaldlab.github.io/demulticoder/articles/DADA2_16S_mothur_validation.html)
 
 ### Components of the test dataset  
 
@@ -33,7 +33,7 @@ library("kableExtra")
   - Samples entered twice if samples contain two pooled metabarcodes, as in the test data template
 3. [**primerinfo_params.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv)
   - New row for each unique barcode and associated primer sequence
-  - Optional cutadapt and DADA2 parameters
+  - Optional **Cutadapt** and dada2 parameters
 4. **Taxonomy databases**  
   - UNITE fungal database (abridged version)
   - oomyceteDB 
@@ -76,11 +76,11 @@ knitr::kable(data, row.names = FALSE) %>%
 
 ### Format of primer and parameters file 
 
-DADA2 Primer sequence information and user-defined parameters are placed in **primerinfo_params.csv**     
+Primer sequence information and user-defined parameters are placed in **primerinfo_params.csv**     
 
 * To simplify how functions are called, user will provide parameters within this input file.   
 * We recommend using the template linked   [here](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv).   
-* Remember to add any additional optional DADA2 parameters you want to use.  
+* Remember to add any additional optional dada2 parameters you want to use.  
 
 * The only three **required** columns (with these headers) are:  
   * Column 1. **sample_name** 
@@ -142,9 +142,9 @@ Databases are downloaded from these sources and then placed in the from the user
 ### Installation  
 
 **Dependencies**:  
-First install **cutadapt** program following the instructions here: https://cutadapt.readthedocs.io/en/stable/installation.html  
+First install **Cutadapt** program following the instructions here: https://cutadapt.readthedocs.io/en/stable/installation.html  
 
-Let's locate where the cutadapt executable is.  
+Let's locate where the **Cutadapt** executable is.  
 
 You must do this from a **Terminal** window:  
 ```{sh, eval=FALSE, echo=TRUE}
@@ -153,7 +153,7 @@ which cutadapt
 cutadapt --version
 ```
 
-If you followed the cutadapt installation instructions to create a conda environment called cutadapt (change to whatever you named your environment), to install it in. 
+If you followed the cutadapt installation instructions to create a conda environment called **Cutadapt** (change to whatever you named your environment), to install it in. 
 
 Open up a **Terminal** window and type these commands:
 ```{sh, eval=FALSE, echo=TRUE}
@@ -165,7 +165,7 @@ cutadapt --version
 
 Second, make sure the following R packages are installed:
 
-* **DADA2** (Latest version is 3.20)  
+* **dada2** (Latest version is 3.20)  
   * To install, follow these instructions: https://www.bioconductor.org/packages/release/bioc/html/dada2.html  
 * **phyloseq**  
   * To install: https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html  
@@ -197,7 +197,7 @@ library("metacoder")
 
 ### Reorganize data tables and set-up data directory structure 
 
-The sample names, primer sequences, and other metadata are reorganized in preparation for running Cutadapt to remove primers.  
+The sample names, primer sequences, and other metadata are reorganized in preparation for running **Cutadapt** to remove primers.  
 
 ```{r prepare_for_analysis, warning=FALSE, message=TRUE, cache=FALSE}
 output<-prepare_reads(
@@ -208,7 +208,7 @@ output<-prepare_reads(
 
 ### Remove primers with Cutadapt  
 
-Before running Cutadapt, **please ensure that you have installed it** 
+Before running **Cutadapt**, **please ensure that you have installed it** 
 
 ```{r remove_primers_with_cut_trim_function, warning=FALSE, message=TRUE, cache=FALSE}
 cut_trim(
@@ -229,7 +229,7 @@ make_asv_abund_matrix(
 
 ### Taxonomic assignment step  
 
-Using the core assignTaxonomy function from DADA2, taxonomic assignments will be given to ASVs.  
+Using the core assignTaxonomy function from dada2, taxonomic assignments will be given to ASVs.  
 
 ```{r Assign_taxonomy, warning=FALSE, message=FALSE, cache=FALSE}
 assign_tax(
@@ -241,7 +241,7 @@ assign_tax(
 
 ### Format of output matrices  
 
-* The default output is a CSV file per metabarcode with the inferred ASVs and sequences, taxonomic assignments, and bootstrap supports provided by DADA2. These data can then be used as input for downstream steps.  
+* The default output is a CSV file per metabarcode with the inferred ASVs and sequences, taxonomic assignments, and bootstrap supports provided by dada2. These data can then be used as input for downstream steps.  
 * To view these files, locate the files with the prefix **final_asv_abundance_matrix** in your specified output directory.  
 * In this example, it will be in the home directory within **demulticoder_test**. 
 * You can then open your matrices using Excel  

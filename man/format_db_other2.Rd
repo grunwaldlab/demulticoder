@@ -3,8 +3,7 @@
 \name{format_db_other2}
 \alias{format_db_other2}
 \title{An second user-specified database that is initially in the format specified
-by DADA2 with header simply taxonomic levels (kingdom down to species,
-separated by semi-colons, ;)}
+by dada2 with header containing taxonomic levels (kingdom down to species, separated by semi-colons)}
 \usage{
 format_db_other2(
   data_tables,
@@ -31,7 +30,6 @@ The database with modified headers
 }
 \description{
 An second user-specified database that is initially in the format specified
-by DADA2 with header simply taxonomic levels (kingdom down to species,
-separated by semi-colons, ;)
+by dada2 with header containing taxonomic levels (kingdom down to species, separated by semi-colons)
 }
 \keyword{internal}

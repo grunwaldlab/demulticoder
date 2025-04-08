@@ -35,7 +35,7 @@ get_fastq_paths <-
     
     filtered_paths
   }
-#' Core DADA2 function to learn errors and infer ASVs
+#' Core dada2 function to learn errors and infer ASVs
 #' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param output_directory_path The path to the directory where resulting files are output
 #' @param my_primer_pair_id The specific metabarcode ID

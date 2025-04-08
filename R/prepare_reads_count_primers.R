@@ -129,12 +129,12 @@ orient_primers <- function(primers_params_path) {
   return(primer_data)
 }
 
-#' Take in user's DADA2 parameters and make a dataframe for downstream steps
+#' Take in user's 'dada2' parameters and make a dataframe for downstream steps
 #'
 #' @param primers_params_path A path to the CSV file that holds the primer
 #'   information.
 #'
-#' @return A \code{data.frame} with information on the DADA2 parameters.
+#' @return A \code{data.frame} with information on the 'dada2' parameters.
 #'
 #' @keywords internal
 read_parameters_table <- function(primers_params_path) {
@@ -208,7 +208,7 @@ primer_check <- function(fastq_data) {
 
 #' A function for calling read_fastq, primer_check, and remove_ns functions.
 #' This will process and edit the FASTQ and make them ready for the trimming of
-#' primers with Cutadapt. Part of a larger 'prepare_reads' function.
+#' primers with 'Cutadapt'. Part of a larger 'prepare_reads' function.
 #'
 #' @inheritParams dada2::filterAndTrim
 #'
@@ -230,7 +230,7 @@ read_prefilt_fastq <-
     return(fastq_data)
   }
 
-#' Wrapper function for core DADA2 filter and trim function for first filtering
+#' Wrapper function for core 'dada2' filter and trim function for first filtering
 #' step
 #'
 #' @inheritParams dada2::filterAndTrim
@@ -370,7 +370,7 @@ get_pre_primer_hits <-
     make_primer_hit_plot(primer_hit_data, output_directory_path)
   }
 
-#' Prepare for primmer trimming with Cutadapt. Make new sub-directories and
+#' Prepare for primmer trimming with 'Cutadapt'. Make new sub-directories and
 #' specify paths for the trimmed and untrimmed reads
 #'
 #' @param fastq_data A \code{data.frame} containing the read file paths and the direction of the reads by sample
@@ -378,7 +378,7 @@ get_pre_primer_hits <-
 #' @param temp_directory_path User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow
 #'
 #' @return Returns a larger \code{data.frame} containing paths to temporary read
-#'   directories, which is used as input when running Cutadapt
+#'   directories, which is used as input when running 'Cutadapt'
 #'
 #' @keywords internal
 make_cutadapt_tibble <-
@@ -441,7 +441,7 @@ make_cutadapt_tibble <-
     return(cutadapt_data)
   }
 
-#' Prepare reads for primer trimming using Cutadapt
+#' Prepare reads for primer trimming using 'Cutadapt'
 #' 
 #' @importFrom utils modifyList read.table stack
 #' @param data_directory Directory path where the user has placed

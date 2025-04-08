@@ -13,9 +13,9 @@ utils::globalVariables(
   )
 )
 
-#' Core function for running cutadapt
+#' Core function for running 'Cutadapt'
 #'
-#' @param cutadapt_path A path to the cutadapt program.
+#' @param cutadapt_path A path to the 'Cutadapt' program.
 #' @param minCutadaptlength Read lengths that are lower than this threshold will
 #'   be discarded. Default is 0.
 #'
@@ -35,11 +35,11 @@ run_cutadapt <- function(cutadapt_path,
               stderr = TRUE)
   },
   warning = function(w) {
-    stop("cutadapt cannot be found on PATH. Check if it is installed?")
+    stop("Cutadapt cannot be found on the PATH. Please check if it is installed and correctly added to the PATH.")
   })
   
   cat(
-    "Running Cutadapt",
+    "Running cutadapt",
     version_output,
     "for",
     cutadapt_data_barcode$primer_name[1],
@@ -127,7 +127,7 @@ run_cutadapt <- function(cutadapt_path,
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
 #'
-#' @return 'DADA2' wrapper function for making quality profiles for each sample
+#' @return 'dada2' wrapper function for making quality profiles for each sample
 #'
 #' @keywords internal
 plot_qc <-
@@ -154,7 +154,7 @@ plot_qc <-
     }
   }
 
-#' Wrapper function for filterAndTrim function from 'DADA2', to be used after
+#' Wrapper function for filterAndTrim function from 'dada2', to be used after
 #' primer trimming
 #'
 #' @inheritParams dada2::filterAndTrim
@@ -360,26 +360,26 @@ plot_post_trim_qc <-
     }
   }
 
-#' Main command to trim primers using Cutadapt and core DADA2 functions
+#' Main command to trim primers using 'Cutadapt' and core 'dada2' functions
 #'
 #' @importFrom utils modifyList read.table stack
 #'
 #' @param analysis_setup An object containing directory paths and data tables,
 #'   produced by the `prepare_reads` function
-#' @param cutadapt_path Path to the Cutadapt program.
+#' @param cutadapt_path Path to the 'Cutadapt' program.
 #' @param overwrite_existing Logical, indicating whether to remove or overwrite
 #'   existing files and directories from previous runs. Default is `FALSE`.
 #'
 #' @return Trimmed reads, primer counts, quality plots, and ASV matrix.
 #'
-#' @details If samples are comprised of two different barcodes (like ITS1 and rps10), reads will also be demultiplexed prior to DADA2 trimming steps.
+#' @details If samples are comprised of two different metabarcodes (like ITS1 and rps10), reads will also be demultiplexed prior to dada2-specific read trimming steps.
 #'
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #' # Remove remaining primers from raw reads, demultiplex pooled barcoded samples,
-#' # and then trim reads based on specific DADA2 parameters
+#' # and then trim reads based on specific 'DADA2' parameters
 #' analysis_setup <- prepare_reads(
 #'   data_directory = system.file("extdata", package = "demulticoder"),
 #'   output_directory = tempdir(),

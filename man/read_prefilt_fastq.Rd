@@ -4,7 +4,7 @@
 \alias{read_prefilt_fastq}
 \title{A function for calling read_fastq, primer_check, and remove_ns functions.
 This will process and edit the FASTQ and make them ready for the trimming of
-primers with Cutadapt. Part of a larger 'prepare_reads' function.}
+primers with 'Cutadapt'. Part of a larger 'prepare_reads' function.}
 \usage{
 read_prefilt_fastq(
   data_directory_path = data_directory_path,
@@ -32,6 +32,6 @@ Returns filtered reads that have no Ns
 \description{
 A function for calling read_fastq, primer_check, and remove_ns functions.
 This will process and edit the FASTQ and make them ready for the trimming of
-primers with Cutadapt. Part of a larger 'prepare_reads' function.
+primers with 'Cutadapt'. Part of a larger 'prepare_reads' function.
 }
 \keyword{internal}

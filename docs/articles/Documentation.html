@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">demulticoder</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -173,14 +173,15 @@ rps10)</li>
 <strong>primerinfo_params.csv</strong> file along with the defaults.
 Refer to the DADA2 documentation and <a href="https://www.bioconductor.org/packages/release/bioc/manuals/dada2/man/dada2.pdf" class="external-link">manual</a>
 for additional information.</p>
-<p><strong>DADA2 filterAndTrim function parameters:</strong></p>
+<p><strong>dada2 filterAndTrim function parameters:</strong></p>
 <ul>
 <li>
 <strong>already_trimmed</strong>: Boolean indicating if primers are
 already trimmed (TRUE/FALSE) (default: FALSE)</li>
 <li>
-<strong>minCutadaptlength</strong>: Cutadapt parameter-Minimum
-length after Cutadapt trimming (default: 0)</li>
+<strong>minCutadaptlength</strong>: <strong>Cutadapt</strong>
+parameter-Filter out processed reads that are shorter than specified
+length (default: 0)</li>
 <li>
 <strong>multithread</strong>: Boolean for multithreading
 (TRUE/FALSE) (default: FALSE)</li>
@@ -223,7 +224,7 @@ reads (default: 0)</li>
 <strong>rm.lowcomplex</strong>: Boolean for removing low complexity
 sequences (default: TRUE)</li>
 </ul>
-<p><strong>DADA2 learnErrors function parameters:</strong></p>
+<p><strong>dada2 learnErrors function parameters:</strong></p>
 <ul>
 <li>
 <strong>nbases</strong>: Number of bases to use for error rate
@@ -241,7 +242,7 @@ iterations (default: 10)</li>
 <strong>qualityType</strong>: Quality score type (“Auto”,
 “FastqQuality”, or “ShortRead”) (default: “Auto”)</li>
 </ul>
-<p><strong>DADA2 plot errors parameters:</strong></p>
+<p><strong>dada2 plot errors parameters:</strong></p>
 <ul>
 <li>
 <strong>err_out</strong>: Return the error rates used for inference
@@ -256,7 +257,7 @@ FALSE)</li>
 <strong>obs</strong>: Return the observed error rates (default:
 TRUE)</li>
 </ul>
-<p><strong>DADA2 dada function parameters:</strong></p>
+<p><strong>dada2 dada function parameters:</strong></p>
 <ul>
 <li>
 <strong>OMP</strong>: Use OpenMP multi-threading if available
@@ -277,7 +278,7 @@ sequence name (default: “\s”)</li>
 <strong>selfConsist</strong>: Perform self-consistency iterations
 (default: FALSE)</li>
 </ul>
-<p><strong>DADA2 mergePairs function parameters:</strong></p>
+<p><strong>dada2 mergePairs function parameters:</strong></p>
 <ul>
 <li>
 <strong>minOverlap</strong>: Minimum overlap for merging paired-end
@@ -286,13 +287,13 @@ reads (default: 12)</li>
 <strong>maxMismatch</strong>: Maximum mismatches allowed in the
 overlap region (default: 0)</li>
 </ul>
-<p><strong>DADA2 removeBimeraDenovo function parameters:</strong></p>
+<p><strong>dada2 removeBimeraDenovo function parameters:</strong></p>
 <ul>
 <li>
 <strong>method</strong>: Method for sample inference (“consensus” or
 “pooled”) (default: “consensus”)</li>
 </ul>
-<p><strong>DADA2 assignTaxonomy function parameters:</strong></p>
+<p><strong>dada2 assignTaxonomy function parameters:</strong></p>
 <ul>
 <li>
 <strong>minBoot</strong>: The minimum bootstrap confidence for
@@ -311,7 +312,7 @@ Variants (ASVs) after core dada ASV inference steps (default = 0)<br>
 </li>
 <li>
 <strong>seed</strong>: For greater reproducibility, user can specify
-an integer to set as a seed to use when the following DADA2 functions
+an integer to set as a seed to use when the following dada2 functions
 are run: <strong>plotQualityProfile</strong>,
 <strong>learnErrors</strong>, <strong>dada</strong>,
 <strong>makeSequenceTable</strong>, and <strong>assignTaxonomy</strong>

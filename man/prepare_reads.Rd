@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_reads_count_primers.R
 \name{prepare_reads}
 \alias{prepare_reads}
-\title{Prepare reads for primer trimming using Cutadapt}
+\title{Prepare reads for primer trimming using 'Cutadapt'}
 \usage{
 prepare_reads(
   data_directory = "data",
@@ -34,7 +34,7 @@ to search for based on orientation, paths for trimming reads, and
 user-defined parameters for all subsequent steps.
 }
 \description{
-Prepare reads for primer trimming using Cutadapt
+Prepare reads for primer trimming using 'Cutadapt'
 }
 \examples{
 \dontrun{

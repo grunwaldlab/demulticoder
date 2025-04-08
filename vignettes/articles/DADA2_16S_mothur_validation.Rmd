@@ -21,7 +21,7 @@ overwrite_existing <- TRUE
 
 ### Introduction  
 
-This vignette shows how demulticoder was used to analyze the mothur 16S SOP dataset featured in DADA2 tutorials 
+This vignette shows how demulticoder was used to analyze the mothur 16S SOP dataset featured in **DADA2** tutorials 
 
 The raw read files and information on the dataset used for this analysis can be found [here](https://mothur.org/wiki/miseq_sop/#preparing-for-analysis) 
 
@@ -100,7 +100,7 @@ print(metadata)
 
 Now, make our **primerinfo_params.csv** input file
 
-We then make and save the second CSV input file with the name of the metabarcode used, primer sequences, and the optional DADA2 parameter options.  
+We then make and save the second CSV input file with the name of the metabarcode used, primer sequences, and the optional **dada2** parameter options.  
 
 We referenced the DADA2 [tutorial](https://benjjneb.github.io/dada2/tutorial.html) to select the same parameter options.  
 
@@ -199,7 +199,7 @@ output<-prepare_reads(
 
 ### Remove primers and trim reads  
 
-Run Cutadapt to remove primers and then trim reads with DADA2 filterAndTrim function 
+Run Cutadapt to remove primers and then trim reads with **dada2** filterAndTrim function 
 ```{r Remove_primers_and_trim_reads, fig.height=6, fig.width=6, message=TRUE, warning=FALSE, cache=TRUE}
 cut_trim(
   output,
@@ -254,12 +254,12 @@ assign_tax(
   overwrite_existing = TRUE)
 ```
 
-As a check we can take a look at read counts across the workflow. If there are sudden drops, we should reconsider our adjusting certain DADA2 parameters and re-running the analysis.  
+As a check we can take a look at read counts across the workflow. If there are sudden drops, we should reconsider our adjusting certain **dada2** parameters and re-running the analysis.  
 ```{r view_read_counts, fig.height=10, fig.width=10, echo=FALSE, message=TRUE}
 reads_filepath <- file.path(output$directory_paths$output_directory, "track_reads_r16S.csv")
 
 if (!overwrite_existing) {
-  cat("Tables showing read counts throughout the demulticoder DADA2 workflow\n")
+  cat("Tables showing read counts throughout the demulticoder workflow\n")
    read_track_file<-read.csv(reads_filepath)
    print(read_track_file)
 }
@@ -274,7 +274,7 @@ objs<-convert_asv_matrix_to_objs(output)
 
 ### Examine accuracy relative to a mock community  
 
-Evaluate accuracy using mock community, as shown in DADA2 tutorial  
+Evaluate accuracy using mock community, as shown in **dada2** tutorial  
 ```{r examine_accuracy, fig.height=6, fig.width=6, message=TRUE, cache=TRUE}
 matrix_filepath <- file.path(output$directory_paths$output_directory, "final_asv_abundance_matrix_r16S.csv")
 tax_matrix<-read.csv(matrix_filepath)
@@ -290,7 +290,7 @@ When looking at mock community sample, we were able to extract 20 bacterial sequ
 
 ### Alpha diversity analysis  
 
-Follow-up work using phyloseq to do side-by-side comparison with dada2 example and to examine alpha diversity results
+Follow-up work using phyloseq to do side-by-side comparison with DADA2 workflow example and to examine alpha diversity results
 ```{r phyloseq_alpha_diversity_analysis, fig.height=6, fig.width=6, echo=TRUE, message=TRUE, warning=FALSE, cache=TRUE}
 objs$phyloseq_r16S <- phyloseq::prune_samples(phyloseq::sample_names(objs$phyloseq_r16S) != "Mock_S280_L001_r16S", objs$phyloseq_r16S) # Remove mock sample
 
@@ -299,7 +299,7 @@ phyloseq::plot_richness(objs$phyloseq_r16S, x="Day", measures=c("Shannon", "Simp
 
 ### Beta diversity analysis  
 
-Examine ordination plots as additional point of comparison with DADA2 tutorial
+Examine ordination plots as additional point of comparison with the DADA2 tutorial
 ```{r phyloseq_beta_diversity_analysis, fig.height=8, fig.width=8, echo=TRUE, message=TRUE, warning=FALSE, cache=TRUE}
 # Transform data to proportions as appropriate for Bray-Curtis distances
 ps.prop <- phyloseq::transform_sample_counts(objs$phyloseq_r16S, function(otu) otu/sum(otu))
@@ -309,7 +309,7 @@ phyloseq::plot_ordination(ps.prop, ord.nmds.bray, color="When", title="Bray NMDS
 
 ### Top taxa analysis   
 
-Let's look at what the top 20 taxa are in the early vs. late samples  time points, as shown in the dada2 tutorial
+Let's look at what the top 20 taxa are in the early vs. late samples  time points, as shown in the DADA2 tutorial
 ```{r phyloseq_community_analysis, fig.height=8, fig.width=8, echo=TRUE, message=TRUE, warning=FALSE, cache=TRUE}
 top20 <- names(sort(phyloseq::taxa_sums(objs$phyloseq_r16S), decreasing=TRUE))[1:20]
 ps.top20 <- phyloseq::transform_sample_counts(objs$phyloseq_r16S, function(OTU) OTU/sum(OTU))

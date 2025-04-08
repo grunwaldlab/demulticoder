@@ -2,7 +2,7 @@
 % Please edit documentation in R/cut_primers_trim_reads.R
 \name{cut_trim}
 \alias{cut_trim}
-\title{Main command to trim primers using Cutadapt and core DADA2 functions}
+\title{Main command to trim primers using 'Cutadapt' and core 'dada2' functions}
 \usage{
 cut_trim(analysis_setup, cutadapt_path, overwrite_existing = FALSE)
 }
@@ -10,7 +10,7 @@ cut_trim(analysis_setup, cutadapt_path, overwrite_existing = FALSE)
 \item{analysis_setup}{An object containing directory paths and data tables,
 produced by the \code{prepare_reads} function}
 
-\item{cutadapt_path}{Path to the Cutadapt program.}
+\item{cutadapt_path}{Path to the 'Cutadapt' program.}
 
 \item{overwrite_existing}{Logical, indicating whether to remove or overwrite
 existing files and directories from previous runs. Default is \code{FALSE}.}
@@ -19,15 +19,15 @@ existing files and directories from previous runs. Default is \code{FALSE}.}
 Trimmed reads, primer counts, quality plots, and ASV matrix.
 }
 \description{
-Main command to trim primers using Cutadapt and core DADA2 functions
+Main command to trim primers using 'Cutadapt' and core 'dada2' functions
 }
 \details{
-If samples are comprised of two different barcodes (like ITS1 and rps10), reads will also be demultiplexed prior to DADA2 trimming steps.
+If samples are comprised of two different metabarcodes (like ITS1 and rps10), reads will also be demultiplexed prior to dada2-specific read trimming steps.
 }
 \examples{
 \dontrun{
 # Remove remaining primers from raw reads, demultiplex pooled barcoded samples,
-# and then trim reads based on specific DADA2 parameters
+# and then trim reads based on specific 'DADA2' parameters
 analysis_setup <- prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
   output_directory = tempdir(),

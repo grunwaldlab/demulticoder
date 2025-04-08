@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">demulticoder</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,7 +81,7 @@ using the test data set that is included in the package</li>
 <li>You can follow along because all test data and associated CSV input
 files are contained in the package.</li>
 <li>Additional examples are also available under <a href="https://grunwaldlab.github.io/demulticoder/articles/DADA2_16S_mothur_validation.html" class="external-link">Example
-vignettes</a>
+Vignettes</a>
 </li>
 </ul>
 </div>
@@ -112,7 +112,7 @@ in the test data template</li>
 </ol>
 <ul>
 <li>New row for each unique barcode and associated primer sequence</li>
-<li>Optional cutadapt and DADA2 parameters</li>
+<li>Optional <strong>Cutadapt</strong> and dada2 parameters</li>
 </ul>
 <ol start="4" style="list-style-type: decimal">
 <li>
@@ -240,13 +240,13 @@ Cin
 <div class="section level3">
 <h3 id="format-of-primer-and-parameters-file">Format of primer and parameters file<a class="anchor" aria-label="anchor" href="#format-of-primer-and-parameters-file"></a>
 </h3>
-<p>DADA2 Primer sequence information and user-defined parameters are
-placed in <strong>primerinfo_params.csv</strong></p>
+<p>Primer sequence information and user-defined parameters are placed in
+<strong>primerinfo_params.csv</strong></p>
 <ul>
 <li><p>To simplify how functions are called, user will provide
 parameters within this input file.<br></p></li>
 <li><p>We recommend using the template linked <a href="https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv" class="external-link">here</a>.<br></p></li>
-<li><p>Remember to add any additional optional DADA2 parameters you want
+<li><p>Remember to add any additional optional dada2 parameters you want
 to use.</p></li>
 <li>
 <p>The only three <strong>required</strong> columns (with these
@@ -522,16 +522,16 @@ before proceeding.</li>
 <h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h3>
 <p><strong>Dependencies</strong>:<br>
-First install <strong>cutadapt</strong> program following the
+First install <strong>Cutadapt</strong> program following the
 instructions here: <a href="https://cutadapt.readthedocs.io/en/stable/installation.html" class="external-link uri">https://cutadapt.readthedocs.io/en/stable/installation.html</a></p>
-<p>Let’s locate where the cutadapt executable is.</p>
+<p>Let’s locate where the <strong>Cutadapt</strong> executable is.</p>
 <p>You must do this from a <strong>Terminal</strong> window:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co">#If you installed with pip or pipx, or homebrew, run this command from a Terminal window</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">which</span> cutadapt</span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="ex">cutadapt</span> <span class="at">--version</span></span></code></pre></div>
 <p>If you followed the cutadapt installation instructions to create a
-conda environment called cutadapt (change to whatever you named your
-environment), to install it in.</p>
+conda environment called <strong>Cutadapt</strong> (change to whatever
+you named your environment), to install it in.</p>
 <p>Open up a <strong>Terminal</strong> window and type these
 commands:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">#Run commands from a Terminal window</span></span>
@@ -541,7 +541,7 @@ commands:</p>
 <p>Second, make sure the following R packages are installed:</p>
 <ul>
 <li>
-<strong>DADA2</strong> (Latest version is 3.20)
+<strong>dada2</strong> (Latest version is 3.20)
 <ul>
 <li>To install, follow these instructions: <a href="https://www.bioconductor.org/packages/release/bioc/html/dada2.html" class="external-link uri">https://www.bioconductor.org/packages/release/bioc/html/dada2.html</a><br>
 </li>
@@ -579,7 +579,8 @@ Submission to CRAN is in progress.</p>
 <h3 id="reorganize-data-tables-and-set-up-data-directory-structure">Reorganize data tables and set-up data directory structure<a class="anchor" aria-label="anchor" href="#reorganize-data-tables-and-set-up-data-directory-structure"></a>
 </h3>
 <p>The sample names, primer sequences, and other metadata are
-reorganized in preparation for running Cutadapt to remove primers.</p>
+reorganized in preparation for running <strong>Cutadapt</strong> to
+remove primers.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">output</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/prepare_reads.html">prepare_reads</a></span><span class="op">(</span></span>
 <span>  data_directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"demulticoder"</span><span class="op">)</span>,</span>
@@ -610,14 +611,14 @@ reorganized in preparation for running Cutadapt to remove primers.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
-<span><span class="co">#&gt; Creating output directory: /tmp/RtmpHgwaPE/demulticoder_run/prefiltered_sequences</span></span></code></pre></div>
+<span><span class="co">#&gt; Creating output directory: /tmp/Rtmp9N0wBJ/demulticoder_run/prefiltered_sequences</span></span></code></pre></div>
 <p><img src="prepare_for_analysis-1.png" width="70%"></p>
 </div>
 <div class="section level3">
 <h3 id="remove-primers-with-cutadapt">Remove primers with Cutadapt<a class="anchor" aria-label="anchor" href="#remove-primers-with-cutadapt"></a>
 </h3>
-<p>Before running Cutadapt, <strong>please ensure that you have
-installed it</strong></p>
+<p>Before running <strong>Cutadapt</strong>, <strong>please ensure that
+you have installed it</strong></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cut_trim.html">cut_trim</a></span><span class="op">(</span></span>
 <span>  <span class="va">output</span>,</span>
@@ -679,15 +680,15 @@ installed it</strong></p>
 <span><span class="co">#&gt; Sample 2 - 1506 reads in 1284 unique sequences.</span></span></code></pre>
 <p><img src="ASV_inference-3.png" width="70%"><img src="ASV_inference-4.png" width="70%"></p>
 <pre><code><span><span class="co">#&gt; $its</span></span>
-<span><span class="co">#&gt; [1] "/tmp/RtmpHgwaPE/demulticoder_run/asvabund_matrixDADA2_its.RData"</span></span>
+<span><span class="co">#&gt; [1] "/tmp/Rtmp9N0wBJ/demulticoder_run/asvabund_matrixDADA2_its.RData"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $rps10</span></span>
-<span><span class="co">#&gt; [1] "/tmp/RtmpHgwaPE/demulticoder_run/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
+<span><span class="co">#&gt; [1] "/tmp/Rtmp9N0wBJ/demulticoder_run/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="taxonomic-assignment-step">Taxonomic assignment step<a class="anchor" aria-label="anchor" href="#taxonomic-assignment-step"></a>
 </h3>
-<p>Using the core assignTaxonomy function from DADA2, taxonomic
+<p>Using the core assignTaxonomy function from dada2, taxonomic
 assignments will be given to ASVs.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/assign_tax.html">assign_tax</a></span><span class="op">(</span></span>
@@ -708,7 +709,7 @@ assignments will be given to ASVs.</p>
 <ul>
 <li>The default output is a CSV file per metabarcode with the inferred
 ASVs and sequences, taxonomic assignments, and bootstrap supports
-provided by DADA2. These data can then be used as input for downstream
+provided by dada2. These data can then be used as input for downstream
 steps.<br>
 </li>
 <li>To view these files, locate the files with the prefix
@@ -744,10 +745,10 @@ from R Studio.</p>
 <span><span class="co">#&gt; 5    GAAAATCTTTGTGTCGGTGGTTCAAGTCCGCCTCCAAACATCTTATAAAAATGTATGTATATTTTACGAATTAGTTTTAAATCAGTAGAAAAAATAAATGAATTAAAAAAAAATATCTCAAAAATAAAAAAAATATATAATTTTAAAAATTTAAAAGTAAAATGGTATTTTTAGAACAAAAAATAAAAATAAAATTTTTACATTATTAAAATCACCCCATGTTAATAAAAAATCACGTGAACATTTTATATATAAAAATTATATTCAAAAAATTGATTTAAATTTTTCAAATTTTTTTCAATTATTAAATTTTTTAGTAATTTTAAAAAAAACATTATCTAAAGATTTTTTAATCAATATTAAAATTATTAAAAAAAATAAAAAAATATGCTTATAGCTTAATGGATAAAGCGTTAGATTGCGGATCTATAAAATGAA</span></span>
 <span><span class="co">#&gt;                                                                                                                                                                                                                   dada2_tax</span></span>
 <span><span class="co">#&gt; 1 Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Peronosporales--26--Order;Peronosporaceae--26--Family;Phytophthora--23--Genus;Phytophthora_sp.kununurra--13--Species;oomycetedb_650--13--Reference</span></span>
-<span><span class="co">#&gt; 2                      Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Pythium--100--Genus;Pythium_lutarium--24--Species;oomycetedb_764--24--Reference</span></span>
-<span><span class="co">#&gt; 3 Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Globisporangium--100--Genus;Globisporangium_cylindrosporum--26--Species;oomycetedb_41--26--Reference</span></span>
+<span><span class="co">#&gt; 2                    Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Pythium--100--Genus;Pythium_dissotocum--54--Species;oomycetedb_749--26--Reference</span></span>
+<span><span class="co">#&gt; 3 Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Globisporangium--100--Genus;Globisporangium_cylindrosporum--30--Species;oomycetedb_41--30--Reference</span></span>
 <span><span class="co">#&gt; 4                   Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--94--Order;Pythiaceae--94--Family;Pythium--89--Genus;Pythium_aphanidermatum--19--Species;oomycetedb_727--19--Reference</span></span>
-<span><span class="co">#&gt; 5                    Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Pythium--100--Genus;Pythium_oopapillum--65--Species;oomycetedb_771--65--Reference</span></span>
+<span><span class="co">#&gt; 5                    Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Pythium--100--Genus;Pythium_oopapillum--64--Species;oomycetedb_771--64--Reference</span></span>
 <span><span class="co">#&gt;   S1_rps10 S2_rps10</span></span>
 <span><span class="co">#&gt; 1      842       17</span></span>
 <span><span class="co">#&gt; 2      578      220</span></span>

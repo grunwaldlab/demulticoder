@@ -5,10 +5,10 @@
 
 ### Introduction
 
-The ***demulticoder*** package is a cutadapt and DADA2 wrapper package
-for metabarcodng analyses. The main commands and outputs are intuitive
-and comprehensive, which helps to account for the complex and iterative
-nature of metabarcoding analyses.
+The **demulticoder** package is a **Cutadapt** and **dada2** wrapper
+package for metabarcodng analyses. The main commands and outputs are
+intuitive and comprehensive, which helps to account for the complex and
+iterative nature of metabarcoding analyses.
 
 Here is a brief schematic of the general workflow:
 
@@ -16,8 +16,8 @@ Here is a brief schematic of the general workflow:
 
 ### Key Features
 
-- It automates the use of DADA2 to analyze data derived from multiple
-  metabarcodes.  
+- It automates the use of **dada2** to analyze data derived from
+  multiple metabarcodes.  
 - It reduces the number of manual input steps  
 - Handles analysis of two metabarcodes multiplexed into the same
   sequencing batch  
@@ -29,11 +29,11 @@ Here is a brief schematic of the general workflow:
 ### Installation
 
 **Dependencies**:  
-First install **cutadapt** program following the instructions here:
+First install **Cutadapt** program following the instructions here:
 <https://cutadapt.readthedocs.io/en/stable/installation.html>
 
-Let’s locate where the cutadapt executable is. You must do this from a
-**Terminal** window:
+Let’s locate where the **Cutadapt** executable is. You must do this from
+a **Terminal** window:
 
 ``` sh
 #If you installed with pip or pipx, or homebrew, run this command from a Terminal window
@@ -41,8 +41,8 @@ which cutadapt
 cutadapt --version
 ```
 
-If you followed the cutadapt installation instructions to create a conda
-environment called cutadapt (change to whatever you named your
+If you followed the **Cutadapt** installation instructions to create a
+conda environment called cutadapt (change to whatever you named your
 environment), to install it in, open up a **Terminal** window and type
 these commands:
 
@@ -55,7 +55,7 @@ cutadapt --version
 
 Second, make sure the following R packages are installed:
 
-- **DADA2** (Latest version is 3.20)
+- **dada2** (Latest version is 3.20)
   - To install, follow these instructions:
     <https://www.bioconductor.org/packages/release/bioc/html/dada2.html>  
 - **phyloseq**
@@ -99,7 +99,7 @@ Already loaded in the test data set directory are the following files:
     in the test data template
 - [**primerinfo_params.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv)
   - New row for each unique barcode and associated primer sequence
-  - Optional cutadapt and DADA2 parameters
+  - Optional **Cutadapt** and **dada2** parameters
 - **Taxonomy databases**
   - UNITE fungal database (abridged version)
   - completed
@@ -121,7 +121,7 @@ output<-prepare_reads(
   overwrite_existing = TRUE)
 ```
 
-**3. Cut and trim reads** User **must install cutadapt** on their local
+**3. Cut and trim reads** User must install **Cutadapt** on their local
 machine and append the path to the executable.
 
 ``` r

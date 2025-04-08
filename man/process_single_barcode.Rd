@@ -2,8 +2,7 @@
 % Please edit documentation in R/assign_taxonomy.R
 \name{process_single_barcode}
 \alias{process_single_barcode}
-\title{Process the information from an ASV abundance matrix to run DADA2 for single
-metabarcode}
+\title{Run 'dada2' taxonomy functions for single metabarcode}
 \usage{
 process_single_barcode(
   data_tables,
@@ -20,7 +19,6 @@ process_single_barcode(
 \item{asv_abund_matrix}{The final abundance matrix containing amplified sequence variants}
 }
 \description{
-Process the information from an ASV abundance matrix to run DADA2 for single
-metabarcode
+Run 'dada2' taxonomy functions for single metabarcode
 }
 \keyword{internal}

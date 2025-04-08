@@ -16,7 +16,7 @@ are output}
 The number of records to sample from the fastq file.}
 }
 \value{
-Dada2 wrapper function for making quality profiles for each sample
+'dada2' wrapper function for making quality profiles for each sample
 }
 \description{
 Wrapper function for plotQualityProfile function

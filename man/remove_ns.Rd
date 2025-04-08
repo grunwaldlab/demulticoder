@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_reads_count_primers.R
 \name{remove_ns}
 \alias{remove_ns}
-\title{Wrapper function for core DADA2 filter and trim function for first filtering
+\title{Wrapper function for core 'dada2' filter and trim function for first filtering
 step}
 \usage{
 remove_ns(fastq_data, multithread, temp_directory_path)
@@ -24,7 +24,7 @@ If memory is an issue, execute in a clean environment and reduce the chunk size 
 Return prefiltered reads with no Ns
 }
 \description{
-Wrapper function for core DADA2 filter and trim function for first filtering
+Wrapper function for core 'dada2' filter and trim function for first filtering
 step
 }
 \keyword{internal}
