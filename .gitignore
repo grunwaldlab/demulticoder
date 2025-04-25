@@ -8,4 +8,5 @@
 .quarto
 pkgdown
 vignettes/articles/*.png
-vignettes/articles/DADA2*
+vignettes/articles/*_cache
+
