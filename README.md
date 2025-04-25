@@ -117,7 +117,7 @@ tab on the package website
 ``` r
 output<-prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"), # This allows us to use the test directory located within the package
-  output_directory = "~/demulticoder_test", # Change to you preferred location on your local computer (Example: "~/demulticoder_test")
+  output_directory = tempdir(), # Change to you preferred location on your local computer (Example: "~/demulticoder_test")
   overwrite_existing = TRUE)
 ```
 

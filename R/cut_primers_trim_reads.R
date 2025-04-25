@@ -35,17 +35,23 @@ run_cutadapt <- function(cutadapt_path,
               stderr = TRUE)
   },
   warning = function(w) {
-    stop("Cutadapt cannot be found on the PATH. Please check if it is installed and correctly added to the PATH.")
+    stop(
+      "Cutadapt cannot be found on the PATH. Please check if it is installed and correctly added to the PATH."
+    )
   })
   
-  cat(
-    "Running cutadapt",
-    version_output,
-    "for",
-    cutadapt_data_barcode$primer_name[1],
-    "sequence data",
-    "\n"
+  
+  message(
+    paste(
+      "Running cutadapt",
+      version_output,
+      "for",
+      cutadapt_data_barcode$primer_name[1],
+      "sequence data",
+      sep = " "
+    )
   )
+  
   
   # Simplify
   cutadapt <- path.expand(cutadapt_path)
@@ -61,12 +67,12 @@ run_cutadapt <- function(cutadapt_path,
     "-A",
     cutadapt_data_barcode$f_rc
   ))
-  fwd_trim = cutadapt_data_barcode[cutadapt_data_barcode$direction == "Forward", ][["trimmed_path"]]
-  rev_trim = cutadapt_data_barcode[cutadapt_data_barcode$direction == "Reverse", ][["trimmed_path"]]
-  fwd_untrim = cutadapt_data_barcode[cutadapt_data_barcode$direction == "Forward", ][["untrimmed_path"]]
-  rev_untrim = cutadapt_data_barcode[cutadapt_data_barcode$direction == "Reverse", ][["untrimmed_path"]]
-  fwd_prefilt = cutadapt_data_barcode[cutadapt_data_barcode$direction == "Forward", ][["prefiltered_path"]]
-  rev_prefilt = cutadapt_data_barcode[cutadapt_data_barcode$direction == "Reverse", ][["prefiltered_path"]]
+  fwd_trim = cutadapt_data_barcode[cutadapt_data_barcode$direction == "Forward",][["trimmed_path"]]
+  rev_trim = cutadapt_data_barcode[cutadapt_data_barcode$direction == "Reverse",][["trimmed_path"]]
+  fwd_untrim = cutadapt_data_barcode[cutadapt_data_barcode$direction == "Forward",][["untrimmed_path"]]
+  rev_untrim = cutadapt_data_barcode[cutadapt_data_barcode$direction == "Reverse",][["untrimmed_path"]]
+  fwd_prefilt = cutadapt_data_barcode[cutadapt_data_barcode$direction == "Forward",][["prefiltered_path"]]
+  rev_prefilt = cutadapt_data_barcode[cutadapt_data_barcode$direction == "Reverse",][["prefiltered_path"]]
   
   # Construct command arguments
   command_args = paste(
@@ -104,13 +110,13 @@ run_cutadapt <- function(cutadapt_path,
       fwd_untrim_reads <- ShortRead::readFastq(fwd_untrim[i])
       rev_untrim_reads <- ShortRead::readFastq(rev_untrim[i])
       ShortRead::writeFastq(fwd_untrim_reads, fwd_trim[i], mode = 'a')
-      cat(
+      message(
         "Already trimmed forward reads were appended to trimmed read directory, and they are located here:",
         fwd_trim[i],
         "\n"
       )
       ShortRead::writeFastq(rev_untrim_reads, rev_trim[i], mode = 'a')
-      cat(
+      message(
         "Already trimmed reverse reads were appended to trimmed read directory, and they are located here:",
         rev_trim[i],
         "\n"
@@ -377,14 +383,12 @@ plot_post_trim_qc <-
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Remove remaining primers from raw reads, demultiplex pooled barcoded samples,
 #' # and then trim reads based on specific 'DADA2' parameters
 #' analysis_setup <- prepare_reads(
 #'   data_directory = system.file("extdata", package = "demulticoder"),
 #'   output_directory = tempdir(),
-#'   tempdir_path = tempdir(),
-#'   tempdir_id = "demulticoder_run_temp",
 #'   overwrite_existing = TRUE
 #' )
 #' cut_trim(
@@ -425,7 +429,7 @@ cut_trim <- function(analysis_setup,
       )
       return(invisible())
     } else {
-      warning("Existing analysis files found. Overwriting existing files.")
+      message("Existing analysis files found. Overwriting existing files.")
       
       # Remove existing files and directories
       patterns_to_remove <- c("primer_hit_data_posttrim.csv",

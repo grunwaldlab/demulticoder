@@ -18,7 +18,7 @@ prep_abund_matrix <-
         data_tables$cutadapt_data$primer_name
       )
     asv_abund_matrix <-
-      asv_abund_matrix[rownames(asv_abund_matrix) %in% data_tables$cutadapt_data$file_id_primer[data_tables$cutadapt_data$primer_name == metabarcode], ]
+      asv_abund_matrix[rownames(asv_abund_matrix) %in% data_tables$cutadapt_data$file_id_primer[data_tables$cutadapt_data$primer_name == metabarcode],]
     return(asv_abund_matrix)
   }
 
@@ -132,8 +132,8 @@ assignTax_as_char <-
     tax_out <-
       vapply(1:nrow(tax_results$tax), FUN.VALUE = character(1), function(i) {
         paste(
-          tax_results$tax[i, ],
-          tax_results$boot[i, ],
+          tax_results$tax[i,],
+          tax_results$boot[i,],
           colnames(tax_results$tax),
           sep = '--',
           collapse = ';'
@@ -219,15 +219,15 @@ format_abund_matrix <-
             any(grepl(pattern, asv_seq, ignore.case = TRUE)))
         
         if (any(match_primer)) {
-          cat("ASV Sequence:", asv_seq, "\n")
-          cat("Matching Primer(s):", primer_seqs[match_primer], "\n")
-          cat("Sequence removed\n-----\n")
+          message(paste("ASV Sequence:", asv_seq, "\n"))
+          message(paste("Matching Primer(s):", primer_seqs[match_primer], "\n"))
+          message(paste("Sequence removed\n-----\n"))
         }
         
         ! any(match_primer)
       })
     
-    filtered_abund_matrix <- formatted_abund_asv[keep_rows,]
+    filtered_abund_matrix <- formatted_abund_asv[keep_rows, ]
     asv_id_column <-
       paste("asv_", seq_along(rownames(filtered_abund_matrix)), sep = "")
     filtered_abund_matrix <- cbind(asv_id = asv_id_column,
@@ -273,6 +273,7 @@ get_read_counts <-
         sapply(merged_reads, getN),
         rowSums(asv_abund_matrix)
       )
+    
     track <-
       cbind(rownames(track), data.frame(track, row.names = NULL))
     colnames(track) <-
@@ -285,10 +286,13 @@ get_read_counts <-
         "merged",
         "nonchim"
       )
+    
     track$samplename_barcode <-
-      track$samplename_barcode <-
-      gsub("(R1_|.fastq(.gz)?)$", "", track$samplename_barcode)
+      gsub("R1_|\\.fastq(\\.gz)?$", "", track$samplename_barcode)
+    
+    message("Tracking read counts:")
     print(track)
+    
     track_read_counts_path <-
       file.path(output_directory_path,
                 paste0("track_reads_", metabarcode, ".csv"))
@@ -363,13 +367,11 @@ process_single_barcode <-
 #' @details At this point, 'dada2' function assignTaxonomy is used to assign taxonomy to the inferred ASVs.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Assign taxonomies to ASVs on by metabarcode
 #' analysis_setup <- prepare_reads(
 #'   data_directory = system.file("extdata", package = "demulticoder"),
 #'   output_directory = tempdir(),
-#'   tempdir_path = tempdir(),
-#'   tempdir_id = "demulticoder_run_temp",
 #'   overwrite_existing = TRUE
 #' )
 #' cut_trim(

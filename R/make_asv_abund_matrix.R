@@ -64,13 +64,12 @@ infer_asvs <-
       verbose = barcode_params$verbose
     )
     
-    cat(
-      paste0(
+    message(
+      paste(
         'Error rate plot for the ',
         my_direction,
         ' read of primer pair ',
-        my_primer_pair_id,
-        ' \n'
+        my_primer_pair_id
       )
     )
     plot_errors <- dada2::plotErrors(
@@ -218,7 +217,7 @@ countOverlap <-
       rep(names(non_empty_merged_reads),
           sapply(non_empty_merged_reads, nrow))
     merge_data2 <-
-      merge_data[merge_data$samplename_barcode %in% data_tables$cutadapt_data$samplename_barcode, ]
+      merge_data[merge_data$samplename_barcode %in% data_tables$cutadapt_data$samplename_barcode,]
     merge_data2 <-
       merge(merge_data2, data_tables$cutadapt_data, by = "samplename_barcode")
     merge_data2$overlap <-
@@ -378,13 +377,11 @@ make_seqhist <- function(asv_abund_matrix, output_directory_path) {
 #' @export make_asv_abund_matrix
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # The primary wrapper function for DADA2 ASV inference steps
 #' analysis_setup <- prepare_reads(
 #'   data_directory = system.file("extdata", package = "demulticoder"),
 #'   output_directory = tempdir(),
-#'   tempdir_path = tempdir(),
-#'   tempdir_id = "demulticoder_run_temp",
 #'   overwrite_existing = TRUE
 #' )
 #' cut_trim(
@@ -397,7 +394,6 @@ make_seqhist <- function(asv_abund_matrix, output_directory_path) {
 #' overwrite_existing = TRUE
 #' )
 #' }
-
 make_asv_abund_matrix <-
   function(analysis_setup, overwrite_existing = FALSE) {
     data_tables <- analysis_setup$data_tables
@@ -482,7 +478,7 @@ make_asv_abund_matrix <-
       
       if (length(existing_files) == 0 && !overwrite_existing) {
         message("No existing files found. The 'make_asv_abund_matrix' function will run.")
-
+        
       }
       
       unique_barcodes <-

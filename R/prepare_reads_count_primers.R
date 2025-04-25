@@ -1,4 +1,16 @@
-utils::globalVariables(c("f_compt", "f_rc", "f_rev", "forward", "primer_type", "r_compt", "r_rc", "r_rev", "reverse"))
+utils::globalVariables(
+  c(
+    "f_compt",
+    "f_rc",
+    "f_rev",
+    "forward",
+    "primer_type",
+    "r_compt",
+    "r_rc",
+    "r_rev",
+    "reverse"
+  )
+)
 
 #' Set up directory paths for subsequent analyses
 #'
@@ -70,15 +82,21 @@ setup_directories <- function(data_directory = "data",
 prepare_metadata_table <-
   function(metadata_file_path, primer_data) {
     metadata <- readr::read_csv(metadata_file_path)
-    metadata_primer_data <- merge(metadata, primer_data, by = "primer_name")
-    metadata_primer_data <- metadata_primer_data[order(metadata_primer_data$sample_name), ]
+    metadata_primer_data <-
+      merge(metadata, primer_data, by = "primer_name")
+    metadata_primer_data <-
+      metadata_primer_data[order(metadata_primer_data$sample_name),]
     if ("primer_name" %in% colnames(metadata_primer_data)) {
       new_metadata_cols <-
         c("primer_name", colnames(metadata_primer_data)[colnames(metadata_primer_data) != "primer_name"])
-      metadata_primer_data <- metadata_primer_data[new_metadata_cols]
+      metadata_primer_data <-
+        metadata_primer_data[new_metadata_cols]
       metadata_primer_data$samplename_barcode <-
-        paste0(metadata_primer_data$sample_name, "_", metadata_primer_data$primer_name)
-      barcode_col <- match("samplename_barcode", colnames(metadata_primer_data))
+        paste0(metadata_primer_data$sample_name,
+               "_",
+               metadata_primer_data$primer_name)
+      barcode_col <-
+        match("samplename_barcode", colnames(metadata_primer_data))
       metadata_primer_data <-
         metadata_primer_data[, c(barcode_col, seq_along(metadata_primer_data)[-barcode_col])]
     } else {
@@ -158,12 +176,15 @@ read_parameters_table <- function(primers_params_path) {
 #' @keywords internal
 read_fastq <- function(data_directory_path,
                        temp_directory_path) {
-  
-  fastq_paths <- list.files(data_directory_path, pattern = "\\.fastq(\\.gz)?$", full.names = TRUE)
+  fastq_paths <-
+    list.files(data_directory_path,
+               pattern = "\\.fastq(\\.gz)?$",
+               full.names = TRUE)
   
   file_id <- sub("\\.fastq(\\.gz)?$", "", basename(fastq_paths))
   
-  sample_name <- gsub("_R[12]|\\.fastq|\\.gz", "", basename(fastq_paths))
+  sample_name <-
+    gsub("_R[12]|\\.fastq|\\.gz", "", basename(fastq_paths))
   
   direction <-
     ifelse(grepl("_R1", fastq_paths), "Forward", "Reverse")
@@ -171,7 +192,8 @@ read_fastq <- function(data_directory_path,
   fastq_data_directory_paths <-
     file.path(fastq_paths)
   
-  temp_data_path <- file.path(temp_directory_path, basename(fastq_paths))
+  temp_data_path <-
+    file.path(temp_directory_path, basename(fastq_paths))
   
   fastq_data <-
     data.frame(file_id,
@@ -252,10 +274,10 @@ remove_ns <-
     
     if (!all(file.exists(fastq_data$prefiltered_path))) {
       dada2::filterAndTrim(
-        fwd = fastq_data[fastq_data$direction == "Forward",][["fastq_data_directory_paths"]],
-        filt = fastq_data[fastq_data$direction == "Forward",][["prefiltered_path"]],
-        rev = fastq_data[fastq_data$direction == "Reverse",][["fastq_data_directory_paths"]],
-        filt.rev = fastq_data[fastq_data$direction == "Reverse",][["prefiltered_path"]],
+        fwd = fastq_data[fastq_data$direction == "Forward", ][["fastq_data_directory_paths"]],
+        filt = fastq_data[fastq_data$direction == "Forward", ][["prefiltered_path"]],
+        rev = fastq_data[fastq_data$direction == "Reverse", ][["fastq_data_directory_paths"]],
+        filt.rev = fastq_data[fastq_data$direction == "Reverse", ][["prefiltered_path"]],
         multithread = multithread,
         maxN = 0
       )
@@ -304,7 +326,8 @@ get_pre_primer_hits <-
     
     primer_hits <- function(primer, path) {
       fastq_data <- ShortRead::readFastq(path)
-      nhits <- Biostrings::vcountPattern(primer, ShortRead::sread(fastq_data), fixed = FALSE)
+      nhits <-
+        Biostrings::vcountPattern(primer, ShortRead::sread(fastq_data), fixed = FALSE)
       return(sum(nhits > 0))
     }
     
@@ -374,7 +397,7 @@ get_pre_primer_hits <-
 #' specify paths for the trimmed and untrimmed reads
 #'
 #' @param fastq_data A \code{data.frame} containing the read file paths and the direction of the reads by sample
-#' @param metadata_primer_data A \code{data.frame} combining the metadata and primer data 
+#' @param metadata_primer_data A \code{data.frame} combining the metadata and primer data
 #' @param temp_directory_path User-defined temporary directory to output unfiltered, trimmed, and filtered read directories throughout the workflow
 #'
 #' @return Returns a larger \code{data.frame} containing paths to temporary read
@@ -385,10 +408,12 @@ make_cutadapt_tibble <-
   function(fastq_data,
            metadata_primer_data,
            temp_directory_path) {
-    cutadapt_data <- merge(metadata_primer_data, fastq_data, by = "sample_name")
+    cutadapt_data <-
+      merge(metadata_primer_data, fastq_data, by = "sample_name")
     
     # Directory for trimmed sequences
-    trimmed_read_dir <- file.path(temp_directory_path, "trimmed_sequences")
+    trimmed_read_dir <-
+      file.path(temp_directory_path, "trimmed_sequences")
     if (!dir.exists(trimmed_read_dir)) {
       dir.create(trimmed_read_dir)
     }
@@ -405,7 +430,8 @@ make_cutadapt_tibble <-
     )
     
     # Directory for untrimmed sequences
-    untrimmed_read_dir <- file.path(temp_directory_path, "untrimmed_sequences")
+    untrimmed_read_dir <-
+      file.path(temp_directory_path, "untrimmed_sequences")
     if (!dir.exists(untrimmed_read_dir)) {
       dir.create(untrimmed_read_dir)
     }
@@ -417,12 +443,17 @@ make_cutadapt_tibble <-
         cutadapt_data$file_id,
         "_",
         cutadapt_data$primer_name,
-        ifelse(grepl("\\.gz$", cutadapt_data$fastq_data_directory_paths), ".fastq.gz", ".fastq")
+        ifelse(
+          grepl("\\.gz$", cutadapt_data$fastq_data_directory_paths),
+          ".fastq.gz",
+          ".fastq"
+        )
       )
     )
     
     # Directory for filtered sequences
-    filtered_read_dir <- file.path(temp_directory_path, "filtered_sequences")
+    filtered_read_dir <-
+      file.path(temp_directory_path, "filtered_sequences")
     if (!dir.exists(filtered_read_dir)) {
       dir.create(filtered_read_dir)
     }
@@ -442,7 +473,7 @@ make_cutadapt_tibble <-
   }
 
 #' Prepare reads for primer trimming using 'Cutadapt'
-#' 
+#'
 #' @importFrom utils modifyList read.table stack
 #' @param data_directory Directory path where the user has placed
 #'   raw FASTQ (forward and reverse reads), metadata.csv, and
@@ -462,14 +493,12 @@ make_cutadapt_tibble <-
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' # Pre-filter raw reads and parse metadata and primer_information to prepare 
+#' \donttest{
+#' # Pre-filter raw reads and parse metadata and primer_information to prepare
 #' # for primer trimming and filter
 #' analysis_setup <- prepare_reads(
 #'   data_directory = system.file("extdata", package = "demulticoder"),
 #'   output_directory = tempdir(),
-#'   tempdir_path = tempdir(),
-#'   tempdir_id = "demulticoder_run_temp",
 #'   overwrite_existing = TRUE
 #' )
 #' }
@@ -478,7 +507,8 @@ prepare_reads <- function(data_directory = "data",
                           tempdir_path = NULL,
                           tempdir_id = "demulticoder_run",
                           overwrite_existing = FALSE) {
-  directory_paths <- setup_directories(data_directory, output_directory, tempdir_path, tempdir_id)
+  directory_paths <-
+    setup_directories(data_directory, output_directory, tempdir_path, tempdir_id)
   output_directory_path <- directory_paths$output_directory
   data_directory_path <- directory_paths$data_directory
   temp_directory_path <- directory_paths$temp_directory
@@ -488,17 +518,22 @@ prepare_reads <- function(data_directory = "data",
   existing_files <- list.files(output_directory_path)
   
   if (!overwrite_existing && length(existing_files) > 0) {
-    existing_analysis_table <- file.path(temp_directory_path, "analysis_setup_obj.RData")
+    existing_analysis_table <-
+      file.path(temp_directory_path, "analysis_setup_obj.RData")
     if (file.exists(existing_analysis_table)) {
       load(existing_analysis_table)
-      message("Existing analysis setup tables detected. To perform a new analysis, specify overwrite_existing = TRUE.")
+      message(
+        "Existing analysis setup tables detected. To perform a new analysis, specify overwrite_existing = TRUE."
+      )
       return(analysis_setup)
     } else {
-      message("Existing analysis setup tables are not found. The 'prepare_reads' function was rerun.")
+      message(
+        "Existing analysis setup tables are not found. The 'prepare_reads' function was rerun."
+      )
     }
   } else {
     if (length(existing_files) > 0) {
-      warning("Existing files found in the output directory. Overwriting existing files.")
+      message("Existing files found in the output directory. Overwriting existing files.")
     }
     if (dir.exists(output_directory_path)) {
       unlink(output_directory_path, recursive = TRUE)
@@ -518,7 +553,8 @@ prepare_reads <- function(data_directory = "data",
   
   primer_data <- orient_primers(primers_params_path)
   parameters <- read_parameters_table(primers_params_path)
-  metadata_primer_data <- prepare_metadata_table(metadata_file_path, primer_data)
+  metadata_primer_data <-
+    prepare_metadata_table(metadata_file_path, primer_data)
   
   multithread <- if ("multithread" %in% names(parameters)) {
     parameters$multithread[1]
@@ -526,9 +562,12 @@ prepare_reads <- function(data_directory = "data",
     FALSE
   }
   
-  fastq_data <- read_prefilt_fastq(data_directory_path, multithread, temp_directory_path)
-  pre_primer_hit_data <- get_pre_primer_hits(primer_data, fastq_data, output_directory_path)
-  cutadapt_data <- make_cutadapt_tibble(fastq_data, metadata_primer_data, temp_directory_path)
+  fastq_data <-
+    read_prefilt_fastq(data_directory_path, multithread, temp_directory_path)
+  pre_primer_hit_data <-
+    get_pre_primer_hits(primer_data, fastq_data, output_directory_path)
+  cutadapt_data <-
+    make_cutadapt_tibble(fastq_data, metadata_primer_data, temp_directory_path)
   data_tables <- list(
     cutadapt_data = cutadapt_data,
     primer_data = primer_data,
@@ -537,8 +576,11 @@ prepare_reads <- function(data_directory = "data",
     metadata_primer_data = metadata_primer_data
   )
   
-  analysis_setup <- list(data_tables = data_tables, directory_paths = directory_paths)
-  analysis_setup_path <- file.path(temp_directory_path, paste0("analysis_setup_obj", ".RData"))
+  analysis_setup <-
+    list(data_tables = data_tables, directory_paths = directory_paths)
+  analysis_setup_path <-
+    file.path(temp_directory_path,
+              paste0("analysis_setup_obj", ".RData"))
   save(analysis_setup, file = analysis_setup_path)
   return(analysis_setup)
 }

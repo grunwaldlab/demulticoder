@@ -1,6 +1,6 @@
 Package: demulticoder
 Title: A Set of Tools for the Simultaneous Analysis of Multiplexed Metabarcodes 
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: c(person("Martha A.", "Sudermann", email = "sudermam@oregonstate.edu", role = c("aut", "cre", "cph")), person("Zachary S. L", "Foster", role = "aut"), person("Samantha", "Dawson", role = "aut"), person("Hung", "Phan", role = "aut"), person("Jeff", "H. Chang", role = "aut"), person("Niklaus", "Grünwald", role = c("aut", "cph"))) 
 Description: A comprehensive set of wrapper functions for the analysis of multiplex metabarcode data. It includes robust wrappers for 'Cutadapt' and 'dada2' to trim primers, filter reads, perform amplicon sequence variant (ASV) inference, and assign taxonomy. The package can handle single metabarcode datasets, datasets with two pooled metabarcodes, or multiple datasets simultaneously. The final output is a matrix per metabarcode, containing both ASV abundance data and associated taxonomic assignments. An optional function converts these matrices into phyloseq and taxmap objects. 
 License: MIT + file LICENSE

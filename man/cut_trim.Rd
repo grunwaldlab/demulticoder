@@ -25,14 +25,12 @@ Main command to trim primers using 'Cutadapt' and core 'dada2' functions
 If samples are comprised of two different metabarcodes (like ITS1 and rps10), reads will also be demultiplexed prior to dada2-specific read trimming steps.
 }
 \examples{
-\dontrun{
+\donttest{
 # Remove remaining primers from raw reads, demultiplex pooled barcoded samples,
 # and then trim reads based on specific 'DADA2' parameters
 analysis_setup <- prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
   output_directory = tempdir(),
-  tempdir_path = tempdir(),
-  tempdir_id = "demulticoder_run_temp",
   overwrite_existing = TRUE
 )
 cut_trim(

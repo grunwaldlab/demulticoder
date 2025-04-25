@@ -4,3 +4,4 @@ metacoder
 phyloseq
 dplyr
 purrr
+future

@@ -33,13 +33,11 @@ ASV matrix converted to taxmap object
 Filter ASV abundance matrix and convert to taxmap and phyloseq objects
 }
 \examples{
-\dontrun{
-Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
+\donttest{
+# Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
 analysis_setup <- prepare_reads(
-  data_directory = system.file("extdata", package = "demulticoder"),
+data_directory = system.file("extdata", package = "demulticoder"),
   output_directory = tempdir(),
-  tempdir_path = tempdir(),
-  tempdir_id = "demulticoder_run_temp",
   overwrite_existing = TRUE
 )
 cut_trim(

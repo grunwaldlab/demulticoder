@@ -16,13 +16,11 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
+#' \donttest{
+#' # Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
 #' analysis_setup <- prepare_reads(
-#'   data_directory = system.file("extdata", package = "demulticoder"),
+#' data_directory = system.file("extdata", package = "demulticoder"),
 #'   output_directory = tempdir(),
-#'   tempdir_path = tempdir(),
-#'   tempdir_id = "demulticoder_run_temp",
 #'   overwrite_existing = TRUE
 #' )
 #' cut_trim(
@@ -95,7 +93,7 @@ convert_asv_matrix_to_objs <-
       
       is_low_abund <-
         rowSums(abundance[, grepl(paste0("_", suffix, "$"), colnames(abundance))]) < min_read_depth
-      abundance <- dplyr::filter(abundance,!is_low_abund)
+      abundance <- dplyr::filter(abundance, !is_low_abund)
       abundance$dada2_tax <-
         purrr::map_chr(strsplit(abundance$dada2_tax, ';'), function(x) {
           paste(sapply(strsplit(x, '--'),
@@ -123,9 +121,9 @@ convert_asv_matrix_to_objs <-
         )
       names(taxmap_obj$data) <- c('abund', 'score')
       
-      taxmap_obj$data$otu_table = taxmap_obj$data$abund[,-3:-4]
+      taxmap_obj$data$otu_table = taxmap_obj$data$abund[, -3:-4]
       filtered_sample_data <-
-        data_tables$metadata[data_tables$metadata$primer_name == suffix,]
+        data_tables$metadata[data_tables$metadata$primer_name == suffix, ]
       taxmap_obj$data$sample_data = filtered_sample_data
       
       
@@ -143,17 +141,19 @@ convert_asv_matrix_to_objs <-
       save(taxmap_obj, file = taxmap_path)
       save(phylo_obj, file = phyloseq_path)
       
-      cat("For", suffix, "dataset", "\n")
-      cat("Taxmap object saved in:", taxmap_path, "\n")
-      cat("Phyloseq object saved in:", phyloseq_path, "\n")
-      cat("ASVs filtered by minimum read depth:", min_read_depth, "\n")
-      cat(
-        "For taxonomic assignments, if minimum bootstrap was set to:",
-        minimum_bootstrap,
-        "assignments were set to 'Unsupported'",
-        "\n"
+      message(paste("For", suffix, "dataset", "\n"))
+      message(paste("Taxmap object saved in:", taxmap_path, "\n"))
+      message(paste("Phyloseq object saved in:", phyloseq_path, "\n"))
+      message(paste("ASVs filtered by minimum read depth:", min_read_depth, "\n"))
+      message(
+        paste(
+          "For taxonomic assignments, if minimum bootstrap was set to:",
+          minimum_bootstrap,
+          "assignments were set to 'Unsupported'",
+          "\n"
+        )
       )
-      cat("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
+      message("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
     }
     
     return(result_list)

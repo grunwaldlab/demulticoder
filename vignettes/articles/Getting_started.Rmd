@@ -202,7 +202,7 @@ The sample names, primer sequences, and other metadata are reorganized in prepar
 ```{r prepare_for_analysis, warning=FALSE, message=TRUE, cache=FALSE}
 output<-prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
-  output_directory = "~/demulticoder_test", #Run commands from a Terminal window", 
+  output_directory = tempdir(), # Change to your desired output directory path or leave as is", 
   overwrite_existing = TRUE)
 ```
 

@@ -47,13 +47,11 @@ Assign taxonomy functions
 At this point, 'dada2' function assignTaxonomy is used to assign taxonomy to the inferred ASVs.
 }
 \examples{
-\dontrun{
+\donttest{
 # Assign taxonomies to ASVs on by metabarcode
 analysis_setup <- prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
   output_directory = tempdir(),
-  tempdir_path = tempdir(),
-  tempdir_id = "demulticoder_run_temp",
   overwrite_existing = TRUE
 )
 cut_trim(

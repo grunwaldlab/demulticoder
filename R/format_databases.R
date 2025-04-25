@@ -19,7 +19,8 @@ format_db_rps10 <-
     database_path <-
       file.path(temp_directory_path, "rps10_reference_db.fa")
     
-    db_rps10 <- metacoder::read_fasta(file.path(data_path, db_rps10))
+    db_rps10 <-
+      metacoder::read_fasta(file.path(data_path, db_rps10))
     
     data_rps10 <-
       stringr::str_match(names(db_rps10), pattern = "name=(.+)\\|strain=(.+)\\|ncbi_acc=(.+)\\|ncbi_taxid=(.+)\\|oodb_id=(.+)\\|taxonomy=(.+)$")
@@ -128,10 +129,11 @@ format_db_its <-
     data_its$taxonomy <- paste0(data_its$taxonomy, ';')
     
     
-    data_its$genus <- ifelse(sapply(strsplit(data_its$taxonomy, ";"), length) >= 7,
-                             sapply(strsplit(data_its$taxonomy, ";"), function(x)
-                               x[6]),
-                             NA)
+    data_its$genus <-
+      ifelse(sapply(strsplit(data_its$taxonomy, ";"), length) >= 7,
+             sapply(strsplit(data_its$taxonomy, ";"), function(x)
+               x[6]),
+             NA)
     
     genus_count <- table(data_its$genus)
     count_table <-
@@ -195,10 +197,11 @@ format_db_16S <-
     data_16S$taxonomy <- trimws(data_16S$taxonomy)
     data_16S$taxonomy <- paste0(data_16S$taxonomy, ';')
     
-    data_16S$genus <- ifelse(sapply(strsplit(data_16S$taxonomy, ";"), length) >= 7,
-                             sapply(strsplit(data_16S$taxonomy, ";"), function(x)
-                               x[6]),
-                             NA)
+    data_16S$genus <-
+      ifelse(sapply(strsplit(data_16S$taxonomy, ";"), length) >= 7,
+             sapply(strsplit(data_16S$taxonomy, ";"), function(x)
+               x[6]),
+             NA)
     
     genus_count <- table(data_16S$genus)
     count_table <-
