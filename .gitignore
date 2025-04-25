@@ -9,4 +9,4 @@
 pkgdown
 vignettes/articles/*.png
 vignettes/articles/*_cache
-
+test.R
