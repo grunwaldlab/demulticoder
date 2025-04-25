@@ -7,3 +7,5 @@
 .DS_Store
 .quarto
 pkgdown
+vignettes/articles/*.png
+vignettes/articles/DADA2*
