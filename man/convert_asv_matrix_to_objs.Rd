@@ -2,7 +2,7 @@
 % Please edit documentation in R/convert_asv_matrix.R
 \name{convert_asv_matrix_to_objs}
 \alias{convert_asv_matrix_to_objs}
-\title{Filter ASV abundance matrix and convert to taxmap and phyloseq objects}
+\title{Filter ASV abundance matrix and convert to 'taxmap' and 'phyloseq' objects}
 \usage{
 convert_asv_matrix_to_objs(
   analysis_setup,
@@ -19,22 +19,22 @@ data tables, produced by the \code{prepare_reads} function}
 samples is less than this threshold, ASV will be filtered.}
 
 \item{minimum_bootstrap}{Set threshold for bootstrap support value for taxonomic
-assignments. Below designated minimum bootstrap threshold, taxnomoic
+assignments. Below designated minimum bootstrap threshold, taxonomic
 assignments will be set to N/A}
 
 \item{save_outputs}{Logical, indicating whether to save the resulting phyloseq
-and taxmap objects. If TRUE, the objects will be saved; if FALSE, they will
+and 'taxmap' objects. If TRUE, the objects will be saved; if FALSE, they will
 only be available in the global environment. Default is FALSE.}
 }
 \value{
-ASV matrix converted to taxmap object
+ASV matrix converted to 'taxmap' object
 }
 \description{
-Filter ASV abundance matrix and convert to taxmap and phyloseq objects
+Filter ASV abundance matrix and convert to 'taxmap' and 'phyloseq' objects
 }
 \examples{
 \donttest{
-# Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
+# Convert final matrix to 'taxmap' and phyloseq objects for downstream analysis steps
 analysis_setup <- prepare_reads(
 data_directory = system.file("extdata", package = "demulticoder"),
   output_directory = tempdir(),

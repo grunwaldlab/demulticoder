@@ -21,7 +21,7 @@ overwrite_existing <- TRUE
 
 ### Introduction  
 
-This vignette shows how demulticoder was used to analyze the mothur 16S SOP dataset featured in **DADA2** tutorials 
+This vignette shows how demulticoder was used to analyze the mothur 16S SOP dataset featured in **`dada2`** tutorials 
 
 The raw read files and information on the dataset used for this analysis can be found [here](https://mothur.org/wiki/miseq_sop/#preparing-for-analysis) 
 
@@ -103,7 +103,7 @@ print(metadata)
 
 Now, make our **primerinfo_params.csv** input file
 
-We then make and save the second CSV input file with the name of the metabarcode used, primer sequences, and the optional **dada2** parameter options.  
+We then make and save the second CSV input file with the name of the metabarcode used, primer sequences, and the optional **`dada2`** parameter options.  
 
 We referenced the DADA2 [tutorial](https://benjjneb.github.io/dada2/tutorial.html) to select the same parameter options.  
 
@@ -202,7 +202,7 @@ output<-prepare_reads(
 
 ### Remove primers and trim reads  
 
-Run Cutadapt to remove primers and then trim reads with **dada2** filterAndTrim function 
+Run Cutadapt to remove primers and then trim reads with **`dada2`** filterAndTrim function 
 ```{r Remove_primers_and_trim_reads, fig.height=6, fig.width=6, message=TRUE, warning=FALSE, cache=FALSE}
 cut_trim(
   output,
@@ -257,7 +257,7 @@ assign_tax(
   overwrite_existing = TRUE)
 ```
 
-As a check we can take a look at read counts across the workflow. If there are sudden drops, we should reconsider our adjusting certain **dada2** parameters and re-running the analysis.  
+As a check we can take a look at read counts across the workflow. If there are sudden drops, we should reconsider our adjusting certain **`dada2`** parameters and re-running the analysis.  
 ```{r view_read_counts, fig.height=10, fig.width=10, echo=FALSE, message=TRUE}
 reads_filepath <- file.path(output$directory_paths$output_directory, "track_reads_r16S.csv")
 
@@ -268,16 +268,16 @@ if (!overwrite_existing) {
 }
 ```
 
-### Convert ASV matrix to taxmap and phyloseq objects
+### Convert ASV matrix to **`taxmap`** and **`phyloseq`** objects
 
-Convert ASV matrix to taxmap and phyloseq objects with one function  
+Convert ASV matrix to **`taxmap`** and **`phyloseq`** objects with one function  
 ```{r convert_matrix_to_other_formats, fig.height=6, fig.width=6, message=TRUE, cache=FALSE}
 objs<-convert_asv_matrix_to_objs(output)
 ```
 
 ### Examine accuracy relative to a mock community  
 
-Evaluate accuracy using mock community, as shown in **dada2** tutorial  
+Evaluate accuracy using mock community, as shown in **`dada2`** tutorial  
 ```{r examine_accuracy, fig.height=6, fig.width=6, message=TRUE, cache=FALSE}
 matrix_filepath <- file.path(output$directory_paths$output_directory, "final_asv_abundance_matrix_r16S.csv")
 tax_matrix<-read.csv(matrix_filepath)

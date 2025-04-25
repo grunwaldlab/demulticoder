@@ -112,7 +112,8 @@ in the test data template</li>
 </ol>
 <ul>
 <li>New row for each unique barcode and associated primer sequence</li>
-<li>Optional <strong>Cutadapt</strong> and dada2 parameters</li>
+<li>Optional <strong><code>Cutadapt</code></strong> and
+<strong><code>dada2</code></strong> parameters</li>
 </ul>
 <ol start="4" style="list-style-type: decimal">
 <li>
@@ -246,8 +247,8 @@ Cin
 <li><p>To simplify how functions are called, user will provide
 parameters within this input file.<br></p></li>
 <li><p>We recommend using the template linked <a href="https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv" class="external-link">here</a>.<br></p></li>
-<li><p>Remember to add any additional optional dada2 parameters you want
-to use.</p></li>
+<li><p>Remember to add any additional optional
+<strong><code>dada2</code></strong> parameters you want to use.</p></li>
 <li>
 <p>The only three <strong>required</strong> columns (with these
 headers) are:</p>
@@ -522,16 +523,17 @@ before proceeding.</li>
 <h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h3>
 <p><strong>Dependencies</strong>:<br>
-First install <strong>Cutadapt</strong> program following the
-instructions here: <a href="https://cutadapt.readthedocs.io/en/stable/installation.html" class="external-link uri">https://cutadapt.readthedocs.io/en/stable/installation.html</a></p>
-<p>Let’s locate where the <strong>Cutadapt</strong> executable is.</p>
+First install <strong><code>Cutadapt</code></strong> program following
+the instructions here: <a href="https://cutadapt.readthedocs.io/en/stable/installation.html" class="external-link uri">https://cutadapt.readthedocs.io/en/stable/installation.html</a></p>
+<p>Let’s locate where the <strong><code>Cutadapt</code></strong>
+executable is.</p>
 <p>You must do this from a <strong>Terminal</strong> window:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co">#If you installed with pip or pipx, or homebrew, run this command from a Terminal window</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">which</span> cutadapt</span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="ex">cutadapt</span> <span class="at">--version</span></span></code></pre></div>
 <p>If you followed the cutadapt installation instructions to create a
-conda environment called <strong>Cutadapt</strong> (change to whatever
-you named your environment), to install it in.</p>
+conda environment called <strong><code>Cutadapt</code></strong> (change
+to whatever you named your environment), to install it in.</p>
 <p>Open up a <strong>Terminal</strong> window and type these
 commands:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">#Run commands from a Terminal window</span></span>
@@ -541,21 +543,22 @@ commands:</p>
 <p>Second, make sure the following R packages are installed:</p>
 <ul>
 <li>
-<strong>dada2</strong> (Latest version is 3.20)
+<strong><code>dada2</code></strong> (Latest version is 3.20)
 <ul>
 <li>To install, follow these instructions: <a href="https://www.bioconductor.org/packages/release/bioc/html/dada2.html" class="external-link uri">https://www.bioconductor.org/packages/release/bioc/html/dada2.html</a><br>
 </li>
 </ul>
 </li>
 <li>
-<strong>phyloseq</strong>
+<strong><code>phyloseq</code></strong>
 <ul>
 <li>To install: <a href="https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html" class="external-link uri">https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html</a><br>
 </li>
 </ul>
 </li>
 <li>
-<strong>metacoder</strong> (Available through CRAN)</li>
+<strong><code>metacoder</code></strong> (Available through
+CRAN)</li>
 </ul>
 <p>To install the development version of package (while submission to
 CRAN is in progress):</p>
@@ -579,13 +582,14 @@ Submission to CRAN is in progress.</p>
 <h3 id="reorganize-data-tables-and-set-up-data-directory-structure">Reorganize data tables and set-up data directory structure<a class="anchor" aria-label="anchor" href="#reorganize-data-tables-and-set-up-data-directory-structure"></a>
 </h3>
 <p>The sample names, primer sequences, and other metadata are
-reorganized in preparation for running <strong>Cutadapt</strong> to
-remove primers.</p>
+reorganized in preparation for running
+<strong><code>Cutadapt</code></strong> to remove primers.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">output</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/prepare_reads.html">prepare_reads</a></span><span class="op">(</span></span>
 <span>  data_directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"demulticoder"</span><span class="op">)</span>,</span>
 <span>  output_directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="co"># Change to your desired output directory path or leave as is", </span></span>
 <span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Existing files found in the output directory. Overwriting existing files.</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">2</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">25</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
@@ -611,26 +615,26 @@ remove primers.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
-<span><span class="co">#&gt; Creating output directory: /tmp/Rtmp3NR9D0/demulticoder_run/prefiltered_sequences</span></span></code></pre></div>
+<span><span class="co">#&gt; Creating output directory: /tmp/RtmpSCtdcb/demulticoder_run/prefiltered_sequences</span></span></code></pre></div>
 <p><img src="prepare_for_analysis-1.png" width="70%"></p>
 </div>
 <div class="section level3">
 <h3 id="remove-primers-with-cutadapt">Remove primers with Cutadapt<a class="anchor" aria-label="anchor" href="#remove-primers-with-cutadapt"></a>
 </h3>
-<p>Before running <strong>Cutadapt</strong>, <strong>please ensure that
-you have installed it</strong></p>
+<p>Before running <strong><code>Cutadapt</code></strong>, <strong>please
+ensure that you have installed it</strong></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cut_trim.html">cut_trim</a></span><span class="op">(</span></span>
 <span>  <span class="va">output</span>,</span>
 <span>  cutadapt_path <span class="op">=</span> <span class="st">"/usr/bin/cutadapt"</span>, <span class="co">#CHANGE LOCATION TO YOUR LOCAL INSTALLATION</span></span>
 <span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running cutadapt 3.5 for its sequence data</span></span>
-<span><span class="co">#&gt; Read in 2564 paired-sequences, output 1479 (57.7%) filtered paired-sequences.</span></span>
-<span><span class="co">#&gt; Read in 1996 paired-sequences, output 1215 (60.9%) filtered paired-sequences.</span></span></code></pre></div>
+<span><span class="co">#&gt; Read in 299 paired-sequences, output 163 (54.5%) filtered paired-sequences.</span></span>
+<span><span class="co">#&gt; Read in 235 paired-sequences, output 144 (61.3%) filtered paired-sequences.</span></span></code></pre></div>
 <p><img src="remove_primers_with_cut_trim_function-1.png" width="70%"></p>
 <pre><code><span><span class="co">#&gt; Running cutadapt 3.5 for rps10 sequence data</span></span>
-<span><span class="co">#&gt; Read in 1830 paired-sequences, output 1429 (78.1%) filtered paired-sequences.</span></span>
-<span><span class="co">#&gt; Read in 2090 paired-sequences, output 1506 (72.1%) filtered paired-sequences.</span></span></code></pre>
+<span><span class="co">#&gt; Read in 196 paired-sequences, output 145 (74%) filtered paired-sequences.</span></span>
+<span><span class="co">#&gt; Read in 253 paired-sequences, output 182 (71.9%) filtered paired-sequences.</span></span></code></pre>
 <p><img src="remove_primers_with_cut_trim_function-2.png" width="70%"></p>
 </div>
 <div class="section level3">
@@ -641,67 +645,62 @@ you have installed it</strong></p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/make_asv_abund_matrix.html">make_asv_abund_matrix</a></span><span class="op">(</span></span>
 <span>  <span class="va">output</span>,</span>
 <span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 710804 total bases in 2694 reads from 2 samples will be used for learning the error rates.</span></span>
+<span><span class="co">#&gt; 80608 total bases in 307 reads from 2 samples will be used for learning the error rates.</span></span>
 <span><span class="co">#&gt; Initializing error rates to maximum possible estimate.</span></span>
 <span><span class="co">#&gt; selfConsist step 1 ..</span></span>
 <span><span class="co">#&gt;    selfConsist step 2</span></span>
 <span><span class="co">#&gt;    selfConsist step 3</span></span>
 <span><span class="co">#&gt; Convergence after  3  rounds.</span></span>
-<span><span class="co">#&gt; Error rate plot for the Forward read of primer pair its</span></span>
-<span><span class="co">#&gt; Sample 1 - 1479 reads in 660 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 2 - 1215 reads in 613 unique sequences.</span></span>
-<span><span class="co">#&gt; 724230 total bases in 2694 reads from 2 samples will be used for learning the error rates.</span></span>
+<span><span class="co">#&gt; Sample 1 - 163 reads in 84 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 2 - 144 reads in 96 unique sequences.</span></span>
+<span><span class="co">#&gt; 82114 total bases in 307 reads from 2 samples will be used for learning the error rates.</span></span>
 <span><span class="co">#&gt; Initializing error rates to maximum possible estimate.</span></span>
 <span><span class="co">#&gt; selfConsist step 1 ..</span></span>
 <span><span class="co">#&gt;    selfConsist step 2</span></span>
 <span><span class="co">#&gt;    selfConsist step 3</span></span>
 <span><span class="co">#&gt; Convergence after  3  rounds.</span></span>
-<span><span class="co">#&gt; Error rate plot for the Reverse read of primer pair its</span></span>
-<span><span class="co">#&gt; Sample 1 - 1479 reads in 1019 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 2 - 1215 reads in 814 unique sequences.</span></span></code></pre></div>
-<p><img src="ASV_inference-1.png" width="70%"></p>
-<pre><code><span><span class="co">#&gt; 824778 total bases in 2935 reads from 2 samples will be used for learning the error rates.</span></span>
+<span><span class="co">#&gt; Sample 1 - 163 reads in 128 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 2 - 144 reads in 119 unique sequences.</span></span></code></pre></div>
+<p><img src="ASV_inference-1.png" width="70%"><img src="ASV_inference-2.png" width="70%"></p>
+<pre><code><span><span class="co">#&gt; 91897 total bases in 327 reads from 2 samples will be used for learning the error rates.</span></span>
 <span><span class="co">#&gt; Initializing error rates to maximum possible estimate.</span></span>
 <span><span class="co">#&gt; selfConsist step 1 ..</span></span>
 <span><span class="co">#&gt;    selfConsist step 2</span></span>
 <span><span class="co">#&gt; Convergence after  2  rounds.</span></span>
-<span><span class="co">#&gt; Error rate plot for the Forward read of primer pair rps10</span></span>
-<span><span class="co">#&gt; Sample 1 - 1429 reads in 933 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 2 - 1506 reads in 1018 unique sequences.</span></span>
-<span><span class="co">#&gt; 821851 total bases in 2935 reads from 2 samples will be used for learning the error rates.</span></span>
+<span><span class="co">#&gt; Sample 1 - 145 reads in 107 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 2 - 182 reads in 133 unique sequences.</span></span>
+<span><span class="co">#&gt; 91567 total bases in 327 reads from 2 samples will be used for learning the error rates.</span></span>
 <span><span class="co">#&gt; Initializing error rates to maximum possible estimate.</span></span>
 <span><span class="co">#&gt; selfConsist step 1 ..</span></span>
 <span><span class="co">#&gt;    selfConsist step 2</span></span>
-<span><span class="co">#&gt;    selfConsist step 3</span></span>
-<span><span class="co">#&gt; Convergence after  3  rounds.</span></span>
-<span><span class="co">#&gt; Error rate plot for the Reverse read of primer pair rps10</span></span></code></pre>
-<p><img src="ASV_inference-2.png" width="70%"></p>
-<pre><code><span><span class="co">#&gt; Sample 1 - 1429 reads in 1044 unique sequences.</span></span>
-<span><span class="co">#&gt; Sample 2 - 1506 reads in 1284 unique sequences.</span></span></code></pre>
+<span><span class="co">#&gt; Convergence after  2  rounds.</span></span>
+<span><span class="co">#&gt; Sample 1 - 145 reads in 114 unique sequences.</span></span>
+<span><span class="co">#&gt; Sample 2 - 182 reads in 170 unique sequences.</span></span></code></pre>
 <p><img src="ASV_inference-3.png" width="70%"><img src="ASV_inference-4.png" width="70%"></p>
 <pre><code><span><span class="co">#&gt; $its</span></span>
-<span><span class="co">#&gt; [1] "/tmp/Rtmp3NR9D0/demulticoder_run/asvabund_matrixDADA2_its.RData"</span></span>
+<span><span class="co">#&gt; [1] "/tmp/RtmpSCtdcb/demulticoder_run/asvabund_matrixDADA2_its.RData"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $rps10</span></span>
-<span><span class="co">#&gt; [1] "/tmp/Rtmp3NR9D0/demulticoder_run/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
+<span><span class="co">#&gt; [1] "/tmp/RtmpSCtdcb/demulticoder_run/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="taxonomic-assignment-step">Taxonomic assignment step<a class="anchor" aria-label="anchor" href="#taxonomic-assignment-step"></a>
 </h3>
-<p>Using the core assignTaxonomy function from dada2, taxonomic
-assignments will be given to ASVs.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<p>Using the core assignTaxonomy function from
+<strong><code>dada2</code></strong>, taxonomic assignments will be given
+to ASVs.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/assign_tax.html">assign_tax</a></span><span class="op">(</span></span>
 <span>  <span class="va">output</span>,</span>
 <span>  <span class="va">asv_abund_matrix</span>,</span>
 <span>  retrieve_files<span class="op">=</span><span class="cn">TRUE</span>,</span>
 <span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   samplename_barcode input filtered denoisedF denoisedR merged nonchim</span></span>
-<span><span class="co">#&gt; 1          S1_R1_its  2564     1479      1425      1431   1315    1315</span></span>
-<span><span class="co">#&gt; 2          S2_R1_its  1996     1215      1143      1122   1063    1063</span></span>
+<span><span class="co">#&gt; 1             S1_its   299      163       146       141    132     132</span></span>
+<span><span class="co">#&gt; 2             S2_its   235      144       113        99     99      99</span></span>
 <span><span class="co">#&gt;   samplename_barcode input filtered denoisedF denoisedR merged nonchim</span></span>
-<span><span class="co">#&gt; 1        S1_R1_rps10  1830     1429      1429      1422   1420    1420</span></span>
-<span><span class="co">#&gt; 2        S2_R1_rps10  2090     1506      1505      1505   1503    1503</span></span></code></pre></div>
+<span><span class="co">#&gt; 1           S1_rps10   196      145       145       145    145     145</span></span>
+<span><span class="co">#&gt; 2           S2_rps10   253      182       181       181    181     181</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="format-of-output-matrices">Format of output matrices<a class="anchor" aria-label="anchor" href="#format-of-output-matrices"></a>
@@ -709,8 +708,8 @@ assignments will be given to ASVs.</p>
 <ul>
 <li>The default output is a CSV file per metabarcode with the inferred
 ASVs and sequences, taxonomic assignments, and bootstrap supports
-provided by dada2. These data can then be used as input for downstream
-steps.<br>
+provided by <strong><code>dada2</code></strong>. These data can then be
+used as input for downstream steps.<br>
 </li>
 <li>To view these files, locate the files with the prefix
 <strong>final_asv_abundance_matrix</strong> in your specified output
@@ -728,7 +727,7 @@ associated bootstrap supports.</li>
 <p>We can also load the matrices into our R environment and view then
 from R Studio.</p>
 <p>We do that here with the <em>rps10</em> matrix</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rps10_matrix</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"~/demulticoder_test/final_asv_abundance_matrix_rps10.csv"</span>, header<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">rps10_matrix</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   asv_id</span></span>
@@ -756,7 +755,7 @@ from R Studio.</p>
 <span><span class="co">#&gt; 4        0      516</span></span>
 <span><span class="co">#&gt; 5        0      163</span></span></code></pre></div>
 <p>We can also inspect the first rows of the <em>ITS1</em> matrix</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">its_matrix</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"~/demulticoder_test/final_asv_abundance_matrix_its.csv"</span>, header<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">its_matrix</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   asv_id</span></span>
@@ -789,19 +788,21 @@ from R Studio.</p>
 <span><span class="co">#&gt; 6     16    116</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="reformat-asv-matrix-as-taxmap-and-phyloseq-objects-after-optional-filtering-of-low-abundance-asvs">Reformat ASV matrix as taxmap and phyloseq objects after optional
-filtering of low abundance ASVs<a class="anchor" aria-label="anchor" href="#reformat-asv-matrix-as-taxmap-and-phyloseq-objects-after-optional-filtering-of-low-abundance-asvs"></a>
+<h3 id="reformat-asv-matrix-as-taxmap-and-phyloseq-objects-after-optional-filtering-of-low-abundance-asvs">Reformat ASV matrix as <strong><code>taxmap</code></strong> and
+<strong><code>phyloseq</code></strong> objects after optional filtering
+of low abundance ASVs<a class="anchor" aria-label="anchor" href="#reformat-asv-matrix-as-taxmap-and-phyloseq-objects-after-optional-filtering-of-low-abundance-asvs"></a>
 </h3>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/convert_asv_matrix_to_objs.html">convert_asv_matrix_to_objs</a></span><span class="op">(</span><span class="va">output</span>, minimum_bootstrap <span class="op">=</span> <span class="fl">0</span>, save_outputs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="objects-can-now-be-used-for-downstream-data-analysis">Objects can now be used for downstream data analysis<a class="anchor" aria-label="anchor" href="#objects-can-now-be-used-for-downstream-data-analysis"></a>
 </h3>
-<p>Here we make heattrees using taxmap object.</p>
+<p>Here we make heattrees using <strong><code>taxmap</code></strong>
+object.</p>
 <p>First we make a heat tree to examine fungal community composition
 using our <strong>ITS1</strong> data.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">$</span><span class="va">taxmap_its</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/filter_taxa.html" class="external-link">filter_taxa</a></span><span class="op">(</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">taxon_names</span>, <span class="st">"NA"</span>, ignore.case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">metacoder</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/metacoder/man/heat_tree.html" class="external-link">heat_tree</a></span><span class="op">(</span>node_label <span class="op">=</span> <span class="va">taxon_names</span>,</span>
@@ -813,7 +814,7 @@ using our <strong>ITS1</strong> data.</p>
 <p><img src="Heatree_demonstration_its-1.png" width="70%"></p>
 <p>Now we make a heat tree to showcase oomycete community composition
 using our <em>rps10</em> data</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">$</span><span class="va">taxmap_rps10</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/filter_taxa.html" class="external-link">filter_taxa</a></span><span class="op">(</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">taxon_names</span>, <span class="st">"NA"</span>, ignore.case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">metacoder</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/metacoder/man/heat_tree.html" class="external-link">heat_tree</a></span><span class="op">(</span>node_label <span class="op">=</span> <span class="va">taxon_names</span>,</span>
@@ -824,10 +825,10 @@ using our <em>rps10</em> data</p>
 <span>                       layout <span class="op">=</span> <span class="st">"da"</span>, initial_layout <span class="op">=</span> <span class="st">"re"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Heatree_demonstration_rps10-1.png" width="70%"></p>
 <p>We can also do a variety of analyses, if we convert to
-<strong>phyloseq</strong> object</p>
+<strong><code>phyloseq</code></strong> object</p>
 <p>Here we demonstrate how to make a stacked bar plot of the relative
 abundance of taxa by sample for the ITS1-barcoded samples</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_its</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="va">x</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">}</span> <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/psmelt.html" class="external-link">psmelt</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>                                        </span>
@@ -868,7 +869,7 @@ abundance of taxa by sample for the ITS1-barcoded samples</p>
 <p><img src="Phyloseq_demonstration_ITS-1.png" width="70%"></p>
 <p>Finally, we demonstrate how to make a stacked bar plot of the
 relative abundance of taxa by sample for the rps10-barcoded samples</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">objs</span><span class="op">$</span><span class="va">phyloseq_rps10</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/transformcounts.html" class="external-link">transform_sample_counts</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="va">x</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">}</span> <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu">phyloseq</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/psmelt.html" class="external-link">psmelt</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>                                        </span>

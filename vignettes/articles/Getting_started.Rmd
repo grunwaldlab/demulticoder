@@ -33,7 +33,7 @@ library("kableExtra")
   - Samples entered twice if samples contain two pooled metabarcodes, as in the test data template
 3. [**primerinfo_params.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv)
   - New row for each unique barcode and associated primer sequence
-  - Optional **Cutadapt** and dada2 parameters
+  - Optional **`Cutadapt`** and **`dada2`** parameters
 4. **Taxonomy databases**  
   - UNITE fungal database (abridged version)
   - oomyceteDB 
@@ -80,7 +80,7 @@ Primer sequence information and user-defined parameters are placed in **primerin
 
 * To simplify how functions are called, user will provide parameters within this input file.   
 * We recommend using the template linked   [here](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv).   
-* Remember to add any additional optional dada2 parameters you want to use.  
+* Remember to add any additional optional **`dada2`** parameters you want to use.  
 
 * The only three **required** columns (with these headers) are:  
   * Column 1. **sample_name** 
@@ -142,9 +142,9 @@ Databases are downloaded from these sources and then placed in the from the user
 ### Installation  
 
 **Dependencies**:  
-First install **Cutadapt** program following the instructions here: https://cutadapt.readthedocs.io/en/stable/installation.html  
+First install **`Cutadapt`** program following the instructions here: https://cutadapt.readthedocs.io/en/stable/installation.html  
 
-Let's locate where the **Cutadapt** executable is.  
+Let's locate where the **`Cutadapt`** executable is.  
 
 You must do this from a **Terminal** window:  
 ```{sh, eval=FALSE, echo=TRUE}
@@ -153,7 +153,7 @@ which cutadapt
 cutadapt --version
 ```
 
-If you followed the cutadapt installation instructions to create a conda environment called **Cutadapt** (change to whatever you named your environment), to install it in. 
+If you followed the cutadapt installation instructions to create a conda environment called **`Cutadapt`** (change to whatever you named your environment), to install it in. 
 
 Open up a **Terminal** window and type these commands:
 ```{sh, eval=FALSE, echo=TRUE}
@@ -165,11 +165,11 @@ cutadapt --version
 
 Second, make sure the following R packages are installed:
 
-* **dada2** (Latest version is 3.20)  
+* **`dada2`** (Latest version is 3.20)  
   * To install, follow these instructions: https://www.bioconductor.org/packages/release/bioc/html/dada2.html  
-* **phyloseq**  
+* **`phyloseq`**  
   * To install: https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html  
-* **metacoder** (Available through CRAN)  
+* **`metacoder`** (Available through CRAN)  
 
 To install the development version of package (while submission to CRAN is in progress):  
 
@@ -197,7 +197,7 @@ library("metacoder")
 
 ### Reorganize data tables and set-up data directory structure 
 
-The sample names, primer sequences, and other metadata are reorganized in preparation for running **Cutadapt** to remove primers.  
+The sample names, primer sequences, and other metadata are reorganized in preparation for running **`Cutadapt`** to remove primers.  
 
 ```{r prepare_for_analysis, warning=FALSE, message=TRUE, cache=FALSE}
 output<-prepare_reads(
@@ -208,7 +208,7 @@ output<-prepare_reads(
 
 ### Remove primers with Cutadapt  
 
-Before running **Cutadapt**, **please ensure that you have installed it** 
+Before running **`Cutadapt`**, **please ensure that you have installed it** 
 
 ```{r remove_primers_with_cut_trim_function, warning=FALSE, message=TRUE, cache=FALSE}
 cut_trim(
@@ -229,7 +229,7 @@ make_asv_abund_matrix(
 
 ### Taxonomic assignment step  
 
-Using the core assignTaxonomy function from dada2, taxonomic assignments will be given to ASVs.  
+Using the core assignTaxonomy function from **`dada2`**, taxonomic assignments will be given to ASVs.  
 
 ```{r Assign_taxonomy, warning=FALSE, message=FALSE, cache=FALSE}
 assign_tax(
@@ -241,7 +241,7 @@ assign_tax(
 
 ### Format of output matrices  
 
-* The default output is a CSV file per metabarcode with the inferred ASVs and sequences, taxonomic assignments, and bootstrap supports provided by dada2. These data can then be used as input for downstream steps.  
+* The default output is a CSV file per metabarcode with the inferred ASVs and sequences, taxonomic assignments, and bootstrap supports provided by **`dada2`**. These data can then be used as input for downstream steps.  
 * To view these files, locate the files with the prefix **final_asv_abundance_matrix** in your specified output directory.  
 * In this example, it will be in the home directory within **demulticoder_test**. 
 * You can then open your matrices using Excel  
@@ -262,13 +262,13 @@ its_matrix<-read.csv("~/demulticoder_test/final_asv_abundance_matrix_its.csv", h
 head(its_matrix)
 ```
 
-### Reformat ASV matrix as taxmap and phyloseq objects after optional filtering of low abundance ASVs  
+### Reformat ASV matrix as **`taxmap`** and **`phyloseq`** objects after optional filtering of low abundance ASVs  
 ```{r Reformat_final_matrix, message=FALSE, warning=FALSE, results='hide'}
 objs<-convert_asv_matrix_to_objs(output, minimum_bootstrap = 0, save_outputs = TRUE)
 ```
 
 ### Objects can now be used for downstream data analysis  
-Here we make heattrees using taxmap object.  
+Here we make heattrees using **`taxmap`** object.  
 
 First we make a heat tree to examine fungal community composition using our **ITS1** data. 
 ```{r Heatree_demonstration_its, fig.height=8, fig.width=8, warning=FALSE, message=FALSE}
@@ -294,7 +294,7 @@ objs$taxmap_rps10 %>%
                        layout = "da", initial_layout = "re")
 ```
 
-We can also do a variety of analyses, if we convert to **phyloseq** object
+We can also do a variety of analyses, if we convert to **`phyloseq`** object
 
 Here we demonstrate how to make a stacked bar plot of the relative abundance of taxa by sample for the ITS1-barcoded samples
 ```{r Phyloseq_demonstration_ITS, fig.height=8, fig.width=8, warning=FALSE, message=FALSE}

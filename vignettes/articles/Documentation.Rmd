@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-This documentation page provides additional information on to use the *demulticoder* R package for processing and analyzing metabarcode sequencing data. Specifically, it provides more detail on input directory and file requirements, and key parameters.
+This documentation page provides additional information on to use the **`demulticoder`** R package for processing and analyzing metabarcode sequencing data. Specifically, it provides more detail on input directory and file requirements, and key parameters.
 
 ## Package workflow
 
@@ -57,7 +57,7 @@ The **metadata.csv** file contains information about the samples and primers (an
 * **sample_name**: Identifier for each sample (e.g., S1, S2)
 * **primer_name**: Name of the primer used (applicable options: 'rps10', 'its', 'r16S', 'other1', 'other2')
 
-Please add your associated metadata to the file after these two required columns. This can then be used for your downstream exploratory or diversity analyses, as the sample data will be incorporated into the final phyloseq and taxmap objects.
+Please add your associated metadata to the file after these two required columns. This can then be used for your downstream exploratory or diversity analyses, as the sample data will be incorporated into the final **`phyloseq`** and **`taxmap`** objects.
 
 Example file (with optional third column):
 
@@ -84,7 +84,7 @@ Below are the parameters that can be input into the **primerinfo_params.csv** fi
 **dada2 filterAndTrim function parameters:**  
 
 * **already_trimmed**: Boolean indicating if primers are already trimmed (TRUE/FALSE) (default: FALSE)
-* **minCutadaptlength**: **Cutadapt** parameter-Filter out processed reads that are shorter than specified length (default: 0)
+* **minCutadaptlength**: **`Cutadapt`** parameter-Filter out processed reads that are shorter than specified length (default: 0)
 * **multithread**: Boolean for multithreading (TRUE/FALSE) (default: FALSE)
 * **verbose**: Boolean for verbose output (TRUE/FALSE) (default: FALSE)
 * **maxN**: Maximum number of N bases allowed (default: 0)

@@ -1,23 +1,23 @@
-#' Filter ASV abundance matrix and convert to taxmap and phyloseq objects
+#' Filter ASV abundance matrix and convert to 'taxmap' and 'phyloseq' objects
 #' @importFrom utils modifyList read.table stack
 #' @param analysis_setup An object containing directory paths and
 #'   data tables, produced by the `prepare_reads` function
 #' @param min_read_depth ASV filter parameter. If mean read depth of across all
 #'   samples is less than this threshold, ASV will be filtered.
 #' @param minimum_bootstrap Set threshold for bootstrap support value for taxonomic
-#'   assignments. Below designated minimum bootstrap threshold, taxnomoic
+#'   assignments. Below designated minimum bootstrap threshold, taxonomic
 #'   assignments will be set to N/A
 #'@param save_outputs Logical, indicating whether to save the resulting phyloseq
-#'  and taxmap objects. If TRUE, the objects will be saved; if FALSE, they will
+#'  and 'taxmap' objects. If TRUE, the objects will be saved; if FALSE, they will
 #'  only be available in the global environment. Default is FALSE.
 #'
-#' @return ASV matrix converted to taxmap object
+#' @return ASV matrix converted to 'taxmap' object
 #'
 #' @export
 #'
 #' @examples
 #' \donttest{
-#' # Convert final matrix to taxmap and phyloseq objects for downstream analysis steps
+#' # Convert final matrix to 'taxmap' and phyloseq objects for downstream analysis steps
 #' analysis_setup <- prepare_reads(
 #' data_directory = system.file("extdata", package = "demulticoder"),
 #'   output_directory = tempdir(),

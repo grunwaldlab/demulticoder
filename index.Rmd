@@ -11,11 +11,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-## **demulticoder**: An R package for the simultaneous analysis of multiplexed metabarcodes
+## Demulticoder: An R package for the simultaneous analysis of multiplexed metabarcodes
 
 ### Introduction
 
-The ***demulticoder*** package is a cutadapt and DADA2 wrapper package for metabarcodng analyses. The main commands and outputs are intuitive and comprehensive, which helps to account for the complex and iterative nature of metabarcoding analyses. 
+The **`demulticoder`** package is a **`cutadapt`** and **`dada2`** wrapper package for metabarcoding analyses. The main commands and outputs are intuitive and comprehensive, which helps to account for the complex and iterative nature of metabarcoding analyses. 
 
 Here is a brief schematic of the general workflow:  
 
@@ -25,7 +25,7 @@ knitr::include_graphics("man/figures/Figure1.svg")
 
 ### Key Features
 
-* It automates the use of DADA2 to analyze data derived from multiple metabarcodes.  
+* It automates the use of **`dada2`** to analyze data derived from multiple metabarcodes.  
 * It reduces the number of manual input steps  
 * Handles analysis of two metabarcodes multiplexed into the same sequencing batch    
 * Analyze different types of metabarcodes simultaneously  
@@ -35,7 +35,7 @@ knitr::include_graphics("man/figures/Figure1.svg")
 ### Installation  
 
 **Dependencies**:  
-First install **cutadapt** program following the instructions here: https://cutadapt.readthedocs.io/en/stable/installation.html  
+First install **`Cutadapt`** program following the instructions here: https://cutadapt.readthedocs.io/en/stable/installation.html  
 Let's locate where the cutadapt executable is. You must do this from a **Terminal** window:  
 ```{sh, eval=FALSE, echo=TRUE}
 #If you installed with pip or pipx, or homebrew, run this command from a Terminal window
@@ -53,9 +53,9 @@ cutadapt --version
 
 Second, make sure the following R packages are installed:
 
-* **DADA2** (Latest version is 3.20)  
+* **`dada2`** (Latest version is 3.20)  
   * To install, follow these instructions: https://www.bioconductor.org/packages/release/bioc/html/dada2.html  
-* **phyloseq**  
+* **`phyloseq`**  
   * To install: https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html  
 
 To install the development version of package (while submission to CRAN is in progress):  

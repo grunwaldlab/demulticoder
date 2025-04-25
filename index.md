@@ -1,12 +1,12 @@
 
-## **demulticoder**: An R package for the simultaneous analysis of multiplexed metabarcodes
+## Demulticoder: An R package for the simultaneous analysis of multiplexed metabarcodes
 
 ### Introduction
 
-The ***demulticoder*** package is a cutadapt and DADA2 wrapper package
-for metabarcodng analyses. The main commands and outputs are intuitive
-and comprehensive, which helps to account for the complex and iterative
-nature of metabarcoding analyses.
+The **`demulticoder`** package is a **`cutadapt`** and **`dada2`**
+wrapper package for metabarcoding analyses. The main commands and
+outputs are intuitive and comprehensive, which helps to account for the
+complex and iterative nature of metabarcoding analyses.
 
 Here is a brief schematic of the general workflow:
 
@@ -14,8 +14,8 @@ Here is a brief schematic of the general workflow:
 
 ### Key Features
 
-- It automates the use of DADA2 to analyze data derived from multiple
-  metabarcodes.  
+- It automates the use of **`dada2`** to analyze data derived from
+  multiple metabarcodes.  
 - It reduces the number of manual input steps  
 - Handles analysis of two metabarcodes multiplexed into the same
   sequencing batch  
@@ -27,7 +27,7 @@ Here is a brief schematic of the general workflow:
 ### Installation
 
 **Dependencies**:  
-First install **cutadapt** program following the instructions here:
+First install **`Cutadapt`** program following the instructions here:
 <https://cutadapt.readthedocs.io/en/stable/installation.html>  
 Let’s locate where the cutadapt executable is. You must do this from a
 **Terminal** window:
@@ -52,10 +52,10 @@ cutadapt --version
 
 Second, make sure the following R packages are installed:
 
-- **DADA2** (Latest version is 3.20)
+- **`dada2`** (Latest version is 3.20)
   - To install, follow these instructions:
     <https://www.bioconductor.org/packages/release/bioc/html/dada2.html>  
-- **phyloseq**
+- **`phyloseq`**
   - To install:
     <https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html>
 
@@ -94,7 +94,8 @@ Already loaded in the test data set directory are the following files:
   - Samples entered twice if samples contain two pooled metabolites, as
     in the test data template
 - [**primerinfo_params.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv)
-  - New row for each unique barcode and associated primer sequence
+  - New row for each unique metabarcode (applicable options: ‘rps10’,
+    ‘its’, ‘r16S’, ‘other1’, ‘other2’) and associated primer sequence
   - Optional cutadapt and DADA2 parameters
 - **Taxonomy databases**
   - UNITE fungal database (abridged version)

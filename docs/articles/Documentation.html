@@ -76,9 +76,9 @@
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>This documentation page provides additional information on to use the
-<em>demulticoder</em> R package for processing and analyzing metabarcode
-sequencing data. Specifically, it provides more detail on input
-directory and file requirements, and key parameters.</p>
+<strong><code>demulticoder</code></strong> R package for processing and
+analyzing metabarcode sequencing data. Specifically, it provides more
+detail on input directory and file requirements, and key parameters.</p>
 </div>
 <div class="section level2">
 <h2 id="package-workflow">Package workflow<a class="anchor" aria-label="anchor" href="#package-workflow"></a>
@@ -144,7 +144,8 @@ options: ‘rps10’, ‘its’, ‘r16S’, ‘other1’, ‘other2’)</li>
 <p>Please add your associated metadata to the file after these two
 required columns. This can then be used for your downstream exploratory
 or diversity analyses, as the sample data will be incorporated into the
-final phyloseq and taxmap objects.</p>
+final <strong><code>phyloseq</code></strong> and
+<strong><code>taxmap</code></strong> objects.</p>
 <p>Example file (with optional third column):</p>
 <pre class="csv"><code>sample_name,primer_name,organism
 S1,rps10,Cry
@@ -179,9 +180,9 @@ for additional information.</p>
 <strong>already_trimmed</strong>: Boolean indicating if primers are
 already trimmed (TRUE/FALSE) (default: FALSE)</li>
 <li>
-<strong>minCutadaptlength</strong>: <strong>Cutadapt</strong>
-parameter-Filter out processed reads that are shorter than specified
-length (default: 0)</li>
+<strong>minCutadaptlength</strong>:
+<strong><code>Cutadapt</code></strong> parameter-Filter out processed
+reads that are shorter than specified length (default: 0)</li>
 <li>
 <strong>multithread</strong>: Boolean for multithreading
 (TRUE/FALSE) (default: FALSE)</li>
