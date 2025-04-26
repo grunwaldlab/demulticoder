@@ -60,13 +60,12 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level2">
-<h2 id="demulticoder-an-r-package-for-the-simultaneous-analysis-of-multiplexed-metabarcodes">
-<strong><code>demulticoder</code></strong>: An R package for the simultaneous analysis of multiplexed metabarcodes<a class="anchor" aria-label="anchor" href="#demulticoder-an-r-package-for-the-simultaneous-analysis-of-multiplexed-metabarcodes"></a>
+<h2 id="demulticoder-an-r-package-for-the-simultaneous-analysis-of-multiplexed-metabarcodes">Demulticoder: An R package for the simultaneous analysis of multiplexed metabarcodes<a class="anchor" aria-label="anchor" href="#demulticoder-an-r-package-for-the-simultaneous-analysis-of-multiplexed-metabarcodes"></a>
 </h2>
 <div class="section level3">
 <h3 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h3>
-<p>The <strong><em><code>demulticoder</code></em></strong> package is a cutadapt and DADA2 wrapper package for metabarcodng analyses. The main commands and outputs are intuitive and comprehensive, which helps to account for the complex and iterative nature of metabarcoding analyses.</p>
+<p>The <strong><code>demulticoder</code></strong> package is a <strong><code>cutadapt</code></strong> and <strong><code>dada2</code></strong> wrapper package for metabarcoding analyses. The main commands and outputs are intuitive and comprehensive, which helps to account for the complex and iterative nature of metabarcoding analyses.</p>
 <p>Here is a brief schematic of the general workflow:</p>
 <p><img src="reference/figures/Figure1.svg" width="35%" height="35%" style="display: block; margin: auto auto auto 0;"></p>
 </div>
@@ -74,7 +73,7 @@
 <h3 id="key-features">Key Features<a class="anchor" aria-label="anchor" href="#key-features"></a>
 </h3>
 <ul>
-<li>It automates the use of DADA2 to analyze data derived from multiple metabarcodes.<br>
+<li>It automates the use of <strong><code>dada2</code></strong> to analyze data derived from multiple metabarcodes.<br>
 </li>
 <li>It reduces the number of manual input steps<br>
 </li>
@@ -154,7 +153,7 @@ Let’s locate where the cutadapt executable is. You must do this from a <strong
 <li>
 <a href="https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv" class="external-link"><strong>primerinfo_params.csv</strong></a>
 <ul>
-<li>New row for each unique barcode and associated primer sequence</li>
+<li>New row for each unique metabarcode (applicable options: ‘rps10’, ‘its’, ‘r16S’, ‘other1’, ‘other2’) and associated primer sequence</li>
 <li>Optional cutadapt and DADA2 parameters</li>
 </ul>
 </li>
