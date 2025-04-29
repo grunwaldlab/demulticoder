@@ -2,11 +2,15 @@ template:
   bootstrap: 5
   bslib:
     bootswatch: sandstone
-    
+
 navbar:
   bg: dark
   structure:
-    left:  [intro, documentation, articles, reference]
+    left:  
+      - intro
+      - documentation
+      - articles
+      - reference
     right: [search, github]
   components:
     intro:

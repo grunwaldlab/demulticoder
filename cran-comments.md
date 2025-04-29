@@ -1,3 +1,13 @@
+## This is a second resubission. In this version, we:
+
+* Checked the spellings in the DESCRIPTION file. Taxmap and phyloseq are spelled correctly but refer to R packages, so single quotes were added to these names. 
+
+* Title was shortened.
+
+* 
+
+* Additional revisions: made a few minor updates to the website to improve readability, highlight dependencies, etc. 
+
 ## This is a resubmission. In this version I have:
 
 * Removed redundant words from title and added single quotes to package and software names

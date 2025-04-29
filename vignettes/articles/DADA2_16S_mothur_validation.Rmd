@@ -25,7 +25,30 @@ This vignette shows how demulticoder was used to analyze the mothur 16S SOP data
 
 The raw read files and information on the dataset used for this analysis can be found [here](https://mothur.org/wiki/miseq_sop/#preparing-for-analysis) 
 
-### Setup data directory
+### Load the demulticoder R package and necessary dependencies  
+
+For now, the package will be loaded by retrieving it from GitHub. 
+We are submitting package to CRAN. 
+
+```{r setup, echo=TRUE, eval=FALSE}
+devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
+library("demulticoder")
+library("metacoder")
+library("phyloseq")
+library("dplyr")
+library("RCurl")
+```
+
+```{r setup2, include=FALSE}
+devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
+library("demulticoder")
+library("metacoder")
+library("phyloseq")
+library("dplyr")
+library("RCurl")
+```
+
+### Setup data directory  
 
 Download read files and associated data in your specified location. The default is to write to **`tempdir()`**.  
 
@@ -43,15 +66,15 @@ output_folder <- file.path(run_folder, "sop_16S_demulticoder_outputs")
 mothur_sop_path <- "https://mothur.s3.us-east-2.amazonaws.com/wiki/miseqsopdata.zip"
 downloaded_read_path <- file.path(run_folder, "miseqsopdata.zip")
 
-if (!file.exists(downloaded_read_path)) {
-  # Only download if the file does not already exist
-  utils::download.file(mothur_sop_path, downloaded_read_path, quiet = TRUE)
-  unzip(downloaded_read_path, exdir = run_folder)
-  cat("Files downloaded:", downloaded_read_path, "\n")
-  print(list.files(run_folder))  # Print contents of the directory
-} else {
-  cat("Files already exist here:", downloaded_read_path, "! Skipping download.\n")
-}
+ if (!file.exists(downloaded_read_path)) {
+   bin <- RCurl::getBinaryURL(mothur_sop_path)
+   writeBin(bin, downloaded_read_path)
+   unzip(downloaded_read_path, exdir = run_folder)
+   cat("Files downloaded:", downloaded_read_path, "\n")
+   print(list.files(run_folder))  # Print contents of the directory
+ } else {
+   cat("Files already exist:", downloaded_read_path, "! Skipping download.\n")
+ }
 ```
 
 We now have an unzipped directory in our desired destination called **MiSeq_SOP** 
@@ -154,38 +177,19 @@ We now retrieve the SILVA database (v.138.2) (to the taxonomic level of species)
 
 More information is [here](https://zenodo.org/records/14169026)
 ```{r download_db, warning=FALSE, message=TRUE}
-# We will also download the Silva database **with species** assignments here:
 silva_path <- "https://zenodo.org/records/14169026/files/silva_nr99_v138.2_toSpecies_trainset.fa.gz?download=1"
 silva_download_file_path <- file.path(data_folder, "silva_nr99_v138.2_toSpecies_trainset.fa.gz")
 
-if (!file.exists(silva_download_file_path)) {
-  utils::download.file(silva_path, silva_download_file_path, quiet = TRUE)
-  cat("File downloaded to:", silva_download_file_path, "\n")
-} else {
-  cat("File already exists. Skipping download.\n")
-}
+ if (!file.exists(silva_download_file_path)) {
+   bin2 <- RCurl::getBinaryURL(silva_path)
+   writeBin(bin2, silva_download_file_path)
+   cat("File downloaded:", silva_download_file_path, "\n")
+ } else {
+   cat("File already exists:", silva_download_file_path, "! Skipping download.\n")
+ }
 ```
 
-### Load the demulticoder R package and necessary dependencies  
 
-For now, the package will be loaded by retrieving it from GitHub. 
-We are submitting package to CRAN. 
-
-```{r setup, echo=TRUE, eval=FALSE}
-devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
-library("demulticoder")
-library("metacoder")
-library("phyloseq")
-library("dplyr")
-```
-
-```{r setup2, include=FALSE}
-devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
-library("demulticoder")
-library("metacoder")
-library("phyloseq")
-library("dplyr")
-```
 
 ### Prepare reads for DADA2 analyses  
 
