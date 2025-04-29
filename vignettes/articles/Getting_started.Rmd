@@ -27,7 +27,7 @@ library("kableExtra")
 
 1. **Paired-end short read amplicon data**
   - Files: S1_R1.fastq.gz, S1_R2.fastq.gz, S2_R1.fastq.gz, S2_R1.fastq.gz  
-  - The files must be zipped and end in either *R1.fastq.gz* , or *R2.fastq.gz* and each sample must have both R1 and R2 files.
+  - The files must be zipped and end in either *R1.fastq.gz* or *R2.fastq.gz* and each sample must have both R1 and R2 files.
 2. [**metadata.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/metadata.csv)
   - New row for each unique sample
   - Samples entered twice if samples contain two pooled metabarcodes, as in the test data template
