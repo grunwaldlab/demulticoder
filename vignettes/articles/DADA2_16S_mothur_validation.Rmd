@@ -67,7 +67,7 @@ mothur_sop_path <- "https://mothur.s3.us-east-2.amazonaws.com/wiki/miseqsopdata.
 downloaded_read_path <- file.path(run_folder, "miseqsopdata.zip")
 
  if (!file.exists(downloaded_read_path)) {
-   bin <- RCurl::getBinaryURL(mothur_sop_path)
+   bin <- getBinaryURL(mothur_sop_path)
    writeBin(bin, downloaded_read_path)
    unzip(downloaded_read_path, exdir = run_folder)
    cat("Files downloaded:", downloaded_read_path, "\n")
@@ -181,7 +181,7 @@ silva_path <- "https://zenodo.org/records/14169026/files/silva_nr99_v138.2_toSpe
 silva_download_file_path <- file.path(data_folder, "silva_nr99_v138.2_toSpecies_trainset.fa.gz")
 
  if (!file.exists(silva_download_file_path)) {
-   bin2 <- RCurl::getBinaryURL(silva_path)
+   bin2 <- getBinaryURL(silva_path)
    writeBin(bin2, silva_download_file_path)
    cat("File downloaded:", silva_download_file_path, "\n")
  } else {

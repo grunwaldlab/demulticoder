@@ -479,7 +479,7 @@ make_cutadapt_tibble <-
 #'   raw FASTQ (forward and reverse reads), metadata.csv, and
 #'   primerinfo_params.csv files. Default is "data".
 #' @param output_directory User-specified directory for outputs. Default is
-#'   "output".
+#'   tempdir().
 #' @param tempdir_path Path to a temporary directory. If `NULL`, a temporary
 #'   directory path will be identified using the `tempdir()` command.
 #' @param tempdir_id ID for temporary directories. The user can provide any helpful ID, whether it be a date or specific name for the run. Default is "demulticoder_run"
@@ -503,7 +503,7 @@ make_cutadapt_tibble <-
 #' )
 #' }
 prepare_reads <- function(data_directory = "data",
-                          output_directory = "output",
+                          output_directory = tempdir(),
                           tempdir_path = NULL,
                           tempdir_id = "demulticoder_run",
                           overwrite_existing = FALSE) {

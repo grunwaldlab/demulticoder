@@ -6,7 +6,7 @@
 \usage{
 prepare_reads(
   data_directory = "data",
-  output_directory = "output",
+  output_directory = tempdir(),
   tempdir_path = NULL,
   tempdir_id = "demulticoder_run",
   overwrite_existing = FALSE
@@ -18,7 +18,7 @@ raw FASTQ (forward and reverse reads), metadata.csv, and
 primerinfo_params.csv files. Default is "data".}
 
 \item{output_directory}{User-specified directory for outputs. Default is
-"output".}
+tempdir().}
 
 \item{tempdir_path}{Path to a temporary directory. If \code{NULL}, a temporary
 directory path will be identified using the \code{tempdir()} command.}
