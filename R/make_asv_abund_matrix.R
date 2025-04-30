@@ -35,7 +35,7 @@ get_fastq_paths <-
     
     filtered_paths
   }
-#' Core dada2 function to learn errors and infer ASVs
+#' Core 'DADA2' function to learn errors and infer ASVs
 #' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param output_directory_path The path to the directory where resulting files are output
 #' @param my_primer_pair_id The specific metabarcode ID
@@ -370,7 +370,7 @@ make_seqhist <- function(asv_abund_matrix, output_directory_path) {
 #'
 #' @details The function processes data for each unique barcode separately,
 #' inferring ASVs, merging reads, and creating an ASV abundance matrix.
-#' To do this, the DADA2 core denoising alogrithm is used to infer ASVs.
+#' To do this, the 'DADA2' core denoising alogrithm is used to infer ASVs.
 #'
 #' @return The ASV abundance matrix (`asv_abund_matrix`)
 #'
@@ -378,7 +378,7 @@ make_seqhist <- function(asv_abund_matrix, output_directory_path) {
 #'
 #' @examples
 #' \donttest{
-#' # The primary wrapper function for DADA2 ASV inference steps
+#' # The primary wrapper function for 'DADA2' ASV inference steps
 #' analysis_setup <- prepare_reads(
 #'   data_directory = system.file("extdata", package = "demulticoder"),
 #'   output_directory = tempdir(),

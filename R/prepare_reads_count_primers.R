@@ -147,12 +147,12 @@ orient_primers <- function(primers_params_path) {
   return(primer_data)
 }
 
-#' Take in user's 'dada2' parameters and make a dataframe for downstream steps
+#' Take in user's 'DADA2' parameters and make a data frame for downstream steps
 #'
 #' @param primers_params_path A path to the CSV file that holds the primer
 #'   information.
 #'
-#' @return A \code{data.frame} with information on the 'dada2' parameters.
+#' @return A \code{data.frame} with information on the 'DADA2' parameters.
 #'
 #' @keywords internal
 read_parameters_table <- function(primers_params_path) {
@@ -252,7 +252,7 @@ read_prefilt_fastq <-
     return(fastq_data)
   }
 
-#' Wrapper function for core 'dada2' filter and trim function for first filtering
+#' Wrapper function for core 'DADA2' filter and trim function for first filtering
 #' step
 #'
 #' @inheritParams dada2::filterAndTrim

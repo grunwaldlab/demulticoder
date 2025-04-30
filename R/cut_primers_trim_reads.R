@@ -133,7 +133,7 @@ run_cutadapt <- function(cutadapt_path,
 #' @param output_directory_path The path to the directory where resulting files
 #'   are output
 #'
-#' @return 'dada2' wrapper function for making quality profiles for each sample
+#' @return 'DADA2' wrapper function for making quality profiles for each sample
 #'
 #' @keywords internal
 plot_qc <-
@@ -160,7 +160,7 @@ plot_qc <-
     }
   }
 
-#' Wrapper function for filterAndTrim function from 'dada2', to be used after
+#' Wrapper function for `filterAndTrim` function from 'DADA2', to be used after
 #' primer trimming
 #'
 #' @inheritParams dada2::filterAndTrim
@@ -366,7 +366,7 @@ plot_post_trim_qc <-
     }
   }
 
-#' Main command to trim primers using 'Cutadapt' and core 'dada2' functions
+#' Main command to trim primers using 'Cutadapt' and core 'DADA2' functions
 #'
 #' @importFrom utils modifyList read.table stack
 #'
@@ -378,7 +378,7 @@ plot_post_trim_qc <-
 #'
 #' @return Trimmed reads, primer counts, quality plots, and ASV matrix.
 #'
-#' @details If samples are comprised of two different metabarcodes (like ITS1 and rps10), reads will also be demultiplexed prior to dada2-specific read trimming steps.
+#' @details If samples are comprised of two different metabarcodes (like ITS1 and rps10), reads will also be demultiplexed prior to 'DADA2'-specific read trimming steps.
 #'
 #' @export
 #'

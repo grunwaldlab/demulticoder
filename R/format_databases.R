@@ -216,7 +216,7 @@ format_db_16S <-
     return(data_16S)
   }
 
-#' An other, user-specified database that is initially in the format specified by dada2 with header containing taxonomic levels (kingdom down to species, separated by semi-colons)
+#' An other, user-specified database that is initially in the format specified by 'DADA2' with header containing taxonomic levels (kingdom down to species, separated by semi-colons)
 #' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param data_path Path to the data directory
 #' @param output_directory_path The path to the directory where resulting files
@@ -285,7 +285,7 @@ format_db_other1 <-
   }
 
 #' An second user-specified database that is initially in the format specified
-#' by dada2 with header containing taxonomic levels (kingdom down to species, separated by semi-colons)
+#' by 'DADA2' with header containing taxonomic levels (kingdom down to species, separated by semi-colons)
 #'
 #' @param data_tables The data tables containing the paths to read files, metadata, and metabarcode information with associated primer sequences
 #' @param data_path Path to the data directory
