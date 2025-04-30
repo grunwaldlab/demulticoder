@@ -2,7 +2,7 @@
 % Please edit documentation in R/cut_primers_trim_reads.R
 \name{cut_trim}
 \alias{cut_trim}
-\title{Main command to trim primers using 'Cutadapt' and core 'dada2' functions}
+\title{Main command to trim primers using 'Cutadapt' and core 'DADA2' functions}
 \usage{
 cut_trim(analysis_setup, cutadapt_path, overwrite_existing = FALSE)
 }
@@ -19,10 +19,10 @@ existing files and directories from previous runs. Default is \code{FALSE}.}
 Trimmed reads, primer counts, quality plots, and ASV matrix.
 }
 \description{
-Main command to trim primers using 'Cutadapt' and core 'dada2' functions
+Main command to trim primers using 'Cutadapt' and core 'DADA2' functions
 }
 \details{
-If samples are comprised of two different metabarcodes (like ITS1 and rps10), reads will also be demultiplexed prior to dada2-specific read trimming steps.
+If samples are comprised of two different metabarcodes (like ITS1 and rps10), reads will also be demultiplexed prior to 'DADA2'-specific read trimming steps.
 }
 \examples{
 \donttest{

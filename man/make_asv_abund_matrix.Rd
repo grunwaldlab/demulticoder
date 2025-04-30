@@ -22,11 +22,11 @@ Make an amplified sequence variant (ASV) abundance matrix for each of the input 
 \details{
 The function processes data for each unique barcode separately,
 inferring ASVs, merging reads, and creating an ASV abundance matrix.
-To do this, the DADA2 core denoising alogrithm is used to infer ASVs.
+To do this, the 'DADA2' core denoising alogrithm is used to infer ASVs.
 }
 \examples{
 \donttest{
-# The primary wrapper function for DADA2 ASV inference steps
+# The primary wrapper function for 'DADA2' ASV inference steps
 analysis_setup <- prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"),
   output_directory = tempdir(),

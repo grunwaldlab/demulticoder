@@ -6,7 +6,6 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures",
   out.width = "100%"
 )
 ```
@@ -14,8 +13,7 @@ knitr::opts_chunk$set(
 ## Demulticoder: An R package for the simultaneous analysis of multiplexed metabarcodes
 
 ### Introduction
-
-The **`demulticoder`** package is a **`cutadapt`** and **`dada2`** wrapper package for metabarcoding analyses. The main commands and outputs are intuitive and comprehensive, which helps to account for the complex and iterative nature of metabarcoding analyses. 
+The **`demulticoder`** package is a **`Cutadapt`** and **`DADA2`** wrapper package for metabarcoding analyses. The main commands and outputs are intuitive and comprehensive, which helps to account for the complex and iterative nature of metabarcoding analyses. 
 
 Here is a brief schematic of the general workflow:  
 
@@ -25,7 +23,7 @@ knitr::include_graphics("man/figures/Figure1.svg")
 
 ### Key Features
 
-* It automates the use of **`dada2`** to analyze data derived from multiple metabarcodes.  
+* It automates the use of **`DADA2`** to analyze data derived from multiple metabarcodes.  
 * It reduces the number of manual input steps  
 * Handles analysis of two metabarcodes multiplexed into the same sequencing batch    
 * Analyze different types of metabarcodes simultaneously  
@@ -36,14 +34,14 @@ knitr::include_graphics("man/figures/Figure1.svg")
 
 **Dependencies**:  
 First install **`Cutadapt`** program following the instructions here: https://cutadapt.readthedocs.io/en/stable/installation.html  
-Let's locate where the cutadapt executable is. You must do this from a **Terminal** window:  
+Let's locate where the cutadapt executable is. You must do this from a **`Terminal`** window:  
 ```{sh, eval=FALSE, echo=TRUE}
 #If you installed with pip or pipx, or homebrew, run this command from a Terminal window
 which cutadapt
 cutadapt --version
 ```
 
-If you followed the cutadapt installation instructions to create a conda environment called cutadapt (change to whatever you named your environment), to install it in, open up a **Terminal** window and type these commands:
+If you followed the cutadapt installation instructions to create a conda environment called cutadapt (change to whatever you named your environment), to install it in, open up a **`Terminal`** window and type these commands:
 ```{sh, eval=FALSE, echo=TRUE}
 #Run commands from a Terminal window
 conda activate cutadapt
@@ -53,7 +51,7 @@ cutadapt --version
 
 Second, make sure the following R packages are installed:
 
-* **`dada2`** (Latest version is 3.20)  
+* **`DADA2`** (Latest version is 3.20)  
   * To install, follow these instructions: https://www.bioconductor.org/packages/release/bioc/html/dada2.html  
 * **`phyloseq`**  
   * To install: https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html  
@@ -88,7 +86,7 @@ Already loaded in the test data set directory are the following files:
   * Samples entered twice if samples contain two pooled metabolites, as in the test data template
 * [**primerinfo_params.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv)
   * New row for each unique metabarcode (applicable options: 'rps10', 'its', 'r16S', 'other1', 'other2') and associated primer sequence
-  * Optional cutadapt and DADA2 parameters
+  * Optional **`Cutadapt`** and **`DADA2`** parameters
 * **Taxonomy databases**  
   * UNITE fungal database (abridged version)
   * completed 
@@ -101,7 +99,7 @@ For more details on each step, check out the [**Getting Started**](https://grunw
 ```{r, eval=FALSE, echo=TRUE}
 output<-prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"), # This allows us to use the test directory located within the package
-  output_directory = "~/demulticoder_test", # Change to you preferred location on your local computer (Example: "~/demulticoder_test")
+  output_directory = tempdir(), # OR change to you preferred location on your local computer (Example: "~/demulticoder_test")
   overwrite_existing = TRUE)
 ```
 

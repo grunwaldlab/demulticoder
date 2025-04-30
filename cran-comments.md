@@ -1,4 +1,4 @@
-## This is a second resubission. In this version, we:
+## This is a second resubmission. In this version, we:
 
 * Checked the spellings in the DESCRIPTION file. The names in question ('taxmap' and 'phyloseq') are spelled correctly but refer to R packages, so single quotes were added to these names. 
 
@@ -6,7 +6,9 @@
 
 * Two references describing the methods were added to the description field of DESCRIPTION.
 
-* Based on previous suggestion, examples were wrapped with \donttest{} rather than \dontrun{}. Each of the functions can be run in less than 5 seconds, but the outputs of one are input into the next function, so to run the last examples, one needs to run all functions sequentially. Example remains wrapped, but we now include additional tests using the testthat package. 
+* Based on a previous suggestion, examples were wrapped with \donttest{} rather than \dontrun{}. Each of the functions can be run in less than 5 seconds, but the outputs of one are input into the next function, so to run the final functions, all previous steps must also be run, which increases the run time to over 20 seconds, even with reduced data set files.
+
+* Since we cannot wrap examples, we now include tests using the testthat package. We checked that tests pass and now have tests in tests/testthat
 
 * We double checked that functions don't write by default to users file space or package directory. We revised the setup_directories() function so that output directory is tempdir(). This was accidentally missed in the previous review.
 

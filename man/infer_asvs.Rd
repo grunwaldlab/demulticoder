@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_asv_abund_matrix.R
 \name{infer_asvs}
 \alias{infer_asvs}
-\title{Core dada2 function to learn errors and infer ASVs}
+\title{Core 'DADA2' function to learn errors and infer ASVs}
 \usage{
 infer_asvs(
   data_tables,
@@ -25,6 +25,6 @@ infer_asvs(
 asv_data
 }
 \description{
-Core dada2 function to learn errors and infer ASVs
+Core 'DADA2' function to learn errors and infer ASVs
 }
 \keyword{internal}

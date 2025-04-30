@@ -2,7 +2,7 @@
 % Please edit documentation in R/format_databases.R
 \name{format_db_other1}
 \alias{format_db_other1}
-\title{An other, user-specified database that is initially in the format specified by dada2 with header containing taxonomic levels (kingdom down to species, separated by semi-colons)}
+\title{An other, user-specified database that is initially in the format specified by 'DADA2' with header containing taxonomic levels (kingdom down to species, separated by semi-colons)}
 \usage{
 format_db_other1(
   data_tables,
@@ -28,6 +28,6 @@ are output}
 The database with modified headers
 }
 \description{
-An other, user-specified database that is initially in the format specified by dada2 with header containing taxonomic levels (kingdom down to species, separated by semi-colons)
+An other, user-specified database that is initially in the format specified by 'DADA2' with header containing taxonomic levels (kingdom down to species, separated by semi-colons)
 }
 \keyword{internal}

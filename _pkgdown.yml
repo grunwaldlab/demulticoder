@@ -2,7 +2,7 @@ template:
   bootstrap: 5
   bslib:
     bootswatch: sandstone
-
+    
 navbar:
   bg: dark
   structure:

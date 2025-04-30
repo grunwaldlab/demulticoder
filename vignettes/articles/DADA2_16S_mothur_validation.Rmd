@@ -21,7 +21,7 @@ overwrite_existing <- TRUE
 
 ### Introduction  
 
-This vignette shows how demulticoder was used to analyze the mothur 16S SOP dataset featured in **`dada2`** tutorials 
+This vignette shows how demulticoder was used to analyze the mothur 16S SOP dataset featured in **`DADA2`** tutorials 
 
 The raw read files and information on the dataset used for this analysis can be found [here](https://mothur.org/wiki/miseq_sop/#preparing-for-analysis) 
 
@@ -52,7 +52,8 @@ library("RCurl")
 
 Download read files and associated data in your specified location. The default is to write to **`tempdir()`**.  
 
-Ensure your computer has sufficient storage and that you change the **destination_folder** path to a location where you have space and can save files to.
+Ensure your computer has sufficient storage. If you likee, change the **destination_folder** path to a location of your choosing on your local computer.  
+
 ```{r download_files, warning=FALSE, message=TRUE}
 temp_dir <- tempdir()
 demulticoder_temp_dir <- file.path(temp_dir, "demulticoder_sop_run")
@@ -77,7 +78,7 @@ downloaded_read_path <- file.path(run_folder, "miseqsopdata.zip")
  }
 ```
 
-We now have an unzipped directory in our desired destination called **MiSeq_SOP** 
+We now have an unzipped directory in a temporary directory (or your desired destination) called **`MiSeq_SOP`** 
 
 We will also need to rename our files so they are more in line with the file name conventions specified by demulticoder [see Documentation](https://grunwaldlab.github.io/demulticoder/articles/Documentation.html)  
 
@@ -95,9 +96,9 @@ for (file in files) {
 
 ### Add CSV input files to the data directory
 
-Let's now create our **metadata.csv** input file
+Let's now create our **`metadata.csv`** input file
 
-The only required columns are the first with sample names, and the second with the primer name/barcode used. The subsequent columns ('Day' and 'When') are necessary for downstream steps with the phyloseq package.    
+The only required columns are the first with sample names, and the second with the primer name/barcode used. The subsequent columns ('Day' and 'When') are necessary for downstream steps with the **`phyloseq`** package.    
 ```{r metadata_1, warning=FALSE, message=TRUE}
 metadata <- data.frame(
   sample_name = c("F3D0_S188_L001", "F3D1_S189_L001", "F3D141_S207_L001", "F3D142_S208_L001",
@@ -111,7 +112,7 @@ metadata <- data.frame(
 )
 ```
 
-While you can construct your CSV files in Excel, here we construct and save our metadata file in our data directory directly in R.  
+While you can construct your CSV files in Excel, here we construct and save our **`metadata`** file in our data directory directly using R. 
 ```{r metadata_2, warning=FALSE, message=TRUE}
 #Let's define a variable that stores our data directory path
 metadata_dir_path <- file.path(data_folder, "metadata.csv")
@@ -119,20 +120,20 @@ write.csv(metadata, metadata_dir_path, row.names = FALSE)
 print(metadata)
 ```
 
-**metadata.csv**
+**`metadata.csv`**
 ```{r, metadata_csv, echo=FALSE, message=TRUE}
 print(metadata)
 ```
 
-Now, make our **primerinfo_params.csv** input file
+Now, make our **`primerinfo_params.csv`** input file
 
-We then make and save the second CSV input file with the name of the metabarcode used, primer sequences, and the optional **`dada2`** parameter options.  
+We then make and save the second CSV input file with the name of the metabarcode used, primer sequences, and the optional **`DADA2`** parameter options.  
 
-We referenced the DADA2 [tutorial](https://benjjneb.github.io/dada2/tutorial.html) to select the same parameter options.  
+We referenced the **`DADA2`** [tutorial](https://benjjneb.github.io/dada2/tutorial.html) to select the same parameter options.  
 
 *Note, primers were already trimmed from reads during the demultiplexing step that occurs after sequencing, but just to be certain, we included the Earth Microbiome primers sequences described [here](https://earthmicrobiome.org/protocols-and-standards/16s/), which will be searched for across reads.* 
 
-**primerinfo_params.csv**
+**`primerinfo_params.csv`**
 ```{r primerinfo_params_file, warning=FALSE, message=TRUE}
 # Create the data frame
 primer_info <- data.frame(
@@ -162,7 +163,7 @@ primer_info <- data.frame(
 )
 ```
 
-We construct and save our **primerinfo_params** file in our data directory 
+We construct and save our **`primerinfo_params`** file in our data directory 
 ```{r primerinfo_pararms_2, warning=FALSE, message=TRUE}
 primer_params_path <- file.path(data_folder, "primerinfo_params.csv")
 write.csv(primer_info, primer_params_path, row.names = FALSE)
@@ -191,7 +192,7 @@ silva_download_file_path <- file.path(data_folder, "silva_nr99_v138.2_toSpecies_
 
 
 
-### Prepare reads for DADA2 analyses  
+### Prepare reads for **`DADA2`** analyses  
 
 Remove N's and create directory structure for downstream steps  
 Note-intermediate files are saved in a temporary folder automatically. If you prefer to define a temp directory path, refer to documentation for the **prepare_reads** function
@@ -206,7 +207,7 @@ output<-prepare_reads(
 
 ### Remove primers and trim reads  
 
-Run Cutadapt to remove primers and then trim reads with **`dada2`** filterAndTrim function 
+Run Cutadapt to remove primers and then trim reads with **`DADA2`** **`filterAndTrim`** function 
 ```{r Remove_primers_and_trim_reads, fig.height=6, fig.width=6, message=TRUE, warning=FALSE, cache=FALSE}
 cut_trim(
   output,
@@ -261,7 +262,7 @@ assign_tax(
   overwrite_existing = TRUE)
 ```
 
-As a check we can take a look at read counts across the workflow. If there are sudden drops, we should reconsider our adjusting certain **`dada2`** parameters and re-running the analysis.  
+As a check we can take a look at read counts across the workflow. If there are sudden drops, we should reconsider our adjusting certain **`DADA2`** parameters and re-running the analysis.  
 ```{r view_read_counts, fig.height=10, fig.width=10, echo=FALSE, message=TRUE}
 reads_filepath <- file.path(output$directory_paths$output_directory, "track_reads_r16S.csv")
 
@@ -281,7 +282,7 @@ objs<-convert_asv_matrix_to_objs(output)
 
 ### Examine accuracy relative to a mock community  
 
-Evaluate accuracy using mock community, as shown in **`dada2`** tutorial  
+Evaluate accuracy using mock community, as shown in **`DADA2`** tutorial  
 ```{r examine_accuracy, fig.height=6, fig.width=6, message=TRUE, cache=FALSE}
 matrix_filepath <- file.path(output$directory_paths$output_directory, "final_asv_abundance_matrix_r16S.csv")
 tax_matrix<-read.csv(matrix_filepath)
@@ -297,7 +298,7 @@ When looking at mock community sample, we were able to extract 20 bacterial sequ
 
 ### Alpha diversity analysis  
 
-Follow-up work using phyloseq to do side-by-side comparison with DADA2 workflow example and to examine alpha diversity results
+Follow-up work using **`phyloseq`** to do side-by-side comparison with **`DADA2`** workflow example and to examine alpha diversity results
 ```{r phyloseq_alpha_diversity_analysis, fig.height=6, fig.width=6, echo=TRUE, message=TRUE, warning=FALSE, cache=FALSE}
 objs$phyloseq_r16S <- phyloseq::prune_samples(phyloseq::sample_names(objs$phyloseq_r16S) != "Mock_S280_L001_r16S", objs$phyloseq_r16S) # Remove mock sample
 
@@ -306,7 +307,7 @@ phyloseq::plot_richness(objs$phyloseq_r16S, x="Day", measures=c("Shannon", "Simp
 
 ### Beta diversity analysis  
 
-Examine ordination plots as additional point of comparison with the DADA2 tutorial
+Examine ordination plots as additional point of comparison with the **`DADA2`** tutorial
 ```{r phyloseq_beta_diversity_analysis, fig.height=8, fig.width=8, echo=TRUE, message=TRUE, warning=FALSE, cache=FALSE}
 # Transform data to proportions as appropriate for Bray-Curtis distances
 ps.prop <- phyloseq::transform_sample_counts(objs$phyloseq_r16S, function(otu) otu/sum(otu))
@@ -316,7 +317,7 @@ phyloseq::plot_ordination(ps.prop, ord.nmds.bray, color="When", title="Bray NMDS
 
 ### Top taxa analysis   
 
-Let's look at what the top 20 taxa are in the early vs. late samples  time points, as shown in the DADA2 tutorial
+Let's look at what the top 20 taxa are in the early vs. late samples  time points, as shown in the **`DADA2`** tutorial
 ```{r phyloseq_community_analysis, fig.height=8, fig.width=8, echo=TRUE, message=TRUE, warning=FALSE, cache=FALSE}
 top20 <- names(sort(phyloseq::taxa_sums(objs$phyloseq_r16S), decreasing=TRUE))[1:20]
 ps.top20 <- phyloseq::transform_sample_counts(objs$phyloseq_r16S, function(OTU) OTU/sum(OTU))
@@ -326,7 +327,7 @@ phyloseq::plot_bar(ps.top20, x="Day", fill="Family") + ggplot2::facet_wrap(~When
 
 ### References
 
-**Information on the 16S SOP Mothur dataset can be found here:**
+**Information on the 16S SOP `mothur` dataset can be found here:**
 https://mothur.org/wiki/miseq_sop/
 
 Kozich, J. J., Westcott, S. L., Baxter, N. T., Highlander, S. K., and Schloss, P. D. 2013. Development of a dual-index sequencing strategy and curation pipeline for analyzing amplicon sequence data on the MiSeq Illumina sequencing platform. Applied and Environmental Microbiology 79:5112–5120. https://doi.org/10.1128/AEM.01043-13.  

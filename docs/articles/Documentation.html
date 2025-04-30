@@ -84,8 +84,10 @@ detail on input directory and file requirements, and key parameters.</p>
 <h2 id="package-workflow">Package workflow<a class="anchor" aria-label="anchor" href="#package-workflow"></a>
 </h2>
 <ol style="list-style-type: decimal">
-<li>Prepare your input files (metadata.csv, primerinfo_params.csv,
-unformatted reference databases, and PE Illumina read files).</li>
+<li>Prepare your input files (
+<strong><code>metadata.csv</code></strong>,
+<strong><code>primerinfo_params.csv</code></strong>, unformatted
+reference databases, and PE Illumina read files).</li>
 <li>Place all input files in a single directory.</li>
 <li>Ensure your file names comply with the specified format.</li>
 <li>Run the four steps/functions of pipeline with default settings or
@@ -99,8 +101,8 @@ adjust parameters as needed.</li>
 should contain the following files:</p>
 <ul>
 <li><strong>PE Illumina read files</strong></li>
-<li><strong>metadata.csv</strong></li>
-<li><strong>primerinfo_params.csv</strong></li>
+<li><strong><code>metadata.csv</code></strong></li>
+<li><strong><code>primerinfo_params.csv</code></strong></li>
 <li><strong>Reference databases</strong></li>
 </ul>
 <div class="section level3">
@@ -109,7 +111,8 @@ should contain the following files:</p>
 <p>To avoid errors, the only characters that are acceptable in sample
 names are letters and numbers. Characters can be separated by
 underscores, but no other symbols. The files must end with the suffix
-<strong>R1.fastq.gz</strong> or <strong>R2.fastq.gz</strong></p>
+<strong><code>R1.fastq.gz</code></strong> or
+<strong><code>R2.fastq.gz</code></strong></p>
 <p><strong>Examples of permissible sample names are as
 follows:</strong></p>
 <ul>
@@ -131,15 +134,16 @@ follows:</strong></p>
 <h3 id="metadata-file-components">Metadata file components<a class="anchor" aria-label="anchor" href="#metadata-file-components"></a>
 </h3>
 <p>The <strong>metadata.csv</strong> file contains information about the
-samples and primers (and associated barcodes) used in the experiment. It
-has the following two required columns:</p>
+samples and primers (and associated metabarcodes) used in the
+experiment. It has the following two required columns:</p>
 <ul>
 <li>
 <strong>sample_name</strong>: Identifier for each sample (e.g., S1,
 S2)</li>
 <li>
 <strong>primer_name</strong>: Name of the primer used (applicable
-options: ‘rps10’, ‘its’, ‘r16S’, ‘other1’, ‘other2’)</li>
+options: <code>rps10</code>, <code>its</code>, <code>r16S</code>,
+<code>other1</code>, <code>other2</code>)</li>
 </ul>
 <p>Please add your associated metadata to the file after these two
 required columns. This can then be used for your downstream exploratory
@@ -158,166 +162,186 @@ S2,its,Cin</code></pre>
 </h3>
 <p>The <strong>primerinfo_params.csv</strong> file contains information
 about the primer sequences used in the experiment, along with optional
-additional parameters that are part of the DADA2 pipeline. If anything
-is not specified, the default values will be used.</p>
+additional parameters that are part of the
+<strong><code>DADA2</code></strong> pipeline. If anything is not
+specified, the default values will be used.</p>
 <p><strong>Required columns:</strong></p>
 <ul>
 <li>
-<strong>primer_name</strong>: Name of the primer/barcode (e.g., its,
-rps10)</li>
+<strong><code>primer_name</code></strong>: Name of the
+primer/barcode (e.g., <code>its</code>, <code>rps10</code>)</li>
 <li>
-<strong>forward</strong>: Forward primer sequence</li>
+<strong><code>forward</code></strong>: Forward primer sequence</li>
 <li>
-<strong>reverse</strong>: Reverse primer sequence</li>
+<strong><code>reverse</code></strong>: Reverse primer sequence</li>
 </ul>
 <p>Below are the parameters that can be input into the
 <strong>primerinfo_params.csv</strong> file along with the defaults.
-Refer to the DADA2 documentation and <a href="https://www.bioconductor.org/packages/release/bioc/manuals/dada2/man/dada2.pdf" class="external-link">manual</a>
+Refer to the <strong><code>DADA2</code></strong> documentation and <a href="https://www.bioconductor.org/packages/release/bioc/manuals/dada2/man/dada2.pdf" class="external-link">manual</a>
 for additional information.</p>
-<p><strong>dada2 filterAndTrim function parameters:</strong></p>
+<p><strong><code>DADA2</code> <code>filterAndTrim</code> function
+parameters:</strong></p>
 <ul>
 <li>
-<strong>already_trimmed</strong>: Boolean indicating if primers are
-already trimmed (TRUE/FALSE) (default: FALSE)</li>
+<strong><code>already_trimmed</code></strong>: Boolean indicating if
+primers are already trimmed (<code>TRUE/FALSE</code>) (default:
+<code>FALSE</code>)</li>
 <li>
-<strong>minCutadaptlength</strong>:
+<strong><code>minCutadaptlength</code></strong>:
 <strong><code>Cutadapt</code></strong> parameter-Filter out processed
-reads that are shorter than specified length (default: 0)</li>
+reads that are shorter than specified length (default:
+<code>0</code>)</li>
 <li>
-<strong>multithread</strong>: Boolean for multithreading
-(TRUE/FALSE) (default: FALSE)</li>
+<strong><code>multithread</code></strong>: Boolean for
+multithreading (<code>TRUE/FALSE</code>) (default:
+<code>FALSE</code>)</li>
 <li>
-<strong>verbose</strong>: Boolean for verbose output (TRUE/FALSE)
-(default: FALSE)</li>
+<strong><code>verbose</code></strong>: Boolean for verbose output
+(<code>TRUE/FALSE</code>) (default: <code>FALSE</code>)</li>
 <li>
-<strong>maxN</strong>: Maximum number of N bases allowed (default:
-0)</li>
+<strong><code>maxN</code></strong>: Maximum number of N bases
+allowed (default: <code>0</code>)</li>
 <li>
-<strong>maxEE_forward</strong>: Maximum expected errors for forward
-reads (default: Inf)</li>
+<strong><code>maxEE_forward</code></strong>: Maximum expected errors
+for forward reads (default: <code>Inf</code>)</li>
 <li>
-<strong>maxEE_reverse</strong>: Maximum expected errors for reverse
-reads (default: Inf)</li>
+<strong><code>maxEE_reverse</code></strong>: Maximum expected errors
+for reverse reads (default: <code>Inf</code>)</li>
 <li>
-<strong>truncLen_forward</strong>: Truncation length for forward
-reads (default: 0)</li>
+<strong><code>truncLen_forward</code></strong>: Truncation length
+for forward reads (default: <code>0</code>)</li>
 <li>
-<strong>truncLen_reverse</strong>: Truncation length for reverse
-reads (default: 0)</li>
+<strong><code>truncLen_reverse</code></strong>: Truncation length
+for reverse reads (default: <code>0</code>)</li>
 <li>
-<strong>truncQ</strong>: Truncation quality threshold (default:
-2)</li>
+<strong><code>truncQ</code></strong>: Truncation quality threshold
+(default: <code>2</code>)</li>
 <li>
-<strong>minLen</strong>: Minimum length of reads after processing
-(default: 20)</li>
+<strong><code>minLen</code></strong>: Minimum length of reads after
+processing (default: <code>20</code>)</li>
 <li>
-<strong>maxLen</strong>: Maximum length of reads after processing
-(default: Inf)</li>
+<strong><code>maxLen</code></strong>: Maximum length of reads after
+processing (default: <code>Inf</code>)</li>
 <li>
-<strong>minQ</strong>: Minimum quality score (default: 0)</li>
+<strong><code>minQ</code></strong>: Minimum quality score (default:
+<code>0</code>)</li>
 <li>
-<strong>trimLeft</strong>: Number of bases to trim from the start of
-reads (default: 0)</li>
+<strong><code>trimLeft</code></strong>: Number of bases to trim from
+the start of reads (default: <code>0</code>)</li>
 <li>
-<strong>trimRight</strong>: Number of bases to trim from the end of
-reads (default: 0)</li>
+<strong><code>trimRight</code></strong>: Number of bases to trim
+from the end of reads (default: <code>0</code>)</li>
 <li>
-<strong>rm.lowcomplex</strong>: Boolean for removing low complexity
-sequences (default: TRUE)</li>
+<strong><code>rm.lowcomplex</code></strong>: Boolean for removing
+low complexity sequences (default: <code>TRUE</code>)</li>
 </ul>
-<p><strong>dada2 learnErrors function parameters:</strong></p>
+<p><strong><code>DADA2</code> <code>learnErrors</code> function
+parameters:</strong></p>
 <ul>
 <li>
-<strong>nbases</strong>: Number of bases to use for error rate
-learning (default: 1e+08)</li>
+<strong><code>nbases</code></strong>: Number of bases to use for
+error rate learning (default: <code>1e+08</code>)</li>
 <li>
-<strong>randomize</strong>: Randomize reads for error rate learning
-(default: FALSE)</li>
+<strong><code>randomize</code></strong>: Randomize reads for error
+rate learning (default: <code>FALSE</code>)</li>
 <li>
-<strong>MAX_CONSIST</strong>: Maximum number of self-consistency
-iterations (default: 10)</li>
+<strong><code>MAX_CONSIST</code></strong>: Maximum number of
+self-consistency iterations (default: <code>10</code>)</li>
 <li>
-<strong>OMEGA_C</strong>: Convergence threshold for the error rates
-(default: 0)</li>
+<strong><code>OMEGA_C</code></strong>: Convergence threshold for the
+error rates (default: <code>0</code>)</li>
 <li>
-<strong>qualityType</strong>: Quality score type (“Auto”,
-“FastqQuality”, or “ShortRead”) (default: “Auto”)</li>
+<strong><code>qualityType</code></strong>: Quality score type
+(<code>"Auto"</code>, <code>"FastqQuality",</code> or
+<code>"ShortRead"</code>) (default: <code>"Auto"</code>)</li>
 </ul>
-<p><strong>dada2 plot errors parameters:</strong></p>
+<p><strong><code>DADA2</code> <code>plotErrors</code>
+parameters:</strong></p>
 <ul>
 <li>
-<strong>err_out</strong>: Return the error rates used for inference
-(default: TRUE)</li>
+<strong><code>err_out</code></strong>: Return the error rates used
+for inference (default: <code>TRUE</code>)</li>
 <li>
-<strong>err_in</strong>: Use input error rates instead of learning
-them (default: FALSE)</li>
+<strong><code>err_in</code></strong>: Use input error rates instead
+of learning them (default: <code>FALSE</code>)</li>
 <li>
-<strong>nominalQ</strong>: Use nominal Q-scores (default:
-FALSE)</li>
+<strong><code>nominalQ</code></strong>: Use nominal Q-scores
+(default: <code>FALSE</code>)</li>
 <li>
-<strong>obs</strong>: Return the observed error rates (default:
-TRUE)</li>
+<strong><code>obs</code></strong>: Return the observed error rates
+(default: <code>TRUE</code>)</li>
 </ul>
-<p><strong>dada2 dada function parameters:</strong></p>
+<p><strong><code>DADA2</code> <code>dada</code> function
+parameters:</strong></p>
 <ul>
 <li>
-<strong>OMP</strong>: Use OpenMP multi-threading if available
-(default: TRUE)</li>
+<strong><code>OMP</code></strong>: Use OpenMP multi-threading if
+available (default: <code>TRUE</code>)</li>
 <li>
-<strong>n</strong>: Number of reads to use for error rate estimation
-(default: 1e+05)</li>
+<strong><code>n</code></strong>: Number of reads to use for error
+rate estimation (default: <code>1e+05</code>)</li>
 <li>
-<strong>id.sep</strong>: Character separating sample ID from
-sequence name (default: “\s”)</li>
+<strong><code>id.sep</code></strong>: Character separating sample ID
+from sequence name (default: <code>"\\s"</code>)</li>
 <li>
-<strong>orient.fwd</strong>: NULL or TRUE/FALSE to orient sequences
-(default: NULL)</li>
+<strong><code>orient.fwd</code></strong>: NULL or TRUE/FALSE to
+orient sequences (default: <code>NULL</code>)</li>
 <li>
-<strong>pool</strong>: Pool samples for error rate estimation
-(default: FALSE)</li>
+<strong><code>pool</code></strong>: Pool samples for error rate
+estimation (default: <code>FALSE</code>)</li>
 <li>
-<strong>selfConsist</strong>: Perform self-consistency iterations
-(default: FALSE)</li>
+<strong><code>selfConsist</code></strong>: Perform self-consistency
+iterations (default: <code>FALSE</code>)</li>
 </ul>
-<p><strong>dada2 mergePairs function parameters:</strong></p>
+<p><strong><code>DADA2</code> <code>mergePairs</code> function
+parameters:</strong></p>
 <ul>
 <li>
-<strong>minOverlap</strong>: Minimum overlap for merging paired-end
-reads (default: 12)</li>
+<strong><code>minOverlap</code></strong>: Minimum overlap for
+merging paired-end reads (default: <code>12</code>)</li>
 <li>
-<strong>maxMismatch</strong>: Maximum mismatches allowed in the
-overlap region (default: 0)</li>
+<strong><code>maxMismatch</code></strong>: Maximum mismatches
+allowed in the overlap region (default: <code>0</code>)</li>
 </ul>
-<p><strong>dada2 removeBimeraDenovo function parameters:</strong></p>
+<p><strong><code>DADA2</code> <code>removeBimeraDenovo</code> function
+parameters:</strong></p>
 <ul>
 <li>
-<strong>method</strong>: Method for sample inference (“consensus” or
-“pooled”) (default: “consensus”)</li>
+<strong><code>method</code></strong>: Method for sample inference
+(<code>"consensus"</code> or <code>"pooled"</code>) (default:
+<code>"consensus"</code>)</li>
 </ul>
-<p><strong>dada2 assignTaxonomy function parameters:</strong></p>
+<p><strong><code>DADA2</code> <code>assignTaxonomy</code> function
+parameters:</strong></p>
 <ul>
 <li>
-<strong>minBoot</strong>: The minimum bootstrap confidence for
-assigning a taxonomic level (default: 0)<br>
+<strong><code>minBoot</code></strong>: The minimum bootstrap
+confidence for assigning a taxonomic level (default:
+<code>0</code>)<br>
 </li>
 <li>
-<strong>tryRC</strong>: If TRUE, the reverse-complement of each
-sequences will be used for classification if it is a better match to the
-reference sequences than the forward sequence (default is FALSE)</li>
+<strong><code>tryRC</code></strong>: If TRUE, the reverse-complement
+of each sequences will be used for classification if it is a better
+match to the reference sequences than the forward sequence (default:
+<code>FALSE</code>)</li>
 </ul>
 <p><strong>Other parameters to include in CSV input file:</strong></p>
 <ul>
 <li>
-<strong>min_asv_length</strong>: Minimum length of Amplicon Sequence
-Variants (ASVs) after core dada ASV inference steps (default = 0)<br>
+<strong><code>min_asv_length</code></strong>: Minimum length of
+Amplicon Sequence Variants (ASVs) after core dada ASV inference steps
+(default = <code>0</code>)<br>
 </li>
 <li>
-<strong>seed</strong>: For greater reproducibility, user can specify
-an integer to set as a seed to use when the following dada2 functions
-are run: <strong>plotQualityProfile</strong>,
-<strong>learnErrors</strong>, <strong>dada</strong>,
-<strong>makeSequenceTable</strong>, and <strong>assignTaxonomy</strong>
-(default: NULL)</li>
+<strong><code>seed</code></strong>: For greater reproducibility,
+user can specify an integer to set as a seed to use when the following
+<strong><code>DADA2</code></strong> functions are run:
+<strong><code>plotQualityProfile</code></strong>,
+<strong><code>learnErrors</code></strong>,
+<strong><code>dada</code></strong>,
+<strong><code>makeSequenceTable</code></strong>, and
+<strong><code>assignTaxonomy</code></strong> (default:
+<code>NULL</code>)</li>
 </ul>
 <p>Example file (with select optional columns after forward and reverse
 primer sequence columns):</p>
@@ -333,15 +357,16 @@ raw data files and csv files are located. The names will be parameters
 in the <em>assignTax</em> function.</p>
 <p>For now, the package is compatible with the following databases:</p>
 <ul>
-<li><p>oomycetedb from: <a href="https://grunwaldlab.github.io/OomyceteDB/" class="external-link">https://grunwaldlab.github.io/OomyceteDB/</a></p></li>
+<li><p><strong><code>oomyceteDB</code></strong> from: <a href="https://grunwaldlab.github.io/OomyceteDB/" class="external-link">https://grunwaldlab.github.io/OomyceteDB/</a></p></li>
 <li>
-<p>SILVA 16S database <strong>with</strong> species assignments: <a href="https://www.arb-silva.de/" class="external-link">https://www.arb-silva.de/</a></p>
+<p><strong><code>SILVA 16S database</code></strong>
+<strong>with</strong> species assignments: <a href="https://www.arb-silva.de/" class="external-link">https://www.arb-silva.de/</a></p>
 <ul>
 <li>An easily accessible download is found here: <a href="https://zenodo.org/records/14169026" class="external-link">https://zenodo.org/records/14169026</a>
 </li>
 </ul>
 </li>
-<li><p>UNITE fungal database from <a href="https://zenodo.org/records/14169026" class="external-link">https://zenodo.org/records/14169026</a></p></li>
+<li><p><strong><code>UNITE fungal database</code></strong> from <a href="https://zenodo.org/records/14169026" class="external-link">https://zenodo.org/records/14169026</a></p></li>
 <li><p>Up to two other reference databases. The user will need to
 reformat headers exactly as outlined <a href="https://benjjneb.github.io/dada2/training.html" class="external-link">here</a>. The user
 can then specify the path to the database in the input file. The

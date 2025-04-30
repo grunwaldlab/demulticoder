@@ -33,7 +33,7 @@ library("kableExtra")
   - Samples entered twice if samples contain two pooled metabarcodes, as in the test data template
 3. [**primerinfo_params.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv)
   - New row for each unique barcode and associated primer sequence
-  - Optional **`Cutadapt`** and **`dada2`** parameters
+  - Optional **`Cutadapt`** and **`DADA2`** parameters
 4. **Taxonomy databases**  
   - UNITE fungal database (abridged version)
   - oomyceteDB 
@@ -80,7 +80,7 @@ Primer sequence information and user-defined parameters are placed in **primerin
 
 * To simplify how functions are called, user will provide parameters within this input file.   
 * We recommend using the template linked   [here](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv).   
-* Remember to add any additional optional **`dada2`** parameters you want to use.  
+* Remember to add any additional optional **`DADA2`** parameters you want to use.  
 
 * The only three **required** columns (with these headers) are:  
   * Column 1. **sample_name** 
@@ -165,7 +165,7 @@ cutadapt --version
 
 Second, make sure the following R packages are installed:
 
-* **`dada2`** (Latest version is 3.20)  
+* **`DADA2`** (Latest version is 3.20)  
   * To install, follow these instructions: https://www.bioconductor.org/packages/release/bioc/html/dada2.html  
 * **`phyloseq`**  
   * To install: https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html  
@@ -229,7 +229,7 @@ make_asv_abund_matrix(
 
 ### Taxonomic assignment step  
 
-Using the core assignTaxonomy function from **`dada2`**, taxonomic assignments will be given to ASVs.  
+Using the core assignTaxonomy function from **`DADA2`**, taxonomic assignments will be given to ASVs.  
 
 ```{r Assign_taxonomy, warning=FALSE, message=FALSE, cache=FALSE}
 assign_tax(
@@ -241,7 +241,7 @@ assign_tax(
 
 ### Format of output matrices  
 
-* The default output is a CSV file per metabarcode with the inferred ASVs and sequences, taxonomic assignments, and bootstrap supports provided by **`dada2`**. These data can then be used as input for downstream steps.  
+* The default output is a CSV file per metabarcode with the inferred ASVs and sequences, taxonomic assignments, and bootstrap supports provided by **`DADA2`**. These data can then be used as input for downstream steps.  
 * To view these files, locate the files with the prefix **final_asv_abundance_matrix** in your specified output directory.  
 * In this example, it will be in the home directory within **demulticoder_test**. 
 * You can then open your matrices using Excel  

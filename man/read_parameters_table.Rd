@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_reads_count_primers.R
 \name{read_parameters_table}
 \alias{read_parameters_table}
-\title{Take in user's 'dada2' parameters and make a dataframe for downstream steps}
+\title{Take in user's 'DADA2' parameters and make a data frame for downstream steps}
 \usage{
 read_parameters_table(primers_params_path)
 }
@@ -11,9 +11,9 @@ read_parameters_table(primers_params_path)
 information.}
 }
 \value{
-A \code{data.frame} with information on the 'dada2' parameters.
+A \code{data.frame} with information on the 'DADA2' parameters.
 }
 \description{
-Take in user's 'dada2' parameters and make a dataframe for downstream steps
+Take in user's 'DADA2' parameters and make a data frame for downstream steps
 }
 \keyword{internal}

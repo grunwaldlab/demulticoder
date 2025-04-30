@@ -44,7 +44,7 @@ Taxonomic assignments of each unique ASV sequence
 Assign taxonomy functions
 }
 \details{
-At this point, 'dada2' function assignTaxonomy is used to assign taxonomy to the inferred ASVs.
+At this point, 'DADA2' function assignTaxonomy is used to assign taxonomy to the inferred ASVs.
 }
 \examples{
 \donttest{

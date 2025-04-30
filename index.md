@@ -3,7 +3,7 @@
 
 ### Introduction
 
-The **`demulticoder`** package is a **`cutadapt`** and **`dada2`**
+The **`demulticoder`** package is a **`Cutadapt`** and **`DADA2`**
 wrapper package for metabarcoding analyses. The main commands and
 outputs are intuitive and comprehensive, which helps to account for the
 complex and iterative nature of metabarcoding analyses.
@@ -14,7 +14,7 @@ Here is a brief schematic of the general workflow:
 
 ### Key Features
 
-- It automates the use of **`dada2`** to analyze data derived from
+- It automates the use of **`DADA2`** to analyze data derived from
   multiple metabarcodes.  
 - It reduces the number of manual input steps  
 - Handles analysis of two metabarcodes multiplexed into the same
@@ -30,7 +30,7 @@ Here is a brief schematic of the general workflow:
 First install **`Cutadapt`** program following the instructions here:
 <https://cutadapt.readthedocs.io/en/stable/installation.html>  
 Let’s locate where the cutadapt executable is. You must do this from a
-**Terminal** window:
+**`Terminal`** window:
 
 ``` sh
 #If you installed with pip or pipx, or homebrew, run this command from a Terminal window
@@ -40,7 +40,7 @@ cutadapt --version
 
 If you followed the cutadapt installation instructions to create a conda
 environment called cutadapt (change to whatever you named your
-environment), to install it in, open up a **Terminal** window and type
+environment), to install it in, open up a **`Terminal`** window and type
 these commands:
 
 ``` sh
@@ -52,7 +52,7 @@ cutadapt --version
 
 Second, make sure the following R packages are installed:
 
-- **`dada2`** (Latest version is 3.20)
+- **`DADA2`** (Latest version is 3.20)
   - To install, follow these instructions:
     <https://www.bioconductor.org/packages/release/bioc/html/dada2.html>  
 - **`phyloseq`**
@@ -96,7 +96,7 @@ Already loaded in the test data set directory are the following files:
 - [**primerinfo_params.csv**](https://github.com/grunwaldlab/demulticoder/blob/main/inst/extdata/primerinfo_params.csv)
   - New row for each unique metabarcode (applicable options: ‘rps10’,
     ‘its’, ‘r16S’, ‘other1’, ‘other2’) and associated primer sequence
-  - Optional cutadapt and DADA2 parameters
+  - Optional **`Cutadapt`** and **`DADA2`** parameters
 - **Taxonomy databases**
   - UNITE fungal database (abridged version)
   - completed
@@ -114,7 +114,7 @@ tab on the package website
 ``` r
 output<-prepare_reads(
   data_directory = system.file("extdata", package = "demulticoder"), # This allows us to use the test directory located within the package
-  output_directory = "~/demulticoder_test", # Change to you preferred location on your local computer (Example: "~/demulticoder_test")
+  output_directory = tempdir(), # OR change to you preferred location on your local computer (Example: "~/demulticoder_test")
   overwrite_existing = TRUE)
 ```
 
