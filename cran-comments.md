@@ -1,3 +1,6 @@
+## This is a third resubmission. In this version, we:  
+* Account for the fact that cutadapt is not always installed an accessible when doing testthat tests. 
+
 ## This is a second resubmission. In this version, we:
 
 * Checked the spellings in the DESCRIPTION file. The names in question ('taxmap' and 'phyloseq') are spelled correctly but refer to R packages, so single quotes were added to these names. 
