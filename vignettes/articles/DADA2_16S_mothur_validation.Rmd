@@ -27,24 +27,30 @@ The raw read files and information on the dataset used for this analysis can be 
 
 ### Load the demulticoder R package and necessary dependencies  
 
-For now, the package will be loaded by retrieving it from GitHub. 
-We are submitting package to CRAN. 
+First,  make sure the following R packages are installed:  
+
+* **`demulticoder`** (Available through CRAN)  
+* **`DADA2`** (Latest version is 3.20)  
+  * To install, follow these instructions: https://www.bioconductor.org/packages/release/bioc/html/dada2.html  
+* **`phyloseq`**  
+  * To install: https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html  
+* **`metacoder`** (Available through CRAN)  
+* **`RCurl`** (Available through CRAN-but only necessary if you want to download reads and databases from within R)
+
+
+The **`demulticoder`** R package is now available on CRAN. 
 
 ```{r setup, echo=TRUE, eval=FALSE}
-devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
 library("demulticoder")
 library("metacoder")
 library("phyloseq")
-library("dplyr")
 library("RCurl")
 ```
 
 ```{r setup2, include=FALSE}
-devtools::install_github("grunwaldlab/demulticoder", force=TRUE)
 library("demulticoder")
 library("metacoder")
 library("phyloseq")
-library("dplyr")
 library("RCurl")
 ```
 

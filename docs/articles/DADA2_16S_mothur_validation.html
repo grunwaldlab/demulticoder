@@ -84,14 +84,41 @@ analysis can be found <a href="https://mothur.org/wiki/miseq_sop/#preparing-for-
 <div class="section level3">
 <h3 id="load-the-demulticoder-r-package-and-necessary-dependencies">Load the demulticoder R package and necessary dependencies<a class="anchor" aria-label="anchor" href="#load-the-demulticoder-r-package-and-necessary-dependencies"></a>
 </h3>
-<p>For now, the package will be loaded by retrieving it from GitHub. We
-are submitting package to CRAN.</p>
+<p>First, make sure the following R packages are installed:</p>
+<ul>
+<li>
+<strong><code>demulticoder</code></strong> (Available through
+CRAN)<br>
+</li>
+<li>
+<strong><code>DADA2</code></strong> (Latest version is 3.20)
+<ul>
+<li>To install, follow these instructions: <a href="https://www.bioconductor.org/packages/release/bioc/html/dada2.html" class="external-link uri">https://www.bioconductor.org/packages/release/bioc/html/dada2.html</a><br>
+</li>
+</ul>
+</li>
+<li>
+<strong><code>phyloseq</code></strong>
+<ul>
+<li>To install: <a href="https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html" class="external-link uri">https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html</a><br>
+</li>
+</ul>
+</li>
+<li>
+<strong><code>metacoder</code></strong> (Available through
+CRAN)<br>
+</li>
+<li>
+<strong><code>RCurl</code></strong> (Available through CRAN-but only
+necessary if you want to download reads and databases from within
+R)</li>
+</ul>
+<p>The <strong><code>demulticoder</code></strong> R package is now
+available on CRAN.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"grunwaldlab/demulticoder"</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/demulticoder/" class="external-link">"demulticoder"</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/demulticoder/" class="external-link">"demulticoder"</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/metacoder_documentation/" class="external-link">"metacoder"</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://dx.plos.org/10.1371/journal.pone.0061217" class="external-link">"phyloseq"</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://dplyr.tidyverse.org" class="external-link">"dplyr"</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"RCurl"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -124,7 +151,7 @@ on your local computer.</p>
 <span> <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
 <span>   <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Files already exist:"</span>, <span class="va">downloaded_read_path</span>, <span class="st">"! Skipping download.\n"</span><span class="op">)</span></span>
 <span> <span class="op">}</span></span>
-<span><span class="co">#&gt; Files downloaded: /tmp/Rtmpw57IFR/demulticoder_sop_run/miseqsopdata.zip </span></span>
+<span><span class="co">#&gt; Files downloaded: /tmp/RtmptoYKJJ/demulticoder_sop_run/miseqsopdata.zip </span></span>
 <span><span class="co">#&gt; [1] "MiSeq_SOP"        "miseqsopdata.zip"</span></span></code></pre></div>
 <p>We now have an unzipped directory in a temporary directory (or your
 desired destination) called <strong><code>MiSeq_SOP</code></strong></p>
@@ -284,7 +311,7 @@ of species).</p>
 <span> <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
 <span>   <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"File already exists:"</span>, <span class="va">silva_download_file_path</span>, <span class="st">"! Skipping download.\n"</span><span class="op">)</span></span>
 <span> <span class="op">}</span></span>
-<span><span class="co">#&gt; File downloaded: /tmp/Rtmpw57IFR/demulticoder_sop_run/MiSeq_SOP/silva_nr99_v138.2_toSpecies_trainset.fa.gz</span></span></code></pre></div>
+<span><span class="co">#&gt; File downloaded: /tmp/RtmptoYKJJ/demulticoder_sop_run/MiSeq_SOP/silva_nr99_v138.2_toSpecies_trainset.fa.gz</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="prepare-reads-for-dada2-analyses">Prepare reads for <strong><code>DADA2</code></strong> analyses<a class="anchor" aria-label="anchor" href="#prepare-reads-for-dada2-analyses"></a>
@@ -325,7 +352,7 @@ for the <strong>prepare_reads</strong> function</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
-<span><span class="co">#&gt; Creating output directory: /tmp/Rtmpw57IFR/demulticoder_run/prefiltered_sequences</span></span></code></pre></div>
+<span><span class="co">#&gt; Creating output directory: /tmp/RtmptoYKJJ/demulticoder_run/prefiltered_sequences</span></span></code></pre></div>
 <p><img src="prepare_reads-1.png" width="70%"></p>
 </div>
 <div class="section level3">
@@ -340,46 +367,46 @@ for the <strong>prepare_reads</strong> function</p>
 <span>  cutadapt_path<span class="op">=</span><span class="st">"/usr/bin/cutadapt"</span>,</span>
 <span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running cutadapt 3.5 for r16S sequence data</span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D0_S188_L001_R1_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D0_S188_L001_R2_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D1_S189_L001_R1_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D1_S189_L001_R2_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D141_S207_L001_R1_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D141_S207_L001_R2_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D142_S208_L001_R1_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D142_S208_L001_R2_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D143_S209_L001_R1_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D143_S209_L001_R2_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D144_S210_L001_R1_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D144_S210_L001_R2_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D145_S211_L001_R1_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D145_S211_L001_R2_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D146_S212_L001_R1_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D146_S212_L001_R2_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D147_S213_L001_R1_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D147_S213_L001_R2_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D148_S214_L001_R1_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D148_S214_L001_R2_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D149_S215_L001_R1_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D149_S215_L001_R2_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D150_S216_L001_R1_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D150_S216_L001_R2_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D2_S190_L001_R1_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D2_S190_L001_R2_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D3_S191_L001_R1_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D3_S191_L001_R2_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D5_S193_L001_R1_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D5_S193_L001_R2_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D6_S194_L001_R1_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D6_S194_L001_R2_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D7_S195_L001_R1_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D7_S195_L001_R2_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D8_S196_L001_R1_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D8_S196_L001_R2_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D9_S197_L001_R1_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/F3D9_S197_L001_R2_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/Mock_S280_L001_R1_r16S.fastq.gz</span></span>
-<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/Rtmpw57IFR/demulticoder_run/trimmed_sequences/Mock_S280_L001_R2_r16S.fastq.gz</span></span></code></pre></div>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D0_S188_L001_R1_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D0_S188_L001_R2_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D1_S189_L001_R1_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D1_S189_L001_R2_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D141_S207_L001_R1_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D141_S207_L001_R2_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D142_S208_L001_R1_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D142_S208_L001_R2_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D143_S209_L001_R1_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D143_S209_L001_R2_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D144_S210_L001_R1_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D144_S210_L001_R2_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D145_S211_L001_R1_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D145_S211_L001_R2_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D146_S212_L001_R1_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D146_S212_L001_R2_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D147_S213_L001_R1_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D147_S213_L001_R2_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D148_S214_L001_R1_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D148_S214_L001_R2_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D149_S215_L001_R1_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D149_S215_L001_R2_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D150_S216_L001_R1_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D150_S216_L001_R2_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D2_S190_L001_R1_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D2_S190_L001_R2_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D3_S191_L001_R1_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D3_S191_L001_R2_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D5_S193_L001_R1_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D5_S193_L001_R2_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D6_S194_L001_R1_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D6_S194_L001_R2_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D7_S195_L001_R1_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D7_S195_L001_R2_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D8_S196_L001_R1_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D8_S196_L001_R2_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D9_S197_L001_R1_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/F3D9_S197_L001_R2_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed forward reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/Mock_S280_L001_R1_r16S.fastq.gz</span></span>
+<span><span class="co">#&gt; Already trimmed reverse reads were appended to trimmed read directory, and they are located here:/tmp/RtmptoYKJJ/demulticoder_run/trimmed_sequences/Mock_S280_L001_R2_r16S.fastq.gz</span></span></code></pre></div>
 <p><img src="Remove_primers_and_trim_reads-1.png" width="70%"></p>
 <p>We can now visualize the outputs from the primer removal and trimming
 steps. A CSV files is output showing which samples still have primer
@@ -479,7 +506,7 @@ filtered at the end.</p>
 <pre><code><span><span class="co">#&gt; Identified 61 bimeras out of 293 input sequences.</span></span></code></pre>
 <p><img src="ASV_inference-2.png" width="70%"></p>
 <pre><code><span><span class="co">#&gt; $r16S</span></span>
-<span><span class="co">#&gt; [1] "/tmp/Rtmpw57IFR/demulticoder_run/asvabund_matrixDADA2_r16S.RData"</span></span></code></pre>
+<span><span class="co">#&gt; [1] "/tmp/RtmptoYKJJ/demulticoder_run/asvabund_matrixDADA2_r16S.RData"</span></span></code></pre>
 <p>We can now visualize the outputs from the ASV inference step.</p>
 <p>The first plot shows the how reads were merged in terms of mismatches
 and indels.</p>
@@ -543,10 +570,10 @@ analysis.</p>
 <span><span class="co">#&gt; For r16S dataset </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Taxmap object saved in: /tmp/Rtmpw57IFR/demulticoder_sop_run/sop_16S_demulticoder_outputs/taxmap_obj_r16S.RData </span></span>
+<span><span class="co">#&gt; Taxmap object saved in: /tmp/RtmptoYKJJ/demulticoder_sop_run/sop_16S_demulticoder_outputs/taxmap_obj_r16S.RData </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Phyloseq object saved in: /tmp/Rtmpw57IFR/demulticoder_sop_run/sop_16S_demulticoder_outputs/phylo_obj_r16S.RData </span></span>
+<span><span class="co">#&gt; Phyloseq object saved in: /tmp/RtmptoYKJJ/demulticoder_sop_run/sop_16S_demulticoder_outputs/phylo_obj_r16S.RData </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ASVs filtered by minimum read depth: 0 </span></span>
@@ -684,79 +711,69 @@ inference from Illumina amplicon data. Nature Methods 13:581. <a href="https://d
 <span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] purrr_1.0.4        future_1.40.0      RCurl_1.98-1.17    dplyr_1.1.4       </span></span>
-<span><span class="co">#&gt; [5] phyloseq_1.38.0    metacoder_0.3.8    demulticoder_0.1.2 kableExtra_1.4.0  </span></span>
+<span><span class="co">#&gt; [1] purrr_1.0.4        future_1.40.0      RCurl_1.98-1.17    phyloseq_1.38.0   </span></span>
+<span><span class="co">#&gt; [5] metacoder_0.3.8    demulticoder_0.1.2 kableExtra_1.4.0  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;   [1] systemfonts_1.0.4           plyr_1.8.9                 </span></span>
-<span><span class="co">#&gt;   [3] igraph_2.1.4                lazyeval_0.2.2             </span></span>
-<span><span class="co">#&gt;   [5] splines_4.1.2               listenv_0.9.1              </span></span>
-<span><span class="co">#&gt;   [7] BiocParallel_1.28.3         usethis_3.1.0              </span></span>
-<span><span class="co">#&gt;   [9] GenomeInfoDb_1.30.1         ggplot2_3.5.2              </span></span>
-<span><span class="co">#&gt;  [11] digest_0.6.37               foreach_1.5.2              </span></span>
-<span><span class="co">#&gt;  [13] htmltools_0.5.8.1           magrittr_2.0.3             </span></span>
-<span><span class="co">#&gt;  [15] memoise_2.0.1               cluster_2.1.2              </span></span>
-<span><span class="co">#&gt;  [17] tzdb_0.5.0                  remotes_2.5.0              </span></span>
-<span><span class="co">#&gt;  [19] globals_0.17.0              Biostrings_2.62.0          </span></span>
-<span><span class="co">#&gt;  [21] readr_2.1.5                 RcppParallel_5.1.10        </span></span>
-<span><span class="co">#&gt;  [23] matrixStats_1.5.0           vroom_1.6.5                </span></span>
-<span><span class="co">#&gt;  [25] svglite_2.1.3               pkgdown_2.1.1              </span></span>
-<span><span class="co">#&gt;  [27] jpeg_0.1-10                 colorspace_2.1-1           </span></span>
-<span><span class="co">#&gt;  [29] textshaping_0.3.6           xfun_0.51                  </span></span>
-<span><span class="co">#&gt;  [31] callr_3.7.6                 crayon_1.5.3               </span></span>
-<span><span class="co">#&gt;  [33] jsonlite_1.9.1              dada2_1.30.0               </span></span>
-<span><span class="co">#&gt;  [35] survival_3.2-13             iterators_1.0.14           </span></span>
-<span><span class="co">#&gt;  [37] ape_5.8-1                   glue_1.8.0                 </span></span>
-<span><span class="co">#&gt;  [39] gtable_0.3.6                zlibbioc_1.40.0            </span></span>
-<span><span class="co">#&gt;  [41] XVector_0.34.0              DelayedArray_0.20.0        </span></span>
-<span><span class="co">#&gt;  [43] pkgbuild_1.4.6              Rhdf5lib_1.16.0            </span></span>
-<span><span class="co">#&gt;  [45] BiocGenerics_0.40.0         scales_1.4.0               </span></span>
-<span><span class="co">#&gt;  [47] DBI_1.2.3                   miniUI_0.1.1.1             </span></span>
-<span><span class="co">#&gt;  [49] Rcpp_1.0.14                 viridisLite_0.4.2          </span></span>
-<span><span class="co">#&gt;  [51] xtable_1.8-4                bit_4.6.0                  </span></span>
-<span><span class="co">#&gt;  [53] stats4_4.1.2                profvis_0.4.0              </span></span>
-<span><span class="co">#&gt;  [55] htmlwidgets_1.6.4           RColorBrewer_1.1-3         </span></span>
-<span><span class="co">#&gt;  [57] ellipsis_0.3.2              urlchecker_1.0.1           </span></span>
-<span><span class="co">#&gt;  [59] pkgconfig_2.0.3             farver_2.1.2               </span></span>
-<span><span class="co">#&gt;  [61] sass_0.4.9                  deldir_2.0-4               </span></span>
-<span><span class="co">#&gt;  [63] labeling_0.4.3              tidyselect_1.2.1           </span></span>
-<span><span class="co">#&gt;  [65] rlang_1.1.6                 reshape2_1.4.4             </span></span>
-<span><span class="co">#&gt;  [67] later_1.4.1                 tools_4.1.2                </span></span>
-<span><span class="co">#&gt;  [69] cachem_1.1.0                cli_3.6.5                  </span></span>
-<span><span class="co">#&gt;  [71] generics_0.1.3              ade4_1.7-23                </span></span>
-<span><span class="co">#&gt;  [73] devtools_2.4.5              evaluate_1.0.3             </span></span>
-<span><span class="co">#&gt;  [75] biomformat_1.22.0           stringr_1.5.1              </span></span>
-<span><span class="co">#&gt;  [77] fastmap_1.2.0               yaml_2.3.10                </span></span>
-<span><span class="co">#&gt;  [79] ragg_1.2.1                  processx_3.8.6             </span></span>
-<span><span class="co">#&gt;  [81] knitr_1.50                  bit64_4.6.0-1              </span></span>
-<span><span class="co">#&gt;  [83] fs_1.6.5                    nlme_3.1-155               </span></span>
-<span><span class="co">#&gt;  [85] mime_0.12                   xml2_1.3.7                 </span></span>
-<span><span class="co">#&gt;  [87] compiler_4.1.2              rstudioapi_0.17.1          </span></span>
-<span><span class="co">#&gt;  [89] curl_6.2.1                  png_0.1-8                  </span></span>
-<span><span class="co">#&gt;  [91] tibble_3.2.1                bslib_0.9.0                </span></span>
-<span><span class="co">#&gt;  [93] stringi_1.8.7               ps_1.9.0                   </span></span>
-<span><span class="co">#&gt;  [95] desc_1.4.3                  lattice_0.20-45            </span></span>
-<span><span class="co">#&gt;  [97] Matrix_1.4-0                vegan_2.6-10               </span></span>
-<span><span class="co">#&gt;  [99] permute_0.9-7               multtest_2.50.0            </span></span>
-<span><span class="co">#&gt; [101] vctrs_0.6.5                 furrr_0.3.1                </span></span>
-<span><span class="co">#&gt; [103] pillar_1.10.2               lifecycle_1.0.4            </span></span>
-<span><span class="co">#&gt; [105] rhdf5filters_1.6.0          jquerylib_0.1.4            </span></span>
-<span><span class="co">#&gt; [107] data.table_1.17.0           bitops_1.0-7               </span></span>
-<span><span class="co">#&gt; [109] httpuv_1.6.15               GenomicRanges_1.46.1       </span></span>
-<span><span class="co">#&gt; [111] R6_2.6.1                    latticeExtra_0.6-30        </span></span>
-<span><span class="co">#&gt; [113] hwriter_1.3.2.1             promises_1.3.2             </span></span>
-<span><span class="co">#&gt; [115] ShortRead_1.60.0            parallelly_1.43.0          </span></span>
-<span><span class="co">#&gt; [117] IRanges_2.28.0              sessioninfo_1.2.3          </span></span>
-<span><span class="co">#&gt; [119] codetools_0.2-18            MASS_7.3-55                </span></span>
-<span><span class="co">#&gt; [121] pkgload_1.4.0               rhdf5_2.38.1               </span></span>
-<span><span class="co">#&gt; [123] SummarizedExperiment_1.24.0 withr_3.0.2                </span></span>
-<span><span class="co">#&gt; [125] GenomicAlignments_1.30.0    Rsamtools_2.10.0           </span></span>
-<span><span class="co">#&gt; [127] S4Vectors_0.32.4            GenomeInfoDbData_1.2.7     </span></span>
-<span><span class="co">#&gt; [129] mgcv_1.8-39                 parallel_4.1.2             </span></span>
-<span><span class="co">#&gt; [131] hms_1.1.3                   grid_4.1.2                 </span></span>
-<span><span class="co">#&gt; [133] tidyr_1.3.1                 rmarkdown_2.29             </span></span>
-<span><span class="co">#&gt; [135] MatrixGenerics_1.6.0        Biobase_2.54.0             </span></span>
-<span><span class="co">#&gt; [137] shiny_1.10.0                interp_1.1-6</span></span></code></pre></div>
+<span><span class="co">#&gt;   [1] colorspace_2.1-1            deldir_2.0-4               </span></span>
+<span><span class="co">#&gt;   [3] hwriter_1.3.2.1             XVector_0.34.0             </span></span>
+<span><span class="co">#&gt;   [5] GenomicRanges_1.46.1        fs_1.6.5                   </span></span>
+<span><span class="co">#&gt;   [7] rstudioapi_0.17.1           listenv_0.9.1              </span></span>
+<span><span class="co">#&gt;   [9] furrr_0.3.1                 farver_2.1.2               </span></span>
+<span><span class="co">#&gt;  [11] bit64_4.6.0-1               xml2_1.3.7                 </span></span>
+<span><span class="co">#&gt;  [13] codetools_0.2-18            splines_4.1.2              </span></span>
+<span><span class="co">#&gt;  [15] cachem_1.1.0                knitr_1.50                 </span></span>
+<span><span class="co">#&gt;  [17] dada2_1.30.0                ade4_1.7-23                </span></span>
+<span><span class="co">#&gt;  [19] jsonlite_1.9.1              Rsamtools_2.10.0           </span></span>
+<span><span class="co">#&gt;  [21] cluster_2.1.2               png_0.1-8                  </span></span>
+<span><span class="co">#&gt;  [23] readr_2.1.5                 compiler_4.1.2             </span></span>
+<span><span class="co">#&gt;  [25] lazyeval_0.2.2              Matrix_1.4-0               </span></span>
+<span><span class="co">#&gt;  [27] fastmap_1.2.0               cli_3.6.5                  </span></span>
+<span><span class="co">#&gt;  [29] htmltools_0.5.8.1           tools_4.1.2                </span></span>
+<span><span class="co">#&gt;  [31] igraph_2.1.4                gtable_0.3.6               </span></span>
+<span><span class="co">#&gt;  [33] glue_1.8.0                  GenomeInfoDbData_1.2.7     </span></span>
+<span><span class="co">#&gt;  [35] reshape2_1.4.4              dplyr_1.1.4                </span></span>
+<span><span class="co">#&gt;  [37] ShortRead_1.60.0            Rcpp_1.0.14                </span></span>
+<span><span class="co">#&gt;  [39] Biobase_2.54.0              jquerylib_0.1.4            </span></span>
+<span><span class="co">#&gt;  [41] pkgdown_2.1.1               vctrs_0.6.5                </span></span>
+<span><span class="co">#&gt;  [43] Biostrings_2.62.0           rhdf5filters_1.6.0         </span></span>
+<span><span class="co">#&gt;  [45] multtest_2.50.0             ape_5.8-1                  </span></span>
+<span><span class="co">#&gt;  [47] svglite_2.1.3               nlme_3.1-155               </span></span>
+<span><span class="co">#&gt;  [49] iterators_1.0.14            xfun_0.51                  </span></span>
+<span><span class="co">#&gt;  [51] stringr_1.5.1               globals_0.17.0             </span></span>
+<span><span class="co">#&gt;  [53] lifecycle_1.0.4             zlibbioc_1.40.0            </span></span>
+<span><span class="co">#&gt;  [55] MASS_7.3-55                 scales_1.4.0               </span></span>
+<span><span class="co">#&gt;  [57] vroom_1.6.5                 ragg_1.2.1                 </span></span>
+<span><span class="co">#&gt;  [59] hms_1.1.3                   MatrixGenerics_1.6.0       </span></span>
+<span><span class="co">#&gt;  [61] parallel_4.1.2              SummarizedExperiment_1.24.0</span></span>
+<span><span class="co">#&gt;  [63] biomformat_1.22.0           rhdf5_2.38.1               </span></span>
+<span><span class="co">#&gt;  [65] RColorBrewer_1.1-3          yaml_2.3.10                </span></span>
+<span><span class="co">#&gt;  [67] ggplot2_3.5.2               sass_0.4.9                 </span></span>
+<span><span class="co">#&gt;  [69] latticeExtra_0.6-30         stringi_1.8.7              </span></span>
+<span><span class="co">#&gt;  [71] S4Vectors_0.32.4            desc_1.4.3                 </span></span>
+<span><span class="co">#&gt;  [73] foreach_1.5.2               permute_0.9-7              </span></span>
+<span><span class="co">#&gt;  [75] BiocGenerics_0.40.0         BiocParallel_1.28.3        </span></span>
+<span><span class="co">#&gt;  [77] GenomeInfoDb_1.30.1         rlang_1.1.6                </span></span>
+<span><span class="co">#&gt;  [79] pkgconfig_2.0.3             systemfonts_1.0.4          </span></span>
+<span><span class="co">#&gt;  [81] bitops_1.0-7                matrixStats_1.5.0          </span></span>
+<span><span class="co">#&gt;  [83] evaluate_1.0.3              lattice_0.20-45            </span></span>
+<span><span class="co">#&gt;  [85] Rhdf5lib_1.16.0             labeling_0.4.3             </span></span>
+<span><span class="co">#&gt;  [87] GenomicAlignments_1.30.0    htmlwidgets_1.6.4          </span></span>
+<span><span class="co">#&gt;  [89] bit_4.6.0                   tidyselect_1.2.1           </span></span>
+<span><span class="co">#&gt;  [91] parallelly_1.43.0           plyr_1.8.9                 </span></span>
+<span><span class="co">#&gt;  [93] magrittr_2.0.3              R6_2.6.1                   </span></span>
+<span><span class="co">#&gt;  [95] IRanges_2.28.0              generics_0.1.3             </span></span>
+<span><span class="co">#&gt;  [97] DelayedArray_0.20.0         DBI_1.2.3                  </span></span>
+<span><span class="co">#&gt;  [99] pillar_1.10.2               withr_3.0.2                </span></span>
+<span><span class="co">#&gt; [101] mgcv_1.8-39                 survival_3.2-13            </span></span>
+<span><span class="co">#&gt; [103] tibble_3.2.1                crayon_1.5.3               </span></span>
+<span><span class="co">#&gt; [105] interp_1.1-6                tzdb_0.5.0                 </span></span>
+<span><span class="co">#&gt; [107] rmarkdown_2.29              jpeg_0.1-10                </span></span>
+<span><span class="co">#&gt; [109] grid_4.1.2                  data.table_1.17.0          </span></span>
+<span><span class="co">#&gt; [111] vegan_2.6-10                digest_0.6.37              </span></span>
+<span><span class="co">#&gt; [113] tidyr_1.3.1                 textshaping_0.3.6          </span></span>
+<span><span class="co">#&gt; [115] RcppParallel_5.1.10         stats4_4.1.2               </span></span>
+<span><span class="co">#&gt; [117] viridisLite_0.4.2           bslib_0.9.0</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

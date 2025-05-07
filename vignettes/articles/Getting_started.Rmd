@@ -165,30 +165,24 @@ cutadapt --version
 
 Second, make sure the following R packages are installed:
 
+* **`demulticoder`** (Available through CRAN)  
 * **`DADA2`** (Latest version is 3.20)  
   * To install, follow these instructions: https://www.bioconductor.org/packages/release/bioc/html/dada2.html  
 * **`phyloseq`**  
   * To install: https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html  
 * **`metacoder`** (Available through CRAN)  
 
-To install the development version of package (while submission to CRAN is in progress):  
 
-### Loading the Package  
+### Loading packages
 
-For now, the package will be loaded by retrieving it from GitHub. Submission to CRAN is in progress.  
 ```{r installation_1, eval=FALSE}
-#Here we install demulticoder (instructions will be updated once available through CRAN)
-devtools::install_github("grunwaldlab/demulticoder")
 library("demulticoder")
-#Let's make sure other packages are loaded:
-library("devtools")
 library("dada2")
 library("phyloseq")
 library("metacoder")
 ```
 
 ```{r installation_2, message=FALSE, warning=FALSE, include=FALSE}
-devtools::install_github("grunwaldlab/demulticoder")
 library("demulticoder")
 library("metacoder")
 library("dplyr")
