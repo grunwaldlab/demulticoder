@@ -62,12 +62,23 @@ Second, make sure the following R packages are installed:
   * To install: https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html  
 * **`metacoder`** (Available through CRAN)  
 
-Let's make sure packages are loaded:  
+To install **`demulticoder`** from CRAN:  
 ```{r, eval=FALSE, echo=TRUE}
-library("demulticoder")
+install.packages("demulticoder")
+```
+
+To instead install the development version for the newest features or bug fixes:  
+```{r, eval=FALSE, echo=TRUE}
+install.packages("devtools")
+devtools::install_github("grunwaldlab/demulticoder")
+```
+
+Let's make sure the other packages are also loaded (following installation):   
+```{r, eval=FALSE, echo=TRUE}
 library("dada2")
 library("phyloseq")
 library("metacoder")
+library("demulticoder")
 ```
 
 ### Quick start  

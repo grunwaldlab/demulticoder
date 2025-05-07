@@ -114,17 +114,26 @@ Let’s locate where the cutadapt executable is. You must do this from a <strong
 <li>
 <strong><code>phyloseq</code></strong>
 <ul>
-<li>To install: <a href="https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html" class="external-link uri">https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html</a>
+<li>To install: <a href="https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html" class="external-link uri">https://www.bioconductor.org/packages/release/bioc/html/phyloseq.html</a><br>
 </li>
 </ul>
 </li>
+<li>
+<strong><code>metacoder</code></strong> (Available through CRAN)</li>
 </ul>
-<p>Let’s make sure packages are loaded:</p>
+<p>To install <strong><code>demulticoder</code></strong> from CRAN:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/demulticoder/" class="external-link">"demulticoder"</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://benjjneb.github.io/dada2/" class="external-link">"dada2"</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"demulticoder"</span><span class="op">)</span></span></code></pre></div>
+<p>To instead install the development version for the newest features or bug fixes:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"grunwaldlab/demulticoder"</span><span class="op">)</span></span></code></pre></div>
+<p>Let’s now make sure all packages are loaded (following installation):</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://benjjneb.github.io/dada2/" class="external-link">"dada2"</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://dx.plos.org/10.1371/journal.pone.0061217" class="external-link">"phyloseq"</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/metacoder_documentation/" class="external-link">"metacoder"</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/metacoder_documentation/" class="external-link">"metacoder"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://grunwaldlab.github.io/demulticoder/" class="external-link">"demulticoder"</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
@@ -166,30 +175,30 @@ Let’s locate where the cutadapt executable is. You must do this from a <strong
 <p>See <a href="https://grunwaldlab.github.io/demulticoder/articles/Documentation.html" class="external-link"><strong>Documentation</strong></a> for how to format databases and input files.</p>
 <p>For more details on each step, check out the <a href="https://grunwaldlab.github.io/demulticoder/articles/Getting_started.html" class="external-link"><strong>Getting Started</strong></a> tab on the package website</p>
 <p><strong>2. Prepare reads</strong></p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">output</span><span class="op">&lt;-</span><span class="fu"><a href="reference/prepare_reads.html">prepare_reads</a></span><span class="op">(</span></span>
 <span>  data_directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"demulticoder"</span><span class="op">)</span>, <span class="co"># This allows us to use the test directory located within the package</span></span>
 <span>  output_directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="co"># OR change to you preferred location on your local computer (Example: "~/demulticoder_test")</span></span>
 <span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><strong>3. Cut and trim reads</strong> User <strong>must install cutadapt</strong> on their local machine and append the path to the executable.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/cut_trim.html">cut_trim</a></span><span class="op">(</span></span>
 <span>  <span class="va">output</span>,</span>
 <span>  cutadapt_path<span class="op">=</span><span class="st">"/usr/bin/cutadapt"</span>, <span class="co"># Change to the location on your computer. (Example: "/usr/bin/cutadapt")</span></span>
 <span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span></code></pre></div>
 <p><strong>4. Make ASV abundance matrix</strong></p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/make_asv_abund_matrix.html">make_asv_abund_matrix</a></span><span class="op">(</span></span>
 <span>  <span class="va">output</span>,</span>
 <span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><strong>5. Assign taxonomy</strong></p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/assign_tax.html">assign_tax</a></span><span class="op">(</span></span>
 <span>  <span class="va">output</span>,</span>
 <span>  <span class="va">asv_abund_matrix</span>,</span>
 <span>  overwrite_existing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><strong>6. Convert ASV matrix to taxmap and phyloseq objects</strong></p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objs</span><span class="op">&lt;-</span><span class="fu"><a href="reference/convert_asv_matrix_to_objs.html">convert_asv_matrix_to_objs</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
