@@ -180,3 +180,8 @@ Chang JH, Grünwald NJ. Demulticoder: An R Package for the Simultaneous
 Analysis of Multiplexed Metabarcodes. Phytopathology. 2025.
 [10.1094/PHYTO-02-25-0043-FI.](https://apsjournals.apsnet.org/doi/10.1094/PHYTO-02-25-0043-FI)
 Epub ahead of print.
+
+### Acknowledgements
+
+This project was funded by the 2020 CDFA Specialty Block Grant Program
+Project 45.

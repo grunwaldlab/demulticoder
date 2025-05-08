@@ -1,5 +1,5 @@
 
-<img src="man/figures/demulticoder_logo_iteration1.png" align="right" height="95" alt="" />
+<img src="man/figures/demulticoder_logo_iteration1.png" align="right" height="85" alt="" />
 
 ## Demulticoder: An R package for the simultaneous analysis of multiplexed metabarcodes
 
@@ -184,3 +184,8 @@ Chang JH, Grünwald NJ. Demulticoder: An R Package for the Simultaneous
 Analysis of Multiplexed Metabarcodes. Phytopathology. 2025.
 [10.1094/PHYTO-02-25-0043-FI.](https://apsjournals.apsnet.org/doi/10.1094/PHYTO-02-25-0043-FI)
 Epub ahead of print.
+
+### Acknowledgements
+
+This project was funded by the 2020 CDFA Specialty Block Grant Program
+Project 45.
