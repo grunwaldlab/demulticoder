@@ -101,7 +101,7 @@ Already loaded in the test data set directory are the following files:
   * Optional **`Cutadapt`** and **`DADA2`** parameters
 * **Taxonomy databases**  
   * UNITE fungal database (abridged version)
-  * completed 
+  * oomyceteDB (abridged version)
   
 See [**Documentation**](https://grunwaldlab.github.io/demulticoder/articles/Documentation.html) for how to format databases and input files. 
 

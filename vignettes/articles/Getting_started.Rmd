@@ -125,9 +125,8 @@ For more info on parameter specifics, see [Documentation](https://grunwaldlab.gi
 * For now, the package is compatible with the following databases:  
   * oomycetedb from: [https://grunwaldlab.github.io/OomyceteDB/](https://grunwaldlab.github.io/OomyceteDB/)  
   * SILVA 16S database with species assignments: [https://www.arb-silva.de/](https://www.arb-silva.de/)
-  * UNITE fungal database from [https://unite.ut.ee/repository.php](https://unite.ut.ee/repository.php)
-  * A user can select up to two other databases, but will first need to reformat headers exactly like the SILVA database headers.  
-    * See more in the 'Documentation' tab.  
+  * UNITE database from [https://unite.ut.ee/repository.php](https://unite.ut.ee/repository.php)
+  * A user can select up to two other databases, but will first need to reformat headers exactly like the SILVA database headers.  See [Documentation](https://grunwaldlab.github.io/demulticoder/articles/Documentation.html) 
 
 Databases are downloaded from these sources and then placed in the from the user-specified data folder where raw data files and csv files are located.
 
@@ -246,13 +245,15 @@ We can also load the matrices into our R environment and view then from R Studio
 
 We do that here with the *rps10* matrix 
 ```{r Show_rps10_matrix, warning=FALSE, message=FALSE}
-rps10_matrix<-read.csv("~/demulticoder_test/final_asv_abundance_matrix_rps10.csv", header=TRUE)
+rps10_matrix_file <- file.path(output$directory_paths$output_directory, "final_asv_abundance_matrix_rps10.csv")
+rps10_matrix<-read.csv(rps10_matrix_file, header=TRUE)
 head(rps10_matrix)
 ```
 
 We can also inspect the first rows of the *ITS1* matrix
 ```{r Show_its_matrix, warning=FALSE, message=FALSE}
-its_matrix<-read.csv("~/demulticoder_test/final_asv_abundance_matrix_its.csv", header=TRUE)
+its_matrix_file <- file.path(output$directory_paths$output_directory, "final_asv_abundance_matrix_its.csv")
+its_matrix<-read.csv(its_matrix_file, header=TRUE)
 head(its_matrix)
 ```
 

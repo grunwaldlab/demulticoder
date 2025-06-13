@@ -161,6 +161,6 @@ For now, the package is compatible with the following databases:
 * **`SILVA 16S database`** **with** species assignments: [https://www.arb-silva.de/](https://www.arb-silva.de/)
   * An easily accessible download is found here: [https://zenodo.org/records/14169026](https://zenodo.org/records/14169026)
 
-* **`UNITE fungal database`** from [https://zenodo.org/records/14169026](https://zenodo.org/records/14169026)
+* **`UNITE database`** from [https://unite.ut.ee/repository.php](https://unite.ut.ee/repository.php)
 
 * Up to two other reference databases. The user will need to reformat headers exactly as outlined [here](https://benjjneb.github.io/dada2/training.html). The user can then specify the path to the database in the input file. The database should be in FASTA format.

@@ -482,13 +482,10 @@ Inf
 </li>
 <li>SILVA 16S database with species assignments: <a href="https://www.arb-silva.de/" class="external-link">https://www.arb-silva.de/</a>
 </li>
-<li>UNITE fungal database from <a href="https://unite.ut.ee/repository.php" class="external-link">https://unite.ut.ee/repository.php</a>
+<li>UNITE database from <a href="https://unite.ut.ee/repository.php" class="external-link">https://unite.ut.ee/repository.php</a>
 </li>
 <li>A user can select up to two other databases, but will first need to
-reformat headers exactly like the SILVA database headers.
-<ul>
-<li>See more in the ‘Documentation’ tab.</li>
-</ul>
+reformat headers exactly like the SILVA database headers. See <a href="https://grunwaldlab.github.io/demulticoder/articles/Documentation.html" class="external-link">Documentation</a>
 </li>
 </ul>
 </li>
@@ -611,7 +608,7 @@ reorganized in preparation for running
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
-<span><span class="co">#&gt; Creating output directory: /tmp/RtmpUTBhYG/demulticoder_run/prefiltered_sequences</span></span></code></pre></div>
+<span><span class="co">#&gt; Creating output directory: /tmp/RtmpyNk8MG/demulticoder_run/prefiltered_sequences</span></span></code></pre></div>
 <p><img src="prepare_for_analysis-1.png" width="70%"></p>
 </div>
 <div class="section level3">
@@ -652,10 +649,10 @@ ensure that you have installed it</strong></p>
 <span><span class="co">#&gt; Sample 2 - 182 reads in 170 unique sequences.</span></span></code></pre>
 <p><img src="ASV_inference-3.png" width="70%"><img src="ASV_inference-4.png" width="70%"></p>
 <pre><code><span><span class="co">#&gt; $its</span></span>
-<span><span class="co">#&gt; [1] "/tmp/RtmpUTBhYG/demulticoder_run/asvabund_matrixDADA2_its.RData"</span></span>
+<span><span class="co">#&gt; [1] "/tmp/RtmpyNk8MG/demulticoder_run/asvabund_matrixDADA2_its.RData"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $rps10</span></span>
-<span><span class="co">#&gt; [1] "/tmp/RtmpUTBhYG/demulticoder_run/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
+<span><span class="co">#&gt; [1] "/tmp/RtmpyNk8MG/demulticoder_run/asvabund_matrixDADA2_rps10.RData"</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="taxonomic-assignment-step">Taxonomic assignment step<a class="anchor" aria-label="anchor" href="#taxonomic-assignment-step"></a>
@@ -702,7 +699,8 @@ associated bootstrap supports.</li>
 from R Studio.</p>
 <p>We do that here with the <em>rps10</em> matrix</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">rps10_matrix</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"~/demulticoder_test/final_asv_abundance_matrix_rps10.csv"</span>, header<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">rps10_matrix_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">output</span><span class="op">$</span><span class="va">directory_paths</span><span class="op">$</span><span class="va">output_directory</span>, <span class="st">"final_asv_abundance_matrix_rps10.csv"</span><span class="op">)</span></span>
+<span><span class="va">rps10_matrix</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">rps10_matrix_file</span>, header<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">rps10_matrix</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   asv_id</span></span>
 <span><span class="co">#&gt; 1  asv_1</span></span>
@@ -712,25 +710,26 @@ from R Studio.</p>
 <span><span class="co">#&gt; 5  asv_5</span></span>
 <span><span class="co">#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                    sequence</span></span>
 <span><span class="co">#&gt; 1 GAAAATCTTTGTGTCGGTGGTTCAAATCCACCTCCAGACAAATTAATTTTTTAAAACTTATGTTTATATTAAGAATTACATTTAAATCTATTAAAAAAATAAATAACATTAAACCTATTTTATTAAATCAAAAAAATTTAAATAAATTTAATAATATTAAAATAAATGGAATATTTAAAACAAAAAATAAAAATAAAATTTTTACAGTATTAAAATCACCACATGTTAATAAAAAAGCACGTGAACATTTTATTTATAAAAATTTTACACAAAAAGTTGAAATTAAATGTTTAAATATTTTTCAATTATTAAATTTTTTAATTTTGATTAAAAAAATCTTAACAGAAAATTTTATTATTACTACAAAAATAATTAAACAATAATTAATATATGCTTATAGCTTAATGGATAAAGCATTAGATTGCGGATCTACAAAATGAA</span></span>
-<span><span class="co">#&gt; 2    GAAAATCTTTGTGTCGGTGGTTCAAGTCCGCCTCCAAACATCTTATAAAAATGTATGTATATTTTACGAATTAGTTTTAAATCAGTAGAAAAAATAAATGAATTAAAAAAAAATATCTCAAAAATAAAAAAAATATATAATTTTAAAAATTTAAAAGTAAATGGTATTTTTAGAACAAAAAATAAAAATAAAATTTTTACATTATTAAAATCACCCCATGTTAATAAAAAATCACGTGAACATTTTATATATAAAAATTATATTCAAAAAATTGATTTAAATTTTTCAAATTTTTTTCAATTATTAAATTTTTTAGTAATTTTAAAAAAAATATTATCTAAAGATTTTTTAATCAATATCAAAATTATTAAAAAAAATAAAAAAAATATGCTTATAGCTTAATGGATAAAGCGTTAGATTGCGGATCTATAAAATGAA</span></span>
-<span><span class="co">#&gt; 3      GAAAATCTTTGTGTCGGTGGTTCAAGTCCACCTCCAGACAAAAATAATAACTATGTATATTTTAAGAATAACTTTTAAATCAATACAAAAAATAAATAATATTAAAAAAAATTTATTAAAATTAAAAAAAATAAATAAATTTAAAAATATTCAAATAAAAGGAATATTTAAAATAAAAGATAAAAATAAAATTTTTACTTTATTAAAATCACCTCACGTAAATAAAAAATCTCGTGAACATTTTATTTATAAAAATTATACTCAAAAAATAGATGTAAAATTTTCAAATATTATTGAATTATTTAATTTTATAATACTTATTAAAAAAGTTTTAACTAAAAATTTTATAATAAATTTTAAAATTATAAAATATAATAAAAAAAAAATGCTTATAGCTTAATGGATAAAGCGTTAGATTGCGGATCTATAAAATGAA</span></span>
-<span><span class="co">#&gt; 4  GAAAATCTTTGTGTCGGTGGTTCAAATCCGCCTCCAAACAAAAATATAAATTATTTTATATGTATATTTTAAGAATAAGTTTTAAATCTGTATCAAAAATAGATAAAATTAAAAAAGAATTATCAAGATTAAAAAAAATATATAATTTTAAAAATATAACAATTAATGGTATTTTTAAAACAAAAAATAAAGATAAAATTTTTACATTATTAAAATCACCTCATGTTAATAAAAAATCTCGCGAACATTTTATTTATAAAAATTATGTACAAAAAATAGATTTAAATTTTATTAATATTTTTCAATTAATAAATTTTTTAATAATTTTAAAAAAAAAATTATCAAAAAATGTATTAATAAATGTAAAAATAATTAAAAAATAAAAAAATATGCTTATAGCTTAATGGATAAAGCGTTAGATTGCGGATCTATAAAATGAA</span></span>
-<span><span class="co">#&gt; 5    GAAAATCTTTGTGTCGGTGGTTCAAGTCCGCCTCCAAACATCTTATAAAAATGTATGTATATTTTACGAATTAGTTTTAAATCAGTAGAAAAAATAAATGAATTAAAAAAAAATATCTCAAAAATAAAAAAAATATATAATTTTAAAAATTTAAAAGTAAAATGGTATTTTTAGAACAAAAAATAAAAATAAAATTTTTACATTATTAAAATCACCCCATGTTAATAAAAAATCACGTGAACATTTTATATATAAAAATTATATTCAAAAAATTGATTTAAATTTTTCAAATTTTTTTCAATTATTAAATTTTTTAGTAATTTTAAAAAAAACATTATCTAAAGATTTTTTAATCAATATTAAAATTATTAAAAAAAATAAAAAAATATGCTTATAGCTTAATGGATAAAGCGTTAGATTGCGGATCTATAAAATGAA</span></span>
+<span><span class="co">#&gt; 2      GAAAATCTTTGTGTCGGTGGTTCAAGTCCACCTCCAGACAAAAATAATAACTATGTATATTTTAAGAATAACTTTTAAATCAATACAAAAAATAAATAATATTAAAAAAAATTTATTAAAATTAAAAAAAATAAATAAATTTAAAAATATTCAAATAAAAGGAATATTTAAAATAAAAGATAAAAATAAAATTTTTACTTTATTAAAATCACCTCACGTAAATAAAAAATCTCGTGAACATTTTATTTATAAAAATTATACTCAAAAAATAGATGTAAAATTTTCAAATATTATTGAATTATTTAATTTTATAATACTTATTAAAAAAGTTTTAACTAAAAATTTTATAATAAATTTTAAAATTATAAAATATAATAAAAAAAAAATGCTTATAGCTTAATGGATAAAGCGTTAGATTGCGGATCTATAAAATGAA</span></span>
+<span><span class="co">#&gt; 3  GAAAATCTTTGTGTCGGTGGTTCAAATCCGCCTCCAAACAAAAATATAAATTATTTTATATGTATATTTTAAGAATAAGTTTTAAATCTGTATCAAAAATAGATAAAATTAAAAAAGAATTATCAAGATTAAAAAAAATATATAATTTTAAAAATATAACAATTAATGGTATTTTTAAAACAAAAAATAAAGATAAAATTTTTACATTATTAAAATCACCTCATGTTAATAAAAAATCTCGCGAACATTTTATTTATAAAAATTATGTACAAAAAATAGATTTAAATTTTATTAATATTTTTCAATTAATAAATTTTTTAATAATTTTAAAAAAAAAATTATCAAAAAATGTATTAATAAATGTAAAAATAATTAAAAAATAAAAAAATATGCTTATAGCTTAATGGATAAAGCGTTAGATTGCGGATCTATAAAATGAA</span></span>
+<span><span class="co">#&gt; 4    GAAAATCTTTGTGTCGGTGGTTCAAGTCCGCCTCCAAACATCTTATAAAAATGTATGTATATTTTACGAATTAGTTTTAAATCAGTAGAAAAAATAAATGAATTAAAAAAAAATATCTCAAAAATAAAAAAAATATATAATTTTAAAAATTTAAAAGTAAATGGTATTTTTAGAACAAAAAATAAAAATAAAATTTTTACATTATTAAAATCACCCCATGTTAATAAAAAATCACGTGAACATTTTATATATAAAAATTATATTCAAAAAATTGATTTAAATTTTTCAAATTTTTTTCAATTATTAAATTTTTTAGTAATTTTAAAAAAAATATTATCTAAAGATTTTTTAATCAATATCAAAATTATTAAAAAAAATAAAAAAAATATGCTTATAGCTTAATGGATAAAGCGTTAGATTGCGGATCTATAAAATGAA</span></span>
+<span><span class="co">#&gt; 5     GAAAATCTTTGTGTCGGTGGTTCAAGTCCGCCTCCAAACATCTTATAAAAATGTATGTATATTTTACGAATTAGTTTTAAATCAGTAGAAAAAATAAATGAATTAAAAAAAAATATCTCAAAAATAAAAAAAATATATAATTTTAAAAATTTAAAAGTAAATGGTATTTTTAGAACAAAAAATAAAAATAAAATTTTTACATTATTAAAATCACCCCATGTTAATAAAAAATCACGTGAACATTTTATATATAAAAATTATATTCAAAAAATTGATTTAAATTTTTCAAATTTTTTTCAATTATTAAATTTTTTAGTAATTTTAAAAAAAACATTATCTAAAGATTTTTTAATCAATATTAAAATTATTAAAAAAAATAAAAAAATATGCTTATAGCTTAATGGATAAAGCGTTAGATTGCGGATCTATAAAATGAA</span></span>
 <span><span class="co">#&gt;                                                                                                                                                                                                                   dada2_tax</span></span>
 <span><span class="co">#&gt; 1 Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Peronosporales--26--Order;Peronosporaceae--26--Family;Phytophthora--23--Genus;Phytophthora_sp.kununurra--13--Species;oomycetedb_650--13--Reference</span></span>
-<span><span class="co">#&gt; 2                    Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Pythium--100--Genus;Pythium_dissotocum--49--Species;oomycetedb_749--24--Reference</span></span>
-<span><span class="co">#&gt; 3 Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Globisporangium--100--Genus;Globisporangium_cylindrosporum--22--Species;oomycetedb_41--22--Reference</span></span>
-<span><span class="co">#&gt; 4                   Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--94--Order;Pythiaceae--94--Family;Pythium--89--Genus;Pythium_aphanidermatum--19--Species;oomycetedb_727--19--Reference</span></span>
-<span><span class="co">#&gt; 5                    Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Pythium--100--Genus;Pythium_oopapillum--67--Species;oomycetedb_771--67--Reference</span></span>
+<span><span class="co">#&gt; 2 Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Globisporangium--100--Genus;Globisporangium_cylindrosporum--28--Species;oomycetedb_41--28--Reference</span></span>
+<span><span class="co">#&gt; 3                   Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--93--Order;Pythiaceae--93--Family;Pythium--86--Genus;Pythium_aphanidermatum--22--Species;oomycetedb_727--22--Reference</span></span>
+<span><span class="co">#&gt; 4                    Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Pythium--100--Genus;Pythium_dissotocum--58--Species;oomycetedb_750--28--Reference</span></span>
+<span><span class="co">#&gt; 5                    Stramenopila--100--Kingdom;Oomycota--100--Phylum;Oomycetes--100--Class;Pythiales--100--Order;Pythiaceae--100--Family;Pythium--100--Genus;Pythium_oopapillum--64--Species;oomycetedb_771--64--Reference</span></span>
 <span><span class="co">#&gt;   S1_rps10 S2_rps10</span></span>
-<span><span class="co">#&gt; 1      842       17</span></span>
-<span><span class="co">#&gt; 2      578      220</span></span>
-<span><span class="co">#&gt; 3        0      587</span></span>
-<span><span class="co">#&gt; 4        0      516</span></span>
-<span><span class="co">#&gt; 5        0      163</span></span></code></pre></div>
+<span><span class="co">#&gt; 1       87        0</span></span>
+<span><span class="co">#&gt; 2        0       71</span></span>
+<span><span class="co">#&gt; 3        0       63</span></span>
+<span><span class="co">#&gt; 4       58        0</span></span>
+<span><span class="co">#&gt; 5        0       47</span></span></code></pre></div>
 <p>We can also inspect the first rows of the <em>ITS1</em> matrix</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">its_matrix</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"~/demulticoder_test/final_asv_abundance_matrix_its.csv"</span>, header<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">its_matrix_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">output</span><span class="op">$</span><span class="va">directory_paths</span><span class="op">$</span><span class="va">output_directory</span>, <span class="st">"final_asv_abundance_matrix_its.csv"</span><span class="op">)</span></span>
+<span><span class="va">its_matrix</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">its_matrix_file</span>, header<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">its_matrix</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   asv_id</span></span>
 <span><span class="co">#&gt; 1  asv_1</span></span>
@@ -740,26 +739,26 @@ from R Studio.</p>
 <span><span class="co">#&gt; 5  asv_5</span></span>
 <span><span class="co">#&gt; 6  asv_6</span></span>
 <span><span class="co">#&gt;                                                                                                                                                                                                                                                                                                                                 sequence</span></span>
-<span><span class="co">#&gt; 1                                              AAAAAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAGTGAATCTTCAAAGTCGGCTCGTCAGATTGTGCTGGTGGAGACACATGTGCACGTCTACGAGTCGCAAACCCACACACCTGTGCATCTATGACTCTGAGTGCCGCTTTGCATGGCCCCTTGATTTGGGCCTGGCGCTCGAGTACTTTCACACACTCTCGAATGTAATGGAATGTCTTCTTGTGCATAACGTACAAACAGAAACAACTTTCAACAACGGATCTCTTGGCTCTC</span></span>
-<span><span class="co">#&gt; 2                                              AAAAAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAGTGAATCTTCAAAGTCGGCTCGTCGGATTGTGCTGGTGGAGACACATGTGCACGTCTACGAGTCGCAAACCCACACACCTGTGCATCTATGACTCTGAGTGCCGCTTTGCATGGCCCCTTGATTTGGGCCTGGCGCTCGAGTACTTTCACACACTCTCGAATGTAATGGAATGTCTTGTTGTGCATAACGTACAAACAGAAACAACTTTCAACAACGGATCTCTTGGCTCTC</span></span>
+<span><span class="co">#&gt; 1                                              AAAAAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAGTGAATCTTCAAAGTCGGCTCGTCGGATTGTGCTGGTGGAGACACATGTGCACGTCTACGAGTCGCAAACCCACACACCTGTGCATCTATGACTCTGAGTGCCGCTTTGCATGGCCCCTTGATTTGGGCCTGGCGCTCGAGTACTTTCACACACTCTCGAATGTAATGGAATGTCTTGTTGTGCATAACGTACAAACAGAAACAACTTTCAACAACGGATCTCTTGGCTCTC</span></span>
+<span><span class="co">#&gt; 2                                              AAAAAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAGTGAATCTTCAAAGTCGGCTCGTCAGATTGTGCTGGTGGAGACACATGTGCACGTCTACGAGTCGCAAACCCACACACCTGTGCATCTATGACTCTGAGTGCCGCTTTGCATGGCCCCTTGATTTGGGCCTGGCGCTCGAGTACTTTCACACACTCTCGAATGTAATGGAATGTCTTCTTGTGCATAACGTACAAACAGAAACAACTTTCAACAACGGATCTCTTGGCTCTC</span></span>
 <span><span class="co">#&gt; 3                                              AAAAAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAGTGAATCTTCAAAGTCGGCTCGTCGGATTGTGCTGGTGGAGACACATGTGCACGTCTACGAGTCGCAAACCCACACACCTGTGCATCTATGACTCTGAGTGCCGCTTTGCATGGCCCCTTGATTTGGGCCTGGCGCTCGAGTACTTTCACACACTCTCGAATGTAATGGAATGACTTGTTGTGCATAACGTACAAACAGAAACAACTTTCAACAACGGATCTCTTGGCTCTC</span></span>
 <span><span class="co">#&gt; 4 AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAACGAGTTCAACTGGGGTCTGTGGGGATTCGATGCTGGCCTCCGGGCATGTGCTCGTCCCCCGGACCTCACATCCACTCACAACCCCTGTGCATCATGAGAGGTGTGGTCCTCCGTCATGGGAGCAGCTCCCCTCCGGGCGTGTTTGTACACCCCGGGCGGTCGAGCCGGGACTGCACTTCGACGCCTTTACACAAACCTTTGAATCAGTGATGTAGAATGTCATGGCCAGCGATGGTCGAACTTTAAATACAACTTTCAACAACGGATCTCTTGGCTCTC</span></span>
 <span><span class="co">#&gt; 5                                              AAAAAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAGTGAATCTTCAAAGTCGGCTCGTCGGATTGTGCTGGTGGAGACACATGTGCACATCTACGAGTCGCAAACCCACACACCTGTGCATCTATGACTCTGAGTGCCGCTTTGCATGGCCCCTTGATTTGGGCCTGGCGCTCGAGTACTTTCACACACTCTCGAATGTAATGGAATGTCTTGTTGTGCATAACGTACAAACAGAAACAACTTTCAACAACGGATCTCTTGGCTCTC</span></span>
 <span><span class="co">#&gt; 6                                                                                                    AAGTCGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTAAAAATGAAGCCGGGAAACCGGTCCTTCTAACCCTTGATTATCTTAATTTGTTGCTTTGGTGGGCCGCGCAAGCACCGGCTTCGGCTGGATCGTGCCCGCCAGAGGACCACAACTCTGTATCAAATGTCGTCTGAGTACTATATAATAGTTAAAACTTTCAACAACGGATCTCTTGGTTCTG</span></span>
-<span><span class="co">#&gt;                                                                                                                                                                        dada2_tax</span></span>
-<span><span class="co">#&gt; 1 Fungi--100--Kingdom;Basidiomycota--100--Phylum;Agaricomycetes--100--Class;Sebacinales--100--Order;unidentified--98--Family;unidentified--98--Genus;Sebacinales_sp--98--Species</span></span>
-<span><span class="co">#&gt; 2 Fungi--100--Kingdom;Basidiomycota--100--Phylum;Agaricomycetes--100--Class;Sebacinales--100--Order;unidentified--97--Family;unidentified--97--Genus;Sebacinales_sp--97--Species</span></span>
-<span><span class="co">#&gt; 3 Fungi--100--Kingdom;Basidiomycota--100--Phylum;Agaricomycetes--100--Class;Sebacinales--100--Order;unidentified--99--Family;unidentified--99--Genus;Sebacinales_sp--99--Species</span></span>
-<span><span class="co">#&gt; 4 Fungi--100--Kingdom;Basidiomycota--62--Phylum;Agaricomycetes--59--Class;Hymenochaetales--21--Order;Repetobasidiaceae--8--Family;Rickenella--8--Genus;Rickenella_sp--8--Species</span></span>
-<span><span class="co">#&gt; 5 Fungi--100--Kingdom;Basidiomycota--100--Phylum;Agaricomycetes--100--Class;Sebacinales--100--Order;unidentified--96--Family;unidentified--96--Genus;Sebacinales_sp--96--Species</span></span>
-<span><span class="co">#&gt; 6         Fungi--100--Kingdom;Ascomycota--100--Phylum;Leotiomycetes--98--Class;Helotiales--98--Order;unidentified--86--Family;unidentified--86--Genus;Helotiales_sp--86--Species</span></span>
+<span><span class="co">#&gt;                                                                                                                                                                                    dada2_tax</span></span>
+<span><span class="co">#&gt; 1             Fungi--100--Kingdom;Basidiomycota--100--Phylum;Agaricomycetes--100--Class;Sebacinales--100--Order;unidentified--92--Family;unidentified--92--Genus;Sebacinales_sp--92--Species</span></span>
+<span><span class="co">#&gt; 2             Fungi--100--Kingdom;Basidiomycota--100--Phylum;Agaricomycetes--100--Class;Sebacinales--100--Order;unidentified--95--Family;unidentified--95--Genus;Sebacinales_sp--95--Species</span></span>
+<span><span class="co">#&gt; 3             Fungi--100--Kingdom;Basidiomycota--100--Phylum;Agaricomycetes--100--Class;Sebacinales--100--Order;unidentified--96--Family;unidentified--96--Genus;Sebacinales_sp--96--Species</span></span>
+<span><span class="co">#&gt; 4          Fungi--100--Kingdom;Basidiomycota--69--Phylum;Agaricomycetes--66--Class;Hymenochaetales--26--Order;Repetobasidiaceae--11--Family;Rickenella--11--Genus;Rickenella_sp--11--Species</span></span>
+<span><span class="co">#&gt; 5             Fungi--100--Kingdom;Basidiomycota--100--Phylum;Agaricomycetes--100--Class;Sebacinales--100--Order;unidentified--92--Family;unidentified--92--Genus;Sebacinales_sp--92--Species</span></span>
+<span><span class="co">#&gt; 6 Fungi--100--Kingdom;Ascomycota--96--Phylum;Leotiomycetes--72--Class;Helotiales--72--Order;Helotiales_fam_Incertae_sedis--44--Family;Chlorencoelia--41--Genus;Chlorencoelia_sp--41--Species</span></span>
 <span><span class="co">#&gt;   S1_its S2_its</span></span>
-<span><span class="co">#&gt; 1    436      0</span></span>
-<span><span class="co">#&gt; 2    405      0</span></span>
-<span><span class="co">#&gt; 3      0    299</span></span>
-<span><span class="co">#&gt; 4    209     65</span></span>
-<span><span class="co">#&gt; 5      0    200</span></span>
-<span><span class="co">#&gt; 6     16    116</span></span></code></pre></div>
+<span><span class="co">#&gt; 1     60      0</span></span>
+<span><span class="co">#&gt; 2     46      0</span></span>
+<span><span class="co">#&gt; 3      0     35</span></span>
+<span><span class="co">#&gt; 4     21      0</span></span>
+<span><span class="co">#&gt; 5      0     21</span></span>
+<span><span class="co">#&gt; 6      0     13</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="reformat-asv-matrix-as-taxmap-and-phyloseq-objects-after-optional-filtering-of-low-abundance-asvs">Reformat ASV matrix as <strong><code>taxmap</code></strong> and
